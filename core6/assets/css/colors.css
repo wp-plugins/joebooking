@@ -1,0 +1,55 @@
+#nts .navbar-default {
+	background-color: #cf6;
+	background-image: none;
+	background-repeat: no-repeat;
+	filter: none;
+}
+
+#nts .navbar .navbar-nav>li>a {
+	background-color: #cf6;
+}
+
+#nts .navbar .navbar-nav>li>a:hover,
+#nts .navbar .navbar-nav>.active>a,
+#nts .navbar .navbar-nav>.active>a:hover,
+#nts .navbar .navbar-nav>.active>a:focus {
+	text-decoration: none;
+	background-color: #efb;
+}
+#nts .navbar .navbar-nav li.dropdown.open>.dropdown-toggle,
+#nts .navbar .navbar-nav li.dropdown.active>.dropdown-toggle,
+#nts .navbar .navbar-nav li.dropdown.open.active>.dropdown-toggle {
+	background-color: #efb;
+}
+
+#nts .pagination>.active>a,
+#nts .pagination>.active>span,
+#nts .pagination>.active>a:hover,
+#nts .pagination>.active>span:hover,
+#nts .pagination>.active>a:focus,
+#nts .pagination>.active>span:focus {
+	background-color: #390;
+	border-color: #390;
+}
+
+#nts .dropdown-menu>li>a:hover,
+#nts .dropdown-menu>li>a:focus,
+#nts .dropdown-submenu:hover>a,
+#nts .dropdown-submenu:focus>a {
+	background-color: #999;
+	color: #fff;
+}
+#nts .dropdown-menu>.active>a,
+#nts .dropdown-menu>.active>a:hover,
+#nts .dropdown-menu>.active>a:focus {
+	background-color: #390;
+	background-color: #999;
+}
+
+#nts .nav-pills>li.active>.nav-item,
+#nts .nav-pills>li.active>a,
+#nts .nav-pills>li.active>a:hover,
+#nts .nav-pills>li.active>a:focus {
+	color: #000;
+	background-color: #efb;
+}

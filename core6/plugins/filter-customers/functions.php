@@ -1,0 +1,91 @@
+<?php
+function ntsPluginFilterCustumers_AllowCustomers()
+{
+	global $NTS_CURRENT_USER;
+	if( ! $NTS_CURRENT_USER )
+		return array();
+
+	$thisId = $NTS_CURRENT_USER->getId();
+
+	$ntsdb =& dbWrapper::getInstance();
+
+	/* get the resources */
+	$ress = array();
+	$appPermissions = $NTS_CURRENT_USER->getAppointmentPermissions();
+	reset( $appPermissions );
+	foreach( $appPermissions as $rid => $pa ){
+		if( $pa['view'] || $pa['edit'] )
+			$ress[] = $rid; 
+		}
+	$schPermissions = $NTS_CURRENT_USER->getSchedulePermissions();
+	reset( $schPermissions );
+	foreach( $schPermissions as $rid => $pa ){
+		if( $pa['view'] || $pa['edit'] )
+			$ress[] = $rid; 
+		}
+	$ress = array_unique( $ress );
+
+	/* get ids of these customers */
+	$filter_ids = array();
+
+	$filter_ids1 = array();
+	$filter_where = array(
+		'resource_id'	=> array( 'IN', $ress ),
+		);
+
+	$filter_result = $ntsdb->select( 'DISTINCT(customer_id)', 'appointments', $filter_where );
+	if( $filter_result ){
+		while( $i = $filter_result->fetch() ){
+			$filter_ids1[] = $i['customer_id'];
+			}
+		}
+
+/* also _created_by this one */
+	$filter_ids2 = array();
+	$filter_where = array(
+		'obj_class'		=> array( '=', 'user' ),
+		'meta_name'		=> array( '=', '_created_by' ),
+		'meta_value'	=> array( '=', $thisId ),
+		);
+	$filter_result = $ntsdb->select( 'DISTINCT(obj_id)', 'objectmeta', $filter_where );
+	if( $filter_result ){
+		while( $i = $filter_result->fetch() ){
+			$filter_ids2[] = $i['obj_id'];
+			}
+		}
+
+/* also which had no appointments at all */
+	global $NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS;
+	if( ! isset($NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS) )
+	{
+		$NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS = array();
+
+		$plugin = 'filter-customers';
+		$plm =& ntsPluginManager::getInstance();
+		$pluginSettings = $plm->getPluginSettings( $plugin );
+		$allowNoApps = 1;
+		if( isset($pluginSettings['no_apps']) )
+		{
+			$allowNoApps = $pluginSettings['no_apps'];
+		}
+
+		if( $allowNoApps )
+		{
+			$sql = "SELECT DISTINCT(id) FROM {PRFX}users WHERE NOT EXISTS(SELECT id FROM {PRFX}appointments WHERE {PRFX}appointments.customer_id = {PRFX}users.id)";
+			$filter_result = $ntsdb->runQuery( $sql );
+			if( $filter_result )
+			{
+				while( $i = $filter_result->fetch() )
+				{
+					$NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS[] = $i['id'];
+				}
+			}
+		}
+	}
+
+	$filter_ids = array_merge( $filter_ids1, $filter_ids2, $NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS );
+	$filter_ids = array_unique( $filter_ids );
+
+	return $filter_ids;
+}
+?>

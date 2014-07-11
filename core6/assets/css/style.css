@@ -1,0 +1,203 @@
+#nts h3 {
+	color: #3265FF;
+	}
+#nts h2 {
+	color: #9c02a7;
+	}
+
+/* CALENDAR CONTROL */
+#nts div.nts-calendar {
+	margin: 0 0;
+	padding: 0 0;
+	width: 16em;
+	}
+#nts div.nts-calendar table {
+	margin: 0 auto;
+	border-collapse: collapse;
+	}
+#nts div.nts-calendar td {
+	padding: 1px 1px;
+	width: 2em;
+	text-align: center;
+	}
+#nts div.nts-calendar td div {
+	padding: 0.15em 0.25em;
+	text-align: center;
+	font-size: 0.9em;
+	}
+#nts div.nts-calendar td.selected {
+	background-color: #bb0000;
+	}
+#nts div.nts-calendar tr.months td {
+	font-weight: bold;
+	}
+#nts div.nts-calendar tr.months td a {
+	text-decoration: none;
+	}
+#nts div.nts-calendar tr.days td {
+	padding: 0 0;
+	}
+#nts div.nts-calendar tr.days td div {
+	font-size: 0.75em;
+	padding: 0 0;
+	}
+/* approved appointments */
+#nts .nts-calendar td div.approved {
+	background-color: #ccff66;
+	}
+/* pending appointments */
+#nts .nts-calendar td div.pending {
+	background-color: #ff9900;
+	}
+#nts div.nts-calendar td div {
+	color: #000000;
+	}
+#nts div.nts-calendar td div.selected {
+	border-color: #006600;
+	}
+#nts div.nts-calendar a
+	{
+	color: #000000;
+	border-color: #99cc33;
+	}
+/* END OF CALENDAR CONTROL */
+
+#nts td.ntsFormLabel,
+#nts td.ntsFormValue {
+	padding: 0.5em 0.5em;
+	margin: 0 0;
+	line-height: 1.5em;
+	}
+#nts td.ntsFormLabel {
+	text-align: right;
+	background-color: #eeeeee;
+	border: #ffffff 1px solid;
+	width: 12em;
+	vertical-align: top;
+	font-weight: bold;
+	}
+#nts td.ntsFormValue {
+	border-bottom: #eeeeee 1px solid;
+	}
+
+#nts ul.nts-container,
+#nts ul.nts-container li.nts-container {
+	margin: 0 0;
+	padding: 0 0;
+	border-width: 0px;
+	list-style-type: none;
+	}
+
+/* COLORS */
+#nts div.ntsFullyBooked,
+#nts div.ntsFullyBooked a,
+#nts span.ntsFullyBooked {
+	background-color: #006600;
+	color: #ffffff;
+	}
+
+#nts span.ntsApproved2,
+#nts span.ntsPending2,
+#nts span.ntsCompleted2,
+#nts span.ntsCompleted2_NotAck,
+#nts span.ntsCancelled2,
+#nts span.ntsNoShow2,
+#nts span.ntsWorking2 {
+	padding: 0.1em 0.25em;
+	border-width: 0.25em;
+	border-style: solid;
+	}
+
+#nts .ntsApproved {
+	background-color: #99cc66;
+	}
+#nts span.ntsApproved2 {
+	border-color: #99cc66;
+	}
+#nts span.ntsWorking2 {
+	border-color: #ccff99;
+	background-color: #ccff99;
+	}
+#nts .ntsPending {
+	background-color: #ff9900;
+	}
+#nts span.ntsPending2 {
+	border-color: #ff9900;
+	}
+#nts span.ntsCompleted2 {
+	border-color: #669933;
+	background-color: #99cc66;
+	color: #ffffff;
+	}
+#nts span.ntsCompleted2_NotAck {
+	border-color: #669933;
+	background-color: #ff9900;
+	color: #ffffff;
+	}
+#nts span.ntsCompleted {
+	border-color: #669933;
+	background-color: #99cc66;
+	color: #900;
+	border-width: 0.25em;
+	border-style: solid;
+	}
+
+#nts span.ntsNoShow2 {
+	border-color: #ff3300;
+	background-color: #ff3300;
+	color: #ffffff;
+	}
+#nts span.ntsCancelled2 {
+	border-color: #bbbbbb;
+	background-color: #bbbbbb;
+	color: #ffffff;
+	}
+#nts .ntsWorking {
+	background-color: #ccff99;
+	}
+#nts .ntsLead {
+	border-style: dotted;
+	border-width: 1px;
+	}
+#nts .ntsTimeoff {
+	background-color: #ffcc99;
+	}
+
+#nts li.ntsNoShow {
+	border-color: #ff3300;
+	background-color: inherit;
+	}
+#nts li.ntsCancelled {
+	border-color: #999999;
+	background-color: inherit;
+	}
+/* END OF COLORS */
+
+#nts .nts-ajax-container {
+	display: none;
+	position: relative;
+	}
+
+#nts .nts-ajax-return {
+	position: relative;
+	}
+
+/* 2 subheader styles */
+#nts .nts-ajax-container h2 {
+	font-size: 1.25em;
+	margin: 0.25em 0;
+	padding: 0 0;
+	}
+#nts .nts-ajax-container h3 {
+	font-size: 1.1em;
+	margin: 0.25em 0;
+	padding: 0 0;
+	}
+
+#nts .nts-url-to-send {
+    background-color: #eee;
+	}
+
+#nts .nts-time-link {
+	width: 6em;
+	}

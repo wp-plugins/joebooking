@@ -1,0 +1,1 @@
+<?php require( dirname(__FILE__) . '/_index_time_view.php' ); ?>

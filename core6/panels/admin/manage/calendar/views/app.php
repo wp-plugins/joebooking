@@ -1,0 +1,232 @@
+<?php
+$t = $NTS_VIEW['t'];
+
+$collapse_in = $checkbox ? ' in' : '';
+$condensed = $checkbox ? '' : ' panel-condensed';
+
+$half_column = 'col-md-6 col-sm-12';
+
+$location = ntsObjectFactory::get('location');
+$location->setId( $app->getProp('location_id') );
+
+$resource = ntsObjectFactory::get('resource');
+$resource->setId( $app->getProp('resource_id') );
+
+$service = ntsObjectFactory::get('service');
+$service->setId( $app->getProp('service_id') );
+
+$customer = new ntsUser();
+$customer->setId( $app->getProp('customer_id') );
+
+$status_class = $app->statusClass();
+
+$title = array();
+/* prefill titles */
+$title['location'] = ntsView::objectTitle( $location, TRUE );
+$title['resource'] = ntsView::objectTitle( $resource, TRUE );
+$title['service'] = ntsView::objectTitle( $service, TRUE );
+$title['customer'] = ntsView::objectTitle( $customer, TRUE );
+$t->setTimestamp( $app->getProp('starts_at') );
+$duration =  $app->getProp('duration');
+
+$title['date'] = $t->formatDateFull(0, TRUE);
+$title['time'] = $t->formatTime( $duration, 0, TRUE );
+//$title['time'] = $t->formatTime( $duration );
+
+$final_title = array();
+
+if( (count($labels['main']) > 0) OR (is_array($labels['main'][0]) ) )
+{
+	$final_title[] = '<ul class="list-unstyled squeeze-in">';
+
+	$label_count = 0;
+	foreach( $labels['main'] as $label )
+	{
+		if( ! $label )
+			continue;
+
+		$more_class = (! $label_count) ? ' class=""' : '';
+		if( is_array($label) )
+		{
+			$final_title[] = '<li' . $more_class . '>';
+			$final_title[]		= '<div class="row">';
+			foreach( $label as $l )
+			{
+				list( $this_title_title, $this_title_icon ) = Hc_lib::parse_icon( $title[$l] );
+				if( in_array($l, array('time')) && (! $collapse_in))
+				{
+					$final_title[]	= '<div class="' . $half_column . '" title="' . $this_title_title . '" >';
+					$final_title[]		= $this_title_title;
+				}
+				else
+				{
+					$final_title[]	= '<div class="' . $half_column . '" title="' . $this_title_title . '">';
+					$final_title[]		= $this_title_icon . $this_title_title;
+				}
+				$final_title[]		= '</div>';
+			}
+
+			$final_title[]		= '</div>';
+			$final_title[] = '</li>';
+		}
+		else
+		{
+			list( $this_title, $this_icon ) = Hc_lib::parse_icon( $title[$label] );
+			$final_title[] = '<li title="' . $this_title . '"' . $more_class . '>';
+
+			if( $collapse_in )
+			{
+				$final_title[] = $app->statusLabel('&nbsp;') . ' ';
+			}
+			$final_title[] = $this_title;
+
+			if( $collapse_in )
+				$final_title[] = ' <span class="caret"></span>';
+			$final_title[] = '</li>';
+		}
+		$label_count++;
+	}
+	$final_title[] = '</ul>';
+}
+else
+{
+	foreach( $labels['main'] as $label )
+	{
+		list( $this_title, $this_icon ) = Hc_lib::parse_icon( $title[$label] );
+		$final_title[] = '<span title="' . $this_title . '" class="squeeze-in alert-' . $status_class . '">';
+		if( $collapse_in )
+		{
+//			$this_icon = $app->statusLabel('&nbsp;', 'i');
+//			$this_icon = $app->statusLabel('&nbsp;');
+			$this_icon = '';
+			$final_title[] = $this_icon . $this_title;
+		}
+		else
+		{
+			$final_title[] = $this_title;
+		}
+		if( $collapse_in )
+			$final_title[] = ' <span class="caret"></span>';
+		$final_title[] = '</span>';
+	}
+}
+
+$show_title = join( '', $final_title );
+?>
+<?php
+/* MENU & MORE INFO */
+$menu = array();
+$more = array(); 
+
+$parent_class = '';
+$conflicts = array();
+$conflicts = $app->get_conflicts();
+if( $conflicts )
+{
+	$parent_class = ' panel-danger-o';
+	foreach( $conflicts as $c )
+	{
+		$more[] = '<i class="fa fa-exclamation-circle text-danger"></i> ' . $c;
+	}
+	$more[] = '-divider-';
+}
+
+$lead_out = $app->getProp('lead_out');
+if( $lead_out )
+{
+	$duration = $app->getProp('duration');
+	$t->setTimestamp( $app->getProp('starts_at') );
+	$t->modify( '+ ' . ($duration + $lead_out) . ' seconds' );
+	$more[] = '<i class="fa fa-arrow-right"></i>' . $t->formatTime();
+}
+
+/* MORE INFO */
+if( isset($labels['dropdown']) && $labels['dropdown'] )
+{
+	foreach( $labels['dropdown'] as $label )
+	{
+		$more[] = $title[$label];
+	}
+}
+
+require( dirname(__FILE__) . '/_app_menu_actions.php' );
+?>
+<?php
+if( $checkbox )
+{
+	$appEdit = ntsLib::getVar( 'admin/manage:appEdit' );
+	$rid = $app->getProp( 'resource_id' );
+	if( ! in_array($rid, $appEdit) )
+		$checkbox = FALSE;
+}
+
+if( $checkbox )
+{
+	$form = new ntsForm2;
+	$my_checkbox = '';
+	$my_checkbox .= $form->start(TRUE);
+	$my_checkbox .= $form->input(
+		'checkbox',
+		array(
+			'id'		=> 'app_id',
+			'box_value'	=> $app->getId(),
+			)
+		);
+	$my_checkbox .= $form->end();
+}
+$cost = $app->getCost();
+?>
+
+<div class="collapse-panel panel<?php echo $condensed; ?> panel-<?php echo $status_class; ?><?php echo $parent_class; ?>">
+
+<?php if( $collapse_in && $menu ) : ?>
+	<div class="panel-heading">
+<?php else : ?>
+	<div class="panel-heading squeeze-in">
+<?php endif; ?>
+
+	<?php if( $cost ) : ?>
+		<div class="pull-right">
+			<?php echo $app->paymentStatus(TRUE); ?>
+		</div>
+	<?php endif; ?>
+
+	<?php if( $collapse_in && $menu ) : ?>
+		<span class="dropdown">
+			<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+				<?php echo $show_title; ?>
+			</a>
+			<?php echo Hc_html::dropdown_menu($menu); ?>
+		</span>
+	<?php else : ?>
+		<a href="#" data-toggle="collapse-next" class="alert-<?php echo $status_class; ?>">
+			<?php echo $show_title; ?>
+		</a>
+	<?php endif; ?>
+</div>
+
+<div class="panel-collapse collapse<?php echo $collapse_in; ?>">
+	<?php if( $more ) : ?>
+		<div class="panel-body squeeze-in">
+			<?php if( $checkbox ) : ?>
+				<div class="pull-right">
+					<?php echo $my_checkbox; ?>
+				</div>
+			<?php endif; ?>
+			<?php echo Hc_html::dropdown_menu($more, 'list-unstyled list-separated'); ?>
+		</div>
+	<?php endif; ?>
+
+	<?php if( $menu && (! $collapse_in) ) : ?>
+		<div class="panel-footer">
+			<div class="btn-group">
+				<a class="dropdown-toggle btn btn-default" href="#" data-toggle="dropdown">
+					<?php echo $app->statusLabel('', 'i'); ?> <?php echo $app->statusText(); ?> <span class="caret"></span>
+				</a>
+				<?php echo Hc_html::dropdown_menu($menu); ?>
+			</div>
+		</div>
+	<?php endif; ?>
+</div>
+
+</div>
