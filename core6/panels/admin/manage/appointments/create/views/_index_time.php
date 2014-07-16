@@ -82,9 +82,11 @@ $t = $NTS_VIEW['t'];
 			<?php
 			$t->setTimestamp($starts_at);
 			?>
-			<h4>
-				<?php echo $t->formatDateFull( $all_times[0] ); ?>
-			</h4>
+			<?php if( isset($all_times[0]) ) : ?>
+				<h4>
+					<?php echo $t->formatDateFull( $all_times[0] ); ?>
+				</h4>
+			<?php endif; ?>
 			<?php
 			echo $this->render_file(
 				dirname(__FILE__) . '/_object.php',

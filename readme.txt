@@ -1,10 +1,10 @@
-=== JoeBooking Appointment Scheduling - Online Scheduling For Providers and Salons ===
+=== JoeBooking - Appointment Scheduling For Providers and Salons ===
 
 Contributors: HitCode
 Tags: appointment scheduling, appointment booking, client scheduling, customer calendar, calendar booking, service scheduling, salon scheduling software
 License: GPLv2 or later
 
-Stable tag: 6.0.0
+Stable tag: 6.0.1
 Requires at least: 3.3
 Tested up to: 3.9
 
@@ -33,6 +33,10 @@ Author URI: http://www.joebooking.com
 The upgrade is simply - upload everything up again to your `/wp-content/plugins/` directory, then go to the JoeBooking menu item in the admin panel. It will automatically start the upgrade process if any needed.
 
 == Changelog ==
+
+= 6.0.1 =
+* A slight CSS fix to escape conflicts with some WP admin themes
+* Location capacity booking check fix
 
 = 6.0.0 =
 * Initial public release

@@ -265,7 +265,7 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 			{
 				$default_params['resource_id'] = $last_app['resource_id'];
 			}
-			$default_params['service_id'] = $last_app['location_id'];
+			$default_params['service_id'] = $last_app['service_id'];
 			$t->setTimestamp( $last_app['starts_at'] );
 			$default_params['cal'] = $t->formatDate_Db();
 		}
@@ -277,7 +277,7 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 		?>
 		<li>
 			<a href="<?php echo $more_link; ?>" class="btn btn-default btn-sm">
-				<i class="fa fa-plus"></i> <?php echo M('More'); ?>
+				<i class="fa fa-plus"></i> <?php echo M('Appointment'); ?>
 			</a>
 		</li>
 

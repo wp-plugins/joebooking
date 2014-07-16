@@ -869,3 +869,9 @@
 #nts .hc_month .row .today .alert-condensed {
 	border-color: #060;
 }
+
+/* conficts in wordpress with some themes */
+#nts .dropdown {
+	height: inherit;
+	overflow: inherit;
+}

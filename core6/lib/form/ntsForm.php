@@ -512,14 +512,19 @@ class ntsForm {
 			}
 
 	/* if it is one entry only */
-		reset( $validators );
-		foreach( $validators as $va ){
-			$shortValidatorName = basename( $va['code'], '.php' );
-			if( ($shortValidatorName == 'oneEntryOnly') && ( strlen($conf['value']) > 0 ) ){
-				$conf['attr']['readonly'] = 'readonly';
-				$conf['attr']['disabled'] = 'disabled';
+		if( isset($validators) && is_array($validators) )
+		{
+			reset( $validators );
+			foreach( $validators as $va )
+			{
+				$shortValidatorName = basename( $va['code'], '.php' );
+				if( ($shortValidatorName == 'oneEntryOnly') && ( strlen($conf['value']) > 0 ) )
+				{
+					$conf['attr']['readonly'] = 'readonly';
+					$conf['attr']['disabled'] = 'disabled';
 				}
 			}
+		}
 
 		$conf['error'] = $this->_getErrorForInput( $conf['id'] );
 		$input = '';

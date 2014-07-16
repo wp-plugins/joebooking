@@ -542,325 +542,6 @@ EOT;
 		return $return;
 	}
 
-	function buildSlots_Old( $startTime, $endTime )
-	{
-		$return = array();
-
-		$now = time();
-		$timeUnit = NTS_TIME_UNIT * 60;
-
-		$ntsdb =& dbWrapper::getInstance();
-
-		$this->companyT->setTimestamp( $endTime );
-		$toDate = $this->companyT->formatDate_Db();
-		$this->companyT->setTimestamp( $startTime );
-		$fromDate = $this->companyT->formatDate_Db();
-
-		$rexDate = $fromDate;
-		$dates = array();
-		$firstWeekdays = array();
-		$di = 0;
-		while( $rexDate <= $toDate )
-		{
-			$rexWeekday = $this->companyT->getWeekday();
-			$startDay = $this->companyT->getStartDay(); 
-			if( ! isset($firstWeekdays[$rexWeekday]) )
-				$firstWeekdays[$rexWeekday] = $di;
-			$dates[ $rexDate ] = $startDay;
-
-			$this->companyT->setDateDb($rexDate);
-			$this->companyT->modify( '+1 day' );
-			$rexDate = $this->companyT->formatDate_Db();
-			$di++;
-		}
-
-		$datesIndex = array_keys( $dates );
-		$daysCount = count( $dates );
-
-	/* build where */
-		$where = array();
-
-		$limitWeekdays = array();
-		if( count($firstWeekdays) < 7 )
-		{
-			$limitWeekdays = array_keys($firstWeekdays);
-		}
-		if( isset($this->filters['weekday']) )
-		{
-			$limitWeekdays = $limitWeekdays ? array_intersect($limitWeekdays, $this->filters['weekday']) : $this->filters['weekday'];
-		}
-
-	/* go thru timeblocks */
-		reset( $this->timeblocks );
-		foreach( $this->timeblocks as $b1 ){
-			if( ! isset($firstWeekdays[$b1['applied_on']]) )
-				continue;
-
-			if( 
-				$this->locationIds && 
-				($b1['location_id'] != 0) && 
-				(! in_array($b1['location_id'], $this->locationIds))
-			)
-			{
-				continue;
-			}
-
-			if(
-				$this->resourceIds && 
-				($b1['resource_id'] != 0) && 
-				(! in_array($b1['resource_id'], $this->resourceIds))
-			)
-			{
-				continue;
-			}
-
-			if(
-				$this->serviceIds && 
-				($b1['service_id'] != 0) && 
-				(! in_array($b1['service_id'], $this->serviceIds))
-			)
-			{
-				continue;
-			}
-
-			if( 
-				$limitWeekdays &&  
-				(! in_array($b1['applied_on'], $limitWeekdays))
-			)
-			{
-				continue;
-			}
-
-			$block_starts_at = $b1['starts_at'];
-			$block_ends_at = $b1['ends_at'];
-
-		/* check time filter */
-			if( isset($this->filters['time']) )
-			{
-				if( $this->filters['time'][0] > $block_starts_at )
-				{
-					$block_starts_at = $this->filters['time'][0];
-				}
-				if( $this->filters['time'][1] < $block_ends_at )
-				{
-					$block_ends_at = $this->filters['time'][1];
-				}
-				if( $block_ends_at <= $block_starts_at )
-				{
-					continue;
-				}
-			}
-
-			$lids = ( $b1['location_id'] == 0 ) ? $this->allLocationIds : array( $b1['location_id'] );
-			$rids = ( $b1['resource_id'] == 0 ) ? $this->allResourceIds : array( $b1['resource_id'] );
-			$sids = ( $b1['service_id'] == 0 ) ? $this->allServiceIds : array( $b1['service_id'] );
-
-			$bbs = array();
-			reset( $lids );
-			foreach( $lids as $lid )
-			{
-				if( $this->locationIds && (! in_array($lid, $this->locationIds)))
-				{
-					continue;
-				}
-				reset( $rids );
-				foreach( $rids as $rid )
-				{
-					if( $this->resourceIds && (! in_array($rid, $this->resourceIds)))
-					{
-						continue;
-					}
-					if( 
-						$this->customerSide && 
-						$this->internalResourceIds && 
-						in_array($rid, $this->internalResourceIds)
-					)
-					{
-						continue;
-					}
-
-					reset( $sids );
-					foreach( $sids as $sid )
-					{
-						if( ! isset($this->services[$sid]) )
-						{
-							continue;
-						}
-						if( $this->serviceIds && (! in_array($sid, $this->serviceIds)))
-						{
-							continue;
-						}
-						$b = array();
-						$b['location_id'] = $lid; 
-						$b['resource_id'] = $rid;
-						$b['service_id'] = $sid;
-						$bbs[] = $b;
-					}
-				}
-			}
-
-			$di = $firstWeekdays[ $b1['applied_on'] ];
-			while( $di < $daysCount ){
-				$thisDate = $datesIndex[$di];
-				if( isset($this->filters['date']) )
-				{
-					if( isset($this->filters['date']['from']) )
-					{
-						if( $thisDate > $this->filters['date']['to'] )
-							break;
-						if( $thisDate < $this->filters['date']['from'] )
-						{
-							$di += 7;
-							continue;
-						}
-					}
-					else
-					{
-						if( $thisDate > max($this->filters['date']) )
-							break;
-						if( ! in_array($thisDate, $this->filters['date']) )
-						{
-							$di += 7;
-							continue;
-						}
-					}
-				}
-
-				if( $thisDate > $b1['valid_to'] )
-					break;
-				if( $thisDate < $b1['valid_from'] )
-				{
-					$di += 7;
-					continue;
-				}
-
-				$startDay = $dates[ $datesIndex[$di] ];
-				foreach( $bbs as $b2 ){
-					$rid = $b2['resource_id'];
-					$lid = $b2['location_id'];
-					$sid = $b2['service_id'];
-
-					$seats = $b1['capacity'];
-					$slot = array( $lid, $rid, $sid, array() );
-
-					$leadIn = $this->services[$sid]['lead_in']; 
-					$leadOut = $this->services[$sid]['lead_out'];
-					$service_min_duration = $this->services[$sid]['duration'];
-
-					$minFromNow = $b1['min_from_now'];
-					$maxFromNow = $b1['max_from_now']; 
-
-					$checkStart = $startTime;
-					$checkEnd = $endTime;
-					if( $this->customerSide )
-					{
-						$serviceStartTime = $now + $minFromNow;
-						$serviceEndTime = $now + $maxFromNow;
-
-						if( $serviceEndTime > $serviceStartTime)
-						{
-							$checkStart = ($serviceStartTime > $startTime) ? $serviceStartTime : $startTime;
-							$checkEnd = ($serviceEndTime < $endTime) ? $serviceEndTime : $endTime;
-						}
-					}
-
-					$ts = $block_starts_at;
-					if( $b1['selectable_every'] ){
-						$extendCheck = 0;
-						if( $block_ends_at == 24 * 60 * 60 ){
-							// ends at midnight, I should find a block tomorrow
-							$t = new ntsTime;
-							$t->setDateDb( $datesIndex[$di] );
-							$t->modify( '+1 day' );
-							$tomorrow = $t->formatDate_Db();
-							$tomorrowWeekday = $t->getWeekday();
-							$tomorrowWhere = array(
-								'location_id'	=> array( '=', $b1['location_id'] ),
-								'resource_id'	=> array( '=', $b1['resource_id'] ),
-								'service_id'	=> array( '=', $b1['service_id'] ),
-								'starts_at'		=> array( '=', 0 ),
-								'valid_from'	=> array( '<=', $tomorrow ),
-								'valid_to'		=> array( '>=', $tomorrow ),
-								'applied_on'	=> array( '=', $tomorrowWeekday ),
-								);
-							$tomorrowBlocks = $this->getBlocksByWhere( $tomorrowWhere );
-							if( $tomorrowBlocks ){
-								foreach( $tomorrowBlocks as $tb ){
-									if( $tb['ends_at'] > $extendCheck )
-										$extendCheck = $tb['ends_at'];
-									}
-								}
-							}
-
-						$checkBlockEnd = ($block_ends_at - $service_min_duration - $leadOut + $extendCheck);
-						$slot_ends_at = $block_ends_at + $extendCheck;
-
-						$slot_full_ends_at = $startDay + $slot_ends_at;
-						$slot[3] = array( $slot_full_ends_at => $seats );
-						while( $ts <= $checkBlockEnd ){
-							if( ! isset($this->timesIndex[ ($startDay + $ts) ]) )
-							{
-								$this->companyT->setTimestamp( $startDay );
-								$this->companyT->modify( '+' . $ts . ' seconds' );
-								$this->timesIndex[ ($startDay + $ts) ] = $this->companyT->getTimestamp();
-							}
-							$addTs = $this->timesIndex[ ($startDay + $ts) ];
-
-							if( $addTs > $checkEnd )
-							{
-								break;
-							}
-							if( $addTs < $checkStart )
-							{
-								continue;
-							}
-
-							if( ! isset($return[$addTs]) )
-								$return[$addTs] = array();
-							$return[$addTs][] = $slot;
-							$ts = $ts + $b1['selectable_every'];
-							}
-						}
-				// fixed time
-					else {
-						if( ! isset($this->timesIndex[($startDay + $ts)]) )
-						{
-							$this->companyT->setTimestamp( $startDay );
-							$this->companyT->modify( '+' . $ts . ' seconds' );
-							$this->timesIndex[ ($startDay + $ts) ] = $this->companyT->getTimestamp();
-						}
-						$addTs = $this->timesIndex[ ($startDay + $ts) ];
-						$slot_ends_at = $ts + $this->max_duration;
-
-						if( ($addTs <= $checkEnd) && ($addTs >= $checkStart) ){
-							$thisOk = TRUE;
-
-							if( ! isset($return[$addTs]) )
-								$return[$addTs] = array();
-
-							$addTsEnd = $this->timesIndex[ ($startDay + $slot_ends_at) ];
-							$slot_duration = ($addTsEnd - $addTs);
-							if( $slot_duration >= $service_min_duration )
-							{
-								$slot[3] = array( $addTsEnd => $seats );
-								$return[$addTs][] = $slot;
-							}
-							}
-						}
-					}
-				$di += 7;
-				}
-			}
-
-		if( ! array_keys($return) )
-		{
-			return $return;
-		}
-
-		ksort( $return );
-		return $return;
-	}
-
 	function getBy( $what, $check, $slots )
 	{
 		$iis = array(
@@ -1546,6 +1227,7 @@ EOT;
 					}
 				}
 			}
+
 			if( $slot_lid == $app_lid )
 				$travel_time = 0;
 			else
@@ -1562,6 +1244,7 @@ EOT;
 
 			$remove_seats = 0;
 
+			$cut_from = $app_start;
 			if(
 				( $this->locations[$slot_lid]['capacity'] > 0 )
 				)
@@ -1577,6 +1260,10 @@ EOT;
 							)
 						{
 							$remove_seats = $this_seats;
+							if( $slot_rid != $app_rid )
+							{
+								$cut_from = $tts;
+							}
 							if( $all )
 							{
 								$this->throwSlotError( array('location' => M('Location Fully Booked')) );
@@ -1665,6 +1352,10 @@ EOT;
 										)
 									{
 										$remove_seats = $this_seats;
+										if( $slot_rid != $app_rid )
+										{
+											$cut_from = $tts;
+										}
 										if( $all )
 										{
 											$this->throwSlotError( array('location' => M('Location Fully Booked')) );
@@ -1684,19 +1375,20 @@ EOT;
 
 			if( $remove_seats )
 			{
-				$new_ends_at = $app_start;
+				$new_ends_at = $cut_from;
+
 				foreach( $return_seats as $this_ends_at => $this_seats )
 				{
 					if( ! $remove_seats )
 						break;
-					if( $this_ends_at <= ($app_start - $travel_time) )
+					if( $this_ends_at <= ($cut_from - $travel_time) )
 						continue;
 
 					$take_seats = $return_seats[$this_ends_at];
 					if( $take_seats > $remove_seats )
 						$take_seats = $remove_seats;
 
-					$new_ends_at = ($app_start - $travel_time);
+					$new_ends_at = ($cut_from - $travel_time);
 					if( $new_ends_at >= ($ts + $service_min_duration) )
 					{
 						if( ! isset($return_seats[$new_ends_at]) )
@@ -2458,6 +2150,11 @@ EOT;
 			}
 		}
 		return $return;
+	}
+
+	function resetLrs()
+	{
+		$this->_lrs = array();
 	}
 
 	function getLrs( $skip_apps = FALSE, $from_date = FALSE )

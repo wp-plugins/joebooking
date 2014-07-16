@@ -467,5 +467,16 @@ $where = array(
 	'meta_name'		=> array( '=', '_promotion' ),
 	);
 $result = $ntsdb->delete( 'objectmeta', $where );
+
+
+/* delete packs meta */
+$where = array(
+	array(
+		'meta_name'		=> array( '=', '_pack' ),
+		'obj_class'		=> array( '=', 'appointment' ),
+		),
+	);
+$result = $ntsdb->delete( 'objectmeta', $where );
+
 return;
 ?>
