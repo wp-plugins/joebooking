@@ -16,6 +16,8 @@ JoeBooking is a WordPress appointment scheduling plugin that allows to accept se
 It is designed specifically for service professionals like massage therapists, consultants, tutors, instructors, photographers, stylists, dog groomers and others who need to schedule their time with clients online. 
 JoeBooking appointment scheduling allows the owner to manage the plugin through a powerful admin panel and offers a self-service customer appointment booking form embedded into a page or a post with a shortcode.
 
+Please visit [our website](http://www.joebooking.com "WordPress Appointment Scheduling") for more info and [get the Pro version now!](http://www.joebooking.com/order/).
+
 ###Pro/Salon Pro Version Features###
 
 * Manage payments
@@ -25,8 +27,6 @@ JoeBooking appointment scheduling allows the owner to manage the plugin through 
 * Attachments
 * Multiple providers
 * Multiple locations
-
-Please visit [our website](http://www.joebooking.com "WordPress Appointment Scheduling") for more info and [get the Pro version now!](http://www.joebooking.com/order/).
 
 Make sure you don't overbook yourself while keeping it easy for your potential clients to book time with you.
 Switch to manage your service offerings and client appointments right from your WordPress powered website. 
