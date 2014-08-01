@@ -2,7 +2,6 @@
 /**
  * @package JoeBooking
  * @author JoeBooking
- * @version 6.0.1
  */
 /*
 Plugin Name: JoeBooking
