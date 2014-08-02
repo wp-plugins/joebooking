@@ -10,12 +10,22 @@ $dgtCurrentVersion = ntsLib::parseVersion($currentVersion);
 
 $fileVersion = ntsLib::getAppVersion();
 $dgtFileVersion = ntsLib::parseVersion($fileVersion);
+
+$showLicenseForm = TRUE;
+if( in_array(NTS_APP_LEVEL, array('lite')) OR (defined('NTS_APP_DEVELOPER') && NTS_APP_DEVELOPER) )
+{
+	$showLicenseForm = FALSE;
+}
+if( defined('NTS_DEVELOPMENT') )
+{
+	$showLicenseForm = TRUE;
+}
 ?>
 
 <h3><?php echo $appInfo['app']; ?> <?php echo $appInfo['installed_version']; ?></h3>
 
 <?php
-if( ! in_array(NTS_APP_LEVEL, array('lite')) && (! defined('NTS_APP_DEVELOPER')) )
+if( $showLicenseForm )
 {
 	$NTS_VIEW['form']->display();
 }

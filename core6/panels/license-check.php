@@ -14,7 +14,7 @@ foreach( $skipPanels as $sp )
 	{
 		$skipCheck = 1;
 	}
-	if( defined('NTS_APP_DEVELOPER') )
+	if( defined('NTS_APP_DEVELOPER') && (! defined('NTS_DEVELOPMENT')) )
 	{
 		$skipCheck = 1;
 	}

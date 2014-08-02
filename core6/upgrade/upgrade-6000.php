@@ -478,5 +478,17 @@ $where = array(
 	);
 $result = $ntsdb->delete( 'objectmeta', $where );
 
+/* delete _disabled_panels */
+$delete_meta = array( '_default_apps_view', '_disabled_panels', '_agenda_fields', '_default_calendar' );
+foreach( $delete_meta as $dm )
+{
+	$where = array(
+		array(
+			'meta_name'		=> array( '=', $dm ),
+			'obj_class'		=> array( '=', 'user' ),
+			),
+		);
+	$result = $ntsdb->delete( 'objectmeta', $where );
+}
 return;
 ?>

@@ -195,6 +195,18 @@ class hcWpBase2
 		{
 			$return = TRUE;
 		}
+		else
+		{
+			// might be shortcode with params
+			$pattern = '\[' . $this->slug . '\s*(.+)\]';
+			if(
+				preg_match('/'. $pattern .'/s', $post->post_content, $matches)
+				)
+			{
+//				$atts = shortcode_parse_atts( $matches[1] );
+				$return = TRUE;
+			}
+		}
 		return $return;
 	}
 

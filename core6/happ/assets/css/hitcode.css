@@ -875,3 +875,6 @@
 	height: inherit;
 	overflow: inherit;
 }
+#nts .clearfix {
+	-webkit-perspective:0;
+}

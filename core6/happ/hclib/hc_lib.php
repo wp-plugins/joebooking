@@ -1,5 +1,25 @@
 <?php
 class Hc_lib {
+	static function sort_array_by_array( $array, $orderArray )
+	{
+		$return = array();
+		reset( $orderArray );
+		foreach( $orderArray as $o )
+		{
+			if( in_array($o, $array) )
+			{
+				$return[] = $o;
+			}
+		}
+		reset( $array );
+		foreach( $array as $a )
+		{
+			if( ! in_array($a, $return) )
+				$return[] = $a;
+		}
+		return $return;
+	}
+
 	static function random_html_color( $i )
 	{
 		$out = array(

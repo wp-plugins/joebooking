@@ -16,6 +16,42 @@ if( substr($slug, -strlen('_pro')) == '_pro' )
 $pageslug = $slug;
 if( $slug == 'hitappoint' )
 	$pageslug = $pageslug . '6';
+
+$track_setup = '';
+switch( $slug )
+{
+	case 'hitappoint':
+		$track_setup = '1:2';
+		break;
+	case 'joebooking':
+		$track_setup = '15:2';
+		break;
+}
+if( $track_setup )
+{
+	list( $track_site_id, $track_goal_id ) = explode( ':', $track_setup );
+}
+
+$trackCode =<<<EOT
+<img src="http://www.fiammante.com/piwik/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="" />
+EOT;
+
+$trackCode =<<<EOT
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://www.fiammante.com/piwik/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "$track_site_id"]);
+	_paq.push(['trackGoal', $track_goal_id]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+EOT;
 ?>
 <html>
 <head>
@@ -114,29 +150,41 @@ if( $wordpress )
 	<p>or
 	<h2>New Install</h2>
 <?php	endif; ?>
+
 <?php elseif( $wordpress ) : ?>
-<?php
-		$app = ntsLib::getAppProduct();
-		$slug = $app;
-		if( substr($slug, -strlen('_pro')) == '_pro' )
-		{
-			$slug = substr($slug, 0, -strlen('_pro'));
-		}
+	<?php
+	$app = ntsLib::getAppProduct();
+	$slug = $app;
+	if( substr($slug, -strlen('_pro')) == '_pro' )
+	{
+		$slug = substr($slug, 0, -strlen('_pro'));
+	}
 
-		global $NTS_SETUP_ADMINS;
-		$NTS_SETUP_ADMINS = array();
+	global $NTS_SETUP_ADMINS;
+	$NTS_SETUP_ADMINS = array();
 
-		$role = 'Administrator';
-		$wp_user_search = new WP_User_Search( '', '', $role);
-		$NTS_SETUP_ADMINS = $wp_user_search->get_results();
+	$role = 'Administrator';
+	$wp_user_search = new WP_User_Search( '', '', $role);
+	$NTS_SETUP_ADMINS = $wp_user_search->get_results();
 
-		require( dirname(__FILE__) . '/create-database.php' );
-		require( dirname(__FILE__) . '/populate.php' );	
-		$targetLink = '?page=' . $pageslug;
-?>
-<script language="JavaScript">
-document.location.href="<?php echo $targetLink; ?>";
-</script>
+	require( dirname(__FILE__) . '/create-database.php' );
+	require( dirname(__FILE__) . '/populate.php' );	
+	$targetLink = '?page=' . $pageslug;
+	?>
+
+	<p>
+	Installation ok
+	</p>
+	<?php if( defined('NTS_DEVELOPMENT') ) : ?>
+		TRACKING <?php echo $track_site_id; ?>:<?php echo $track_goal_id; ?>
+	<?php else : ?>
+		<?php echo $trackCode; ?>
+	<?php endif; ?>
+
+	<META http-equiv="refresh" content="5;URL=<?php echo $targetLink; ?>">
+	<p>
+	Your <a href="<?php echo $targetLink; ?>">online appointment scheduler</a> is ready.
+	</p>
 <?php endif; ?>
 
 <?php if( ! $wordpress ) : ?>	
@@ -172,38 +220,20 @@ if( $wordpress ){
 	}
 
 $checkUrl2 = ntsLib::checkLicenseUrl();
-
-if( defined('NTS_APP_LEVEL') && (NTS_APP_LEVEL == 'lite') )
-{
-	$trackCode =<<<EOT
-<img src="http://www.fiammante.com/piwik/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="" />
-EOT;
-
-	$trackCode =<<<EOT
-<script type="text/javascript">
-  var _paq = _paq || [];
-  _paq.push(["trackPageView"]);
-  _paq.push(["enableLinkTracking"]);
-
-  (function() {
-    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://www.fiammante.com/piwik/";
-    _paq.push(["setTrackerUrl", u+"piwik.php"]);
-    _paq.push(["setSiteId", "1"]);
-	_paq.push(['trackGoal', 2]);
-    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
-    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-EOT;
-}
 ?>
 		<span class="success">Database tables created, admin account configured, sample data populated</span>
 		<p>
 		Your <a href="<?php echo $targetLink; ?>">online appointment scheduler</a> is ready.
+		</p>
 
 <script language="JavaScript" type="text/javascript" src="<?php echo $checkUrl2; ?>"></script>
 
+<?php if( defined('NTS_DEVELOPMENT') ) : ?>
+	TRACKING <?php echo $track_site_id; ?>:<?php echo $track_goal_id; ?>
+<?php else : ?>
 <?php echo $trackCode; ?>
+<?php endif; ?>
+
 <?php endif; ?>
 
 </body>

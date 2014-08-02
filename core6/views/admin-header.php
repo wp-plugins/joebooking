@@ -16,7 +16,7 @@ if( (! isset($_SESSION['home_call'])) || $_SESSION['home_call'] )
 	{
 		$checkLicense = 1;
 		$homeCall = 1;
-		if( defined('NTS_APP_DEVELOPER') )
+		if( defined('NTS_APP_DEVELOPER') && (! defined('NTS_DEVELOPMENT')) )
 		{
 			$checkLicense = 0;
 		}

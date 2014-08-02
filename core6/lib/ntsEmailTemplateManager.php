@@ -67,7 +67,8 @@ class ntsEmailTemplateManager {
 			$providerFields[] = $f[0];
 
 	/* common header & footer */
-		$this->addTags( 'common-header-footer', array('recipient' => $userFields ) );
+		$userFieldsNoPass = Hc_lib::remove_from_array( $userFields, 'password' );
+		$this->addTags( 'common-header-footer', array('recipient' => $userFieldsNoPass ) );
 
 	/* customer related emails sent to customer */
 		$this->addTags( 'user-*', array('user' => $customerFields_External ) );

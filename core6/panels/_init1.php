@@ -19,9 +19,19 @@ if( ! NTS_APP_WHITELABEL )
 else
 	$_NTS['DOWNLOAD_URL'] = '';
 
-$_NTS['CHECK_LICENSE_URL'] = 'http://www.hitcode.com/customers/lic.php';
+if( defined('NTS_DEVELOPMENT') )
+{
+	$_NTS['CHECK_LICENSE_URL'] = 'http://localhost/hitcode/customers/lic.php';
+}
+else
+{
+	$_NTS['CHECK_LICENSE_URL'] = 'http://www.hitcode.com/customers/lic.php';
+}
 
-$_NTS['REQUESTED_PANEL'] = ( isset($_REQUEST[NTS_PARAM_PANEL]) ) ? $_REQUEST[NTS_PARAM_PANEL] : '';
+$requested_panel = ( isset($_REQUEST[NTS_PARAM_PANEL]) ) ? $_REQUEST[NTS_PARAM_PANEL] : '';
+$requested_panel = str_replace( '%252F', '/', $requested_panel );
+$requested_panel = str_replace( '%2F', '/', $requested_panel );
+$_NTS['REQUESTED_PANEL'] = $requested_panel;
 $_NTS['WAS_REQUESTED_PANEL'] = $_NTS['REQUESTED_PANEL'];
 
 if( $_NTS['REQUESTED_PANEL'] == 'system/attach' )
