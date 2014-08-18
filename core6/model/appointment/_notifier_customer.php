@@ -1,4 +1,9 @@
 <?php
+if( isset($params['_silent_customer']) && $params['_silent_customer'] )
+{
+	return;
+}
+
 /* --- RETURN IF EMAIL DISABLED --- */
 $conf =& ntsConf::getInstance();
 if( $conf->get('emailDisabled') )
@@ -66,9 +71,10 @@ $key = 'appointment-' . $mainActionName . '-customer';
 
 /* --- SKIP IF THIS NOTIFICATION DISABLED --- */
 $currentlyDisabled = $conf->get( 'disabledNotifications' );
-if( in_array($key, $currentlyDisabled) ){
+if( in_array($key, $currentlyDisabled) )
+{
 	return;
-	}
+}
 
 $tailoredKey = $key . '_' . $object->getProp('service_id');
 
@@ -79,9 +85,10 @@ if( ! $templateInfo )
 }
 
 /* --- SKIP IF NO TEMPLATE --- */
-if( ! $templateInfo ){
+if( ! $templateInfo )
+{
 	return;
-	}
+}
 
 $tags = $om->makeTags_Appointment( $object, 'external' );
 if( ! isset($params['reason']) )

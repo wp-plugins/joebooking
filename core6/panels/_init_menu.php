@@ -117,27 +117,26 @@ if( isset($rootInfo) && $rootInfo )
 if( $headerFile && $footerFile )
 {
 	$NTS_VIEW['headerFile'] = $headerFile;
-	$NTS_VIEW['footerFile'] = $footerFile;
+//	$NTS_VIEW['footerFile'] = $footerFile;
+	$NTS_VIEW['systemFooterFile'] = $footerFile;
 }
 else
 {
 /* for customer view */
-	$defaultThemeFolder = NTS_APP_DIR . '/defaults/theme';
-	$conf =& ntsConf::getInstance();
-	$theme = $conf->get( 'theme' );
-	$themeFolder = NTS_EXTENSIONS_DIR . '/themes/' . $theme;
-
-	if( file_exists($themeFolder) )
+	$check_dirs = array(
+		NTS_RUN_DIR . '/theme/',
+		NTS_APP_DIR . '/../theme/'
+		);
+	foreach( $check_dirs as $checkd )
 	{
-		$NTS_VIEW['headFile'] = $themeFolder . '/head.php';
-		$NTS_VIEW['headerFile'] = $themeFolder . '/header.php';
-		$NTS_VIEW['footerFile'] = $themeFolder . '/footer.php';
-	}
-	// default theme
-	else
-	{
-		$NTS_VIEW['headerFile'] = $defaultThemeFolder . '/header.php';
-		$NTS_VIEW['footerFile'] = $defaultThemeFolder . '/footer.php';
+		if( file_exists($checkd) )
+		{
+			$NTS_VIEW['isInside'] = TRUE;
+			$NTS_VIEW['headFile'] = $checkd . '/head.php';
+			$NTS_VIEW['headerFile'] = $checkd . '/header.php';
+			$NTS_VIEW['footerFile'] = $checkd . '/footer.php';
+			break;
+		}
 	}
 }
 ?>

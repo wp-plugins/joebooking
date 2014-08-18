@@ -5267,6 +5267,10 @@
 		width: 24.8%;
 		*width: 24.8%;
 	}
+	#nts .hc_cal >.row>.col-sm-6 {
+		width: 86%;
+		*width: 86%;
+	}
 	#nts .hc_cal.hc_cal6 >.row>.col-sm-1 {
 		width: 16.5%;
 		*width: 16.5%;
@@ -5286,6 +5290,11 @@
 	float: left;
 	width: 24.8%;
 	*width: 24.8%;
+}
+#nts .hc_cal.hc_cal_fluid >.row>.col-sm-6 {
+	float: left;
+	width: 86%;
+	*width: 86%;
 }
 #nts .hc_cal.hc_cal_fluid.hc_cal6 >.row>.col-sm-1 {
 	float: left;

@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.0.2 =
+* Added an option to specify if an availability time slot is valid on odd or even weeks (or all, as before)
+* Event actions or hooks feature (Premium versions).
+* Minor code optimization and fixes 
+
 = 6.0.1 =
 * A slight CSS fix to escape conflicts with some WP admin themes
 * Location capacity booking check fix

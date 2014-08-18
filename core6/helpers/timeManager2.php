@@ -4,6 +4,7 @@ class haTimeManager2 {
 	var $_lrs = array();
 	var $useCache = FALSE;
 	var $dayMode = FALSE;
+	var $blockMode = FALSE;
 
 	var $companyT = null;
 	var $customerT = null;
@@ -97,6 +98,11 @@ class haTimeManager2 {
 			if( $thisLeadOut > $this->maxLeadOut )
 				$this->maxLeadOut = $thisLeadOut;
 			}
+
+		if( $this->maxDuration > $this->max_duration )
+		{
+			$this->max_duration = $this->maxDuration;
+		}
 
 		$maxTravel = 0;
 		$locations = ntsObjectFactory::getAll( 'location' );
@@ -217,6 +223,7 @@ EOT;
 			'valid_from',
 			'valid_to',
 			'applied_on',
+			'week_applied_on',
 			'location_id',
 			'resource_id',
 			'service_id',
@@ -229,10 +236,18 @@ EOT;
 			);
 
 		$this->companyT->setTimestamp( $startTime );
+		if( $this->max_duration >= 24*60*60 )
+		{
+			$this->companyT->modify( '-' . $this->max_duration . ' seconds' );
+		}
 		$this->companyT->modify( '-1 day' );
 		$start_date = $this->companyT->formatDate_Db();
 
 		$this->companyT->setTimestamp( $endTime );
+		if( $this->max_duration >= 24*60*60 )
+		{
+			$this->companyT->modify( '+' . $this->max_duration . ' seconds' );
+		}
 		$this->companyT->modify( '+1 day' );
 		$end_date = $this->companyT->formatDate_Db();
 
@@ -591,7 +606,14 @@ EOT;
 		list( $start, $end, $lid, $rid, $sid, $seats ) = $in_slot;
 		$slot = array( $lid, $rid, $sid, array($end => $seats) );
 
-		$remain_seats = $this->checkSlot( $start, $slot, FALSE );
+		if( $this->blockMode )
+		{
+			$remain_seats = $seats;
+		}
+		else
+		{
+			$remain_seats = $this->checkSlot( $start, $slot, FALSE );
+		}
 		if( $remain_seats )
 		{
 			$slot[3] = $remain_seats;
@@ -622,10 +644,12 @@ EOT;
 		while( $rexDate <= $toDate )
 		{
 			$rexWeekday = $this->companyT->getWeekday();
+			$rexWeekNo = $this->companyT->getWeekNo();
 			$startDay = $this->companyT->getStartDay(); 
+			
 			if( ! isset($firstWeekdays[$rexWeekday]) )
 				$firstWeekdays[$rexWeekday] = $di;
-			$dates[ $rexDate ] = $startDay;
+			$dates[ $rexDate ] = array( $startDay, $rexWeekNo );
 
 			$this->companyT->setDateDb($rexDate);
 			$this->companyT->modify( '+1 day' );
@@ -638,14 +662,14 @@ EOT;
 	/* build where */
 		$where = array();
 
-		$limitWeekdays = array();
+		$limitWeekdays = NULL;
 		if( count($firstWeekdays) < 7 )
 		{
 			$limitWeekdays = array_keys($firstWeekdays);
 		}
 		if( isset($this->filters['weekday']) )
 		{
-			$limitWeekdays = $limitWeekdays ? array_intersect($limitWeekdays, $this->filters['weekday']) : $this->filters['weekday'];
+			$limitWeekdays = is_array($limitWeekdays) ? array_intersect($limitWeekdays, $this->filters['weekday']) : $this->filters['weekday'];
 		}
 
 	/* go thru timeblocks */
@@ -682,7 +706,7 @@ EOT;
 			}
 
 			if( 
-				$limitWeekdays &&  
+				is_array($limitWeekdays) &&  
 				(! in_array($b1['applied_on'], $limitWeekdays))
 			)
 			{
@@ -792,7 +816,23 @@ EOT;
 					continue;
 				}
 
-				$startDay = $dates[ $datesIndex[$di] ];
+				$startDay = $dates[ $datesIndex[$di] ][0];
+				$weekNo = $dates[ $datesIndex[$di] ][1];
+
+				if( 
+					$b1['week_applied_on']
+					&&
+					(
+						( ($b1['week_applied_on'] == 2) && ($weekNo % 2) ) // want even
+						OR
+						( ($b1['week_applied_on'] == 1) && (! ($weekNo % 2)) ) // want odd
+					)
+					)
+				{
+					$di += 7;
+					continue;
+				}
+
 				foreach( $bbs as $b2 ){
 					$rid = $b2['resource_id'];
 					$lid = $b2['location_id'];
@@ -832,39 +872,128 @@ EOT;
 					}
 
 					$ts = $block_starts_at;
+
+					if( $this->blockMode ) // just check if we have blocks, that's all
+					{
+						$this_block_start = $startDay + $block_starts_at;
+						$this_block_end = $startDay + $block_ends_at;
+
+						if( 
+							( $this_block_start < $checkEnd )
+							&&
+							( $this_block_end > $checkStart )
+							)
+						{
+							$this->addSlot( 
+								array($this_block_start, $this_block_end, $lid, $rid, $sid, $seats)
+								);
+							return;
+						}
+					}
+
 					if( $b1['selectable_every'] ){
-						$extendCheck = 0;
-						if( $block_ends_at == 24 * 60 * 60 ){
-							// ends at midnight, I should find a block tomorrow
-							$t = new ntsTime;
-							$t->setDateDb( $datesIndex[$di] );
+						$checkBlockEnd = $block_ends_at;
+						$rex_block_ends_at = $block_ends_at;
+
+						$t = new ntsTime;
+						$t->setDateDb( $datesIndex[$di] );
+						$how_many_days = 0;
+						$target_check_end = $rex_block_ends_at + $this->max_duration;
+
+						while( 
+							($rex_block_ends_at >= 24 * 60 * 60)
+							&&
+							( $checkBlockEnd < $target_check_end )
+							)
+						{
+							/* find next blocks */
+							$need_start = ($rex_block_ends_at - 24*60*60);
+							$how_many_days++;
+
+						// ends at/after midnight, I should find a block tomorrow, 
+						// and probably days after tomorrow if my max service is long
 							$t->modify( '+1 day' );
 							$tomorrow = $t->formatDate_Db();
 							$tomorrowWeekday = $t->getWeekday();
+							$tomorrowWeekNo = $t->getWeekNo();
+							$tomorrowWeekType = ($tomorrowWeekNo % 2) ? 2 : 1;
+
+/*
 							$tomorrowWhere = array(
 								'location_id'	=> array( '=', $b1['location_id'] ),
 								'resource_id'	=> array( '=', $b1['resource_id'] ),
 								'service_id'	=> array( '=', $b1['service_id'] ),
-								'starts_at'		=> array( '=', 0 ),
+								'starts_at'		=> array( '<=', $need_start ),
 								'valid_from'	=> array( '<=', $tomorrow ),
 								'valid_to'		=> array( '>=', $tomorrow ),
 								'applied_on'	=> array( '=', $tomorrowWeekday ),
+								'week_applied_on'	=> array('IN', array(0, $tomorrowWeekType)),
 								);
 							$tomorrowBlocks = $this->getBlocksByWhere( $tomorrowWhere );
-							if( $tomorrowBlocks ){
-								foreach( $tomorrowBlocks as $tb ){
-									if( $tb['ends_at'] > $extendCheck )
-										$extendCheck = $tb['ends_at'];
-									}
+*/
+							$tomorrowBlocks = array();
+							reset( $this->timeblocks );
+							foreach( $this->timeblocks as $tmb )
+							{
+								if( $tmb['location_id'] != $b1['location_id'] )
+								{
+									continue;
 								}
+								if( $tmb['resource_id'] != $b1['resource_id'] )
+								{
+									continue;
+								}
+								if( $tmb['service_id'] != $b1['service_id'] )
+								{
+									continue;
+								}
+								if( $tmb['starts_at'] > $need_start )
+								{
+									continue;
+								}
+								if( $tmb['valid_from'] > $tomorrow )
+								{
+									continue;
+								}
+								if( $tmb['valid_to'] < $tomorrow )
+								{
+									continue;
+								}
+								if( $tmb['applied_on'] != $tomorrowWeekday )
+								{
+									continue;
+								}
+								if( ! in_array($tmb['week_applied_on'], array(0, $tomorrowWeekType)) )
+								{
+									continue;
+								}
+								$tomorrowBlocks[] = $tmb;
 							}
 
-						$checkBlockEnd = ($block_ends_at - $service_min_duration - $leadOut + $extendCheck);
-						$slot_ends_at = $block_ends_at + $extendCheck;
+							$rex_block_ends_at = 0;
+							if( $tomorrowBlocks )
+							{
+								$this_block_ends_at = 0;
+								foreach( $tomorrowBlocks as $tb )
+								{
+									if( $tb['ends_at'] > $this_block_ends_at )
+									{
+										$this_block_ends_at = $tb['ends_at'];
+									}
+								}
+								$rex_block_ends_at = $this_block_ends_at;
+								$checkBlockEnd = $how_many_days * (24*60*60) + $rex_block_ends_at;
+							}
+						}
+
+//						$checkBlockEnd = ($block_ends_at - $service_min_duration - $leadOut + $extendCheck);
+
+						$slot_ends_at = $checkBlockEnd;
 						$slot_full_ends_at = $startDay + $slot_ends_at;
 
-						while( $ts <= $checkBlockEnd ){
+						$checkBlockEnd = $checkBlockEnd - $service_min_duration - $leadOut;
 
+						while( $ts <= $checkBlockEnd ){
 							if( ! isset($this->timesIndex[ ($startDay + $ts) ]) )
 							{
 								$this->companyT->setTimestamp( $startDay );
@@ -2098,12 +2227,17 @@ EOT;
 		$ntsdb =& dbWrapper::getInstance();
 
 		$dateWhere = array();
-		if( $rexDate ){
+		if( $rexDate )
+		{
 			$this->companyT->setDateDb( $rexDate );
 			$weekday = $this->companyT->getWeekday();
 			$dateWhere[] = "valid_from <= $rexDate AND valid_to >= $rexDate";
 			$dateWhere[] = "applied_on = $weekday";
-			}
+
+			$weekNo = $this->companyT->getWeekNo();
+			$weekAppliedOn = ( $weekNo % 2 ) ? 1 : 2;
+			$dateWhere[] = "week_applied_on IN(0, $weekAppliedOn)";
+		}
 
 		$lrsWhere = array();
 		if( $this->locationIds ){
@@ -2254,7 +2388,7 @@ EOT;
 		reset( $currentBlocks );
 
 		$checkExist = array('location_id', 'resource_id', 'service_id', 'applied_on');
-		$checkUpdate = array('capacity', 'valid_from', 'valid_to', 'starts_at', 'ends_at', 'selectable_every', 'min_from_now', 'max_from_now');
+		$checkUpdate = array('week_applied_on', 'capacity', 'valid_from', 'valid_to', 'starts_at', 'ends_at', 'selectable_every', 'min_from_now', 'max_from_now');
 
 		$currentOptions = array();
 		foreach( $currentBlocks as $cb ){
@@ -2310,23 +2444,28 @@ EOT;
 
 	// which to update
 		$keys2update = array_intersect( array_keys($newOptions), array_keys($currentOptions) );
+
 		reset( $keys2update );
-		foreach( $keys2update as $k ){
+		foreach( $keys2update as $k )
+		{
 			$ub = array();
 
 			reset( $checkUpdate );
-			foreach( $checkUpdate as $k2 ){
-				if( $currentOptions[$k][$k2] != $params[$k2] ){
+			foreach( $checkUpdate as $k2 )
+			{
+				if( $currentOptions[$k][$k2] != $params[$k2] )
+				{
 					$ub[$k2] = $params[$k2];
-					}
-				}
-
-			if( $ub ){
-				$ub['id'] = $currentOptions[$k]['id'];
-				$toUpdate[] = $ub;
 				}
 			}
-			
+
+			if( $ub )
+			{
+				$ub['id'] = $currentOptions[$k]['id'];
+				$toUpdate[] = $ub;
+			}
+		}
+
 //		_print_r( $toDelete );
 //		_print_r( $toUpdate );
 //		_print_r( $toAdd );
@@ -2418,7 +2557,7 @@ EOT;
 
 		$what = array('location_id', 'resource_id', 'service_id', 'starts_at', 'ends_at', 'selectable_every', 'capacity', 'group_id', 'min_from_now', 'max_from_now' );
 		if( $extendedKeys )
-			$what = array_merge($what, array('id', 'valid_from', 'valid_to', 'applied_on'));
+			$what = array_merge($what, array('id', 'valid_from', 'valid_to', 'applied_on', 'week_applied_on'));
 
 		$result = $ntsdb->select( $what, 'timeblocks', $where );
 		while( $i = $result->fetch() ){

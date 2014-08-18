@@ -352,12 +352,9 @@ $dump = $object->dump( TRUE );
 	</li>
 
 <?php if( $changed ) : ?>
-	<hr>
-	
+	<hr style="margin: 1em 0 0 0;">
 	<li>
-		<a class="btn btn-<?php echo $btn_status; ?>" href="<?php echo ntsLink::makeLink('-current-', 'change'); ?>">
-			<?php echo M('Change'); ?>
-		</a>
+		<?php echo $form->display(); ?>
 	</li>
 <?php endif; ?>
 </ul>

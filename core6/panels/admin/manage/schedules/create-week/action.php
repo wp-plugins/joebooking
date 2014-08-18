@@ -63,7 +63,12 @@ else {
 $fParams['applied_on'] = $appliedOn;
 $fParams['showWhen'] = $when;
 $fParams['when'] = $when[0];
-$fParams['slot_type'] = 'range';
+
+
+for( $di = 0; $di <= 6; $di++ )
+{
+	$fParams['slot_type_' . $di] = 'none';
+}
 
 $NTS_VIEW['form'] =& $ff->makeForm( $formFile, $fParams );
 
@@ -71,23 +76,39 @@ if( ! $action ){
 	return;
 	}
 /* create */
-$when = $_NTS['REQ']->getParam('when');
-$slot_type = $_NTS['REQ']->getParam('slot_type');
-
 $removeValidation = array();
-if( $when == 'date' )
+
+$something_on = FALSE;
+for( $di = 0; $di <= 6; $di++ )
 {
-	$removeValidation[] = 'applied_on';
+	$slot_type = $_NTS['REQ']->getParam('slot_type_' . $di);
+	if( $slot_type != 'none' )
+	{
+		$something_on = TRUE;
+	}
+
+	if( $slot_type == 'fixed' )
+	{
+		$removeValidation[] = 'starts_at_range_' . $di;
+		$removeValidation[] = 'ends_at_range_' . $di;
+	}
 }
-if( $slot_type == 'fixed' )
+
+if( ! $something_on )
 {
-	$removeValidation[] = 'starts_at_range';
-	$removeValidation[] = 'ends_at_range';
+	ntsView::addAnnounce( M('Please choose at least 1 option'), 'error' );
+	return;
+//	$forwardTo = ntsLink::makeLink('-current-');
+//	ntsView::redirect( $forwardTo );
+//	exit;
 }
 
 
-if( $NTS_VIEW['form']->validate($removeValidation) ){
+if( $NTS_VIEW['form']->validate($removeValidation) )
+{
 	$formValues = $NTS_VIEW['form']->getValues();
+	$newBlocks = array();
+
 	$resId = $formValues['resource_id'];
 	$iCanEdit = in_array($resId, $schEdit);
 
@@ -99,57 +120,44 @@ if( $NTS_VIEW['form']->validate($removeValidation) ){
 		$newBlock['location_id'] = $formValues['location_id'];
 		$newBlock['service_id'] = $formValues['service_id'];
 		$newBlock['capacity'] = $formValues['capacity'];
-
 		$newBlock['min_from_now'] = $formValues['min_from_now'];
 		$newBlock['max_from_now'] = $formValues['max_from_now'];
+		$newBlock['valid_from'] = $formValues['valid_from'];
+		$newBlock['valid_to'] = $formValues['valid_to'];
 
-		if( $formValues['slot_type'] == 'range' ){
-			$newBlock['starts_at'] = $formValues['starts_at_range'];
-			$newBlock['ends_at'] = $formValues['ends_at_range'];
-			$newBlock['selectable_every'] = $formValues['selectable_every'];
-			}
-		else {
-			$newBlock['starts_at'] = $formValues['starts_at_fixed'];
-			$newBlock['ends_at'] = 0;
-			$newBlock['selectable_every'] = 0;
-			}
+		for( $di = 0; $di <= 6; $di++ )
+		{
+			$this_block = $newBlock;
+			$this_slot_type = $formValues['slot_type_' . $di];
 
-		switch( $formValues['when'] ){
-			case 'date':
-				$newBlock['valid_from'] = $formValues['date'];
-				$newBlock['valid_to'] = $formValues['date'];
-				break;
-			case 'range':
-				$newBlock['valid_from'] = $formValues['valid_from'];
-				$newBlock['valid_to'] = $formValues['valid_to'];
-				break;
+			if( $this_slot_type == 'none' )
+			{
+				continue;
 			}
-
-		switch( $when ){
-			case 'date':
-				$newBlock['valid_from'] = $formValues['date'];
-				$newBlock['valid_to'] = $formValues['date'];
-				break;
-			case 'range':
-				$newBlock['valid_from'] = $formValues['valid_from'];
-				$newBlock['valid_to'] = $formValues['valid_to'];
-				break;
+			elseif( $this_slot_type == 'range' )
+			{
+				$this_block['starts_at'] = $formValues['starts_at_range_' . $di];
+				$this_block['ends_at'] = $formValues['ends_at_range_' . $di];
+				$this_block['selectable_every'] = $formValues['selectable_every_' . $di];
+			}
+			else
+			{
+				$this_block['starts_at'] = $formValues['starts_at_fixed_' . $di];
+				$this_block['ends_at'] = 0;
+				$this_block['selectable_every'] = 0;
 			}
 
-		switch( $when ){
-			case 'date':
-				$t->setDateDb( $formValues['date'] );
-				$newBlock['applied_on'] = $t->getWeekday();
-				break;
-			case 'range':
-				$newBlock['applied_on'] = $formValues['applied_on'];
-				$newBlock['week_applied_on'] = $formValues['week_applied_on'];
-				break;
-			}
-
-		$tm2->addBlock( $newBlock );
-		ntsView::addAnnounce( M('Schedules') . ': ' . M('Update') . ': ' . M('OK'), 'ok' );
+			$this_block['applied_on'] = $di;
+			$this_block['week_applied_on'] = $formValues['week_applied_on_' . $di];
+			$newBlocks[] = $this_block;
 		}
+
+		foreach( $newBlocks as $nb )
+		{
+			$tm2->addBlock( $nb );
+		}
+		ntsView::addAnnounce( M('Schedules') . ': ' . M('Update') . ': ' . M('OK'), 'ok' );
+	}
 
 	$forwardTo = ntsLink::makeLink('-current-/..');
 	ntsView::redirect( $forwardTo );

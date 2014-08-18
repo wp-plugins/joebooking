@@ -33,7 +33,8 @@ switch( $action ){
 				}
 
 		/* if customers not allowed to set timezone, delete _timezone from objectmeta */
-			if( NTS_ENABLE_TIMEZONES && ( $formValues['enableTimezones'] < 1 ) ){
+			if( ($formValues['enableTimezones'] < 1) )
+			{
 				$ntsdb->delete(
 					'objectmeta',
 					array(
@@ -41,7 +42,7 @@ switch( $action ){
 						'obj_class'	=> array('=', 'user'),
 						)
 					);
-				}
+			}
 
 			if( ! ($error = $conf->getError()) ){
 				ntsView::setAnnounce( M('Settings') . ': ' . M('Update') . ': ' . M('OK'), 'ok' );

@@ -10,7 +10,6 @@ $NTS_VIEW[NTS_PARAM_VIEW_RICH] = $viewRich;
 
 require_once( dirname(__FILE__) . '/panels/init2.php' );
 
-
 // if view mode was redefined
 if( ntsLib::isAjax() )
 {

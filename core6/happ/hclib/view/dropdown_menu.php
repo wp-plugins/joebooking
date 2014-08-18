@@ -7,7 +7,7 @@ if( ! $class )
 <ul class="<?php echo $class; ?>">
 	<?php foreach( $menu as $k2 => $m2 ) : ?>
 		<?php if( ((! is_array($m2))) OR ($m2['title'] == '-divider-') ) : ?>
-			<?php if( ((! is_array($m2)) && ($m2 == '-divider-')) OR ($m2['title'] == '-divider-') ) : ?>
+			<?php if( ((! is_array($m2)) && ($m2 == '-divider-')) OR ( isset($m2['title']) && ($m2['title'] == '-divider-') ) ) : ?>
 				<li class="divider"></li>
 			<?php else : ?>
 				<?php 

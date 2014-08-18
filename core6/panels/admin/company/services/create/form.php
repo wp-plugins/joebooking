@@ -62,7 +62,7 @@ echo ntsForm::wrapInput(
 	M('Duration'),
 	$this->buildInput (
 	/* type */
-		'period/HourMinute',
+		'period/LongHourMinute',
 	/* attributes */
 		array(
 			'id'	=> 'duration',

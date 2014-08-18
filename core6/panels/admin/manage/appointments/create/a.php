@@ -138,6 +138,10 @@ $end_month = $t->getEndMonth();
 $tm2->init( $start_month, $end_month );
 ntsLib::setVar('admin::tm2', $tm2);
 
+
+/* ASSET */
+$asset_id = $_NTS['REQ']->getParam( 'asset' );
+
 $check_locs = $lid ? array($lid) : $locs;
 $check_ress = $rid ? array($rid) : $ress;
 $check_sers = $sid ? array($sid) : $sers;
@@ -160,6 +164,7 @@ $view = array(
 	'available'	=> $available,
 	'all_times'	=> $all_times,
 	'cart'		=> $apps,
+	'asset_id'		=> $asset_id,
 	);
 
 $is_ajax = ntsLib::isAjax();

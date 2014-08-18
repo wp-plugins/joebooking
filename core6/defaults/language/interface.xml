@@ -2,7 +2,7 @@
 <file>
 <language>Your Language</language>
 <author>Your Name</author>
-<lastUpdate>29 June, 2014</lastUpdate>
+<lastUpdate>15 August, 2014</lastUpdate>
 <charset>iso-8859-1</charset>
 
 <string>
@@ -574,10 +574,6 @@
 	<translate>Customers Can Reschedule Appointments</translate>
 </string>
 <string>
-	<original>Customers Need To Acknowledge Completed Appointments</original>
-	<translate>Customers Need To Acknowledge Completed Appointments</translate>
-</string>
-<string>
 	<original>Date</original>
 	<translate>Date</translate>
 </string>
@@ -740,6 +736,14 @@
 <string>
 	<original>Error Message If Validation Fails</original>
 	<translate>Error Message If Validation Fails</translate>
+</string>
+<string>
+	<original>Even</original>
+	<translate>Even</translate>
+</string>
+<string>
+	<original>Event Actions</original>
+	<translate>Event Actions</translate>
 </string>
 <string>
 	<original>Every 3 Weeks</original>
@@ -1038,6 +1042,10 @@
 	<translate>It seems that you have not made a backup for some time, it's highly recommended to do it now</translate>
 </string>
 <string>
+	<original>Item Name</original>
+	<translate>Item Name</translate>
+</string>
+<string>
 	<original>Items</original>
 	<translate>Items</translate>
 </string>
@@ -1198,6 +1206,10 @@
 	<translate>Misc</translate>
 </string>
 <string>
+	<original>Missing</original>
+	<translate>Missing</translate>
+</string>
+<string>
 	<original>Mon</original>
 	<translate>Mon</translate>
 </string>
@@ -1216,10 +1228,6 @@
 <string>
 	<original>Months To Show</original>
 	<translate>Months To Show</translate>
-</string>
-<string>
-	<original>More</original>
-	<translate>More</translate>
 </string>
 <string>
 	<original>Most Active</original>
@@ -1316,10 +1324,6 @@
 <string>
 	<original>No Locations Defined!</original>
 	<translate>No Locations Defined!</translate>
-</string>
-<string>
-	<original>No Seats Left</original>
-	<translate>No Seats Left</translate>
 </string>
 <string>
 	<original>No Services Defined!</original>
@@ -1452,6 +1456,10 @@
 <string>
 	<original>Oct</original>
 	<translate>Oct</translate>
+</string>
+<string>
+	<original>Odd</original>
+	<translate>Odd</translate>
 </string>
 <string>
 	<original>Office</original>
@@ -1914,10 +1922,6 @@
 	<translate>Seats</translate>
 </string>
 <string>
-	<original>Seats Left</original>
-	<translate>Seats Left</translate>
-</string>
-<string>
 	<original>Secure</original>
 	<translate>Secure</translate>
 </string>
@@ -1988,6 +1992,10 @@
 <string>
 	<original>Service</original>
 	<translate>Service</translate>
+</string>
+<string>
+	<original>Service Bundles</original>
+	<translate>Service Bundles</translate>
 </string>
 <string>
 	<original>Service Forms</original>
@@ -2500,6 +2508,10 @@
 <string>
 	<original>Week Starts On</original>
 	<translate>Week Starts On</translate>
+</string>
+<string>
+	<original>Week Wizard</original>
+	<translate>Week Wizard</translate>
 </string>
 <string>
 	<original>Weekday</original>

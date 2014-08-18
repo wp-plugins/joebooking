@@ -440,7 +440,14 @@ jQuery(document).on('click', '[data-toggle=collapse-next]', function(e)
 {
 	var this_target = jQuery(this).parents('.collapse-panel').find('.collapse');
 	this_target.collapse('toggle');
-	return false;
+	if( jQuery(this).attr('type') != 'checkbox' )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 });
 
 jQuery(document).on('click', '.dropdown-menu select', function()

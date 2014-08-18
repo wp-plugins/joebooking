@@ -207,6 +207,8 @@ if( $NTS_VIEW['menu3'] )
 	<?php foreach( $text as $t ) : ?>
 	<?php if( $t[1] == 'error' ) : ?>
 		<div class="alert alert-danger">
+	<?php elseif( $t[1] == 'info' ) : ?>
+		<div class="alert alert-warning-o">
 	<?php else : ?>
 		<div class="alert alert-success">
 	<?php endif; ?>

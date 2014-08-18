@@ -79,7 +79,6 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'service',	'_permissions', false,	1,	array( 'group-1:allowed', 'group0:auto_confirm', 'group-2:auto_confirm' ) );
 		$this->registerProp( 'service',	'_form', false,	false,	0 );
 		$this->registerProp( 'service',	'_service_cat', false,	1,	array() );
-		$this->registerProp( 'service',	'_package',	false,	2,	array() ); // array( '5' => '25', '10' => 45 );
 
 		$this->registerClass( 'service_cat', 'service_cats' );
 		$this->registerProp( 'service_cat',	'title' );
@@ -146,6 +145,7 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'invoice',	'currency' );
 		$this->registerProp( 'invoice',	'created_at' );
 		$this->registerProp( 'invoice',	'due_at' );
+		$this->registerProp( 'invoice',	'customer_id' );
 		$this->registerProp( 'invoice',	'_appointment',	false,	2,	array() );
 		$this->registerProp( 'invoice',	'_order',	false,	2,	array() );
 		$this->registerProp( 'invoice',	'_item',	false,	2,	array() );

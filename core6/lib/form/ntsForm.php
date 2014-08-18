@@ -56,8 +56,10 @@ class ntsForm2
 		if( ! isset($conf['value']) )
 		{
 			$conf['value'] = '';
-//			if( isset($conf['default']) )
-//				$conf['value'] = $conf['default'];
+			if( isset($conf['default']) )
+			{
+				$conf['value'] = $conf['default'];
+			}
 		}
 
 		if( ! isset($conf['error']) )

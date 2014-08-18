@@ -43,9 +43,51 @@ foreach( $all_apps as $a )
 			break;
 	}
 
-	if( ! isset($apps[$this_date]) )
-		$apps[$this_date] = array();
-	$apps[$this_date][] = $app;
+	$t->setTimestamp( $a['starts_at'] );
+	$app_start_date = $t->formatDate_Db();
+	if( isset($start_date) )
+	{
+		if( $app_start_date < $start_date )
+			$app_start_date = $start_date;
+	}
+
+	$t->setTimestamp( $a['starts_at'] + $a['duration'] );
+	$app_end_date = $t->formatDate_Db();
+	if( isset($end_date) )
+	{
+		if( $app_end_date > $end_date )
+			$app_end_date = $end_date;
+	}
+
+	$t->setDateDb( $app_start_date );
+	$rex_date = $app_start_date;
+	while( $rex_date <= $app_end_date )
+	{
+		switch( $split_by )
+		{
+			case 'day':
+				$this_date = $t->formatDate_Db();
+				break;
+			case 'month':
+				$this_date = $t->formatMonth_Db();
+				break;
+		}
+
+		if( ! isset($apps[$this_date]) )
+			$apps[$this_date] = array();
+		$apps[$this_date][] = $app;
+
+		switch( $split_by )
+		{
+			case 'day':
+				$t->modify( '+1 day' );
+				break;
+			case 'month':
+				$t->modify( '+1 month' );
+				break;
+		}
+		$rex_date = $t->formatDate_Db();
+	}
 
 	// stats
 	$completedStatus = $app->getProp('completed');

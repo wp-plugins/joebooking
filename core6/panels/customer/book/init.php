@@ -4,7 +4,8 @@ $keep = array(
 	'resource',
 	'service',
 	'cal',
-	'time'
+	'time',
+	'asset',
 	);
 
 reset( $keep );

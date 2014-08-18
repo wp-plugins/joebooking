@@ -133,7 +133,8 @@
 	padding: 0 0;
 }
 
-#nts .smaller {
+#nts .smaller,
+#nts .text-smaller {
 	font-size: 0.9em;
 }
 
@@ -614,11 +615,21 @@
 
 #nts .page-header {
 	margin-top: 0;
+	border-color: #ddd;
+	background-color: inherit;
+	text-transform: inherit;
+	box-shadow: inherit;
+	padding: 0.5em 0;
+	border-top: inherit;
+	border-bottom: 1px solid #eee;
 	}
 #nts .page-header h2 {
 	margin-top: 0;
 	margin-bottom: 0;
 	}
+#nts .page-header h1 {
+	margin: inherit;
+}
 
 #nts-footer {
 	margin: 1em 0;
@@ -682,9 +693,6 @@
 	background-color: #f8f8f8;
 }
 
-#nts .page-header {
-	border-color: #ddd;
-}
 
 #nts .radio-vertical label,
 #nts .checkbox-vertical label {

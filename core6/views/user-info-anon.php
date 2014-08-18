@@ -65,8 +65,17 @@ if( NTS_ENABLE_REGISTRATION )
 			<?php
 			list( $link_title, $link_icon ) = Hc_lib::parse_icon( $l[1] );
 			?>
-			<a href="<?php echo $l[0]; ?>">
-				<?php echo $link_icon; ?><span class="hidden-xs"><?php echo $link_title; ?></span>
+			<a href="<?php echo $l[0]; ?>" class="squeeze-in" title="<?php echo $link_title; ?>">
+				<ul class="list-inline">
+					<li>
+					<?php echo $link_icon; ?>
+					</li>
+					<li>
+						<span class="hidden-xs">
+						<?php echo $link_title; ?>
+						</span>
+					</li>
+				</ul>
 			</a>
 		</li>
 	<?php else : ?>

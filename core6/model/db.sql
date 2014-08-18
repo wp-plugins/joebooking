@@ -159,7 +159,9 @@ CREATE TABLE IF NOT EXISTS `{PRFX}timeblocks` (
 	`capacity` int(11) DEFAULT 1,
 
 	`applied_on` int(11) NOT NULL,
+	`week_applied_on` TINYINT DEFAULT 0,
 	`group_id` int(11) NOT NULL,
+
 	PRIMARY KEY  (`id`)
 	);
 
@@ -226,6 +228,7 @@ CREATE TABLE IF NOT EXISTS `{PRFX}invoices` (
 	`currency` VARCHAR(3),
 	`created_at` int(11),
 	`due_at` int(11),
+	`customer_id` int(11) DEFAULT 0,
 	PRIMARY KEY  (`id`)
 	);
 

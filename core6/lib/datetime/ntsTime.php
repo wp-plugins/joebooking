@@ -534,6 +534,22 @@ class ntsTime extends DateTime {
 		return $return;
 		}
 
+	function getWeekNo()
+	{
+		$return = $this->format('W'); // but it works out of the box for week starts on monday
+		$weekday = $this->getWeekday();
+		if( ! $weekday ) // sunday
+		{
+			$conf =& ntsConf::getInstance();
+			$weekStartsOn = $conf->get('weekStartsOn');
+			if( ! $weekStartsOn )
+			{
+				$return = $return + 1;
+			}
+		}
+		return $return;
+	}
+
 	function getWeekday(){
 		$return = $this->format('w');
 		return $return;
@@ -620,10 +636,15 @@ class ntsTime extends DateTime {
 		return $return;
 		}
 
-	static function formatPeriodShort( $ts, $limit = 'day' ) // or hour
+	static function formatPeriodShort( $ts, $limit = '' ) // or hour
 	{
 		if( ! $limit )
+		{
 			$limit = 'day';
+			$conf =& ntsConf::getInstance();
+			$limit = $conf->get('limitTimeMeasure');
+		}
+
 		switch( $limit )
 		{
 			case 'day':

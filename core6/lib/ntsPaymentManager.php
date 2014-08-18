@@ -411,7 +411,8 @@ class ntsPaymentManager {
 		return $return;
 	}
 
-	function getInvoicesOfCustomer( $customerId ){
+	function getInvoicesOfCustomer( $customerId )
+	{
 		$return = array();
 		$ntsdb =& dbWrapper::getInstance();
 
@@ -420,6 +421,7 @@ class ntsPaymentManager {
 			);
 		$app_ids = $ntsdb->get_select( 'id', 'appointments', $where );
 		$order_ids = $ntsdb->get_select( 'id', 'orders', $where );
+
 		if( $app_ids OR $order_ids )
 		{
 			if( $app_ids && $order_ids )
@@ -449,11 +451,23 @@ class ntsPaymentManager {
 					'obj_id'	=> array( 'IN', $order_ids ),
 					);
 			}
+			$return = $ntsdb->get_select( 
+				'invoice_id',
+				'invoice_items',
+				$where
+				);
+		}
 
-			$return = $ntsdb->get_select( 'invoice_id', 'invoice_items', $where );
-		}
+		/* also add direct invoices */
+		$where = array(
+			'customer_id'	=> array( '=', $customerId ),
+			);
+		$where['exists'] = array( '', '(' . 'SELECT id FROM {PRFX}invoice_items WHERE {PRFX}invoice_items.invoice_id = {PRFX}invoices.id' . ')', TRUE );
+		$direct_invoices = $ntsdb->get_select( 'id', 'invoices', $where );
+		$return = array_merge( $return, $direct_invoices );
+
 		return $return;
-		}
+	}
 
 	function makeInvoices( $items, $forceAmount = 0, $forceTime = 0 ){
 		$return = array();
@@ -656,25 +670,62 @@ class ntsPaymentManager {
 		return $return;
 		}
 
-	function updateInvoice( $invoice ){
-		$return = true;
+	function updateInvoice( $invoice )
+	{
+		$return = TRUE;
 	/* plugins */
 		$plm =& ntsPluginManager::getInstance();
 		$activePlugins = $plm->getActivePlugins();
 		$transactionFiles = array();
 		reset( $activePlugins );
-		foreach( $activePlugins as $plg ){
+		foreach( $activePlugins as $plg )
+		{
 			$trf = $plm->getPluginFolder( $plg ) . '/updateInvoice.php';
 			if( file_exists($trf) )
 				$transactionFiles[] = $trf;
-			}
-		reset( $transactionFiles );
-		foreach( $transactionFiles as $trf ){
-			require( $trf );
-			}
-
-		return $return;
 		}
+		reset( $transactionFiles );
+		foreach( $transactionFiles as $trf )
+		{
+			require( $trf );
+		}
+		return $return;
+	}
+
+	function deleteInvoice( $invoice )
+	{
+		$return = TRUE;
+	/* plugins */
+		$plm =& ntsPluginManager::getInstance();
+		$activePlugins = $plm->getActivePlugins();
+		$transactionFiles = array();
+		reset( $activePlugins );
+		foreach( $activePlugins as $plg )
+		{
+			$trf = $plm->getPluginFolder( $plg ) . '/deleteInvoice.php';
+			if( file_exists($trf) )
+				$transactionFiles[] = $trf;
+		}
+		reset( $transactionFiles );
+		foreach( $transactionFiles as $trf )
+		{
+			require( $trf );
+		}
+		return $return;
+	}
+
+	function getTransactionsOfCustomer( $customer_id )
+	{
+		$return = array();
+		$invoices_ids = $this->getInvoicesOfCustomer( $customer_id );
+		reset( $invoices_ids );
+		foreach( $invoices_ids as $iid )
+		{
+			$this_trans = $this->getTransactionsOfInvoice( $iid );
+			$return = array_merge( $return, $this_trans );
+		}
+		return $return;
+	}
 
 	function getTransactionsOfInvoice( $invoiceId ){
 		$invoice = ntsObjectFactory::get( 'invoice' );
@@ -705,7 +756,7 @@ class ntsPaymentManager {
 
 		return $transactions;
 		}
-		
+
 	function deleteTransaction( $transId ){
 		$tra = ntsObjectFactory::get('transaction');
 		$tra->setId( $transId );

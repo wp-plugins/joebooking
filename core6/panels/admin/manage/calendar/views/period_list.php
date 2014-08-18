@@ -12,6 +12,7 @@
 						'app'		=> $app,
 						'labels'	=> $labels,
 						'checkbox'	=> TRUE,
+						'date'		=> $date
 						);
 					echo $this->render_file(
 						dirname(__FILE__) . '/app.php',

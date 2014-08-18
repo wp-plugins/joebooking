@@ -61,7 +61,16 @@ $links['logout'] = array(
 			list( $link_title, $link_icon ) = Hc_lib::parse_icon( $l[1] );
 			?>
 			<a href="<?php echo $l[0]; ?>" title="<?php echo $link_title; ?>">
-				<?php echo $link_icon; ?><span class="hidden-xs"><?php echo $link_title; ?></span>
+				<ul class="list-inline">
+					<li>
+					<?php echo $link_icon; ?>
+					</li>
+					<li>
+						<span class="hidden-xs">
+						<?php echo $link_title; ?>
+						</span>
+					</li>
+				</ul>
 			</a>
 		</li>
 	<?php else : ?>

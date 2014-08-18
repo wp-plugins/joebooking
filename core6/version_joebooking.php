@@ -10,6 +10,7 @@ $my_disable = array(
 	'common',
 	'attach',
 
+	'hooks',
 	'payment',
 	'language',
 	'packs',

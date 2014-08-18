@@ -264,6 +264,17 @@ require( dirname(__FILE__) . '/_build_day_slots.php' );
 
 										if( $slot[2] == HA_SLOT_TYPE_APP_BODY )
 										{
+										/* earlier than today */
+											if( $app->getProp('starts_at') < $slot[0] )
+											{
+												$timeViewStart = '<-';
+											}
+											$slot_ends = is_array($slot[1]) ? $slot[1][0] : $slot[1];
+											if( $app->getProp('starts_at') + $app->getProp('duration') > $slot_ends )
+											{
+												$timeViewEnd = '- >';
+											}
+
 											$lead_out = $app->getProp('lead_out');
 											if( $lead_out )
 											{

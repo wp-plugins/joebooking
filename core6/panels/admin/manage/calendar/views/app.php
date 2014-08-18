@@ -1,4 +1,7 @@
 <?php
+$menu = array();
+$more = array(); 
+
 $t = $NTS_VIEW['t'];
 
 $collapse_in = $checkbox ? ' in' : '';
@@ -21,17 +24,72 @@ $customer->setId( $app->getProp('customer_id') );
 $status_class = $app->statusClass();
 
 $title = array();
+
 /* prefill titles */
 $title['location'] = ntsView::objectTitle( $location, TRUE );
 $title['resource'] = ntsView::objectTitle( $resource, TRUE );
 $title['service'] = ntsView::objectTitle( $service, TRUE );
 $title['customer'] = ntsView::objectTitle( $customer, TRUE );
-$t->setTimestamp( $app->getProp('starts_at') );
+
+$app_starts_at = $app->getProp('starts_at');
 $duration =  $app->getProp('duration');
 
+$t->setTimestamp( $app_starts_at );
+
+$day_start = $t->getStartDay();
+$day_end = $t->getEndDay();
+
+$t->setTimestamp( $app->getProp('starts_at') );
 $title['date'] = $t->formatDateFull(0, TRUE);
-$title['time'] = $t->formatTime( $duration, 0, TRUE );
-//$title['time'] = $t->formatTime( $duration );
+
+$t->setTimestamp( $app_starts_at );
+$app_start_date = $t->formatDate_Db();
+$app_start_view = $t->formatDateFull() . ' ' . $t->formatTime();
+
+$t->setTimestamp( $app_starts_at + $duration );
+$app_end_date = $t->formatDate_Db();
+$app_end_view = $t->formatDateFull() . ' ' . $t->formatTime();
+
+$add_more = array();
+
+$time_label = '';
+$time_label = $t->formatTime( $duration, FALSE, TRUE );
+if( 
+	($app_start_date == $app_end_date) && 
+	($app_start_date == $date)
+	)
+{
+	$t->setTimestamp( $app_starts_at );
+	$time_label = $t->formatTime( $duration );
+}
+elseif( // starts before, ends after
+	($app_start_date < $date) && 
+	($app_end_date > $date)
+	)
+{
+	$time_label = M('All Day');
+	$add_more[] = '<i class="fa fa-angle-double-left"></i>' . $app_start_view;
+	$add_more[] = '<i class="fa fa-angle-double-right"></i>' . $app_end_view;
+}
+elseif( // starts before, ends today
+	($app_start_date < $date) && 
+	($app_end_date == $date)
+	)
+{
+	$t->setTimestamp( $app_starts_at + $duration );
+	$time_label = ' &laquo; ' . $t->formatTime();
+	$add_more[] = '<i class="fa fa-angle-double-left"></i>' . $app_start_view;
+}
+elseif( // starts today, ends after
+	($app_start_date == $date) && 
+	($app_end_date > $date)
+	)
+{
+	$t->setTimestamp( $app_starts_at );
+	$time_label = $t->formatTime() . ' &raquo; ';
+	$add_more[] = '<i class="fa fa-angle-double-right"></i>' . $app_end_view;
+}
+$title['time'] = $time_label;
 
 $final_title = array();
 
@@ -55,7 +113,7 @@ if( (count($labels['main']) > 0) OR (is_array($labels['main'][0]) ) )
 				list( $this_title_title, $this_title_icon ) = Hc_lib::parse_icon( $title[$l] );
 				if( in_array($l, array('time')) && (! $collapse_in))
 				{
-					$final_title[]	= '<div class="' . $half_column . '" title="' . $this_title_title . '" >';
+					$final_title[]	= '<div class="' . $half_column . ' squeeze-in" title="' . $this_title_title . '" >';
 					$final_title[]		= $this_title_title;
 				}
 				else
@@ -115,9 +173,6 @@ $show_title = join( '', $final_title );
 ?>
 <?php
 /* MENU & MORE INFO */
-$menu = array();
-$more = array(); 
-
 $parent_class = '';
 $conflicts = array();
 $conflicts = $app->get_conflicts();
@@ -131,13 +186,18 @@ if( $conflicts )
 	$more[] = '-divider-';
 }
 
+if( $add_more )
+{
+	$more = array_merge( $more, $add_more );
+}
+
 $lead_out = $app->getProp('lead_out');
 if( $lead_out )
 {
 	$duration = $app->getProp('duration');
 	$t->setTimestamp( $app->getProp('starts_at') );
 	$t->modify( '+ ' . ($duration + $lead_out) . ' seconds' );
-	$more[] = '<i class="fa fa-arrow-right"></i>' . $t->formatTime();
+	$more[] = '<i class="fa fa-angle-right"></i>' . $t->formatTime() . ' [' . M('Clean Up') . ']';
 }
 
 /* MORE INFO */
@@ -216,6 +276,10 @@ $cost = $app->getCost();
 			<?php echo Hc_html::dropdown_menu($more, 'list-unstyled list-separated'); ?>
 		</div>
 	<?php endif; ?>
+
+	<div class="panel-footer">
+		<i class="fa fa-info fa-fw"></i> <span class="text-muted">id:<?php echo $app->getId(); ?></span>
+	</div>
 
 	<?php if( $menu && (! $collapse_in) ) : ?>
 		<div class="panel-footer">

@@ -67,6 +67,8 @@ switch( $action )
 		if( $form->validate() )
 		{
 			$form_values = $form->getValues();
+			$notify_customer = (isset($form_values['notify_customer']) && $form_values['notify_customer']) ? 1 : 0;
+
 			$cm =& ntsCommandManager::getInstance();
 
 			$apps_objects = array();
@@ -100,7 +102,18 @@ switch( $action )
 			$ok = 0;
 			for( $ii = 0; $ii < count($apps_objects); $ii++ )
 			{
-				$cm->runCommand( $apps_objects[$ii], 'request' );
+				$params = array();
+				if( ! $notify_customer )
+				{
+					$params['_silent_customer'] = 1;
+				}
+
+				$cm->runCommand( 
+					$apps_objects[$ii],
+					'request',
+					$params
+					);
+
 				if( $cm->isOk() )
 				{
 					$ok++;

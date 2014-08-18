@@ -112,6 +112,12 @@ $view = array(
 	'final'			=> $final,
 	);
 
+$ff =& ntsFormFactory::getInstance();
+$form_file = dirname( __FILE__ ) . '/form';
+$form =& $ff->makeForm( $form_file, $view );
+
+$view['form'] = $form;
+
 $is_ajax = ntsLib::isAjax();
 $view_file = $is_ajax ? 'ajax.php' : 'index.php';
 

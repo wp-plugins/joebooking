@@ -18,6 +18,7 @@ if( ! $cal )
 }
 
 $tmBlocks = $tm2->getBlocks( $cal, true );
+
 $blocks = array();
 if( ! $cal )
 {

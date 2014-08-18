@@ -1,8 +1,8 @@
 <?php
-if( $_SERVER['SERVER_NAME'] == 'localhost' )
+if( defined('NTS_DEVELOPMENT') )
 {
 	ntsLib::profiler();
-	}
+}
 ?>
 </body>
 </html>

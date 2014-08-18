@@ -96,6 +96,13 @@ elseif( count($allSers) == 1 )
 <?php
 $min = $minStart;
 $max = $maxEnd;
+
+$max_end = $max;
+if( $max_end == 24 * 60 * 60 )
+{
+	// add time after midnight
+	$max_end = $max_end + 12 * 60 * 60;
+}
 ?>
 
 <?php if( $slotType == 'range' ) : ?>
@@ -144,7 +151,7 @@ $max = $maxEnd;
 					'id'		=> 'ends_at',
 					'conf'	=> array(
 						'min'	=> $min,
-						'max'	=> $max,
+						'max'	=> $max_end,
 						),
 					'default'	=> $maxEnd
 					),
@@ -320,6 +327,26 @@ echo ntsForm::wrapInput(
 ?>
 
 <?php
+$select_options = array(
+	array( 0, M('All') ),
+	array( 1, M('Odd') ),
+	array( 2, M('Even') ),
+	);
+echo ntsForm::wrapInput(
+	M('Weeks'),
+	$this->buildInput(
+	/* type */
+		'select',
+	/* attributes */
+		array(
+			'id'		=> 'week_applied_on',
+			'options'	=> $select_options,
+			)
+		)
+	);
+?>
+
+<?php
 echo ntsForm::wrapInput(
 	M('Dates'),
 	array(
@@ -431,4 +458,3 @@ echo ntsForm::wrapInput(
 		)
 	);
 ?>
-<?php require( dirname(__FILE__) . '/_form_js.php' ); ?>

@@ -49,6 +49,11 @@ $init_end = $t->getEndDay();
 
 $tm2->init( $init_start, $init_end );
 
+if( ! isset($check_appointments) )
+{
+	$check_appointments = TRUE;
+}
+
 /* check available times */
 if( $dates2process )
 {
@@ -56,7 +61,12 @@ if( $dates2process )
 	foreach( $dates2process as $checkDate => $dd )
 	{
 		$da = $dates[$checkDate];
+
 		$tm2->dayMode = TRUE;
+		if( ! $check_appointments )
+		{
+			$tm2->blockMode = TRUE;
+		}
 		$prepare_cal_times = $tm2->getAllTime( $da[0], $da[1] );
 		if( $prepare_cal_times )
 		{
@@ -64,11 +74,12 @@ if( $dates2process )
 			unset( $dates2process[$checkDate] );
 		}
 		$tm2->dayMode = FALSE;
+		if( ! $check_appointments )
+		{
+			$tm2->blockMode = FALSE;
+		}
 	}
 }
-
-if( ! isset($check_appointments) )
-	$check_appointments = TRUE;
 
 /* count apps */
 if( $check_appointments && $dates2process )
@@ -149,11 +160,13 @@ $labelDates = array();
 $linkDates = array();
 
 reset( $dateStatus );
-foreach( $dateStatus as $date => $status ){
+foreach( $dateStatus as $date => $status )
+{
 	$linkedDates[] = $date;
 	$dayClass = array();
 	$dayLabel = '';
-	switch( $status ){
+	switch( $status )
+	{
 		case 0:
 			$dayClass[] = 'alert-archive';
 			$dayLabel = M('Not Available');
@@ -171,8 +184,8 @@ foreach( $dateStatus as $date => $status ){
 			$dayClass[] = 'alert-inverse';
 			$dayLabel = M('Timeoff');
 			break;
-		}
+	}
 	$cssDates[ $date ] = $dayClass;
 	$labelDates[ $date ] = $dayLabel;
-	}
+}
 ?>

@@ -1,6 +1,8 @@
 <?php
 $object = ntsLib::getVar( 'admin/manage/appointments/edit::OBJECT' );
 
+$notify_customer = $_NTS['REQ']->getParam('notify_customer');
+
 $selected = array(
 	'location_id'	=> $_NTS['REQ']->getParam('location_id'),
 	'resource_id'	=> $_NTS['REQ']->getParam('resource_id'),
@@ -16,8 +18,18 @@ foreach( $selected as $k => $v )
 	}
 }
 
+$params = array();
+if( ! $notify_customer )
+{
+	$params['_silent_customer'] = 1;
+}
+
 $cm =& ntsCommandManager::getInstance();
-$cm->runCommand( $object, 'change' );
+$cm->runCommand( 
+	$object,
+	'change',
+	$params
+	);
 
 if( $cm->isOk() )
 {

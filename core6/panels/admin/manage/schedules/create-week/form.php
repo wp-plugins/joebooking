@@ -27,12 +27,11 @@ $maxEnd = NTS_TIME_ENDS;
 $action = $this->getValue('action');
 $when = $this->getValue('showWhen');
 $currentWhen = $this->getValue('when');
-$slotType = $this->getValue('slot_type');
 
-$whenLabels = array(
-	'date'	=> M('This Date Only'),
-	'range'	=> M('Every Week'),
-	);
+for( $di = 0; $di <= 6; $di++ )
+{
+	$slotType[$di] = $this->getValue('slot_type_' . $di);
+}
 
 $params = array(
 	'id'	=> $this->getValue('id'),
@@ -197,146 +196,12 @@ elseif( count($allSers) == 1 )
 <?php endif; ?>
 
 <?php
-echo ntsForm::wrapInput(
-	M('Slot Type'),
-	$this->buildInput(
-	/* type */
-		'radioSet',
-	/* attributes */
-		array(
-			'id'		=> 'slot_type',
-			'default'	=> $slotType,
-			'options'	=> array(
-				array( 'range',	M('Time Range') ),
-				array( 'fixed',	M('Fixed Time') ),
-				)
-			)
-		)
-	);
-?>
-
-<?php
 $min = $minStart;
 $max = $maxEnd - $minDuration;
 if( $max < $min )
 	$max = $maxEnd;
 $max = $maxEnd;
-
-$max_end = $max;
-if( $max_end == 24 * 60 * 60 )
-{
-	// add time after midnight
-	$max_end = $max_end + 12 * 60 * 60;
-}
 ?>
-
-<div id="<?php echo $this->formId; ?>_details_range">
-	<?php
-	$interval_options = array( 3, 5, 6, 9, 10, 12, 15, 18, 20, 21, 24, 25, 27, 30, 40, 45, 50, 60, 75, 90, 2*60, 2.5*60, 3*60, 4*60, 5*60, 6*60, 8*60, 9*60, 12*60, 18*60, 24*60 );
-	$selectabe_interval_options = array();
-	foreach( $interval_options as $o )
-	{
-		if( $o % NTS_TIME_UNIT )
-			continue;
-		if( $o > $maxEnd )
-			continue;
-		$selectabe_interval_options[] = array( 60 * $o, $o );
-	}
-	?>
-	<?php
-	echo ntsForm::wrapInput(
-		M('Time'),
-		array(
-			$this->buildInput(
-			/* type */
-				'date/Time',
-			/* attributes */
-				array(
-					'id'		=> 'starts_at_range',
-					'conf'	=> array(
-						'min'	=> $min,
-						'max'	=> $max,
-						),
-					'default'	=> $minStart
-					),
-			/* validators */
-				array(
-					array(
-						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required field'),
-						),
-					)
-				),
-			' - ',
-			$this->buildInput(
-			/* type */
-				'date/Time',
-			/* attributes */
-				array(
-					'id'		=> 'ends_at_range',
-					'conf'	=> array(
-						'min'	=> $min,
-						'max'	=> $max_end,
-						),
-					'default'	=> $maxEnd
-					),
-			/* validators */
-				array(
-					array(
-						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required field'),
-						),
-					array(
-						'code'		=> 'greaterThan.php', 
-						'error'		=> "Slot can't start before end",
-						'params'	=> array(
-							'compareWithField' => 'starts_at_range',
-							),
-						)
-					)
-				),
-			' ' . M('Interval') . ': ',
-			$this->buildInput(
-			/* type */
-				'select',
-			/* attributes */
-				array(
-					'id'		=> 'selectable_every',
-					'options'	=> $selectabe_interval_options,
-					)
-				),
-			' ' . M('Minutes')
-			)
-		);
-	?>
-</div>
-
-<div id="<?php echo $this->formId; ?>_details_fixed">
-	<?php
-	echo ntsForm::wrapInput(
-		M('Time'),
-		$this->buildInput(
-		/* type */
-			'date/Time',
-		/* attributes */
-			array(
-				'id'		=> 'starts_at_fixed',
-				'conf'	=> array(
-					'min'	=> $min,
-					'max'	=> $max,
-					),
-				),
-		/* validators */
-			array(
-				array(
-					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required field'),
-					),
-				)
-			)
-		); 
-	?>
-</div>
 
 <?php if( ! isset($app_info['disabled_features']['capacity']) ) : ?>
 	<?php
@@ -384,109 +249,8 @@ if( $max_end == 24 * 60 * 60 )
 	?>
 <?php endif; ?>
 
-<?php if( count($when) > 1 ) : ?>
-	<?php
-	$when_options = array();
-	foreach( $when as $wh )
-	{
-		$when_options[] = array( $wh, $whenLabels[$wh] );
-	}
-	?>
-	<?php
-	echo ntsForm::wrapInput(
-		M('When'),
-		$this->buildInput(
-		/* type */
-			'radioSet',
-		/* attributes */
-			array(
-				'id'		=> 'when',
-				'value'		=> $wh,
-				'options'	=> $when_options,
-				)
-			)
-		);
-	?> 
-<?php else : ?>
-	<?php
-	echo $this->makeInput (
-	/* type */
-		'hidden',
-	/* attributes */
-		array(
-			'id'	=> 'when',
-			)
-		);
-	?> 
-<?php endif; ?>
-
-<?php if( in_array('date', $when) ) : ?>
-	<div id="<?php echo $this->formId; ?>_when_date"<?php if($currentWhen != 'date'){echo ' style="display: none;"';}; ?>>
-		<?php
-		echo $this->makeInput (
-		/* type */
-			'hidden',
-		/* attributes */
-			array(
-				'id'	=> 'date',
-				'value'	=> $cal,
-				)
-			);
-		$t->setDateDb( $cal );
-		$thisDateView = $t->formatDateFull();
-		?>
-		<?php
-		echo ntsForm::wrapInput(
-			M('Date'),
-			$thisDateView
-			);
-		?> 
-	</div>
-<?php endif; ?>
-
 <?php if( in_array('range', $when) ) : ?>
 	<div id="<?php echo $this->formId; ?>_when_range"<?php if($currentWhen != 'range'){echo ' style="display: none;"';}; ?>>
-		<?php
-		echo ntsForm::wrapInput(
-			M('Weekdays'),
-			$this->buildInput(
-			/* type */
-				'date/Weekday',
-			/* attributes */
-				array(
-					'id'	=> 'applied_on',
-					),
-			/* validators */
-				array(
-					array(
-						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required Field'),
-						),
-					)
-				)
-			);
-		?>
-
-		<?php
-		$select_options = array(
-			array( 0, M('All') ),
-			array( 1, M('Odd') ),
-			array( 2, M('Even') ),
-			);
-		echo ntsForm::wrapInput(
-			M('Weeks'),
-			$this->buildInput(
-			/* type */
-				'select',
-			/* attributes */
-				array(
-					'id'		=> 'week_applied_on',
-					'options'	=> $select_options,
-					)
-				)
-			);
-		?>
-
 		<?php
 		echo ntsForm::wrapInput(
 			M('Dates'),
@@ -582,12 +346,190 @@ echo ntsForm::wrapInput(
 	);
 ?>
 
-<?php echo $this->makePostParams('-current-', 'create' ); ?>
 <?php
-echo ntsForm::wrapInput(
-	'',
-	'<INPUT TYPE="submit" class="btn btn-default btn-success" VALUE="' . M('Add') . '">'
-	);
+/* list weekdays */
+$t = new ntsTime;
+$t->setNow();
+$t->setStartWeek();
 ?>
+
+<div class="row">
+
+<?php for( $ii = 1; $ii <= 7; $ii++ ) : ?>
+	<?php
+	$di = $t->getWeekday();
+	?>
+	<?php if( ($ii % 2) ) : ?>
+		<div class="clearfix"></div>
+	<?php endif; ?>
+
+	<div class="col-md-6">
+		<div class="thumbnail" style="padding: 0.5em 1em;">
+			<h4>
+				<?php echo $t->formatWeekDay(); ?>
+			</h4>
+			<hr>
+
+			<p>
+			<?php
+			echo $this->makeInput(
+			/* type */
+				'radioSet',
+			/* attributes */
+				array(
+					'id'		=> 'slot_type_' . $di,
+//					'default'	=> $slotType[$di],
+					'options'	=> array(
+						array( 'none',	M('None') ),
+						array( 'range',	M('Time Range') ),
+						array( 'fixed',	M('Fixed Time') ),
+						)
+					)
+				);
+			?>
+			</p>
+
+			<p>
+			<div id="<?php echo $this->formId; ?>_details_range_<?php echo $di; ?>">
+				<?php
+				$interval_options = array( 3, 5, 6, 9, 10, 12, 15, 18, 20, 21, 24, 25, 27, 30, 40, 45, 50, 60, 75, 90, 2*60, 2.5*60, 3*60, 4*60, 5*60, 6*60, 8*60, 9*60, 12*60, 18*60, 24*60 );
+				$selectabe_interval_options = array();
+				foreach( $interval_options as $o )
+				{
+					if( $o % NTS_TIME_UNIT )
+						continue;
+					if( $o > $maxEnd )
+						continue;
+					$selectabe_interval_options[] = array( 60 * $o, $o );
+				}
+				?>
+				<?php
+				echo join( '', 
+					array(
+						'<p>' . 
+						$this->makeInput(
+						/* type */
+							'date/Time',
+						/* attributes */
+							array(
+								'id'		=> 'starts_at_range_' . $di,
+								'conf'	=> array(
+									'min'	=> $min,
+									'max'	=> $max,
+									),
+								'default'	=> $minStart
+								),
+						/* validators */
+							array(
+								array(
+									'code'		=> 'notEmpty.php', 
+									'error'		=> M('Required field'),
+									),
+								)
+							),
+						' - ',
+						$this->makeInput(
+						/* type */
+							'date/Time',
+						/* attributes */
+							array(
+								'id'		=> 'ends_at_range_' . $di,
+								'conf'	=> array(
+									'min'	=> $min,
+									'max'	=> $max,
+									),
+								'default'	=> $maxEnd
+								),
+						/* validators */
+							array(
+								array(
+									'code'		=> 'notEmpty.php', 
+									'error'		=> M('Required field'),
+									),
+								array(
+									'code'		=> 'greaterThan.php', 
+									'error'		=> "Slot can't start before end",
+									'params'	=> array(
+										'compareWithField' => 'starts_at_range_' . $di,
+										),
+									)
+								)
+							),
+						'</p><p>' . M('Interval') . ': ',
+						$this->makeInput(
+						/* type */
+							'select',
+						/* attributes */
+							array(
+								'id'		=> 'selectable_every_' . $di,
+								'options'	=> $selectabe_interval_options,
+								)
+							),
+						' ' . M('Minutes'),
+						'</p>'
+						)
+					);
+				?>
+			</div>
+
+			<div id="<?php echo $this->formId; ?>_details_fixed_<?php echo $di; ?>">
+				<?php
+				echo $this->makeInput(
+				/* type */
+					'date/Time',
+				/* attributes */
+					array(
+						'id'		=> 'starts_at_fixed_' . $di,
+						'conf'	=> array(
+							'min'	=> $min,
+							'max'	=> $max,
+							),
+						),
+				/* validators */
+					array(
+						array(
+							'code'		=> 'notEmpty.php', 
+							'error'		=> M('Required field'),
+							),
+						)
+					); 
+				?>
+			</div>
+			</p>
+
+			<p>
+			<div id="<?php echo $this->formId; ?>_details_week_<?php echo $di; ?>">
+			<?php
+			$select_options = array(
+				array( 0, M('All') ),
+				array( 1, M('Odd') ),
+				array( 2, M('Even') ),
+				);
+			echo M('Weeks') . ': ' . 
+				$this->makeInput(
+				/* type */
+					'select',
+				/* attributes */
+					array(
+						'id'		=> 'week_applied_on_' . $di,
+						'options'	=> $select_options,
+						)
+					);
+			?>
+			</div>
+			</p>
+
+		</div>
+	</div>
+	<?php
+	$t->modify( '+1 day' );
+	?>
+<?php endfor; ?>
+
+</div>
+
+
+<?php echo $this->makePostParams('-current-', 'create' ); ?>
+<INPUT TYPE="submit" class="btn btn-default btn-success" VALUE="<?php echo M('Add'); ?>">
 
 <?php require( dirname(__FILE__) . '/_form_js.php' ); ?>

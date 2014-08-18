@@ -124,10 +124,13 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 				else
 					$class = 'archive';
 			}
+
 			$date_view = $t->formatDateFull();
-			$time_view = $t->formatTime();
+			$time_view = $t->formatTime( $a['duration'] );
+
 			$t->modify( '+ ' . $a['duration'] . ' seconds' );
-			$time_view .= ' - ' . $t->formatTime();
+//			$time_view .= ' - ' . $t->formatTime();
+
 			if( $a['lead_out'] )
 			{
 				$t->modify( '+ ' . $a['lead_out'] . ' seconds' );

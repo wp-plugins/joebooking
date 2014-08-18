@@ -7,6 +7,9 @@ if( substr(str_replace('.', '', PHP_VERSION), 0, 2) < 52 ){
 ini_set( 'track_errors', 'On' );
 
 define( 'NTS_APP_DIR', realpath(dirname(__FILE__) . '/../')  );
+if( ! defined('NTS_RUN_DIR') )
+	define( 'NTS_RUN_DIR', realpath(dirname(__FILE__) . '/../../')  );
+
 if( ! defined('NTS_EXTENSIONS_DIR') )
 	define( 'NTS_EXTENSIONS_DIR', realpath(dirname(__FILE__) . '/../../extensions')  );
 
@@ -65,6 +68,7 @@ include_once( NTS_LIB_DIR . '/lib/form/ntsForm.php' );
 include_once( NTS_LIB_DIR . '/lib/form/ntsValidator.php' );
 
 include_once( NTS_LIB_DIR . '/lib/ntsAccountingManager.php' );
+include_once( NTS_LIB_DIR . '/lib/ntsObserverManager.php' );
 
 include_once( NTS_APP_DIR . '/version.php' );
 

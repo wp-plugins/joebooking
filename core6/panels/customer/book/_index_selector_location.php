@@ -1,3 +1,8 @@
+<?php
+$this_per_row = 2;
+$this_col_class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12';
+?>
+
 <?php if( $requested['location'] OR (count($locations) <= 1) ) : ?>
 
 	<?php foreach( $locations as $obj ) : ?>
@@ -49,7 +54,7 @@
 						$count++;
 						$description = $obj->getProp('description');
 						?>
-						<li class="<?php echo $col_class; ?>"<?php echo $col_style; ?>>
+						<li class="<?php echo $this_col_class; ?>"<?php echo $col_style; ?>>
 							<div class="alert alert-default-o">
 								<ul class="list-unstyled">
 									<li>

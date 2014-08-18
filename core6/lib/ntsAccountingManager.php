@@ -1929,7 +1929,7 @@ class ntsAccountingAssetManager
 		}
 		if( ! $asset )
 		{
-			echo "asset_id = $asset_id is not registered<br>";
+//			echo "asset_id = $asset_id is not registered<br>";
 			return $return;
 		}
 		$return = unserialize( $asset );

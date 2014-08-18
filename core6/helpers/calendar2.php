@@ -1,6 +1,7 @@
 <?php
 /*  should have these vars defined 
 
+$showWeekNo
 $linkedDates
 $okDates
 $cssDates
@@ -17,6 +18,8 @@ if recurring
 if custom-dates
 	$customDates
 */
+if( ! isset($showWeekNo) )
+	$showWeekNo = FALSE;
 if( ! isset($calendarMode) )
 	$calendarMode = 'default';
 if( ! isset($params) )
@@ -96,19 +99,52 @@ $prevMoLink = isset($linkDates[$previousMo]) ? $linkDates[$previousMo] : ntsLink
 	</div>
 
 	<div class="row">
-	<?php for( $i = 0; $i <= 6; $i++ ) : ?>
-		<?php
-		$dayIndex = $weekStartsOn + $i;
-		$dayIndex = $dayIndex % 7;
-		?>
-		<div class="col-sm-1">
-			<div style="white-space: nowrap;" title="<?php echo $text_Weekdays[$dayIndex]; ?>"><small><?php echo $text_Weekdays[$dayIndex]; ?></small></div>
-		</div>
-	<?php endfor; ?>
+
+		<?php if( $showWeekNo ) : ?>
+			<div class="col-sm-1">
+				<div class="text-smaller text-muted" style="white-space: nowrap; overflow: hidden;" title="<?php echo M('Week'); ?>">
+					<span class="btn btn-sm btn-tight">
+						<?php echo M('Week'); ?>
+					</span>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="hc_cal hc_cal_fluid">
+				<div class="row">
+		<?php endif; ?>
+
+		<?php for( $i = 0; $i <= 6; $i++ ) : ?>
+			<?php
+			$dayIndex = $weekStartsOn + $i;
+			$dayIndex = $dayIndex % 7;
+			?>
+			<div class="col-sm-1">
+				<div style="white-space: nowrap; text-align: center;" title="<?php echo $text_Weekdays[$dayIndex]; ?>"><small><?php echo $text_Weekdays[$dayIndex]; ?></small></div>
+			</div>
+		<?php endfor; ?>
+
+		<?php if( $showWeekNo ) : ?>
+				</div>
+				</div>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<?php foreach( $monthMatrix as $week => $days ) : ?>
 	<div class="row">
+		<?php if( $showWeekNo ) : ?>
+			<div class="col-sm-1">
+				<div class="text-smaller text-muted" style="white-space: nowrap; overflow: hidden;" title="<?php echo M('Week'); ?>">
+					<span class="btn btn-sm btn-tight">
+						<?php echo $week; ?>
+					</span>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="hc_cal hc_cal_fluid" style="margin: 0 0; padding: 0 0;">
+				<div class="row">
+		<?php endif; ?>
+
 		<?php foreach( $days as $day ) : ?>
 		<?php if( $day ) : ?>
 			<?php
@@ -155,6 +191,13 @@ $prevMoLink = isset($linkDates[$previousMo]) ? $linkDates[$previousMo] : ntsLink
 			</div>
 		<?php endif; ?>
 		<?php endforeach; ?>
+
+		<?php if( $showWeekNo ) : ?>
+				</div>
+				</div>
+			</div>
+		<?php endif; ?>
+
 	</div>
 	<?php endforeach; ?>
 

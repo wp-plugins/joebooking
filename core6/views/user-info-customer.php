@@ -113,8 +113,20 @@ $links['logout'] = array(
 			list( $link_title, $link_icon ) = Hc_lib::parse_icon( $l[1] );
 			?>
 			<?php if( isset($l[2]) ) : ?>
-				<a href="#" title="<?php echo $link_title; ?>" class="dropdown-toggle" data-toggle="dropdown">
-					<?php echo $link_icon; ?><span class="hidden-xs"><?php echo $link_title; ?></span> <span class="caret"></span>
+				<a href="#" title="<?php echo $link_title; ?>" class="dropdown-toggle squeeze-in" data-toggle="dropdown">
+					<ul class="list-inline">
+						<li>
+						<?php echo $link_icon; ?>
+						</li>
+						<li>
+							<span class="hidden-xs">
+							<?php echo $link_title; ?>
+							</span>
+						</li>
+						<li>
+							<span class="caret"></span>
+						</li>
+					</ul>
 				</a>
 				<ul class="dropdown-menu">
 					<?php foreach( $l[2] as $l2 ) : ?>
@@ -129,8 +141,17 @@ $links['logout'] = array(
 					<?php endforeach; ?>
 				</ul>
 			<?php else : ?>
-				<a href="<?php echo $l[0]; ?>" title="<?php echo $link_title; ?>">
-					<?php echo $link_icon; ?><span class="hidden-xs"><?php echo $link_title; ?></span>
+				<a href="<?php echo $l[0]; ?>" class="squeeze-in" title="<?php echo $link_title; ?>">
+					<ul class="list-inline">
+						<li>
+						<?php echo $link_icon; ?>
+						</li>
+						<li>
+							<span class="hidden-xs">
+							<?php echo $link_title; ?>
+							</span>
+						</li>
+					</ul>
 				</a>
 			<?php endif; ?>
 		</li>

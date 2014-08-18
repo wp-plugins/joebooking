@@ -10,7 +10,7 @@ if( $NTS_APP )
 }
 else
 {
-	$dev_app_file = dirname(__FILE__) . '/../_app.php';
+	$dev_app_file = NTS_RUN_DIR . '/_app.php';
 	if( file_exists($dev_app_file) )
 	{
 		require( $dev_app_file ); // $app defined there
@@ -72,6 +72,10 @@ $NTS_APP_INFO = array(
 if( isset($order_link) )
 {
 	$NTS_APP_INFO['order_link'] = $order_link;
+}
+if( isset($order_link_title) )
+{
+	$NTS_APP_INFO['order_link_title'] = $order_link_title;
 }
 
 /* skip panels */

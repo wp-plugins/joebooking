@@ -1,6 +1,15 @@
 <?php
 $disable = array();
 
+$disable['hooks'] = array(
+	'panels'	=> array(
+		'admin/conf/events',
+		),
+	'files'	=> array(
+		'core6/observers',
+		)
+	);
+
 $disable['attach'] = array(
 	'panels'	=> array(
 		'admin/attachments',
@@ -27,6 +36,9 @@ $disable['common'] = array(
 		'admin/promo',
 		),
 	'files'	=> array(
+		'theme',
+		'core6/version_hitappoint_demo.php',
+
 		'core6/plugins/bundles',
 		'core6/plugins/freshbooks',
 		'extensions',

@@ -363,7 +363,7 @@ class hcWpBase2
 	// load shortcode
 		global $wpdb;
 
-		$shortcode = '[' . $this->slug . ']';
+		$shortcode = '[' . $this->slug . '';
 		$this->pages = array();
 		$pages = $wpdb->get_results( 
 			"
@@ -373,7 +373,7 @@ class hcWpBase2
 			WHERE 
 				(post_type = 'post' OR post_type = 'page') AND 
 				(
-				post_content LIKE '%" . $shortcode . "%'
+				post_content LIKE '%" . $shortcode . "%]%'
 				)
 			"
 			);

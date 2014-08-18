@@ -87,6 +87,8 @@ $NTS_MENU = array(
 		'admin/conf/terminology'		=> M('Terminology'),
 
 		'admin/conf/cron'				=> M('Automatic Actions'),
+		'admin/conf/events'				=> M('Event Actions'),
+
 		'admin/conf/sync'				=> array(
 			'title'	=> M('Synchronization'),
 			'panel'	=> 'admin/sync'
@@ -129,7 +131,6 @@ if( $has_price )
 		);
 }
 
-
 if( defined('NTS_APP_LEVEL') && (NTS_APP_LEVEL == 'lite') )
 {
 	$appInfo = ntsLib::getAppInfo();
@@ -139,6 +140,15 @@ if( defined('NTS_APP_LEVEL') && (NTS_APP_LEVEL == 'lite') )
 	$NTS_MENU['admin/promo'] = array(
 		'title'	=> $promo_title,
 		'link'	=> $order_link,
+		'external'	=> TRUE,
+		'order'	=> 200
+		);
+}
+elseif( isset($appInfo['order_link_title']) )
+{
+	$NTS_MENU['admin/promo'] = array(
+		'title'	=> $appInfo['order_link_title'],
+		'link'	=> $appInfo['order_link'],
 		'external'	=> TRUE,
 		'order'	=> 200
 		);

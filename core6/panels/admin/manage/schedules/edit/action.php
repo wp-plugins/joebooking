@@ -15,14 +15,17 @@ foreach( $takeFrom as $tf )
 	$fParams[$tf] = array();
 
 reset( $blocks );
-foreach( $blocks as $b ){
+foreach( $blocks as $b )
+{
 	reset( $takeFrom );
 	foreach( $takeFrom as $tf )
 		$fParams[$tf][] = $b[$tf];
-	}
+}
 reset( $takeFrom );
 foreach( $takeFrom as $tf )
+{
 	$fParams[$tf] = array_unique($fParams[$tf]);
+}
 
 $NTS_VIEW['form'] =& $ff->makeForm( $formFile, $fParams );
 
@@ -39,6 +42,7 @@ if( $NTS_VIEW['form']->validate() ){
 		'location_id'	=> $formValues['location_id'],
 		'service_id'	=> $formValues['service_id'],
 		'applied_on'	=> $formValues['applied_on'],
+		'week_applied_on'	=> $formValues['week_applied_on'],
 		'capacity'		=> $formValues['capacity'],
 		'valid_from'	=> $formValues['valid_from'],
 		'valid_to'		=> $formValues['valid_to'],
@@ -46,6 +50,7 @@ if( $NTS_VIEW['form']->validate() ){
 		'min_from_now'	=> $formValues['min_from_now'],
 		'max_from_now'	=> $formValues['max_from_now'],
 		);
+
 	$params['ends_at'] = ( isset($formValues['ends_at']) ) ? $formValues['ends_at'] : 0;
 	$params['selectable_every'] = ( isset($formValues['selectable_every']) ) ? $formValues['selectable_every'] : 0;
 	$tm2->updateBlocks( $groupId, $params );

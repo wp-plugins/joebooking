@@ -43,7 +43,7 @@ elseif(
 	)
 {
 	$t->setTimestamp( $toff->getProp('ends_at') );
-	$time_label = ' ... ' . $t->formatTime();
+	$time_label = ' &laquo; ' . $t->formatTime();
 }
 elseif( 
 	($toff_start_date == $date) && 
@@ -51,7 +51,7 @@ elseif(
 	)
 {
 	$t->setTimestamp( $toff->getProp('starts_at') );
-	$time_label = $t->formatTime() . ' ... ';
+	$time_label = $t->formatTime() . ' &raquo; ';
 }
 
 $title['time'] = '<i class="fa fa-coffee"></i> ' . $time_label;

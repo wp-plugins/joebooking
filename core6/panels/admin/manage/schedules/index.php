@@ -79,6 +79,7 @@ reset( $dis );
 		<?php
 		$tm2 = ntsLib::getVar( 'admin::tm2' );
 		$check_appointments = FALSE;
+		$showWeekNo = TRUE;
 		require( dirname(__FILE__) . '/../prepare-calendar.php' );
 		?>
 		<?php require( NTS_APP_DIR . '/helpers/calendar2.php' ); ?>
@@ -99,7 +100,7 @@ reset( $dis );
 				<?php else : ?>
 					<?php
 					$t->setDateDb( $cal );
-					$dayTitleView = $t->formatWeekday() . ', ' . $t->formatDate();
+					$dayTitleView = $t->formatWeekday() . ', ' . $t->formatDate() . ' [' . M('Week') . ': ' . $t->getWeekNo() . ']';
 					?>
 					<?php echo $dayTitleView; ?>
 				<?php endif; ?>
@@ -125,7 +126,12 @@ reset( $dis );
 					if( $b[0]['selectable_every'] )
 					{
 						$t->setTimestamp( $startDay + $b[0]['ends_at'] );
-						$time_view .= ' - ' . $t->formatTime();
+						$time_end_view = $t->formatTime();
+						if( $b[0]['ends_at'] > 24 * 60 * 60 )
+						{
+							$time_end_view = ' -> ' . $time_end_view;
+						}
+						$time_view .= ' - ' . $time_end_view;
 					}
 
 					if( $b[0]['now_warning'] )
@@ -239,6 +245,11 @@ reset( $dis );
 				'',
 				$createParams
 				);
+			$addLink_Week = ntsLink::makeLink( 
+				'-current-/create-week',
+				'',
+				$createParams
+				);
 			$addLink_Timeoff = ntsLink::makeLink( 
 				'-current-/timeoff/create',
 				'',
@@ -252,6 +263,11 @@ reset( $dis );
 							<li>
 								<a class="nts-ajax-loader nts-ajax-scroll btn btn-default" href="<?php echo $addLink; ?>">
 									<i class="fa fa-fw fa-plus"></i> <i class="fa fa-fw fa-clock-o"></i><?php echo M('Availability'); ?>
+								</a>
+							</li>
+							<li>
+								<a class="nts-ajax-loader nts-ajax-scroll btn btn-default" href="<?php echo $addLink_Week; ?>">
+									<i class="fa fa-fw fa-plus"></i> <i class="fa fa-fw fa-clock-o"></i><?php echo M('Week Wizard'); ?>
 								</a>
 							</li>
 							<li>

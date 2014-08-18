@@ -3,23 +3,41 @@ global $_NTS, $NTS_VIEW, $NTS_CURRENT_USER;
 
 $ri = ntsLib::remoteIntegration();
 $i_need_footer = FALSE;
+$i_inside = isset($NTS_VIEW['isInside']) ? $NTS_VIEW['isInside'] : FALSE;
+
 if( ! $ri )
 {
 	if( isset($NTS_VIEW['headFile']) && $NTS_VIEW['headFile'] && file_exists($NTS_VIEW['headFile']) )
-		require( $NTS_VIEW['headFile'] );
-	else
+	{
+		ob_start();
 		require( dirname(__FILE__) . '/head.php' );
+		$head = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+		require( $NTS_VIEW['headFile'] );
+		$append_head = ob_get_contents();
+		ob_end_clean();
+
+		$head = str_replace( '<head>', '<head>' . $append_head, $head );
+		echo $head;
+	}
+	else
+	{
+		require( dirname(__FILE__) . '/head.php' );
+	}
 	$i_need_footer = TRUE;
 }
 ?>
 <!-- HEADER -->
 <?php if( isset($NTS_VIEW['headerFile']) && file_exists($NTS_VIEW['headerFile']) ) : ?>
-	<?php require( $NTS_VIEW['headerFile'] ); ?>
+	<?php 
+	require( $NTS_VIEW['headerFile'] );
+	?>
 <?php endif; ?>
 
 <?php
-$ri = ntsLib::remoteIntegration();
-$container = $ri ? 'container-fluid' : 'container';
+$container = ($ri OR $i_inside) ? 'container-fluid' : 'container';
 ?>
 
 <div id="nts">
@@ -34,6 +52,8 @@ $container = $ri ? 'container-fluid' : 'container';
 	<?php foreach( $text as $t ) : ?>
 		<?php if( $t[1] == 'ok' ) : ?>
 			<div class="alert alert-info">
+		<?php elseif( $t[1] == 'info' ) : ?>
+			<div class="alert alert-warning-o">
 		<?php else : ?>
 			<div class="alert alert-danger">
 		<?php endif; ?>
@@ -197,13 +217,17 @@ else
 ?>
 <?php endif; ?>
 
-<!-- FOOTER IF ANY -->
-<?php if( isset($NTS_VIEW['footerFile']) && file_exists($NTS_VIEW['footerFile']) ) : ?>
-	<?php require( $NTS_VIEW['footerFile'] ); ?>
+<?php if( isset($NTS_VIEW['systemFooterFile']) && file_exists($NTS_VIEW['systemFooterFile']) ) : ?>
+	<?php require( $NTS_VIEW['systemFooterFile'] ); ?>
 <?php endif; ?>
 
 </div>
 </div><!-- end of #nts -->
+
+<!-- FOOTER IF ANY -->
+<?php if( isset($NTS_VIEW['footerFile']) && file_exists($NTS_VIEW['footerFile']) ) : ?>
+	<?php require( $NTS_VIEW['footerFile'] ); ?>
+<?php endif; ?>
 
 <?php
 if( $i_need_footer )

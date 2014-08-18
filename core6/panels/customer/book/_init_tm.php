@@ -95,45 +95,66 @@ elseif( $assign )
 }
 /* END OF ASSIGN */
 
-$order = NULL;
-if( $order )
+/* ASSETS */
+$asset = array();
+if( isset($params['asset']) && $params['asset'] )
 {
-/* set filters for time manager */
-	/* services */
-	$filter = $order->getFilter( 'service' );
-	if( $filter )
-	{
-		$tm2->addFilter( 'service', $filter );
-	}
+	$asset_id = $params['asset'];
+	$aam =& ntsAccountingAssetManager::getInstance();
+	$asset = $aam->get_asset_by_id( $asset_id );
+}
 
-	/* resources */
-	$filter = $order->getFilter( 'resource' );
-	if( $filter )
-	{
-		$tm2->addFilter( 'resource', $filter );
-	}
+if( $asset )
+{
+	/* check if this customer can access this asset */
+	$am =& ntsAccountingManager::getInstance();
+	$current_user_id = $current_user->getId();
+	$balance = $am->get_balance( 'customer', $current_user_id );
 
-	/* weekdays */
-	$filter = $order->getFilter( 'weekday' );
-	if( $filter )
+	$now = time();
+	$can_use_this = FALSE;
+	foreach( $balance as $b_asset_key => $b_asset_value )
 	{
-		$tm2->addFilter( 'weekday', $filter );
+		if( $b_asset_value == 0 )
+		{
+			continue;
+		}
+		list( $b_asset_id, $b_asset_expires ) = explode( '-', $b_asset_key );
+		if( $b_asset_id != $asset_id )
+		{
+			continue;
+		}
+		if( $b_asset_expires && ($b_asset_expires < $now) )
+		{
+			continue;
+		}
+		$can_use_this = TRUE;
+		break;
 	}
-
-	/* time */
-	$filter = $order->getFilter( 'time' );
-	if( $filter )
+	if( ! $can_use_this )
 	{
-		$tm2->addFilter( 'time', $filter );
-	}
-
-	/* date */
-	$filter = $order->getFilter( 'date' );
-	if( $filter )
-	{
-		$tm2->addFilter( 'date', $filter );
+		$msg = join( ': ', array(M('Package'), M('Not Available')) );
+		ntsView::addAnnounce( $msg, 'error' );
+		$asset = array();
 	}
 }
+
+if( $asset )
+{
+	/* set filters for time manager */
+	$possible_filters = array( 'service', 'resource', 'weekday', 'time', 'date' );
+	foreach( $possible_filters as $pf )
+	{
+		if( isset($asset[$pf]) && $asset[$pf] )
+		{
+			if( ! is_array($asset[$pf]) )
+				$asset[$pf] = array( $asset[$pf] );
+			$tm2->addFilter( $pf, $asset[$pf] );
+		}
+	}
+}
+/* END OF ASSETS */
+
 
 $lid = $_NTS['REQ']->getParam('location');
 if( $lid )

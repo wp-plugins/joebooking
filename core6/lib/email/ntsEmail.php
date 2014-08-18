@@ -138,7 +138,12 @@ class ntsEmail {
 			}
 
 		reset( $toArray );
-		if( $this->debug ){
+		if( defined('NTS_DEVELOPMENT') && NTS_DEVELOPMENT )
+		{
+			$msg = 'Email to ' . join( ', ', $toArray ) . ':<br>' . $this->getSubject();
+			ntsView::addAnnounce( $msg, 'info' );
+		}
+		elseif( $this->debug ){
 			echo '<PRE>';
 			echo "<BR>-------------------------------------------<BR>";
 			foreach( $toArray as $to ){

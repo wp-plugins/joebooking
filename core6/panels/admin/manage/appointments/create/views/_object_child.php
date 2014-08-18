@@ -62,7 +62,13 @@ require( dirname(__FILE__) . '/_object_dropdown.php' );
 		</ul>
 
 	<?php else : ?>
+		<?php if( isset($info_link) && $info_link ) : ?>
+			<a href="<?php echo $info_link; ?>">
+		<?php endif; ?>
 		<?php echo ntsView::objectTitle($obj, TRUE); ?>
+		<?php if( isset($info_link) && $info_link ) : ?>
+			</a>
+		<?php endif; ?>
 	<?php endif; ?>
 
 <?php endif; ?>

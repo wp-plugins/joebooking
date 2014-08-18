@@ -194,7 +194,23 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 	</dl>
 <?php endif; ?>
 
+
+
 <?php if( $custom_fields ) : ?>
+
+	<?php
+	echo ntsForm::wrapInput(
+		M('Customer') . ': ' . M('Notification'),
+		$this->buildInput(
+			'checkbox',
+			array(
+				'id'		=> 'notify_customer',
+				'default'	=> 1,
+				)
+			)
+		);
+	?>
+
 	<?php
 	echo ntsForm::wrapInput(
 		'',
@@ -203,6 +219,22 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 	?>
 <?php else : ?>
 	<p>
-	<?php echo $btn; ?>
+		<div class="checkbox">
+		<label>
+			<?php
+			echo $this->makeInput(
+				'checkbox',
+				array(
+					'id'	=> 'notify_customer',
+					'default'	=> 1,
+					)
+				);
+			?> <?php echo M('Customer'); ?>: <?php echo M('Notification'); ?>
+		</label>
+		</div>
+	</p>
+
+	<p>
+		<?php echo $btn; ?>
 	</p>
 <?php endif; ?>

@@ -42,7 +42,13 @@ $child_file = file_exists($my_child_file) ? $my_child_file : $generic_child_file
 	?>
 	<div class="alert alert-<?php echo $alert_class; ?> squeeze-in">
 		<?php
+		$info_link = '';
+		if( ($obj_class == 'customer') && ($this_id) )
+		{
+			$info_link = ntsLink::makeLink('admin/customers/edit/edit', '', array('_id' => $this_id));
+		}
 		$params = array(
+			'info_link'		=> $info_link,
 			'link'			=> 0,
 			'obj'			=> $obj,
 			'alert_class'	=> $alert_class,
