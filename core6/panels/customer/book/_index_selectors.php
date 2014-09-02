@@ -28,20 +28,26 @@ switch( $per_row )
 $to_select = array();
 $to_show = array();
 
-if( ! NTS_SINGLE_LOCATION )
+if( ! $auto_location )
 {
-	if( count($locations) > 1 )
-		$to_select[] = 'location';
-	else
-		$to_show[] = 'location';
+	if( ! NTS_SINGLE_LOCATION )
+	{
+		if( count($locations) > 1 )
+			$to_select[] = 'location';
+		else
+			$to_show[] = 'location';
+	}
 }
 
-if( ! NTS_SINGLE_RESOURCE )
+if( ! $auto_resource )
 {
-	if( count($resources) > 1 )
-		$to_select[] = 'resource';
-	else
-		$to_show[] = 'resource';
+	if( ! NTS_SINGLE_RESOURCE )
+	{
+		if( count($resources) > 1 )
+			$to_select[] = 'resource';
+		else
+			$to_show[] = 'resource';
+	}
 }
 
 if( count($services) > 1 )

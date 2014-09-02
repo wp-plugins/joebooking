@@ -142,6 +142,16 @@ class ntsEmail {
 		{
 			$msg = 'Email to ' . join( ', ', $toArray ) . ':<br>' . $this->getSubject();
 			ntsView::addAnnounce( $msg, 'info' );
+
+			if( $this->logger )
+			{
+				reset( $toArray );
+				foreach( $toArray as $to )
+				{
+					$log->setParam( 'to_email', $to );
+					$log->add();
+				}
+			}
 		}
 		elseif( $this->debug ){
 			echo '<PRE>';

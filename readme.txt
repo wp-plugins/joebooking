@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.0.3 =
+* Added the appointment creation date in the admin appointment calendar and list views as well as in CSV/Excel export file
+* Added a label for internal providers in the admin appointment calendar and list views.
+* Added a configuration option to pick a location or a resource randomly from available ones in the front end. So if you have multiple locations or resources, but it is not required to let customers know which one is booked, you can hide this information from them.
+
 = 6.0.2 =
 * Added an option to specify if an availability time slot is valid on odd or even weeks (or all, as before)
 * Event actions or hooks feature (Premium versions).

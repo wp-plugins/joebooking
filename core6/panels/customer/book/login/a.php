@@ -74,6 +74,9 @@ $view['show_coupon'] = $show_coupon;
 $view['coupon_valid'] = $coupon_valid;
 $view['coupon_promotions'] = $coupon_promotions;
 
+$view['auto_resource'] = $auto_resource;
+$view['auto_location'] = $auto_location;
+
 $this->render( 
 	dirname(__FILE__) . '/index.php',
 	$view

@@ -200,6 +200,7 @@ class ntsAppointment extends ntsObject {
 			'paid_through'	=> M('Paid Through'),
 			'payment_notes'	=> M('Payment Notes'),
 			'payment_balance'	=> M('Payment Balance'),
+			'created'		=> M('Created'),
 			);
 
 		/* custom fields */
@@ -329,6 +330,9 @@ class ntsAppointment extends ntsObject {
 		$return['duration_short'] = $t->formatPeriodShort( $duration );
 		$return['clean_up'] = $t->formatPeriod( $lead_out );
 		$return['clean_up_short'] = $t->formatPeriodShort( $lead_out );
+
+		$t->setTimestamp( $this->getProp('created_at') );
+		$return['created'] = $t->formatDate() . ' ' . $t->formatTime();
 
 		if( (! $show_fields) OR in_array('location', $show_fields) )
 		{

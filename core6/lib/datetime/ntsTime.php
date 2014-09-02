@@ -580,6 +580,7 @@ class ntsTime extends DateTime {
 	{
 		global $NTS_TIME_WEEKDAYS_SHORT;
 		$return = $NTS_TIME_WEEKDAYS_SHORT[ $wdi ];
+		$return = M($return);
 		return $return;
 	}
 

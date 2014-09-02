@@ -278,7 +278,24 @@ $cost = $app->getCost();
 	<?php endif; ?>
 
 	<div class="panel-footer">
-		<i class="fa fa-info fa-fw"></i> <span class="text-muted">id:<?php echo $app->getId(); ?></span>
+		<ul class="list-unstyled">
+			<li>
+				<i class="fa fa-info fa-fw"></i> 
+				<span class="text-muted text-smaller">id:<?php echo $app->getId(); ?></span>
+			</li>
+			<?php if( ! $condensed OR 1 ) : ?>
+				<?php
+				$t->setTimestamp( $app->getProp('created_at') );
+				$created_view = M('Created') . ': ' . $t->formatFull();
+				?>
+				<li class="squeeze-in" title="<?php echo $created_view; ?>">
+					<i class="fa fa-fw"></i> 
+					<span class="text-muted text-smaller">
+					<?php echo $created_view; ?>
+					</span>
+				</li>
+			<?php endif; ?>
+		</ul>
 	</div>
 
 	<?php if( $menu && (! $collapse_in) ) : ?>

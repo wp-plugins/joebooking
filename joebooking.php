@@ -8,7 +8,7 @@ Plugin Name: JoeBooking
 Plugin URI: http://www.joebooking.com/
 Description: Appointment scheduling plugin designed specifically for service professionals like massage therapists, consultants, tutors, instructors, photographers, stylists, dog groomers and others who need to book their time with clients online. 
 Author: JoeBooking
-Version: 6.0.2
+Version: 6.0.3
 Author URI: http://www.joebooking.com/
 */
 

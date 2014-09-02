@@ -438,12 +438,21 @@ class ntsView {
 				if( $html )
 				{
 					$icon = array('fa fa-hand-o-up');
+
 					$is_archived = $object->getProp('archive');
 					if( $is_archived )
 					{
 						$icon[] = 'text-muted';
 						$return .= ' [' . M('Archive') . ']';
 					}
+
+					$is_internal = $object->getProp('_internal');
+					if( $is_internal )
+					{
+						$icon[] = 'text-warning';
+						$return .= ' [' . M('Internal') . ']';
+					}
+
 					$return = '<i class="' . join(' ', $icon) . '"></i> ' . $return;
 				}
 				break;

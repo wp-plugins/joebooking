@@ -12,6 +12,7 @@ class ntsWpBase extends hcWpBase2
 		$real_class_file
 		)
 	{
+		$this->happ_path = defined('NTS_DEVELOPMENT') ? NTS_DEVELOPMENT : dirname(__FILE__) . '/../happ';;
 		$this->happ_web_dir = defined('NTS_DEVELOPMENT') ? 'http://localhost' : plugins_url('core6', $real_class_file);
 		$app = strtolower( $real_class );
 		$slug = $app;
@@ -39,17 +40,18 @@ class ntsWpBase extends hcWpBase2
 			}
 		}
 
-//		$page_slug = $slug . '6';
-		$page_slug = $slug;
-
 		parent::__construct( 
 			$app,
-			dirname(__FILE__),
+			$real_class_file,
+//			'jbk',
+			'',
+			'nts',
 			array(),
-			TRUE,
-			$page_slug,
+			$slug,
 			$db_prefix
 			);
+
+		$this->dir = dirname(__FILE__);
 		$this->require_shortcode = TRUE;
 		$this->query_prefix = '';
 

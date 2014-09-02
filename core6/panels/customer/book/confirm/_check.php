@@ -55,7 +55,13 @@ for( $ii = 0; $ii < count($apps); $ii++ )
 	if( (! isset($apps[$ii]['location_id'])) OR (! $apps[$ii]['location_id']) )
 	{
 		if( count($lids) == 1 )
+		{
 			$apps[$ii]['location_id'] = $lids[0];
+		}
+		elseif( $auto_location )
+		{
+			$apps[$ii]['location_id'] = ntsLib::pickRandom( $lids );
+		}
 		else
 		{
 			$error_msg[] = join( ': ', array(M('Required'), M('Location')) );
@@ -66,7 +72,13 @@ for( $ii = 0; $ii < count($apps); $ii++ )
 	if( (! isset($apps[$ii]['resource_id'])) OR (! $apps[$ii]['resource_id']) )
 	{
 		if( count($rids) == 1 )
+		{
 			$apps[$ii]['resource_id'] = $rids[0];
+		}
+		elseif( $auto_resource )
+		{
+			$apps[$ii]['resource_id'] = ntsLib::pickRandom( $rids );
+		}
 		else
 		{
 			$error_msg[] = join( ': ', array(M('Required'), M('Bookable Resource')) );

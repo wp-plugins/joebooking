@@ -1,4 +1,8 @@
 <?php
+$conf =& ntsConf::getInstance();
+$auto_resource = $conf->get('autoResource');
+$auto_location = $conf->get('autoLocation');
+
 $completedStatus = $a->getProp('completed');
 $approvedStatus = $a->getProp('approved');
 
@@ -6,9 +10,9 @@ $service = ntsObjectFactory::get( 'service' );
 $service->setId( $a->getProp('service_id') );
 
 $displayColumns = array();
-if( ! NTS_SINGLE_LOCATION )
+if( ! (NTS_SINGLE_LOCATION OR $auto_location) )
 	$displayColumns[] = 'location';
-if( ! NTS_SINGLE_RESOURCE )
+if( ! (NTS_SINGLE_RESOURCE OR $auto_resource) )
 	$displayColumns[] = 'resource';
 
 /* due payment */

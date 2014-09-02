@@ -480,7 +480,7 @@ EOT;
 
 		$ntsdb =& dbWrapper::getInstance();
 		if( ! $fields )
-			$fields = 'id, starts_at, lead_in, duration, lead_out, location_id, resource_id, service_id, seats, approved, completed, customer_id, price';
+			$fields = 'id, starts_at, created_at, lead_in, duration, lead_out, location_id, resource_id, service_id, seats, approved, completed, customer_id, price';
 
 		if( ! preg_match('/order by/i', $addon) )
 		{

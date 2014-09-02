@@ -61,7 +61,7 @@ $grand_base_total_amount = 0;
 		<div class="panel-collapse collapse">
 			<div class="panel-body">
 				<ul class="list-unstyled">
-					<?php if( ! NTS_SINGLE_LOCATION ) : ?>
+					<?php if( (! NTS_SINGLE_LOCATION) && (! $auto_location) ) : ?>
 						<?php
 						$location = new ntsObject('location');
 						$location->setId( $app['location_id'] );
@@ -71,7 +71,7 @@ $grand_base_total_amount = 0;
 						</li>
 					<?php endif; ?>
 
-					<?php if( ! NTS_SINGLE_RESOURCE ) : ?>
+					<?php if( (! NTS_SINGLE_RESOURCE) && (! $auto_resource) ) : ?>
 						<?php
 						$resource = ntsObjectFactory::get( 'resource' );
 						$resource->setId( $app['resource_id'] );

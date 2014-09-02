@@ -161,6 +161,20 @@ class ntsConf {
 		$return = $rawValue;
 		switch( $name )
 		{
+			case 'autoResource':
+				if( strlen($rawValue) == 0 )
+					$return = 0;
+				else
+					$return = $rawValue;
+				break;
+
+			case 'autoLocation':
+				if( strlen($rawValue) == 0 )
+					$return = 0;
+				else
+					$return = $rawValue;
+				break;
+
 			case 'taxRate':
 				if( strlen($rawValue) == 0 )
 					$return = 0;

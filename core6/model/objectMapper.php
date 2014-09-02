@@ -181,6 +181,8 @@ class objectMapper extends ntsObjectMapper {
 
 	function makeTags_Appointment( $object, $access = 'external' ){
 		$conf =& ntsConf::getInstance();
+		$auto_resource = $conf->get('autoResource');
+		$auto_location = $conf->get('autoLocation');
 
 		$enableTimezones = $conf->get('enableTimezones');
 		$changes = $object->getChanges();
@@ -203,23 +205,27 @@ class objectMapper extends ntsObjectMapper {
 
 		$showTimezone = ( $enableTimezones == -1 ) ? 0 : 1;
 
-		if( $ts > 0 ){
+		if( $ts > 0 )
+		{
 			$timeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($object->getProp('duration'), $showTimezone);
-			if( isset($changes['duration']) && (! isset($changes['starts_at'])) ){
+			if( isset($changes['duration']) && (! isset($changes['starts_at'])) )
+			{
 				$t->setTimestamp( $object->getProp('starts_at') );
 				$oldTimeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($changes['duration'], $showTimezone);
 				$timeFormatted .= ' (' . M('Old') . ': ' . $oldTimeFormatted . ')';
-				}
 			}
-		else {
+		}
+		else
+		{
 			$timeFormatted = M('Not Scheduled');
-			}
+		}
 
-		if( isset($changes['starts_at']) ){
+		if( isset($changes['starts_at']) )
+		{
 			$t->setTimestamp( $changes['starts_at'] );
 			$oldTimeFormatted = $t->formatDateFull() . ' ' . $t->formatTime();
 			$timeFormatted .= ' (' . M('Old') . ': ' . $oldTimeFormatted . ')';
-			}
+		}
 
 		$tags[0][] = '{APPOINTMENT.STARTS_AT}';
 		$tags[1][] = $timeFormatted;
@@ -264,13 +270,13 @@ class objectMapper extends ntsObjectMapper {
 
 		if( $dueView )
 		{
-			$allInfo .= M('Due Amount') . ': ' . $dueView . "\n";
+//			$allInfo .= M('Due Amount') . ': ' . $dueView . "\n";
 		}
 
 		$tags[0][] = '{APPOINTMENT.PRICE}';
 		$tags[1][] = $priceView;
-		$tags[0][] = '{APPOINTMENT.DUE_AMOUNT}';
-		$tags[1][] = $dueView;
+//		$tags[0][] = '{APPOINTMENT.DUE_AMOUNT}';
+//		$tags[1][] = $dueView;
 
 	/* status */
 		if( $completed = $object->getProp('completed') ){
@@ -316,27 +322,36 @@ class objectMapper extends ntsObjectMapper {
 		$tags[0][] = '{APPOINTMENT.LOCATION.DESCRIPTION}';
 		$tags[1][] = $location->getProp('description');
 
-		if( ! NTS_SINGLE_LOCATION ){
-			$allInfo .= M('Location') . ': ' . $locationTitle . "\n";
+		if( (! NTS_SINGLE_LOCATION) )
+		{
+			if( ! (($access == 'external') && ($auto_location)) )
+			{
+				$allInfo .= M('Location') . ': ' . $locationTitle . "\n";
 			}
+		}
 
 		/* resource */
 		$resourceTitle = $resource->getProp('title');
-		if( isset($changes['resource_id']) ){
+		if( isset($changes['resource_id']) )
+		{
 			$oldResource = ntsObjectFactory::get('resource');
 			$oldResource->setId( $changes['resource_id'] );
 			$oldResourceView = ntsView::objectTItle( $oldResource );
 			$resourceTitle .= ' (' . M('Old') . ': ' . $oldResourceView . ')';
-			}
+		}
 
 		$tags[0][] = '{APPOINTMENT.RESOURCE}';
 		$tags[1][] = $resourceTitle;
 		$tags[0][] = '{APPOINTMENT.RESOURCE.DESCRIPTION}';
 		$tags[1][] = $resource->getProp('description');
 
-		if( ! NTS_SINGLE_RESOURCE ){
-			$allInfo .= M('Bookable Resource') . ': ' . $resourceTitle . "\n";
+		if( ! NTS_SINGLE_RESOURCE )
+		{
+			if( ! (($access == 'external') && ($auto_resource)) )
+			{
+				$allInfo .= M('Bookable Resource') . ': ' . $resourceTitle . "\n";
 			}
+		}
 
 		/* add administrative user details */
 		$adminEmail = '';

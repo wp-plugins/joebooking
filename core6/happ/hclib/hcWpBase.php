@@ -24,6 +24,8 @@ class hcWpPost {
 
 if( ! class_exists('hcWpBase2') )
 {
+include_once( dirname(__FILE__) . '/hcWpPremiumPlugin.php' );
+
 class hcWpBase2
 {
 	var $app = '';
@@ -35,31 +37,41 @@ class hcWpBase2
 	var $_admin_scripts = array();
 	var $pages = array();
 	var $page_param = '';
-	var $own_db = FALSE;
+
 	var $require_shortcode = FALSE;
 //	var $query_prefix = '?/'; // for CI based apps
 	var $query_prefix = ''; // for NTS based apps
 
+	var $hc_product = '';
+	var $full_path = '';
+	var $system_type = '';
+
 	public function __construct( 
-		$app, 
-		$dir, 
+		$app,
+		$full_path,
+		$hc_product = '',
+		$system_type = 'nts', // ci or nts
 		$types = array(),
-		$own_db = FALSE,
 		$slug = '',
 		$db_prefix = ''
 		)
 	{
 		$GLOBALS['NTS_IS_PLUGIN'] = 'wordpress';
+		$dir = dirname( $full_path );
+
+		$this->hc_product = $hc_product;
+		$this->full_path = $full_path;
+		$this->system_type = $system_type;
 
 		$this->app = $app;
 		$GLOBALS['NTS_APP'] = $app;
 
 		$this->slug = $slug ? $slug : $this->app;
+
 		$this->db_prefix = $db_prefix ? $db_prefix : $this->slug;
 		$this->dir = $dir;
 		$this->types = array();
 		$this->page_param = 'page_id';
-		$this->own_db = $own_db;
 
 		reset( $types );
 		foreach( $types as $t )
@@ -198,7 +210,7 @@ class hcWpBase2
 		else
 		{
 			// might be shortcode with params
-			$pattern = '\[' . $this->slug . '\s*(.+)\]';
+			$pattern = '\[' . $this->slug . '\s+(.+)\]';
 			if(
 				preg_match('/'. $pattern .'/s', $post->post_content, $matches)
 				)
@@ -339,10 +351,7 @@ class hcWpBase2
 	function _install()
 	{
 	// own database
-		if( $this->own_db )
-		{
-			$this->_init_db();
-		}
+		$this->_init_db();
 	}
 
 	function _init()
@@ -355,10 +364,7 @@ class hcWpBase2
 		}
 
 	// own database
-		if( $this->own_db )
-		{
-			$this->_init_db();
-		}
+		$this->_init_db();
 
 	// load shortcode
 		global $wpdb;
@@ -409,6 +415,20 @@ class hcWpBase2
 		$GLOBALS['NTS_CONFIG'][$this->app]['REMOTE_INTEGRATION'] = 'wordpress';
 		$session_name = 'ntssess_' . $this->app;
 		$GLOBALS['NTS_CONFIG'][$this->app]['SESSION_NAME'] = $session_name;
+
+
+		if( $this->hc_product && file_exists($this->happ_path . '/hclib/hcWpPremiumPlugin.php') )
+		{
+			include_once( $this->happ_path . '/hclib/hcWpPremiumPlugin.php' );
+			$this->premium = new hcWpPremiumPlugin(
+				$this->app,
+				$this->hc_product,
+				$this->slug,
+				$this->full_path,
+				$this->system_type
+				);
+		}
+
 
 		session_name( $session_name );
 		@session_start();

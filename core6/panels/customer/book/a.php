@@ -213,7 +213,15 @@ if( $requested['time'] )
 /* END OF THIS APPOINTMENT */
 
 /* READY */
-if( $this_a['location_id'] && $this_a['resource_id'] && $this_a['service_id'] && $this_a['starts_at'] )
+if( 
+	( $this_a['location_id'] OR $auto_location )
+	&& 
+	( $this_a['resource_id'] OR $auto_resource )
+	&& 
+	$this_a['service_id']
+	&& 
+	$this_a['starts_at']
+)
 {
 	$forwardTo = ntsLink::makeLink(
 		'-current-/add',
@@ -240,6 +248,9 @@ $view = array(
 	'dates'			=> $dates,
 	'times'			=> $times,
 	'show_months'	=> $show_months,
+
+	'auto_resource'		=> $auto_resource,
+	'auto_location'		=> $auto_location,
 	);
 
 //_print_r( $requested );
