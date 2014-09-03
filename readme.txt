@@ -48,6 +48,9 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.0.4 =
+* Switched back to built-in WordPress update check functions
+
 = 6.0.3 =
 * Added the appointment creation date in the admin appointment calendar and list views as well as in CSV/Excel export file
 * Added a label for internal providers in the admin appointment calendar and list views.

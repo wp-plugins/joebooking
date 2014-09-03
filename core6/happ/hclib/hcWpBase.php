@@ -22,11 +22,14 @@ class hcWpPost {
 	}
 }
 
-if( ! class_exists('hcWpBase2') )
+if( ! class_exists('hcWpBase3') )
 {
-include_once( dirname(__FILE__) . '/hcWpPremiumPlugin.php' );
+if( file_exists(dirname(__FILE__) . '/hcWpPremiumPlugin.php') )
+{
+	include_once( dirname(__FILE__) . '/hcWpPremiumPlugin.php' );
+}
 
-class hcWpBase2
+class hcWpBase3
 {
 	var $app = '';
 	var $slug = '';
@@ -144,6 +147,10 @@ class hcWpBase2
 
 		if( ! $skip )
 			$this->_admin_scripts[] = array( $id, $url );
+	}
+
+	public function admin_total_init()
+	{
 	}
 
 	public function admin_init()
@@ -416,10 +423,8 @@ class hcWpBase2
 		$session_name = 'ntssess_' . $this->app;
 		$GLOBALS['NTS_CONFIG'][$this->app]['SESSION_NAME'] = $session_name;
 
-
-		if( $this->hc_product && file_exists($this->happ_path . '/hclib/hcWpPremiumPlugin.php') )
+		if( $this->hc_product && file_exists(dirname(__FILE__) . '/hcWpPremiumPlugin.php') )
 		{
-			include_once( $this->happ_path . '/hclib/hcWpPremiumPlugin.php' );
 			$this->premium = new hcWpPremiumPlugin(
 				$this->app,
 				$this->hc_product,
@@ -428,7 +433,6 @@ class hcWpBase2
 				$this->system_type
 				);
 		}
-
 
 		session_name( $session_name );
 		@session_start();

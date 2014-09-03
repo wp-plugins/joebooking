@@ -29,6 +29,6 @@ if( $count > 0 )
 {
 	$removeSeats = $slot_seats;
 	$text = M('Appointment Blocks Day');
-	$this->throwSlotError( $ts, $slot, array('block_day' => $text) );
+	$this->throwSlotError( array('time' => $text) );
 }
 ?>

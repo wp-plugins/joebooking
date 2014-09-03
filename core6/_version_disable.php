@@ -164,7 +164,28 @@ $disable['wordpress'] = array(
 	'files'	=> array(
 		'core6/integration/wordpress',
 		'hitappoint.php',
-		'joebooking.php'
+		'joebooking.php',
+		'core6/happ/hclib/wp-plugin-update-checker',
+		'core6/happ/hclib/hcWpPremiumPlugin.php',
+		)
+	);
+
+$disable['wordpress_pro'] = array(
+	'panels'	=> array(
+		),
+	'files'	=> array(
+		'core6/happ/hclib/wp-plugin-update-checker',
+		'core6/happ/hclib/hcWpPremiumPlugin.php',
+		)
+	);
+
+$disable['check_license'] = array(
+	'panels'	=> array(
+		),
+	'files'	=> array(
+		'core6/panels/admin/conf/upgrade/index_version.php',
+		'core6/panels/admin/conf/upgrade/form.php',
+		'core6/views/admin-header-license.php',
 		)
 	);
 

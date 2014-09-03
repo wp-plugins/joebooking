@@ -4,11 +4,25 @@ $conf =& ntsConf::getInstance();
 $currentLicense = $conf->get('licenseCode');
 $installationId = $conf->get( 'installationId' );
 
-$formParams = array(
-	'licenseCode' => $currentLicense,
-	);
+$showLicenseForm = TRUE;
+if( in_array(NTS_APP_LEVEL, array('lite')) OR (defined('NTS_APP_DEVELOPER') && NTS_APP_DEVELOPER) )
+{
+	$showLicenseForm = FALSE;
+}
+if( defined('NTS_DEVELOPMENT') )
+{
+//	$showLicenseForm = TRUE;
+}
+
+$NTS_VIEW['form'] = NULL;
 $formFile = dirname( __FILE__ ) . '/form';
-$NTS_VIEW['form'] =& $ff->makeForm( $formFile, $formParams );
+if( $showLicenseForm && file_exists($formFile . '.php') )
+{
+	$formParams = array(
+		'licenseCode' => $currentLicense,
+		);
+	$NTS_VIEW['form'] =& $ff->makeForm( $formFile, $formParams );
+}
 
 switch( $action ){
 	case 'update':

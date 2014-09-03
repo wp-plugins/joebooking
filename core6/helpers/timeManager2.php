@@ -281,10 +281,13 @@ EOT;
 
 	function throwSlotError( $error_array )
 	{
-		foreach( $error_array as $k => $v )
+		if( is_array($error_array) )
 		{
-			if( ! isset($this->slot_errors[$k]) )
-				$this->slot_errors[$k] = $v;
+			foreach( $error_array as $k => $v )
+			{
+				if( ! isset($this->slot_errors[$k]) )
+					$this->slot_errors[$k] = $v;
+			}
 		}
 	}
 

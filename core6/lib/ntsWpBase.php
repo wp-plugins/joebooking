@@ -5,7 +5,7 @@ else
 	$happ_path = dirname(__FILE__) . '/../happ';
 include_once( $happ_path . '/hclib/hcWpBase.php' );
 
-class ntsWpBase extends hcWpBase2
+class ntsWpBase extends hcWpBase3
 {
 	public function __construct( 
 		$real_class,

@@ -22,6 +22,8 @@ $my_disable = array(
 	'locations',
 
 	'joomla',
+	'wordpress_pro',
+	'check_license',
 	'jquery',
 	);
 
