@@ -122,6 +122,7 @@ CREATE TABLE IF NOT EXISTS `{PRFX}locations` (
 	`description` TEXT,
 	`capacity` int(11) DEFAULT 0,
 	`show_order` int(11) DEFAULT 1,
+	`archive` TINYINT NOT NULL DEFAULT 0,
 
 	PRIMARY KEY  (`id`)
 	);

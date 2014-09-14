@@ -2,7 +2,7 @@
 $app_info = ntsLib::getAppInfo();
 global $NTS_CURRENT_USER;
 $entries = ntsLib::getVar( 'admin/company/services::entries' );
-$totalCols = 3;
+$totalCols = 4;
 ?>
 <table class="table table-condensed table-striped">
 

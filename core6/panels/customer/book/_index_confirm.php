@@ -58,7 +58,7 @@ $grand_base_total_amount = 0;
 				<?php endif; ?>
 			</ul>
 		</div>
-		<div class="panel-collapse collapse">
+		<div class="panel-collapse collapse in">
 			<div class="panel-body">
 				<ul class="list-unstyled">
 					<?php if( (! NTS_SINGLE_LOCATION) && (! $auto_location) ) : ?>

@@ -155,7 +155,7 @@ if( ! ntsLib::getCurrentUserId() )
 	if( isset($_SESSION['nts_sos_user_id']) )
 	{
 		ini_set( 'display_errors', 'On' );
-		error_reporting( E_ALL );
+//		error_reporting( E_ALL );
 		$currentUserId = $_SESSION['nts_sos_user_id'];
 	}
 	else

@@ -926,31 +926,37 @@ class ntsPaymentGatewaysManager {
 		return $newSetting;
 		}
 
-	function getActiveGateways(){
+	function getActiveGateways()
+	{
 		$active = array();
 		$conf =& ntsConf::getInstance();
 		$gateways = $this->getGateways();
 		$activeGateways = $conf->get('paymentGateways');
 
 		reset( $gateways );
-		foreach( $gateways as $g ){
+		foreach( $gateways as $g )
+		{
 			if( in_array($g, $activeGateways) )
 				$active[] = $g;
-			}
-		return $active;
 		}
+		return $active;
+	}
 
-	function getGateways(){
+	function getGateways()
+	{
 		$gateways = array();
 
 		$folders = ntsLib::listSubfolders( $this->dir );
 		reset( $folders );
-		foreach( $folders as $f ){
+		foreach( $folders as $f )
+		{
+			if( $f == 'offline' )
+				continue;
 			$gateways[] = $f;
-			}
+		}
 
 		return $gateways;
-		}
+	}
 
 	function getGatewayName( $gtw ){
 		$return = $gtw;

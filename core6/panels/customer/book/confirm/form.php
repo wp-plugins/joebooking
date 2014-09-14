@@ -16,7 +16,11 @@ foreach( $all_fields as $f )
 {
 	if( isset($f[4]) && ($f[4] == 'read') )
 	{
-		continue;
+		// check if there's a default value
+		if( strlen($f[3]) == 0 )
+		{
+			continue;
+		}
 	}
 	$fields[] = $f;
 }
@@ -35,7 +39,10 @@ foreach( $all_fields as $f )
 	{
 		if( $f[4] == 'read' )
 		{
-			continue;
+			$c[1] = 'label';
+//			$c[2]['readonly'] = 1;
+//			_print_r( $c );
+//			continue;
 		}
 	}
 	?>

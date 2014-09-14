@@ -1,7 +1,5 @@
 <?php
 $t->setDateDb( $start_date );
-
-$t->setDateDb( $start_date );
 $start_view = ('day' == $range) ? $t->formatDateFull() : $t->formatDate();
 $month_view = $t->getMonthName() . ' ' . $t->getYear();
 $t->modify( '-1 day' );
@@ -21,12 +19,14 @@ switch( $range )
 		break;
 	case 'week':
 		$nav_title = $start_view . ' - ' . $end_view;
+		$nav_title = $t->formatDateRange( $start_date, $end_date );
 		break;
 	case 'month':
 		$nav_title = $month_view;
 		break;
 }
 ?>
+
 <ul class="pagination">
 	<li>
 		<a href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $prev_date)); ?>">
@@ -34,7 +34,7 @@ switch( $range )
 		</a>
 	</li>
 	<li class="active">
-		<a href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $start_date)); ?>">
+		<a class="text-center" style="width: 10em; display: block; white-space: nowrap; overflow: hidden;" href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $start_date)); ?>" title="<?php echo $nav_title; ?>">
 			<?php echo $nav_title; ?>
 		</a>
 	</li>

@@ -60,12 +60,33 @@ class ntsWpBase extends hcWpBase3
 		foreach( $css_files as $f )
 		{
 			$file = is_array($f) ? $f[0] : $f;
-			$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $this->happ_web_dir . '/' . $file : plugins_url($file, $real_class_file);
+
+			$full = FALSE;
+			$prfx = array('http://', 'https://');
+			reset( $prfx );
+			foreach( $prfx as $prf )
+			{
+				if( substr($file, 0, strlen($prf)) == $prf )
+				{
+					$full = TRUE;
+					break;
+				}
+			}
+
+			if( $full )
+			{
+				$full_file = $file;
+			}
+			else
+			{
+				$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $this->happ_web_dir . '/' . $file : plugins_url($file, $real_class_file);
+			}
 
 			if( is_array($f) )
 				$f[0] = $full_file;
 			else
 				$f = $full_file;
+
 			$this->register_admin_style($f);
 		}
 
@@ -73,7 +94,27 @@ class ntsWpBase extends hcWpBase3
 		foreach( $js_files as $f )
 		{
 			$file = is_array($f) ? $f[0] : $f;
-			$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $this->happ_web_dir . '/' . $file : plugins_url($file, $real_class_file);
+
+			$full = FALSE;
+			$prfx = array('http://', 'https://');
+			reset( $prfx );
+			foreach( $prfx as $prf )
+			{
+				if( substr($file, 0, strlen($prf)) == $prf )
+				{
+					$full = TRUE;
+					break;
+				}
+			}
+
+			if( $full )
+			{
+				$full_file = $file;
+			}
+			else
+			{
+				$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $this->happ_web_dir . '/' . $file : plugins_url($file, $real_class_file);
+			}
 
 			if( is_array($f) )
 				$f[0] = $full_file;

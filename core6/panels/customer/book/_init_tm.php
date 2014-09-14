@@ -28,10 +28,24 @@ $ress_archive = ntsObjectFactory::getIds(
 if( $ress_archive )
 {
 	$ress = ntsObjectFactory::getAllIds( 'resource' );
-
 	$ress = array_diff( $ress, $ress_archive );
 	$ress = array_values( $ress );
 	$tm2->addFilter( 'resource', $ress );
+}
+
+/* archived locations */
+$locs_archive = ntsObjectFactory::getIds( 
+	'location',
+	array(
+		'archive'	=> array( '=', 1 ),
+		)
+	);
+if( $locs_archive )
+{
+	$locs = ntsObjectFactory::getAllIds( 'location' );
+	$locs = array_diff( $locs, $locs_archive );
+	$locs = array_values( $locs );
+	$tm2->addFilter( 'location', $locs );
 }
 
 if( isset($GLOBALS['NTS_FIX_RESOURCE']) )

@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.0.5 =
+* Added an option to archive a location
+* Added a link to pay for existing appointments in the customer area
+* Minor code updates and fixes
+
 = 6.0.4 =
 * Switched back to built-in WordPress update check functions
 

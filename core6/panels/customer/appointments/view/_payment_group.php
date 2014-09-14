@@ -22,7 +22,7 @@ else
 	}
 }
 
-if( $paid_amount OR $due_amount )
+if( ($paid_amount OR $due_amount) OR ($price && $has_online) )
 {
 	if( is_array($due_amount) )
 	{

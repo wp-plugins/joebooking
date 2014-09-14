@@ -18,11 +18,18 @@ if( $ress_archive )
 	$ress_all = array_diff( $ress_all, $ress_archive );
 	$ress_all = array_values( $ress_all );
 }
-?>
 
+/* check out archived locations */
+$locs_archive = ntsLib::getVar( 'admin::locs_archive' );
+if( $locs_archive )
+{
+	$locs_all = array_diff( $locs_all, $locs_archive );
+	$locs_all = array_values( $locs_all );
+}
+?>
 <div>
 	<div class="row">
-		<div class="col-md-5 col-xs-12 pull-right text-right">
+		<div class="col-md-5 col-xs-12 pull-right text-right pull-xs-left text-xs-left">
 			<ul class="list-inline list-separated">
 				<?php if( $display == 'calendar' ) : ?>
 					<li>

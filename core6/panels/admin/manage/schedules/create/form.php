@@ -14,6 +14,12 @@ if( $ress_archive )
 	$ress = array_diff( $ress, $ress_archive );
 	$ress = array_values( $ress );
 }
+$locs_archive = ntsLib::getVar( 'admin::locs_archive' );
+if( $locs_archive )
+{
+	$locs = array_diff( $locs, $locs_archive );
+	$locs = array_values( $locs );
+}
 
 $allLocs = ntsObjectFactory::getAllIds( 'location' );
 $allRess = ntsObjectFactory::getAllIds( 'resource' );
@@ -56,7 +62,7 @@ foreach( $sers as $objId )
 ?>
 
 <?php
-if( count($allLocs) == 1 )
+if( count($locs) == 1 )
 {
 	echo $this->makeInput (
 	/* type */
@@ -147,28 +153,44 @@ elseif( count($allSers) == 1 )
 	<?php endif; ?>
 <?php endif; ?>
 
-
 <?php if( count($allLocs) > 1 ) : ?>
-	<?php
-	echo ntsForm::wrapInput(
-		M('Locations'),
-		$this->buildInput(
-		/* type */
-			'locations',
-		/* attributes */
-			array(
-				'id'	=> 'location_id',
-				),
-		/* validators */
-			array(
+	<?php if( count($locs) == 1 ) : ?>
+		<?php
+		$obj = ntsObjectFactory::get( 'location' );
+		$obj->setId( $locs[0] );
+		?>
+		<?php
+		echo ntsForm::wrapInput(
+			M('Location'),
+			ntsView::objectTitle( $obj, TRUE )
+			);
+		?>
+	<?php else : ?>
+		<?php
+		$options = array();
+		reset( $locs );
+		foreach( $locs as $objId )
+		{
+			$obj = ntsObjectFactory::get( 'location' );
+			$obj->setId( $objId );
+			$options[] = array( $objId, ntsView::objectTitle($obj) );
+		}
+		?>
+		<?php
+		echo ntsForm::wrapInput(
+			M('Location'),
+			$this->buildInput(
+			/* type */
+				'select',
+			/* attributes */
 				array(
-					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required Field'),
-					),
+					'id'		=> 'location_id',
+					'options'	=> $options,
+					)
 				)
-			)
-		);
-	?>
+			);
+		?>
+	<?php endif; ?>
 <?php endif; ?>
 
 <?php if( count($allSers) > 1 ) : ?>

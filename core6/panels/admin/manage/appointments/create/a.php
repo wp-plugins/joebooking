@@ -11,11 +11,20 @@ if( ! $apps )
 
 /* INIT LRS */
 $locs = ntsLib::getVar( 'admin::locs' );
+/* check out archived locations */
+$locs_archive = ntsLib::getVar( 'admin::locs_archive' );
+if( $locs_archive )
+{
+	$locs = array_diff( $locs, $locs_archive );
+	$locs = array_values( $locs );
+}
+
 $lid = $_NTS['REQ']->getParam( 'location_id' );
 if( (! $lid) && (count($locs) == 1) )
 	$lid = $locs[0];
 
 $ress = ntsLib::getVar( 'admin::ress' );
+
 /* check out archived resources */
 $ress_archive = ntsLib::getVar( 'admin::ress_archive' );
 if( $ress_archive )

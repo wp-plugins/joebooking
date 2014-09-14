@@ -8,7 +8,7 @@ for( $i = 0; $i < 7; $i++ )
 	$di = $weekStartsOn + $i;
 	$di = $di % 7;
 
-	ntsTime::weekdayLabelShort( $di );
+	$timeView = ntsTime::weekdayLabelShort( $di );
 	$readonly = ( isset($conf['freeze']) && in_array($di, $conf['freeze']) ) ? true : false;
 	$conf['options'][] = array( $di, $timeView, $readonly );
 }

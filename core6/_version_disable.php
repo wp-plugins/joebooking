@@ -165,6 +165,8 @@ $disable['wordpress'] = array(
 		'core6/integration/wordpress',
 		'hitappoint.php',
 		'joebooking.php',
+		'core6/happ/hclib/hcWpBase.php',
+		'core6/happ/hclib/hcWpBase_Pro.php',
 		'core6/happ/hclib/wp-plugin-update-checker',
 		'core6/happ/hclib/hcWpPremiumPlugin.php',
 		)
@@ -174,6 +176,7 @@ $disable['wordpress_pro'] = array(
 	'panels'	=> array(
 		),
 	'files'	=> array(
+		'core6/happ/hclib/hcWpBase_Pro.php',
 		'core6/happ/hclib/wp-plugin-update-checker',
 		'core6/happ/hclib/hcWpPremiumPlugin.php',
 		)

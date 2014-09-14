@@ -3,6 +3,7 @@ $tm2 = ntsLib::getVar('admin::tm2');
 $t = $NTS_VIEW['t'];
 $schView = ntsLib::getVar( 'admin/manage:schView' );
 $ress_archive = ntsLib::getVar( 'admin::ress_archive' );
+$locs_archive = ntsLib::getVar( 'admin::locs_archive' );
 
 $ff =& ntsFormFactory::getInstance();
 
@@ -43,6 +44,9 @@ foreach( $tmBlocks as $b )
 	if( in_array($b['resource_id'], $ress_archive) )
 		continue;
 
+	if( in_array($b['location_id'], $locs_archive) )
+		continue;
+
 	if( ! isset($blocks[$b['applied_on']]) )
 		$blocks[$b['applied_on']] = array();
 
@@ -74,6 +78,8 @@ if( $cal )
 		if( ! in_array($to['resource_id'], $schView) )
 			continue;
 		if( in_array($to['resource_id'], $ress_archive) )
+			continue;
+		if( in_array($to['location_id'], $locs_archive) )
 			continue;
 
 		$t->setTimestamp( $to['starts_at'] );

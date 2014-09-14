@@ -15,6 +15,7 @@ else
 {
 	$happ_web_dir = $web_dir . '/core6';
 }
+require( dirname(__FILE__) . '/../assets/happ_files.php' );
 require( dirname(__FILE__) . '/../assets/files.php' );
 ?>
 <?php foreach( $css_files as $f ) : ?>

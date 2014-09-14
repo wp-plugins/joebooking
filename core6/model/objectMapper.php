@@ -89,6 +89,7 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'location',	'title' );
 		$this->registerProp( 'location',	'description' );
 		$this->registerProp( 'location',	'show_order' );
+		$this->registerProp( 'location',	'archive',	true, 0, 0 );
 		$this->registerProp( 'location',	'capacity',	true, 0, 0 );
 		$this->registerProp( 'location',	'_travel',	false,	2,	array() );
 

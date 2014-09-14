@@ -43,6 +43,14 @@ if( $ress_archive )
 	$ress = array_values( $ress );
 }
 
+/* check out archived locations */
+$locs_archive = ntsLib::getVar( 'admin::locs_archive' );
+if( $locs_archive )
+{
+	$locs = array_diff( $locs, $locs_archive );
+	$locs = array_values( $locs );
+}
+
 if( $range == 'dayloc')
 {
 	$list_by = 'location';

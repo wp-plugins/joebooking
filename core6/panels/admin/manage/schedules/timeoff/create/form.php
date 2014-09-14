@@ -6,6 +6,7 @@ if( $ress_archive )
 	$ress = array_diff( $ress, $ress_archive );
 	$ress = array_values( $ress );
 }
+
 $minStart = NTS_TIME_STARTS;
 $maxEnd = NTS_TIME_ENDS;
 ?>

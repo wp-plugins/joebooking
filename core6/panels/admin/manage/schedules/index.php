@@ -23,6 +23,12 @@ if( $ress_archive )
 	$ress_all = array_diff( $ress_all, $ress_archive );
 	$ress_all = array_values( $ress_all );
 }
+$locs_archive = ntsLib::getVar( 'admin::locs_archive' );
+if( $locs_archive )
+{
+	$locs_all = array_diff( $locs_all, $locs_archive );
+	$locs_all = array_values( $locs_all );
+}
 
 $allSids = ntsObjectFactory::getAllIds('service');
 $allLids = ntsObjectFactory::getAllIds('location');

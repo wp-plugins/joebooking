@@ -66,6 +66,19 @@ else
 
 $session->set_userdata( 'prepay', $prepay );
 
+/* if there's only one payment option and one appointment, then redirect directly to invoice */
+if( count($objects) == 1 )
+{
+	$group_ref = $_NTS['REQ']->getParam( 'ref' );
+	$forwardTo = ntsLink::makeLink( 
+		'-current-',
+		'pay',
+		array(
+			'ref'	=> $group_ref,
+			)
+		);
+}
+
 ntsView::redirect( $forwardTo );
 exit;
 ?>

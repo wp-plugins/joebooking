@@ -49,9 +49,17 @@ if( $has_online )
 	}
 	else
 	{
+		$link = ntsLink::makeLink(
+			'-current-',
+			'payone',
+			array(
+				'_id'		=> $a->getId(),
+				)
+			);
+
 		$payment_options[] = array(
 			M('Pay Online') . ' ' . ntsCurrency::formatPrice( $due ),
-			'#'
+			$link
 			);
 	}
 }

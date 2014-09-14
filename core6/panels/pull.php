@@ -22,6 +22,7 @@ switch( $what ){
 		}
 		else
 		{
+			require( dirname(__FILE__) . '/../assets/happ_files.php' );
 			require( dirname(__FILE__) . '/../assets/files.php' );
 			$files = $css_files;
 		}
@@ -55,6 +56,7 @@ switch( $what ){
 		}
 		else
 		{
+			require( dirname(__FILE__) . '/../assets/happ_files.php' );
 			require( dirname(__FILE__) . '/../assets/files.php' );
 			$files = $js_files;
 		}

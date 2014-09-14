@@ -1,5 +1,6 @@
 <?php
-switch( $inputAction ){
+switch( $inputAction )
+{
 	case 'display':
 		// is URL?
 		if( preg_match('/https?\:/', $conf['value']) )
@@ -8,8 +9,10 @@ switch( $inputAction ){
 		}
 		else
 		{
+			$input .= '<p class="form-control-static">';
 			$input .= htmlspecialchars( $conf['value'] );
+			$input .= '</p>';
 		}
 		break;
-	}
+}
 ?>

@@ -3,6 +3,8 @@ $now = time();
 $t = $NTS_VIEW['t'];
 
 $pgm =& ntsPaymentGatewaysManager::getInstance();
+$pm =& ntsPaymentManager::getInstance();
+
 $has_online = $pgm->hasOnline();
 
 $conf =& ntsConf::getInstance();
@@ -13,6 +15,12 @@ $canReschedule = 0;
 
 $aam =& ntsAccountingAssetManager::getInstance();
 $am =& ntsAccountingManager::getInstance();
+
+$grand_total_amount = 0;
+$grand_prepay_amount = 0;
+$grand_paid_amount = 0;
+$grand_balance_count = 0;
+$grand_due_amount = 0;
 
 if( $group_ref )
 {

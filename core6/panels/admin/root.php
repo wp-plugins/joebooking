@@ -313,8 +313,16 @@ $ress_archive = ntsObjectFactory::getIds(
 	);
 ntsLib::setVar( 'admin::ress_archive', $ress_archive );
 
-ntsLib::setVar( 'admin::tm2', $tm2 );
+/* archived locations */
+$locs_archive = ntsObjectFactory::getIds( 
+	'location', 
+	array(
+		'archive'	=> array( '=', 1 ),
+		)
+	);
+ntsLib::setVar( 'admin::locs_archive', $locs_archive );
 
+ntsLib::setVar( 'admin::tm2', $tm2 );
 
 ntsView::setPersistentParams( $saveOn, 'admin/manage' );
 

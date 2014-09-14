@@ -886,3 +886,18 @@
 #nts .clearfix {
 	-webkit-perspective:0;
 }
+
+@media (max-width: 767px) {
+	#nts .pull-xs-left {
+		float: left;
+		}
+	#nts .text-xs-left {
+		text-align: left;
+	}
+	#nts .pull-xs-right {
+		float: right;
+		}
+	#nts .text-xs-right {
+		text-align: right;
+	}
+}
