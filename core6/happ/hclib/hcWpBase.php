@@ -64,8 +64,9 @@ class hcWpBase3
 		$db_prefix = ''
 		)
 	{
-		$GLOBALS['NTS_APPPATH'] = dirname($full_path) . '/application';
+		$this->system_type = $system_type;
 
+		$GLOBALS['NTS_APPPATH'] = dirname($full_path) . '/application';
 		if( defined('NTS_DEVELOPMENT') )
 		{
 			$this->happ_path = NTS_DEVELOPMENT;
@@ -73,8 +74,17 @@ class hcWpBase3
 		}
 		else
 		{
-			$this->happ_path = dirname($full_path) . '/happ';
-			$this->happ_web_dir = plugins_url('', $full_path);
+			switch( $this->system_type )
+			{
+				case 'nts':
+					$this->happ_path = dirname($full_path) . '/core6/happ';
+					$this->happ_web_dir = plugins_url('core6', $full_path);
+					break;
+				case 'ci':
+					$this->happ_path = dirname($full_path) . '/happ';
+					$this->happ_web_dir = plugins_url('', $full_path);
+					break;
+			}
 		}
 
 		$GLOBALS['NTS_IS_PLUGIN'] = 'wordpress';
@@ -82,7 +92,6 @@ class hcWpBase3
 
 		$this->hc_product = $hc_product;
 		$this->full_path = $full_path;
-		$this->system_type = $system_type;
 
 		$this->app = $app;
 		$GLOBALS['NTS_APP'] = $app;
@@ -133,7 +142,6 @@ class hcWpBase3
 			{
 				$f = $this->happ_web_dir . '/' . $real_f;
 			}
-
 			$this->register_admin_style($f);
 		}
 
