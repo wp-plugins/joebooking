@@ -33,10 +33,14 @@ switch( $inputAction ){
 				'size'	=> 2,
 				),
 			);
+
+		$input .= '<ul class="list-inline list-separated">';
+		$input .= '<li>';
 		$input .= $this->makeInput(
 			'text',
 			$qtyConf
 			);
+		$input .= '</li>';
 
 	// UNIT CONTROL
 		$unitOptions = array(
@@ -51,10 +55,14 @@ switch( $inputAction ){
 			'value'		=> $unit,
 			'options'	=> $unitOptions,
 			);
+
+		$input .= '<li>';
 		$input .= $this->makeInput(
 			'select',
 			$unitConf
 			);
+		$input .= '</li>';
+		$input .= '</ul>';
 		break;
 
 	case 'submit':

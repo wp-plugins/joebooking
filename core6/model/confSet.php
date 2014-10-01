@@ -81,6 +81,23 @@ switch( $name ){
 			$return = $value;
 		break;
 
+	case 'appointmentFlow':
+		if( ! $value )
+		{
+			$return = '';
+		}
+		else
+		{
+			$value2 = array();
+			reset( $value );
+			foreach( $value as $v )
+			{
+				$value2[] = join( ':', $v );
+			}
+			$return = join( '|', $value2 );
+		}
+		break;
+
 	case 'emailDebug':
 		$return = ( $value ) ? 1 : 0;
 		break;

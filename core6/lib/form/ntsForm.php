@@ -52,7 +52,6 @@ class ntsForm2
 			$inputArray[ 'readonly' ] = 1;
 
 		$conf = array_merge( ntsForm::_inputDefaults(), $inputArray );
-
 		if( ! isset($conf['value']) )
 		{
 			$conf['value'] = '';
@@ -334,7 +333,6 @@ class ntsForm {
 		require( $displayFile );
 		$formContent = ob_get_contents();
 
-
 	// SHOW REQUIRED TEXT
 		if( $this->requiredFields > 0 && ( ! $this->skipRequiredAlert) ){
 			$formContent = "\n<P>" . '<i>' . '* ' . M('Required field') . '</i></p>' . $formContent;
@@ -509,9 +507,10 @@ class ntsForm {
 			$conf['groupValue'] = $this->getValue( $conf['id'], $conf['default'] );
 			}
 
-		if( ! isset($conf['value']) ){
+		if( ! isset($conf['value']) )
+		{
 			$conf['value'] = $this->getValue( $conf['id'], $conf['default'] );
-			}
+		}
 
 	/* if it is one entry only */
 		if( isset($validators) && is_array($validators) )

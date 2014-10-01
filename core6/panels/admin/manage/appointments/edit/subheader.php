@@ -31,11 +31,11 @@ $lead_out = $object->getProp('lead_out');
 if( $lead_out )
 {
 	$timeView .= '<span title="' . M('Clean Up') . '">';
-	$timeView .= ' [' . '<i class="fa fa-arrow-right"></i> ';
+	$timeView .= ' [' . '<i class="fa fa-angle-right"></i> ';
 	$t->setTimestamp( $object->getProp('starts_at') );
 	$t->modify( '+ ' . ($duration + $lead_out) . ' seconds' );
 	$timeView .= $t->formatTime();
-	$timeView .= ']';
+	$timeView .= ' ' . M('Clean Up') . ']';
 	$timeView .= '</span>';
 }
 

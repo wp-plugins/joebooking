@@ -164,4 +164,5 @@ $this->render(
 	dirname(__FILE__) . '/views/' . $view_file . '.php',
 	$view
 	);
+
 ?>

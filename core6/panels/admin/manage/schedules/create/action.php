@@ -12,8 +12,10 @@ $formFile = dirname( __FILE__ ) . '/form';
 $fParams = array();
 
 $fParams['cal'] = $cal;
-$fParams['location_id'] = 0;
-$fParams['service_id'] = 0;
+//$fParams['location_id'] = 0;
+$fParams['location_id'] = $locs;
+//$fParams['service_id'] = 0;
+$fParams['service_id'] = $sers;
 
 $when = array();
 

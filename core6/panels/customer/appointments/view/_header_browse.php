@@ -7,7 +7,7 @@ $datesShown = array();
 	<h2><i class="fa fa-check-square-o"></i> <?php echo M('Appointments'); ?></h2>
 </div>
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-pills">
 	<li class="active">
 	<?php if( $show == 'old') : ?>
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">

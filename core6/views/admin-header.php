@@ -30,6 +30,13 @@ if( (! isset($_SESSION['home_call'])) || $_SESSION['home_call'] )
 	{
 		$checkLicense = 0;
 	}
+
+	$ri = ntsLib::remoteIntegration();
+	if( $ri && ($ri == 'wordpress') )
+	{
+		$checkLicense = 0;
+	}
+
 	$_SESSION['home_call'] = 0;
 }
 

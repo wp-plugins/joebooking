@@ -1,4 +1,10 @@
 <?php
+$t = $NTS_VIEW['t'];
+
+$now = time();
+$t->setTimestamp( $now );
+$today = $t->formatDate_Db();
+
 /* set virtual appointments */
 $session = new ntsSession;
 $apps = $session->userdata('apps');
@@ -57,7 +63,6 @@ else
 	}
 	else
 	{
-		$now = time();
 		$next = $tm2->getNextTimes( $now, 1 );
 		if( $next )
 		{
@@ -118,6 +123,23 @@ if( ! $lrs )
 	return;
 }
 
+/* preload objects to save queries */
+reset( $lrs );
+$all_lids = array();
+$all_rids = array();
+$all_sids = array();
+foreach( $lrs as $lrsa )
+{
+	$all_lids[ $lrsa[0] ] = 1;
+	$all_rids[ $lrsa[1] ] = 1;
+	$all_sids[ $lrsa[2] ] = 1;
+}
+
+ntsObjectFactory::preload( 'location', array_keys($all_lids) );
+ntsObjectFactory::preload( 'resource', array_keys($all_rids) );
+ntsObjectFactory::preload( 'service', array_keys($all_sids) );
+
+reset( $lrs );
 foreach( $lrs as $lrsa )
 {
 	if( ! isset($locations[$lrsa[0]]) )
@@ -143,7 +165,6 @@ foreach( $lrs as $lrsa )
 }
 
 /* get all dates for calendar */
-
 $t->setDateDb( $cal );
 $t->setStartMonth();
 $dates_time_from = $t->getTimestamp();
@@ -161,12 +182,21 @@ $dates = array();
 $tm2->dayMode = TRUE;
 $day_start = $dates_time_from;
 $t->setTimestamp( $day_start );
+
 while( $day_start <= $dates_time_to )
 {
 	$this_date = $t->formatDate_Db();
 	$t->modify( '+1 day' );
 	$day_end = $t->getTimestamp();
-	$times = $tm2->getAllTime( $day_start, $day_end );
+
+	if( $tm2->customerSide && ($this_date < $today) )
+	{
+		$times = array();
+	}
+	else
+	{
+		$times = $tm2->getAllTime( $day_start, $day_end );
+	}
 	if( $times )
 	{
 		$dates[] = $this_date;
@@ -174,7 +204,6 @@ while( $day_start <= $dates_time_to )
 	$day_start = $day_end;
 }
 $tm2->dayMode = FALSE;
-
 
 /* get times for the current date */
 $t->setDateDb( $cal );

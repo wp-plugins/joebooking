@@ -64,6 +64,7 @@ $NTS_MENU = array(
 			'panel'		=> 'admin/conf/payment_gateways',
 			),
 
+	'admin/sync'	=> '<i class="fa fa-chain"></i> ' . M('Synchronization'),
 	'admin/conf'	=> '<i class="fa fa-cog"></i> ' . M('Settings'),
 			'admin/conf/forms_customers'		=> array(
 				'title'	=> M('Customer Form'),
@@ -77,6 +78,8 @@ $NTS_MENU = array(
 
 		'admin/conf/customers'		=> M('Customers'),
 
+		'admin/conf/flow'		=> M('Appointment Flow'),
+
 		'admin/conf/promo'		=> array(
 			'title'	=> M('Newsletter'),
 			'panel'	=> 'admin/promo',
@@ -89,10 +92,6 @@ $NTS_MENU = array(
 		'admin/conf/cron'				=> M('Automatic Actions'),
 		'admin/conf/events'				=> M('Event Actions'),
 
-		'admin/conf/sync'				=> array(
-			'title'	=> M('Synchronization'),
-			'panel'	=> 'admin/sync'
-			),
 		'admin/conf/datetime'			=> M('Date and Time'),
 		'admin/conf/languages'			=> M('Languages'),
 		'admin/conf/attachments'		=> M('Attachments'),

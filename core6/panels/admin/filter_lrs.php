@@ -23,11 +23,17 @@ if( $schView || $appView )
 
 	$tm2->setResource(0);
 	$lrss = $tm2->getLrs();
+
 	reset( $lrss );
 	foreach( $lrss as $lrs )
 	{
-		if( ! in_array($lrs[1], $ress2) )
+		if( 
+			(! in_array($lrs[1], $ress2)) &&
+			( in_array($lrs[1], $schView) OR in_array($lrs[1], $appView) )
+		)
+		{
 			$ress2[] = $lrs[1];
+		}
 	}
 	$tm2->setResource($ress);
 

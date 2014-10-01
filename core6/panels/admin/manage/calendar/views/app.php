@@ -30,6 +30,18 @@ $title['location'] = ntsView::objectTitle( $location, TRUE );
 $title['resource'] = ntsView::objectTitle( $resource, TRUE );
 $title['service'] = ntsView::objectTitle( $service, TRUE );
 $title['customer'] = ntsView::objectTitle( $customer, TRUE );
+$title['customer_link'] = array(
+	'title'	=> ntsView::objectTitle( $customer, TRUE ),
+	'href'	=> ntsLink::makeLink(
+		'admin/customers/edit/edit',
+		'',
+		array(
+			'_id'	=> $customer->getId()
+			)
+		),
+	'target'	=> '_blank',
+	'class'		=> 'hc-parent-loader'
+	);
 
 $app_starts_at = $app->getProp('starts_at');
 $duration =  $app->getProp('duration');
@@ -53,6 +65,7 @@ $app_end_view = $t->formatDateFull() . ' ' . $t->formatTime();
 $add_more = array();
 
 $time_label = '';
+$t->setTimestamp( $app_starts_at );
 $time_label = $t->formatTime( $duration, FALSE, TRUE );
 if( 
 	($app_start_date == $app_end_date) && 
@@ -175,7 +188,7 @@ $show_title = join( '', $final_title );
 /* MENU & MORE INFO */
 $parent_class = '';
 $conflicts = array();
-$conflicts = $app->get_conflicts();
+$conflicts = $app->get_conflicts( TRUE );
 if( $conflicts )
 {
 	$parent_class = ' panel-danger-o';
@@ -191,13 +204,18 @@ if( $add_more )
 	$more = array_merge( $more, $add_more );
 }
 
+$lead_out_view = '';
 $lead_out = $app->getProp('lead_out');
 if( $lead_out )
 {
 	$duration = $app->getProp('duration');
 	$t->setTimestamp( $app->getProp('starts_at') );
 	$t->modify( '+ ' . ($duration + $lead_out) . ' seconds' );
-	$more[] = '<i class="fa fa-angle-right"></i>' . $t->formatTime() . ' [' . M('Clean Up') . ']';
+	$lead_out_view = '<i class="fa fa-angle-right"></i>' . $t->formatTime() . ' [' . M('Clean Up') . ']';
+	if( ! in_array('time', $labels['dropdown']) )
+	{
+		$more[] = $lead_out_view;
+	}
 }
 
 /* MORE INFO */
@@ -206,9 +224,12 @@ if( isset($labels['dropdown']) && $labels['dropdown'] )
 	foreach( $labels['dropdown'] as $label )
 	{
 		$more[] = $title[$label];
+		if( ($label == 'time') && $lead_out_view )
+		{
+			$more[] = $lead_out_view;
+		}
 	}
 }
-
 require( dirname(__FILE__) . '/_app_menu_actions.php' );
 ?>
 <?php

@@ -9,6 +9,13 @@ if( ! $apps )
 	$apps = array();
 }
 
+$cal = $_NTS['REQ']->getParam( 'cal' );
+if( ! $cal )
+{
+	$t->setNow();
+	$cal = $t->formatDate_Db();
+}
+
 /* INIT LRS */
 $locs = ntsLib::getVar( 'admin::locs' );
 /* check out archived locations */
@@ -19,12 +26,7 @@ if( $locs_archive )
 	$locs = array_values( $locs );
 }
 
-$lid = $_NTS['REQ']->getParam( 'location_id' );
-if( (! $lid) && (count($locs) == 1) )
-	$lid = $locs[0];
-
 $ress = ntsLib::getVar( 'admin::ress' );
-
 /* check out archived resources */
 $ress_archive = ntsLib::getVar( 'admin::ress_archive' );
 if( $ress_archive )
@@ -38,11 +40,43 @@ $appEdit = ntsLib::getVar( 'admin/manage:appEdit' );
 $ress = array_intersect( $ress, $appEdit );
 $ress = array_values( $ress );
 
+$sers = ntsLib::getVar( 'admin::sers' );
+
+/* if this admin is staff only then allow only configured locations and services */
+/*
+$current_user =& ntsLib::getCurrentUser();
+$level = $current_user->getProp( '_admin_level' );
+if( $level == 'staff' )
+{
+	$tm2 = ntsLib::getVar('admin::tm2');
+	$tm2->setResource( $ress );
+
+	$staff_locs = array();
+	$staff_sers = array();
+	$lrss = $tm2->getLrs( TRUE, $cal );
+	foreach( $lrss as $lrs )
+	{
+		$staff_locs[ $lrs[0] ] = 1;
+		$staff_sers[ $lrs[2] ] = 1;
+	}
+	$staff_locs = array_keys( $staff_locs );
+	$staff_sers = array_keys( $staff_sers );
+
+	$locs = array_intersect( $locs, $staff_locs );
+	$locs = array_values( $locs );
+	$sers = array_intersect( $sers, $staff_sers );
+	$sers = array_values( $sers );
+}
+*/
+
+$lid = $_NTS['REQ']->getParam( 'location_id' );
+if( (! $lid) && (count($locs) == 1) )
+	$lid = $locs[0];
+
 $rid = $_NTS['REQ']->getParam( 'resource_id' );
 if( (! $rid) && (count($ress) == 1) )
 	$rid = $ress[0];
 
-$sers = ntsLib::getVar( 'admin::sers' );
 $sid = $_NTS['REQ']->getParam( 'service_id' );
 if( (! $sid) && (count($sers) == 1) )
 	$sid = $sers[0];
@@ -68,6 +102,7 @@ foreach( $to_select as $tosel )
 		break;
 	}
 }
+
 if( $all_ready )
 {
 	/* save in session */
@@ -115,12 +150,6 @@ if( $all_ready )
 	exit;
 }
 
-$cal = $_NTS['REQ']->getParam( 'cal' );
-if( ! $cal )
-{
-	$t->setNow();
-	$cal = $t->formatDate_Db();
-}
 $t = $NTS_VIEW['t'];
 $t->setDateDb( $cal );
 

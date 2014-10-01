@@ -26,6 +26,6 @@ else
 	</a>
 <?php endif; ?>
 	<?php if( $menu ) : ?>
-	<?php echo Hc_html::dropdown_menu($menu); ?>
+		<?php echo Hc_html::dropdown_menu($menu); ?>
 	<?php endif; ?>
 </div>

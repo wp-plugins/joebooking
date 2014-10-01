@@ -1,3 +1,4 @@
+<?php $ii = 0; ?>
 <div class="row">
 <?php foreach( $apps as $app ) : ?>
 	<div class="col-md-3 col-sm-6">
@@ -12,7 +13,7 @@
 						'app'		=> $app,
 						'labels'	=> $labels,
 						'checkbox'	=> TRUE,
-						'date'		=> $date
+						'date'		=> isset($date) ? $date : '',
 						);
 					echo $this->render_file(
 						dirname(__FILE__) . '/app.php',
@@ -36,5 +37,11 @@
 			</li>
 		</ul>
 	</div>
+
+	<?php $ii++; ?>
+	<?php if( ! ($ii % 4) ) : ?>
+		<div class="clearfix"></div>
+	<?php endif; ?>
+
 <?php endforeach; ?>
 </div>

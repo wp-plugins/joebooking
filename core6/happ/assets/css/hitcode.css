@@ -713,6 +713,7 @@
 	display: block;
 }
 
+#nts .nav-pills>li>span,
 #nts .nav-tabs>li>span {
 	position: relative;
 	display: block;

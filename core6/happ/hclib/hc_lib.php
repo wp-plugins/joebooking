@@ -162,6 +162,40 @@ class Hc_lib {
 
 	static function parse_icon( $title, $add_fw = TRUE )
 	{
+		$icon_start = strpos( $title, '<i' );
+		if( $icon_start !== FALSE )
+		{
+			$icon_end = strpos( $title, '</i>' ) + 4; 
+			$link_icon = substr( $title, 0, $icon_end );
+			$link_title = substr( $title, $icon_end );
+		}
+		else
+		{
+			$link_title = strip_tags( $title );
+			$link_icon = '';
+		}
+
+		if( $link_icon && $add_fw )
+		{
+			$icon_class_start = strpos( $link_icon, 'class=' ) + 6;
+			if( $icon_class_start !== FALSE )
+			{
+				$icon_start = substr( $link_icon, 0, $icon_class_start + 1 );
+				$icon_end = substr( $link_icon, $icon_class_start + 1 );
+				if( strpos($link_icon, 'fa-fw') === FALSE )
+				{
+					$link_icon = $icon_start . 'fa-fw ' . $icon_end;
+				}
+			}
+		}
+
+		$link_icon = trim( $link_icon );
+		$return = array( $link_title, $link_icon );
+		return $return;
+	}
+
+	static function parse_icon_old( $title, $add_fw = TRUE )
+	{
 		if( preg_match('/(\<i.+\>.*\<\/i\>\s*)(.+)/', $title, $ma) )
 		{
 			$link_title = $ma[2];

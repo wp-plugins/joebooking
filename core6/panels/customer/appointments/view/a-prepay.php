@@ -2,6 +2,8 @@
 $customer_id = ntsLib::getCurrentUserId();
 $aam =& ntsAccountingAssetManager::getInstance();
 $am =& ntsAccountingManager::getInstance();
+$pm =& ntsPaymentManager::getInstance();
+$pgm =& ntsPaymentGatewaysManager::getInstance();
 
 $customer_balance = array();
 if( $customer_id )
@@ -35,8 +37,6 @@ if( ! isset($prepay[$aid]) )
 	exit;
 }
 
-$pm =& ntsPaymentManager::getInstance();
-
 if( $asset_id )
 {
 	/* todo - check if valid */
@@ -48,6 +48,10 @@ if( $asset_id )
 else
 {
 	$min_prepay_amount = $default_prepays[$aid];
+	if( $pgm->hasOffline() )
+	{
+		$min_prepay_amount = 0;
+	}
 
 	$object = ntsObjectFactory::get( 'appointment' );
 	$object->setId( $aid );

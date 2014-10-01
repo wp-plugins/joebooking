@@ -104,14 +104,17 @@ $collapse_in = $group_ref ? ' in' : '';
 ?>
 <li class="collapse-panel panel panel-default panel-<?php echo $status_class; ?>">
 	<div class="panel-heading" title="<?php echo $status_text; ?>">
+		<span class="pull-right">
+			<?php echo $a->statusLabel(); ?>
+		</span>
+
 		<?php if( in_array('payment', $displayColumns) && $cost ) : ?>
-			<span class="pull-right">
+			<span class="pull-right" style="margin-right: 0.5em; ">
 				<?php echo $a->paymentStatus(); ?>
 			</span>
 		<?php endif; ?>
 
 		<h4 class="panel-title">
-			<?php // echo $a->statusLabel('&nbsp;'); ?>
 			<a href="#" data-toggle="collapse-next">
 				<?php echo $fullDateView; ?> <?php echo $fullTimeView; ?>
 			</a>

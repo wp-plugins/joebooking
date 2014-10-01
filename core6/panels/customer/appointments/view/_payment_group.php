@@ -50,7 +50,27 @@ if( ($paid_amount OR $due_amount) OR ($price && $has_online) )
 	$price = trim($price);
 	$money_due_amount = is_array($due_amount) ? $default_due : trim($due_amount);
 
+	if( $has_offline && $money_due_amount )
+	{
+		$link = ntsLink::makeLink(
+			'-current-',
+			'prepay',
+			array(
+				'ai'		=> $a->getId(),
+				'prepay'	=> 0
+				)
+			);
+
+		$label = $has_offline;
+
+		$payment_options[] = array(
+			$label,
+			$link
+			);
+	}
+
 	$possible_prepay = array();
+
 	if( is_array($due_amount) )
 	{
 		$possible_prepay[] = $money_due_amount;

@@ -3,6 +3,8 @@ $locs2 = ntsLib::getVar( 'admin::locs2' );
 $ress2 = ntsLib::getVar( 'admin::ress2' );
 $sers2 = ntsLib::getVar( 'admin::sers2' );
 
+
+
 $locs_all = ntsLib::getVar( 'admin::locs_all' );
 $ress_all = ntsLib::getVar( 'admin::ress_all' );
 $sers_all = ntsLib::getVar( 'admin::sers_all' );

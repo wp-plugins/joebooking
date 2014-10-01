@@ -1,6 +1,13 @@
 <?php
 $disable = array();
 
+$disable['appointment_flow'] = array(
+	'panels'	=> array(
+		'admin/conf/flow',
+		),
+	'files'		=> array(),
+	);
+
 $disable['hooks'] = array(
 	'panels'	=> array(
 		'admin/conf/events',
@@ -165,6 +172,8 @@ $disable['wordpress'] = array(
 		'core6/integration/wordpress',
 		'hitappoint.php',
 		'joebooking.php',
+		'joebooking-pro.php',
+		'joebooking-salon-pro.php',
 		'core6/happ/hclib/hcWpBase.php',
 		'core6/happ/hclib/hcWpBase_Pro.php',
 		'core6/happ/hclib/wp-plugin-update-checker',

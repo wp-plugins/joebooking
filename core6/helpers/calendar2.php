@@ -18,6 +18,7 @@ if recurring
 if custom-dates
 	$customDates
 */
+
 if( ! isset($showWeekNo) )
 	$showWeekNo = FALSE;
 if( ! isset($calendarMode) )

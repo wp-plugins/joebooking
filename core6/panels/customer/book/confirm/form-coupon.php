@@ -15,7 +15,7 @@
 		?>
 	</li>
 	<li>
-		<a href="<?php echo ntsLink::makeLink('customer/book/confirm'); ?>" id="nts-apply-coupon" class="btn btn-default">
+		<a href="<?php echo ntsLink::makeLink('-current-'); ?>" id="nts-apply-coupon" class="btn btn-default">
 		<?php echo M('Apply'); ?>
 		</a>
 	</li>

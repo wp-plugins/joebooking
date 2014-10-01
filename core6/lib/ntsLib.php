@@ -128,6 +128,43 @@ class ntsMoneyCalc
 }
 
 class ntsLib {
+	static function migrate()
+	{
+		$ntsConf =& ntsConf::getInstance();
+		$appInfo = ntsLib::getAppInfo();
+
+		$currentVersion = $appInfo['current_version'];
+		$currentVersionNum = ntsLib::parseVersion( $currentVersion );
+		$uploadedVersion = ntsLib::getAppVersion();
+
+		/* check if there are upgrade files to run */
+		$runFiles = array();
+		$upgradeDir = NTS_APP_DIR . '/upgrade';
+		$upgradeFiles = ntsLib::listFiles( $upgradeDir, '.php' );
+		foreach( $upgradeFiles as $uf )
+		{
+			$ver = substr( $uf, strlen('upgrade-'), 4 );
+			if( $ver > $currentVersionNum )
+			{
+				$runFiles[] = $uf;
+			}
+		}
+
+		// upgrade scripts run required 
+		if( $runFiles )
+		{
+			foreach( $runFiles as $rf )
+			{
+				require( $upgradeDir . '/' . $rf );
+			}
+			ntsView::setAnnounce( M('Migrated To Version') . ' ' . $uploadedVersion, 'ok' );
+		}
+		if( $uploadedVersion != $currentVersion )
+		{
+			$ntsConf->set('currentVersion', $uploadedVersion );
+		}
+	}
+
 	static function profiler( $label = '' )
 	{
 		static $last_time;
@@ -176,6 +213,14 @@ class ntsLib {
 		if( ! $return )
 		{
 			if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') )
+			{
+				$return = TRUE;
+			}
+		}
+
+		if( ! $return )
+		{
+			if( isset($_REQUEST[NTS_PARAM_VIEW_MODE]) && ($_REQUEST[NTS_PARAM_VIEW_MODE] == 'ajax') )
 			{
 				$return = TRUE;
 			}
@@ -395,12 +440,43 @@ class ntsLib {
 		return $return;
 	}
 
+	static function restoreUrl( $url )
+	{
+		$return = $url;
+
+		if( preg_match( '/https?\:\/\//', $url ) )
+		{
+			return $return;
+		}
+
+		if( substr($url, 0, strlen('s:')) == 's:' )
+		{
+			$return = 'https://' . substr($url, strlen('s:'));
+		}
+		else
+		{
+			$return = 'http://' . $url;
+		}
+		return $return;	
+	}
+
 	static function checkLicenseUrl()
 	{
 		global $_NTS;
 		$conf =& ntsConf::getInstance();
 
-		$currentLicense = $conf->get('licenseCode');
+		$ri = ntsLib::remoteIntegration();
+		if( $ri && ($ri == 'wordpress') )
+		{
+			$app = ntsLib::getAppProduct();
+			$option_name = $app . '_license_code';
+			$currentLicense = get_site_option( $option_name );
+		}
+		else
+		{
+			$currentLicense = $conf->get('licenseCode');
+		}
+
 		$installationId = $conf->get( 'installationId' );
 		$installedVersion = $conf->get('currentVersion');
 		$installedVersionNumber = ntsLib::parseVersion( $installedVersion );
@@ -410,7 +486,7 @@ class ntsLib {
 		$app = $appInfo['app'];
 
 		$myUrl = ntsLink::makeLinkFull( ntsLib::getFrontendWebpage() );
-		// strip started http:// as apache seems to have troubles with it
+	// strip started http:// as apache seems to have troubles with it
 		$myUrl = preg_replace( '/https?\:\/\//', '', $myUrl );
 
 		$return = 

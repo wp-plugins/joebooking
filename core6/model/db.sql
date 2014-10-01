@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `{PRFX}invoice_items` (
 	`qty` DECIMAL(7,2) NOT NULL DEFAULT 1,
 	`taxable` int(1) NOT NULL DEFAULT 1,
 
-	`title` TEXT DEFAULT '',
+	`title` TEXT,
 	`obj_class` varchar(32) NOT NULL DEFAULT '',
 	`obj_id` int(11) NOT NULL DEFAULT 0,
 	PRIMARY KEY  (`id`)
@@ -331,6 +331,6 @@ CREATE TABLE IF NOT EXISTS `{PRFX}logaudit` (
 	`obj_id` int(11) NOT NULL DEFAULT 0,
 
 	`property_name` varchar(32) NOT NULL DEFAULT '',
-	`old_value` TEXT DEFAULT '',
+	`old_value` TEXT,
 	PRIMARY KEY  (`id`)
 	);

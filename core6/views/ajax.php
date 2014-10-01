@@ -1,4 +1,8 @@
 <?php
+if( ob_get_contents() )
+{
+	ob_end_clean();
+}
 global $NTS_VIEW;
 ?>
 <?php /* ?>

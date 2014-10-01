@@ -387,6 +387,8 @@ class ntsUser extends ntsObject {
 				'admin/forms',
 				'admin/promo',
 				'admin/customers/edit/admin',
+				'admin/sms',
+				'admin/freshbooks',
 				)
 			);
 
@@ -448,20 +450,24 @@ class ntsUserIntegrator {
 	var $db = null;
 	var $plugins = array();
 
-	function ntsUserIntegrator(){
+	function __construct()
+	{
 		$this->init();
-		
+
 	/* load plugins if any */
 		$plm =& ntsPluginManager::getInstance();
 		$activePlugins = $plm->getActivePlugins();
 		$this->plugins = array();
 		reset( $activePlugins );
-		foreach( $activePlugins as $plg ){
+		foreach( $activePlugins as $plg )
+		{
 			$checkFile = $plm->getPluginFolder( $plg ) . '/filterUsers.php';
 			if( file_exists($checkFile) )
+			{
 				$this->plugins[] = $checkFile;
 			}
 		}
+	}
 
 	function getError(){
 		return $this->error;
@@ -477,18 +483,38 @@ class ntsUserIntegrator {
 	/* modifies $where */
 		reset( $this->plugins );
 		foreach( $this->plugins as $pf )
+		{
 			require( $pf );
+		}
 
 	/* user ids */
 		$ids = $this->loadUsers( $where, $order, $limit, $userStatus );
-
-		reset( $ids );
-		foreach( $ids as $id ){
-			$u = $this->getUserById( $id );
-			if( isset($u['id']) ){
-				$return[] = $u;
+		if( (count($where) == 1) && isset($where['id']) && ($where['id'][0] == 'IN') )
+		{
+			ntsObjectFactory::preload( 'user', $where['id'][1] );
+			reset( $ids );
+			foreach( $ids as $id )
+			{
+				$u = new ntsUser;
+				$u->setId( $id );
+				if( ! $u->notFound() )
+				{
+					$return[] = $u->getByArray();
 				}
 			}
+		}
+		else
+		{
+			reset( $ids );
+			foreach( $ids as $id )
+			{
+				$u = $this->getUserById( $id );
+				if( isset($u['id']) )
+				{
+					$return[] = $u;
+				}
+			}
+		}
 		return $return;
 		}
 
@@ -1050,7 +1076,8 @@ class ntsUserIntegratorBuiltin extends ntsUserIntegrator {
 
 	function __construct()
 	{
-		$this->init();
+		parent::__construct();
+//		$this->init();
 
 		if( $_SERVER['SERVER_NAME'] == 'localhost' )
 		{

@@ -853,8 +853,13 @@ EOT;
 					$checkEnd = $endTime;
 					if( $this->customerSide )
 					{
-						/* measure minFromNow from the block start rather than now */
+						/* 
+						measure minFromNow from the block start rather than now
+						applied on not fixed time blocks
+						if it's today and todays block not yet started
+						*/
 						if( 
+							( $b1['selectable_every'] ) && 
 							( $now < ($startDay + $block_starts_at) ) && 
 							( ($now + 24*60*60) > ($startDay + $block_ends_at)  )
 							)

@@ -72,6 +72,10 @@ $available = array(
 	'time'		=> array(),
 	);
 
+$COUNT_SLOTS = 0;
+$COUNT_CONTINUE = 0;
+$COUNT_REAL_CHECK = 0;
+
 reset( $all_times );
 foreach( $all_times as $slot_time )
 {
@@ -82,6 +86,8 @@ foreach( $all_times as $slot_time )
 			foreach( $check_sers as $slot_sid )
 			{
 				$key = $slot_time . '-' . $slot_lid . '-' . $slot_rid . '-' . $slot_sid;
+				$COUNT_SLOTS++;
+
 				if( isset($selectable[$key]) )
 				{
 					$available['location'][$slot_lid] = 1;
@@ -97,6 +103,7 @@ foreach( $all_times as $slot_time )
 					( isset($available['time'][$slot_time]) && (! is_array($available['time'][$slot_time])) )
 				)
 				{
+					$COUNT_CONTINUE++;
 					continue;
 				}
 
@@ -109,6 +116,7 @@ foreach( $all_times as $slot_time )
 						)
 					);
 
+				$COUNT_REAL_CHECK++;
 				$slot_status = $tm2->checkSlot( $slot_time, $slot, TRUE );
 				if( $slot_status )
 				{
@@ -181,4 +189,8 @@ foreach( $all_times as $slot_time )
 		}
 	}
 }
+
+//echo "<br>COUNT_SLOTS: $COUNT_SLOTS<br>";
+//echo "<br>COUNT_REAL_CHECK: $COUNT_REAL_CHECK<br>";
+//echo "<br>COUNT_CONTINUE: $COUNT_CONTINUE<br>";
 ?>

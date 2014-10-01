@@ -13,7 +13,6 @@ $dgtFileVersion = ntsLib::parseVersion($fileVersion);
 ?>
 
 <h3><?php echo $appInfo['app']; ?> <?php echo $appInfo['installed_version']; ?></h3>
-
 <?php
 if( $NTS_VIEW['form'] )
 {

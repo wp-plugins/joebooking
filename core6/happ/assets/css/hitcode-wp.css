@@ -1,0 +1,96 @@
+#nts {
+	font-family: inherit;
+	margin: 0.5em 0;
+	padding: 0 1.5em;
+	white-space: normal;
+	width: auto;
+	background-color: inherit;
+}
+
+#nts label,
+#nts input,
+#nts button,
+#nts select,
+#nts textarea {
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+}
+
+#nts input,
+#nts button,
+#nts select,
+#nts textarea {
+	font-family: inherit;
+}
+
+#nts .page-header {
+	margin-top: 0;
+	border-color: #ddd;
+	background-color: inherit;
+	text-transform: inherit;
+	box-shadow: inherit;
+	padding: 0.5em 0;
+	border-top: inherit;
+	border-bottom: 1px solid #eee;
+	}
+#nts .page-header h2 {
+	margin-top: 0;
+	margin-bottom: 0;
+	}
+#nts .page-header h1 {
+	margin: inherit;
+}
+
+#nts select,
+#nts textarea,
+#nts input[type="text"],
+#nts input[type="password"],
+#nts input[type="datetime"],
+#nts input[type="datetime-local"],
+#nts input[type="date"],
+#nts input[type="month"],
+#nts input[type="time"],
+#nts input[type="week"],
+#nts input[type="number"],
+#nts input[type="email"],
+#nts input[type="url"],
+#nts input[type="search"],
+#nts input[type="tel"],
+#nts input[type="color"],
+#nts .uneditable-input {
+	height: inherit;
+	margin-bottom: inherit;
+	color: inherit;
+	-webkit-border-radius: inherit;
+	-moz-border-radius: inherit;
+	border-radius: inherit;
+}
+
+#nts textarea:focus,
+#nts input[type="text"]:focus,
+#nts input[type="password"]:focus,
+#nts input[type="datetime"]:focus,
+#nts input[type="datetime-local"]:focus,
+#nts input[type="date"]:focus,
+#nts input[type="month"]:focus,
+#nts input[type="time"]:focus,
+#nts input[type="week"]:focus,
+#nts input[type="number"]:focus,
+#nts input[type="email"]:focus,
+#nts input[type="url"]:focus,
+#nts input[type="search"]:focus,
+#nts input[type="tel"]:focus,
+#nts input[type="color"]:focus,
+#nts .uneditable-input:focus {
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 1px rgba(82,168,236,0.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 1px rgba(82,168,236,0.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 1px rgba(82,168,236,0.6);
+}
+
+#nts a:focus
+{
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 1px rgba(82,168,236,0.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 1px rgba(82,168,236,0.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 1px rgba(82,168,236,0.6);
+}

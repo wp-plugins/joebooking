@@ -1,15 +1,28 @@
 <?php
+if( file_exists(dirname(__FILE__) . '/../../db.php') )
+{
+	$nts_no_db = TRUE;
+	include_once( dirname(__FILE__) . '/../../db.php' );
+}
+
 if( defined('NTS_DEVELOPMENT') )
 	$happ_path = NTS_DEVELOPMENT;
 else
 	$happ_path = dirname(__FILE__) . '/../happ';
 include_once( $happ_path . '/hclib/hcWpBase.php' );
+if( file_exists($happ_path . '/hclib/hcWpPremiumPlugin.php') )
+{
+	include_once( $happ_path . '/hclib/hcWpPremiumPlugin.php' );
+}
 
-class ntsWpBase extends hcWpBase3
+if( ! class_exists('ntsWpBase2') )
+{
+class ntsWpBase2 extends hcWpBase4
 {
 	public function __construct( 
 		$real_class,
-		$real_class_file
+		$real_class_file,
+		$hc_product = ''
 		)
 	{
 		$this->happ_path = defined('NTS_DEVELOPMENT') ? NTS_DEVELOPMENT : dirname(__FILE__) . '/../happ';;
@@ -43,8 +56,7 @@ class ntsWpBase extends hcWpBase3
 		parent::__construct( 
 			$app,
 			$real_class_file,
-//			'jbk',
-			'',
+			$hc_product,
 			'nts',
 			array(),
 			$slug,
@@ -129,6 +141,25 @@ class ntsWpBase extends hcWpBase3
 		add_action('wp', array($this, 'front_init') );
 		add_action( 'admin_init', array($this, 'admin_init') );
 		add_action( 'admin_menu', array($this, 'admin_menu') );
+	}
+
+	public function admin_menu()
+	{
+		parent::admin_menu();
+
+		$default_title = $this->app;
+		$default_title = str_replace( '_', ' ', $default_title );
+		$default_title = ucwords( $default_title );
+		$menu_title = get_site_option( $this->app . '_menu_title', $default_title );
+
+		$page = add_menu_page(
+			$menu_title,
+			$menu_title,
+			'read',
+			$this->slug,
+			array( $this, 'admin_view' ),
+			'dashicons-calendar'
+			);
 	}
 
 	public function front_init()
@@ -224,5 +255,6 @@ class ntsWpBase extends hcWpBase3
 			$conf->set( 'emailSentFromName', $email_from_name );
 		}
 	}
+}
 }
 ?>

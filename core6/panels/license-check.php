@@ -20,13 +20,20 @@ foreach( $skipPanels as $sp )
 	}
 }
 
+$ri = ntsLib::remoteIntegration();
+if( $ri && ($ri == 'wordpress') )
+{
+	$skipCheck = 1;
+}
+
 $currentLicense = $conf->get('licenseCode');
-if( (! $skipCheck) && (! $currentLicense) && ( ! in_array(NTS_APP_LEVEL, array('lite')) ) ){
+if( (! $skipCheck) && (! $currentLicense) && ( ! in_array(NTS_APP_LEVEL, array('lite')) ) )
+{
 	ntsView::setAnnounce( M('Please Enter Your License Code'), 'ok' );
 
 	/* redirect to license screeen */
 	$forwardTo = ntsLink::makeLink( 'admin/conf/upgrade' );
 	ntsView::redirect( $forwardTo );
 	exit;
-	}
+}
 ?>

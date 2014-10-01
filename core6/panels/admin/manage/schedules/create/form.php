@@ -62,7 +62,8 @@ foreach( $sers as $objId )
 ?>
 
 <?php
-if( count($locs) == 1 )
+//if( count($locs) == 1 )
+if( count($allLocs) == 1 )
 {
 	echo $this->makeInput (
 	/* type */
@@ -154,6 +155,29 @@ elseif( count($allSers) == 1 )
 <?php endif; ?>
 
 <?php if( count($allLocs) > 1 ) : ?>
+	<?php
+	echo ntsForm::wrapInput(
+		M('Locations'),
+		$this->buildInput(
+		/* type */
+			'locations',
+		/* attributes */
+			array(
+				'id'		=> 'location_id',
+				),
+		/* validators */
+			array(
+				array(
+					'code'		=> 'notEmpty.php', 
+					'error'		=> M('Required Field'),
+					),
+				)
+			)
+		);
+	?>
+<?php endif; ?>
+
+<?php if( 0 && count($allLocs) > 1 ) : ?>
 	<?php if( count($locs) == 1 ) : ?>
 		<?php
 		$obj = ntsObjectFactory::get( 'location' );

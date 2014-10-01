@@ -311,10 +311,10 @@ require( dirname(__FILE__) . '/_build_day_slots.php' );
 												$duration = $app->getProp('duration');
 												$t->setTimestamp( $app->getProp('starts_at') );
 												$t->modify( '+ ' . ($duration + $lead_out) . ' seconds' );
-												$menu[] = '<i class="fa fa-arrow-right"></i>' . $t->formatTime();
+												$menu[] = '<i class="fa fa-angle-right"></i>' . $t->formatTime() . ' [' . M('Clean Up') . ']';
 											}
 
-											/* MORE INFO */
+										/* MORE INFO */
 											if( isset($labels['dropdown']) && $labels['dropdown'] )
 											{
 												$this_skip = array('time');
@@ -328,6 +328,21 @@ require( dirname(__FILE__) . '/_build_day_slots.php' );
 													$this_skip[] = 'service';
 
 												$title = $app->dump( TRUE, array('location','resource','service','customer') );
+
+												$customer = new ntsUser;
+												$customer->setId( $app->getProp('customer_id') );
+												$title['customer_link'] = array(
+													'title'	=> ntsView::objectTitle( $customer, TRUE ),
+													'href'	=> ntsLink::makeLink(
+														'admin/customers/edit/edit',
+														'',
+														array(
+															'_id'	=> $customer->getId()
+															)
+														),
+													'target'	=> '_blank',
+													);
+
 												foreach( $labels['dropdown'] as $label )
 												{
 													if( in_array($label, $this_skip) )

@@ -294,15 +294,16 @@
 			if($("#"+calId).length == 0)
 			{
 //				target.after
-				$('#nts').append /* hitcode hack - append to #nts rather than target to avoid relative/absolute positioning */
+				var nts = $('#nts');
+				nts.append /* hitcode hack - append to #nts rather than target to avoid relative/absolute positioning */
 				(
 					$("<div id='"+calId+"'></div>")
 					.css(
 					{
 						"position":settings.position,
 						"z-index":settings.zIndex,
-						"left":(target.offset().left),
-						"top":target.offset().top+target.outerHeight(true)
+						"left":( target.offset().left - nts.offset().left ),
+						"top": ( target.offset().top + target.outerHeight(true) - nts.offset().top )
 					})
 				);
 			}

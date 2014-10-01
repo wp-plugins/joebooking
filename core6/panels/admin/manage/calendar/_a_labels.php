@@ -103,11 +103,23 @@ foreach( $labels as $l )
 }
 
 $labels['dropdown'] = array();
+
 foreach( $all_labels as $l )
 {
 	if( ! in_array($l, $used_labels) )
 	{
+		if( $l == 'customer' )
+			$l = 'customer_link';
 		$labels['dropdown'][] = $l;
 	}
+}
+
+if( 
+	in_array('customer', $all_labels)
+	&&
+	( ! in_array('customer_link', $labels['dropdown']) )
+	)
+{
+	array_unshift( $labels['dropdown'], 'customer_link' );
 }
 ?>

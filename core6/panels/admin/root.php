@@ -76,22 +76,24 @@ $NTS_VIEW['ALL_RESS'] = array();
 
 $appPermissions = $NTS_CURRENT_USER->getAppointmentPermissions();
 reset( $appPermissions );
-foreach( $appPermissions as $rid => $pa ){
+foreach( $appPermissions as $rid => $pa )
+{
 	if( $pa['view'] )
 		$NTS_VIEW['APP_VIEW'][] = $rid;
 	if( $pa['edit'] )
 		$NTS_VIEW['APP_EDIT'][] = $rid;
 	$NTS_VIEW['ALL_RESS'][] = $rid;
-	}
+}
 $schPermissions = $NTS_CURRENT_USER->getSchedulePermissions();
 reset( $schPermissions );
-foreach( $schPermissions as $rid => $pa ){
+foreach( $schPermissions as $rid => $pa )
+{
 	if( $pa['view'] )
 		$NTS_VIEW['SCH_VIEW'][] = $rid;
 	if( $pa['edit'] )
 		$NTS_VIEW['SCH_EDIT'][] = $rid;
 	$NTS_VIEW['ALL_RESS'][] = $rid;
-	}
+}
 
 /* ALL LRS */
 $loadRes = array_unique( array_merge($NTS_VIEW['APP_VIEW'], $NTS_VIEW['SCH_VIEW']) );
@@ -176,19 +178,45 @@ $schEdit = array();
 $schView = array();
 $schPermissions = $NTS_CURRENT_USER->getSchedulePermissions();
 reset( $schPermissions );
-foreach( $schPermissions as $rid => $pa ){
+foreach( $schPermissions as $rid => $pa )
+{
 	if( $pa['view'] || $pa['edit'] )
 		$ress[] = $rid; 
 	if( $pa['edit'] )
 		$schEdit[] = $rid;
 	if( $pa['view'] )
 		$schView[] = $rid;
-	}
+}
 $ress = array_unique( $ress );
 
 $tm2 = new haTimeManager2();
 $tm2->checkNow = 0;
 $tm2->setResource( $ress );
+
+/* if this admin is staff only then allow only configured locations and services */
+$current_user =& ntsLib::getCurrentUser();
+$level = $current_user->getProp( '_admin_level' );
+if( $level == 'staff' )
+{
+	$tm2->setResource( $ress );
+
+	$staff_locs = array();
+	$staff_sers = array();
+	$lrss = $tm2->getLrs( TRUE );
+	foreach( $lrss as $lrs )
+	{
+		$staff_locs[ $lrs[0] ] = 1;
+		$staff_sers[ $lrs[2] ] = 1;
+	}
+	$staff_locs = array_keys( $staff_locs );
+	$staff_sers = array_keys( $staff_sers );
+
+	$locs = array_intersect( $locs, $staff_locs );
+	$locs = array_values( $locs );
+	$sers = array_intersect( $sers, $staff_sers );
+	$sers = array_values( $sers );
+}
+
 $tm2->setLocation( $locs );
 $tm2->setService( $sers );
 
@@ -210,6 +238,7 @@ if( $schView || $appView )
 			$sers_all[] = $lrs[2];
 	}
 }
+
 
 /* check filter */
 $filterParam = $_NTS['REQ']->getParam( 'nts-filter' );

@@ -59,13 +59,26 @@ class ntsAppointment extends ntsObject {
 		return $return;
 	}
 
-	function get_conflicts()
+	function get_conflicts( $skip_from_today = FALSE )
 	{
 		$return = array();
 		$completed = $this->getProp('completed');
 		if( $completed )
 		{
 			return $return;
+		}
+
+		$starts_at = $this->getProp('starts_at');
+		$duration = $this->getProp('duration');
+		$lead_out = $this->getProp('lead_out');
+		if( $skip_from_today )
+		{
+			$now = time();
+			$skip_from = $now - 24*60*60;
+			if( ($starts_at + $duration + $lead_out) < $skip_from )
+			{
+				return $return;
+			}
 		}
 
 		if( ntsLib::hasVar( 'admin::tm2' ) )
@@ -88,11 +101,10 @@ class ntsAppointment extends ntsObject {
 
 		$starts_at = $this->getProp('starts_at');
 		$times = $tm2->getAllTime( $starts_at, $starts_at );
-		
 		if( ! isset($times[$starts_at]) )
 		{
 			$slot = $tm2->makeSlotFromAppointment( $this );
-			$remain_seats = $tm2->checkSlot( $starts_at, $slot, TRUE );			
+			$remain_seats = $tm2->checkSlot( $starts_at, $slot, TRUE );
 			if( ! $remain_seats )
 			{
 				$return = $tm2->getSlotErrors();

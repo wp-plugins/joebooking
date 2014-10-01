@@ -399,6 +399,11 @@ class ntsActionController
 			$action_file = 'panels/' . $this->panel . '/a.php';
 			$this->action_file = ntsLib::fileInCoreDirs($action_file);
 		}
+
+		if( $this->action == 'export' )
+		{
+			// don't show errors
+		}
 		require( $this->action_file );
 	}
 

@@ -93,8 +93,8 @@ $ntsConf =& ntsConf::getInstance();
 $attachEnableCompany = $ntsConf->get('attachEnableCompany');
 if( $attachEnableCompany )
 {
-	$am = new ntsAttachManager;
-	$attachments = $am->get( $object->getClassName(), $object->getId() );
+	$atm = new ntsAttachManager;
+	$attachments = $atm->get( $object->getClassName(), $object->getId() );
 	$tabs['attachments'] = array(
 		'title'	=> '<i class="fa fa-file-o"></i> ' . M('Attachments') . ' [' . count($attachments) . ']',
 		);

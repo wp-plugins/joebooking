@@ -16,6 +16,14 @@ if( ! defined('NTS_EXTENSIONS_DIR') )
 define( 'NTS_LIB_DIR', NTS_APP_DIR );
 include_once( NTS_LIB_DIR . '/lib/ntsLib.php' );
 
+define( 'NTS_PARAM_VIEW_MODE', 'nts-view-mode' );
+
+if( ntsLib::isAjax() )
+{
+	// suppressing errors on ajax
+	ini_set( 'display_errors', 'Off' );
+}
+
 global $NTS_EXECUTION_START;
 $NTS_EXECUTION_START = ntsLib::utime();
 
@@ -76,7 +84,6 @@ include_once( NTS_APP_DIR . '/version.php' );
 define( 'NTS_PARAM_ACTION', 'nts-action' );
 define( 'NTS_PARAM_PANEL', 'nts-panel' );
 define( 'NTS_PARAM_RETURN', 'nts-return' );
-define( 'NTS_PARAM_VIEW_MODE', 'nts-view-mode' );
 define( 'NTS_PARAM_VIEW_RICH', 'nts-view-rich' );
 
 $ntsdb =& dbWrapper::getInstance();

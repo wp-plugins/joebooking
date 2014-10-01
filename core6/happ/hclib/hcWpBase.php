@@ -28,9 +28,9 @@ class hcWpPost {
 	}
 }
 
-if( ! class_exists('hcWpBase3') )
+if( ! class_exists('hcWpBase4') )
 {
-class hcWpBase3
+class hcWpBase4
 {
 	var $app = '';
 	var $slug = '';
@@ -53,6 +53,8 @@ class hcWpBase3
 	var $happ_path = '';
 	var $happ_web_dir = '';
 	var $deactivate_other = array();
+
+	var $premium = NULL;
 
 	public function __construct( 
 		$app,
@@ -143,6 +145,13 @@ class hcWpBase3
 				$f = $this->happ_web_dir . '/' . $real_f;
 			}
 			$this->register_admin_style($f);
+
+		/* add wp overwriter */
+			if( substr($f, -strlen('/hitcode.css')) == '/hitcode.css' )
+			{
+				$f2 = str_replace( '/hitcode.css', '/hitcode-wp.css', $f );
+				$this->register_admin_style($f2);
+			}
 		}
 
 		reset( $js_files );
@@ -203,9 +212,31 @@ class hcWpBase3
 
 		add_shortcode( $this->app, array($this, 'front_view'));
 		add_action( 'admin_menu', array($this, 'admin_menu') );
-		
+
 		$submenu = is_multisite() ? 'network_admin_menu' : 'admin_menu';
 		add_action( $submenu, array($this, 'admin_submenu') );
+	}
+
+	static function uninstall( $prefix )
+	{
+		global $wpdb, $table_prefix;
+
+		if( ! strlen($prefix) )
+		{
+			return;
+		}
+
+		$mypref = $table_prefix . $prefix . '_';
+		$sql = "SHOW TABLES LIKE '$mypref%'";
+		$results = $wpdb->get_results( $sql );
+		foreach( $results as $index => $value )
+		{
+			foreach( $value as $tbl )
+			{
+				$sql = "DROP TABLE IF EXISTS $tbl";
+				$e = $wpdb->query($sql);
+			}
+		}
 	}
 
 	public function admin_menu()
@@ -214,6 +245,10 @@ class hcWpBase3
 
 	public function admin_submenu()
 	{
+		if( $this->premium )
+		{
+			$this->premium->admin_submenu();
+		}
 	}
 
 	public function deactivate_other( $plugins = array() )
@@ -304,6 +339,10 @@ class hcWpBase3
 
 	public function admin_total_init()
 	{
+		if( $this->premium )
+		{
+			$this->premium->admin_total_init();
+		}
 	}
 
 	public function admin_init()
@@ -370,7 +409,7 @@ class hcWpBase3
 							preg_match('/'. $pattern .'/s', $post->post_content, $matches)
 							)
 						{
-							$nts_default_url_params = shortcode_parse_atts( $matches[1] );
+							$GLOBALS['NTS_CONFIG'][$this->app]['DEFAULT_PARAMS'] = shortcode_parse_atts( $matches[1] );
 						}
 						require( $this->happ_path . '/application/index_action.php' );
 						$GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED'] = 1;
@@ -721,6 +760,15 @@ class hcWpBase3
 			unset( $_SESSION['NTS_SESSION_REF'] );
 		}
 	}
+
+	public function dev_options()
+	{
+		if( $this->premium )
+		{
+			$this->premium->dev_options();
+		}
+	}
+
 }
 }
 ?>

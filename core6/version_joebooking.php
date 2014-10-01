@@ -10,6 +10,7 @@ $my_disable = array(
 	'common',
 	'attach',
 
+	'appointment_flow',
 	'hooks',
 	'payment',
 	'language',

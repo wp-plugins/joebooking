@@ -11,7 +11,13 @@ if( in_array(NTS_APP_LEVEL, array('lite')) OR (defined('NTS_APP_DEVELOPER') && N
 }
 if( defined('NTS_DEVELOPMENT') )
 {
-//	$showLicenseForm = TRUE;
+	$showLicenseForm = TRUE;
+}
+
+$ri = ntsLib::remoteIntegration();
+if( $ri && ($ri == 'wordpress') )
+{
+	$showLicenseForm = FALSE;
 }
 
 $NTS_VIEW['form'] = NULL;

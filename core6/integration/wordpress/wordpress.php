@@ -134,7 +134,7 @@ EOT;
 
 	function createUser( $info, $metaInfo = array() ){
 		/** WordPress Registration API */
-		require_once( ABSPATH . WPINC . '/registration.php');
+//		require_once( ABSPATH . WPINC . '/registration.php');
 
 		$newPassword = $info['new_password'];
 		$info = $this->convertTo( $info );
@@ -150,7 +150,7 @@ EOT;
 
 	function updateUser( $id, $info, $metaInfo = array() ){
 		/** WordPress Registration API */
-		require_once( ABSPATH . WPINC . '/registration.php');
+//		require_once( ABSPATH . WPINC . '/registration.php');
 
 		if( ! $info )
 			return true;

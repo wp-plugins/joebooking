@@ -6,6 +6,7 @@ $pgm =& ntsPaymentGatewaysManager::getInstance();
 $pm =& ntsPaymentManager::getInstance();
 
 $has_online = $pgm->hasOnline();
+$has_offline = $pgm->hasOffline();
 
 $conf =& ntsConf::getInstance();
 $customerAcknowledge = $conf->get('customerAcknowledge');

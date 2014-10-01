@@ -393,11 +393,29 @@ class ntsView {
 		$_NTS['REQUESTED_ACTION'] = $action;
 		}
 
-	static function objectTitle( $object, $html = FALSE, $params = array() ){
+	static function objectTitle( $object, $html = FALSE, $params = array() )
+	{
+		global $NTS_CACHE_OBJECT_TITLES;
+		if( ! isset($NTS_CACHE_OBJECT_TITLES) )
+			$NTS_CACHE_OBJECT_TITLES = array();
+
 		global $NTS_VIEW;
 		if( ! $object )
 			return;
+
 		$className = $object->getClassName();
+		$objId = $object->getId();
+		$objKey = $className . '_' . $objId . '_';
+		$objKey .= $html ? '1' : '0';
+
+		if( ! $params )
+		{
+			if( isset($NTS_CACHE_OBJECT_TITLES[$objKey]) )
+			{
+				return $NTS_CACHE_OBJECT_TITLES[$objKey];
+			}
+		}
+
 		switch( $className ){
 			case 'invoice':
 				$return = M('Invoice') . ' ' . $object->getProp('refno');
@@ -616,8 +634,10 @@ class ntsView {
 
 		list( $link_title, $link_icon ) = Hc_lib::parse_icon( $return );
 		$return = $link_icon . $link_title;
+
+		$NTS_CACHE_OBJECT_TITLES[$objKey] = $return;
 		return $return;
-		}
+	}
 
 	static function appServiceView( $a, $noPrice = FALSE ){
 		$return = '';
@@ -693,8 +713,31 @@ class ntsView {
 		return;
 	}
 
-	static function redirect( $to, $force = false, $parent = false ){
+	static function redirect( $to, $force = false, $parent = false )
+	{
 		global $NTS_VIEW;
+
+	/* parse $to if called remotely */
+		if( isset($NTS_VIEW['called_remotely']) && $NTS_VIEW['called_remotely'] )
+		{
+			$parsed = parse_url( $to );
+
+			$to = ntsLib::pureUrl( ntsLib::currentPageUrl() );
+
+			$query = isset($parsed['query']) ? $parsed['query'] : '';
+			if( isset($_REQUEST['nts-integrate-url']) )
+			{
+				if( $query )
+					$query .= '&';
+				$query .= 'nts-integrate-url=' . $_REQUEST['nts-integrate-url'];
+			}
+
+			if( $query )
+			{
+				$to .= '?' . $query;
+			}
+		}
+
 		$html = '';
 		if( ntsLib::isAjax() ){
 			if( $force ){
@@ -767,7 +810,7 @@ EOT;
 				echo $html;
 				}
 			}
-		}
+	}
 
 	static function getBackLink( $force = false, $parent = false ){
 		global $NTS_VIEW;

@@ -37,7 +37,11 @@ if( $period )
 }
 
 $tm2 = ntsLib::getVar( 'admin::tm2' );
-$all_apps = $tm2->getAppointments( $where, 'ORDER BY starts_at DESC, id DESC' );
+
+$all_apps = $tm2->getAppointments(
+	$where, 
+	'ORDER BY starts_at DESC, id DESC'
+	);
 
 $calendar_dir = NTS_APP_DIR . '/panels/admin/manage/calendar';
 $display = 'browse';

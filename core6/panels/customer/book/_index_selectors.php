@@ -59,6 +59,25 @@ if( $requested['time'] )
 	$to_show[] = 'time';
 else
 	$to_select[] = 'time';
+
+/* sort by flow config */
+$ntsConf =& ntsConf::getInstance();
+$flow_conf = $ntsConf->get('appointmentFlow');
+$only_one_conf = $ntsConf->get('appointmentFlowJustOne');
+
+$flow = array();
+foreach( $flow_conf as $fc )
+{
+	$flow[] = $fc[0];
+}
+
+$to_select = ntsLib::sortArrayByArray( $to_select, $flow );
+$to_show = ntsLib::sortArrayByArray( $to_show, $flow );
+
+if( $only_one_conf )
+{
+	$to_select = array_slice( $to_select, 0, 1 );
+}
 ?>
 
 <?php foreach( $to_show as $sh ) : ?>

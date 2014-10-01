@@ -90,6 +90,7 @@ foreach( $objects as $o )
 		$save = TRUE;
 	}
 }
+
 if( $save )
 {
 	$session->set_userdata( 'prepay', $prepay );

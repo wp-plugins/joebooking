@@ -99,21 +99,24 @@ if( $check_appointments && $dates2process )
 	$what = join( ',', $counts );
 	$where = array();
 
-/*
 	if( $tm2->locationIds )
 		$where['location_id'] = array( 'IN', $tm2->locationIds );
 	if( $tm2->resourceIds )
 		$where['resource_id'] = array( 'IN', $tm2->resourceIds );
-	if( $tm2->serviceIds )
-		$where['service_id'] = array( 'IN', $tm2->serviceIds );
-*/
-	$where['completed'] = array( 'NOT IN', array(HA_STATUS_CANCELLED, HA_STATUS_NOSHOW) );
+//	if( $tm2->serviceIds )
+//		$where['service_id'] = array( 'IN', $tm2->serviceIds );
 
+//	$where['completed'] = array( 'NOT IN', array(HA_STATUS_CANCELLED, HA_STATUS_NOSHOW) );
+	$where['completed'] = array( 'NOT IN', array(HA_STATUS_CANCELLED, HA_STATUS_NOSHOW, HA_STATUS_COMPLETED) );
+
+//$ntsdb->_debug = TRUE;
 	$count = $ntsdb->get_select( 
 		$what,
 		'appointments',
 		$where
 		);
+//$ntsdb->_debug = FALSE;
+//exit;
 
 	if( isset($count[0]) )
 	{

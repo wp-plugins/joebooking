@@ -3,6 +3,8 @@ class ntsPaymentManager {
 	var $promotions = array();
 	var $couponCountLeft = array();
 	var $gotPromotions = array();
+	var $invoice_items = array();
+	var $invoice_transactions = array();
 
 	function __construct()
 	{
@@ -367,7 +369,16 @@ class ntsPaymentManager {
 	{
 		$r = $this->_parseReady( $r );
 
-		$price = isset($r['price']) ? $r['price'] : $this->getPrice( $r, $coupon );
+		if( isset($r['id']) && $r['id'] )
+		{
+			$app = ntsObjectFactory::get( 'appointment' );
+			$app->setId( $r['id'] );
+			$price = $app->getCost();
+		}
+		else
+		{
+			$price = isset($r['price']) ? $r['price'] : $this->getPrice( $r, $coupon );
+		}
 		$service = ntsObjectFactory::get( 'service' );
 		$service->setId( $r['service_id'] );
 		$prepay = $service->getPrepay();
@@ -409,6 +420,163 @@ class ntsPaymentManager {
 			}
 		}
 		return $return;
+	}
+
+	function getInvoiceItems( $invoice_id )
+	{
+		if( ! isset($this->invoice_items[$invoice_id]) )
+		{
+			$this->preloadInvoiceItems( array($invoice_id) );
+		}
+		$return = $this->invoice_items[$invoice_id];
+		return $return;
+	}
+
+	function getInvoiceTransactions( $invoice_id )
+	{
+		if( ! isset($this->invoice_transactions[$invoice_id]) )
+		{
+			$this->preloadInvoiceItems( array($invoice_id) );
+		}
+		$return = $this->invoice_transactions[$invoice_id];
+		return $return;
+	}
+	
+	function preloadInvoiceItems( $invoice_ids )
+	{
+		foreach( $invoice_ids as $iid )
+		{
+			$this->invoice_items[ $iid ] = array();
+			$this->invoice_transactions[ $iid ] = array();
+		}
+
+		$ntsdb =& dbWrapper::getInstance();
+
+	/* transactions */
+		$where = array(
+			'invoice_id'	=> array( 'IN', $invoice_ids ),
+			);
+		$transaction_ids = $ntsdb->get_select(
+			'id',
+			'transactions',
+			$where,
+			'ORDER BY created_at ASC'
+			);
+		if( $transaction_ids )
+		{
+			ntsObjectFactory::preload( 'transaction', $transaction_ids );
+
+			reset( $transaction_ids );
+			foreach( $transaction_ids as $tid )
+			{
+				$e = ntsObjectFactory::get( 'transaction' );
+				$e->setId( $tid );
+				$this_iid = $e->getProp( 'invoice_id' );
+				$this->invoice_transactions[ $this_iid ][] = $e;
+			}
+		}
+
+	/* invoice items */
+		$where = array(
+			'invoice_id'	=> array( 'IN', $invoice_ids ),
+			);
+		$rows = $ntsdb->get_select(
+			array( 'id', 'amount', 'qty', 'title', 'obj_class', 'obj_id', 'taxable', 'invoice_id' ),
+			'invoice_items',
+			$where,
+			'ORDER BY id'
+			);
+
+		$also_preload = array();
+		reset( $rows );
+		foreach( $rows as $r )
+		{
+			if( $r['obj_class'] && $r['obj_id'] )
+			{
+				if( ! isset($also_preload[ $r['obj_class'] ]) )
+				{
+					$also_preload[ $r['obj_class'] ] = array();
+				}
+				$also_preload[ $r['obj_class'] ][ $r['obj_id'] ] = 1;
+			}
+		}
+		reset( $also_preload );
+		foreach( $also_preload as $class => $ids )
+		{
+			ntsObjectFactory::preload( $class, array_keys($ids) );
+		}
+
+		reset( $rows );
+		foreach( $rows as $r )
+		{
+			$item = NULL;
+			if( $r['obj_class'] && $r['obj_id'] )
+			{
+				$item_class = $r['obj_class'];
+				$item_id = $r['obj_id'];
+
+				$item = ntsObjectFactory::get( $item_class );
+				$item->setId( $item_id );
+
+				switch( $item_class )
+				{
+					case 'appointment':
+					/* check which number of payments */
+						$mySeq = 0;
+
+					/*
+						$this_invoices = $item->getInvoices();
+						$totalCount = count($this_invoices);
+						if( $totalCount > 1 )
+						{
+							for( $ii = 1; $ii <= $totalCount; $ii++ )
+							{
+								if( $this_invoices[$ii - 1][0] == $invoice_id )
+								{
+									$mySeq = $ii;
+									break;
+								}
+							}
+						}
+					*/
+
+						$itemName = M('Appointment') . ' ' . '[' . $item->statusText() . ']';
+						$itemDescription = ntsView::objectTitle($item);
+						if( $mySeq )
+						{
+							$itemDescription .= ' [' . M('Payment') . ' ' . $mySeq . '/' . $totalCount . ']';
+						}
+						break;
+
+					case 'order':
+						$itemName = M('Package');
+						$itemDescription = $item->getFullTitle();
+						break;
+				}
+			}
+			else
+			{
+				$itemName = $r['title'];
+				$itemDescription = '';
+			}
+
+			$tax_rate = $r['taxable'] ? $this->getTaxRate() : 0;
+			$thisItem = array(
+				'id'			=> $r['id'], 
+				'name'			=> $itemName, 
+				'description'	=> $itemDescription,
+				'unitCost' 		=> $r['amount'],
+				'unitTaxRate' 	=> $tax_rate,
+				'quantity'		=> $r['qty'],
+				'object'		=> $item,
+				);
+				
+			if( ! isset($this->invoice_items[$r['invoice_id']]) )
+			{
+				$this->invoice_items[$r['invoice_id']] = array();
+			}
+			$this->invoice_items[$r['invoice_id']][] = $thisItem;
+		}
 	}
 
 	function getInvoicesOfCustomer( $customerId )
@@ -462,7 +630,9 @@ class ntsPaymentManager {
 		$where = array(
 			'customer_id'	=> array( '=', $customerId ),
 			);
-		$where['exists'] = array( '', '(' . 'SELECT id FROM {PRFX}invoice_items WHERE {PRFX}invoice_items.invoice_id = {PRFX}invoices.id' . ')', TRUE );
+
+// remove, too slow
+//		$where['exists'] = array( '', '(' . 'SELECT id FROM {PRFX}invoice_items WHERE {PRFX}invoice_items.invoice_id = {PRFX}invoices.id' . ')', TRUE );
 		$direct_invoices = $ntsdb->get_select( 'id', 'invoices', $where );
 		$return = array_merge( $return, $direct_invoices );
 
@@ -895,6 +1065,18 @@ class ntsPaymentGatewaysManager {
 		return $return;
 	}
 
+	function hasOffline()
+	{
+		$return = FALSE;
+		$allGateways = $this->getActiveGateways();
+		if( in_array('offline', $allGateways) )
+		{
+			$settings = $this->getGatewaySettings( 'offline' );
+			$return = ( isset($settings['label']) && strlen($settings['label']) ) ? $settings['label'] : M('Pay At Our Office');
+		}
+		return $return;
+	}
+
 	function getAllCurrencies(){
 		return $this->allCurrencies;
 		}
@@ -950,8 +1132,10 @@ class ntsPaymentGatewaysManager {
 		reset( $folders );
 		foreach( $folders as $f )
 		{
-			if( $f == 'offline' )
-				continue;
+//			if( $f == 'offline' )
+//			{
+//				continue;
+//			}
 			$gateways[] = $f;
 		}
 

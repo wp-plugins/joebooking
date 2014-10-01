@@ -112,7 +112,7 @@ function hc_submit_ajax( method, targetUrl, resultDiv, thisFormData )
 		data: thisFormData,
 		success: function(data, textStatus){
 			resultDiv.removeClass( 'hc-loading' );
-			if( data.redirect )
+			if( data && data.redirect )
 			{
 				var returnDiv = resultDiv.data('return-target');
 				if( returnDiv )
@@ -155,7 +155,7 @@ function hc_submit_ajax( method, targetUrl, resultDiv, thisFormData )
 //						resultDiv.hide();
 				}
 			}
-			else if( data.html )
+			else if( data && data.html )
 			{
 				resultDiv.html( data.html );
 			}
@@ -440,8 +440,12 @@ jQuery(document).on('click', '[data-toggle=collapse-next]', function(e)
 {
 	var this_target = jQuery(this).parents('.collapse-panel').find('.collapse');
 	this_target.collapse('toggle');
+
 	if( jQuery(this).attr('type') != 'checkbox' )
 	{
+		/* scroll into view */
+//		var this_parent = jQuery(this).parents('.collapse-panel');
+//		this_parent[0].scrollIntoView();
 		return false;
 	}
 	else

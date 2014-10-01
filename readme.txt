@@ -6,7 +6,7 @@ License: GPLv2 or later
 
 Stable tag: trunk
 Requires at least: 3.3
-Tested up to: 3.9
+Tested up to: 4.0
 
 Switch to accept appointments for your services right from your WordPress powered website. 
 
@@ -47,6 +47,21 @@ Author URI: http://www.joebooking.com
 The upgrade is simply - upload everything up again to your `/wp-content/plugins/` directory, then go to the JoeBooking menu item in the admin panel. It will automatically start the upgrade process if any needed.
 
 == Changelog ==
+
+= 6.0.7 =
+* BUG: Appointments in customer panel were not properly sorted thus appointments from one month might have appeared under another month title.
+* Hide SMS configuration and logs from staff members
+* BUG: SMS text message were sent even if "No Notification" checkbox was on
+* BUG: "Filter customers for admin" plugin was not working
+* Added appointment status legend in the customer area
+* BUG: iCal and Excel (CSV) export links were not working in the customer area
+* BUG: Synchronization link was not displayed to staff members
+* BUG: calendar popup was shifted in position in JoeBooking admin area
+
+= 6.0.6 =
+* Added a link to customer info in the appointment dropdown in admin area
+* Fixed wrong time shown for appointments in admin area when lead-out was enabled
+* Minor code updates and fixes
 
 = 6.0.5 =
 * Added an option to archive a location

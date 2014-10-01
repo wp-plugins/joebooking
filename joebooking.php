@@ -1,25 +1,22 @@
 <?php
 /**
  * @package JoeBooking
- * @author JoeBooking
+ * @author HitCode
  */
 /*
 Plugin Name: JoeBooking
 Plugin URI: http://www.joebooking.com/
 Description: Appointment scheduling plugin designed specifically for service professionals like massage therapists, consultants, tutors, instructors, photographers, stylists, dog groomers and others who need to book their time with clients online. 
-Author: JoeBooking
-Version: 6.0.5
-Author URI: http://www.joebooking.com/
+Author: HitCode
+Version: 6.1.0
+Author URI: http://www.hitcode.com/
 */
 
-if( file_exists(dirname(__FILE__) . '/db.php') )
-{
-	$nts_no_db = TRUE;
-	include_once( dirname(__FILE__) . '/db.php' );
-}
 include_once( dirname(__FILE__) . '/core6/lib/ntsWpBase.php' );
 
-class joeBooking extends ntsWpBase
+register_uninstall_hook( __FILE__, array('joeBooking', 'uninstall') );
+
+class joeBooking extends ntsWpBase2
 {
 	public function __construct()
 	{
@@ -29,16 +26,10 @@ class joeBooking extends ntsWpBase
 			);
 	}
 
-	public function admin_menu()
+	static function uninstall( $prefix = 'ha_v6' )
 	{
-		$page = add_menu_page(
-			'JoeBooking',
-			'JoeBooking',
-			'read',
-			$this->slug,
-			array( $this, 'admin_view' ),
-			'dashicons-calendar'
-			);
+		$prefix = 'ha_v6';
+		hcWpBase4::uninstall( $prefix );
 	}
 }
 

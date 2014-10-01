@@ -383,6 +383,39 @@ class ntsConf {
 					$return = 'default';
 				break;
 
+			case 'appointmentFlow':
+				if( ! $rawValue )
+				{
+					$return = array(
+						array( 'location',	'manual' ),
+						array( 'resource',	'manual' ),
+						array( 'service',	'manual' ),
+						array( 'seats',		'manual' ),
+						array( 'time',		'manual' ),
+						);
+				}
+				else
+				{
+					$raw = explode( '|', $rawValue );
+					reset( $raw );
+					$return = array();
+					foreach( $raw as $rr )
+					{
+						$r = explode( ':', $rr ); 
+						$return[] = $r;
+						if( $r[0] == 'service' )
+							$return[] = array( 'seats', 'manual' );
+					}
+				}
+				break;
+
+			case 'appointmentFlowJustOne':
+				if( strlen($rawValue) == 0 )
+					$return = 0;
+				else
+					$return = $rawValue;
+				break;
+
 			case 'paymentGateways':
 				if( ! $rawValue ){
 					$return = array();

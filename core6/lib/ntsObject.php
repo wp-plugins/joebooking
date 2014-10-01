@@ -83,6 +83,12 @@ EOT;
 		return $return;
 		}
 
+	static function setOnCache( $className, $id, $what )
+	{
+		global $NTS_OBJECT_CACHE;
+		$NTS_OBJECT_CACHE[$className][ $id ] = $what;
+	}
+
 	static function preload( $className, $ids = array() ){
 		global $NTS_OBJECT_CACHE, $NTS_OBJECT_PROPS_CONFIG;
 
@@ -108,7 +114,7 @@ EOT;
 					if( isset( $metaInfo[$u['id']] ) ){
 						$u = array_merge( $u, $metaInfo[$u['id']] );
 						}
-					$NTS_OBJECT_CACHE[$className][ $u['id'] ] = $u;
+					ntsObjectFactory::setOnCache( $className, $u['id'], $u );
 					}
 				break;
 
@@ -129,9 +135,15 @@ EOT;
 						if( isset( $metaInfo[$u['id']] ) ){
 							$u = array_merge( $u, $metaInfo[$u['id']] );
 							}
-						$NTS_OBJECT_CACHE[$className][ $u['id'] ] = $u;
+						ntsObjectFactory::setOnCache( $className, $u['id'], $u );
 						}
 					}
+
+				if( $className == 'invoice' )
+				{
+					$pm =& ntsPaymentManager::getInstance();
+					$pm->preloadInvoiceItems( $ids );
+				}
 				break;
 			}
 		}
@@ -207,33 +219,52 @@ EOT;
 		return $return;
 	}
 
-	static function find( $className, $where, $addonString = '' ){
+	static function find( $className, $where, $addonString = '' )
+	{
 		$return = array();
 		$ntsdb =& dbWrapper::getInstance();
 		$om =& objectMapper::getInstance();
 		$tblName = $om->getTableForClass( $className );
-		
-		if( (! $addonString) && $om->isPropRegistered($className, 'show_order') )
-			$addonString .= ' ORDER BY show_order ASC';
+
+		if( (! $addonString) )
+		{
+			if( $om->isPropRegistered($className, 'show_order') )
+			{
+				$addonString .= ' ORDER BY show_order ASC';
+			}
+			else
+			{
+				switch( $className )
+				{
+					case 'appointment':
+						$addonString .= ' ORDER BY starts_at ASC';
+						break;
+				}
+			}
+		}
 
 		$ids = array();
 		$result = $ntsdb->select( 'id', $tblName, $where, $addonString );
-		if( $result ){
-			while( $u = $result->fetch() ){
+		if( $result )
+		{
+			while( $u = $result->fetch() )
+			{
 				$ids[] = $u['id'];
-				}
 			}
-		if( $ids ){
+		}
+		if( $ids )
+		{
 			ntsObjectFactory::preload( $className, $ids );
 			reset( $ids );
-			foreach( $ids as $id ){
+			foreach( $ids as $id )
+			{
 				$o = ntsObjectFactory::get( $className );
 				$o->setId( $id );
 				$return[] = $o;
-				}
 			}
-		return $return;
 		}
+		return $return;
+	}
 
 	static function count( $className, $where = array(), $addonString = '' )
 	{
@@ -362,8 +393,8 @@ class ntsObject {
 
 	function get_accounting_postings()
 	{
-		$am =& ntsAccountingManager::getInstance();
-		return $am->get_postings( $this->getClassName(), $this->getId() );
+		$amn =& ntsAccountingManager::getInstance();
+		return $amn->get_postings( $this->getClassName(), $this->getId() );
 	}
 
 	function reset_accounting_postings()
