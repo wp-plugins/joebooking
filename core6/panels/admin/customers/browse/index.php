@@ -27,6 +27,14 @@ $filter_options = array(
 	'active'	=>	M('Most Active'),
 	'recent'	=>	M('Recent'),
 	);
+
+if( $restricted_count )
+{
+	foreach( $restricted_count as $rk => $rv )
+	{
+		$filter_options[$rk] = ntsUser::_statusLabel( array($rk) ) . ' ' . '[' . $rv . ']';
+	}
+}
 ?>
 
 <div class="row">
@@ -122,7 +130,6 @@ $filter_options = array(
 		</ul>
 	</div>
 </div>
-
 
 <?php if( ! count($entries) ) : ?>
 	<?php if( $grandTotalCount > 0 ) : ?>

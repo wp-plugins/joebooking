@@ -38,6 +38,16 @@ $t = $NTS_VIEW['t'];
 				</ul>
 			</li>
 		<?php endforeach; ?>
+
+		<?php if( isset($change['description']) && strlen($change['description']) ) : ?>
+			<li class="list-group-item">
+				<i class="fa fa-fw fa-comment-o"></i> 
+				<em>
+				<?php echo $change['description']; ?>
+				</em>
+			</li>
+		<?php endif; ?>
+
 		</ul>
 	</li>
 <?php endforeach; ?>

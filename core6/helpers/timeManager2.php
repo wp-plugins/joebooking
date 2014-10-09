@@ -5,9 +5,11 @@ class haTimeManager2 {
 	var $useCache = FALSE;
 	var $dayMode = FALSE;
 	var $blockMode = FALSE;
+	var $conf = array();
 
 	var $companyT = null;
 	var $customerT = null;
+	var $tempT = null;
 
 	var $resourceIds = array();
 	var $resourceSet = FALSE;
@@ -66,6 +68,9 @@ class haTimeManager2 {
 		$t = new ntsTime;
 		$this->companyT = $t;
 		$this->customerT = $t;
+
+		$this->tempT = new ntsTime;
+
 		$this->customerSide = false;
 		$this->isBundle = false;
 		$this->resourceSet = false;
@@ -162,6 +167,9 @@ EOT;
 			$max2 = $minmax['maxstart'] + $this->maxDuration;
 			$this->maxBlockEnd = max( $max1, $max2 );
 		}
+
+		$ntsConf =& ntsConf::getInstance();
+		$this->conf['minFromNowTomorrow'] = $ntsConf->get('minFromNowTomorrow');
 
 	/* load plugins if any */
 		$plm =& ntsPluginManager::getInstance();
@@ -858,7 +866,8 @@ EOT;
 						applied on not fixed time blocks
 						if it's today and todays block not yet started
 						*/
-						if( 
+						if(
+							( $this->conf['minFromNowTomorrow'] == 'tomorrow' ) && 
 							( $b1['selectable_every'] ) && 
 							( $now < ($startDay + $block_starts_at) ) && 
 							( ($now + 24*60*60) > ($startDay + $block_ends_at)  )
@@ -903,8 +912,11 @@ EOT;
 						$checkBlockEnd = $block_ends_at;
 						$rex_block_ends_at = $block_ends_at;
 
-						$t = new ntsTime;
-						$t->setDateDb( $datesIndex[$di] );
+						if( $rex_block_ends_at >= 24 * 60 * 60 )
+						{
+							$this->tempT->setDateDb( $datesIndex[$di] );
+						}
+
 						$how_many_days = 0;
 						$target_check_end = $rex_block_ends_at + $this->max_duration;
 
@@ -914,16 +926,16 @@ EOT;
 							( $checkBlockEnd < $target_check_end )
 							)
 						{
-							/* find next blocks */
+						/* find next blocks */
 							$need_start = ($rex_block_ends_at - 24*60*60);
 							$how_many_days++;
 
 						// ends at/after midnight, I should find a block tomorrow, 
 						// and probably days after tomorrow if my max service is long
-							$t->modify( '+1 day' );
-							$tomorrow = $t->formatDate_Db();
-							$tomorrowWeekday = $t->getWeekday();
-							$tomorrowWeekNo = $t->getWeekNo();
+							$this->tempT->modify( '+1 day' );
+							$tomorrow = $this->tempT->formatDate_Db();
+							$tomorrowWeekday = $this->tempT->getWeekday();
+							$tomorrowWeekNo = $this->tempT->getWeekNo();
 							$tomorrowWeekType = ($tomorrowWeekNo % 2) ? 2 : 1;
 
 /*

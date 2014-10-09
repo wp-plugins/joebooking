@@ -132,9 +132,12 @@ else
 		if( file_exists($checkd) )
 		{
 			$NTS_VIEW['isInside'] = TRUE;
-			$NTS_VIEW['headFile'] = $checkd . '/head.php';
-			$NTS_VIEW['headerFile'] = $checkd . '/header.php';
-			$NTS_VIEW['footerFile'] = $checkd . '/footer.php';
+//			$NTS_VIEW['headFile'] = $checkd . '/head.php';
+//			$NTS_VIEW['headerFile'] = $checkd . '/header.php';
+//			$NTS_VIEW['footerFile'] = $checkd . '/footer.php';
+
+			$NTS_VIEW['isTheme'] = $checkd . '/index.php';
+
 			break;
 		}
 	}

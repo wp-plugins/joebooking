@@ -7,6 +7,19 @@ function ntsPluginFilterCustumers_AllowCustomers()
 
 	$thisId = $NTS_CURRENT_USER->getId();
 
+	global $NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS;
+	if( ! isset($NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS) )
+	{
+		$NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS = array();
+	}
+
+	if( isset($NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS[$thisId]) )
+	{
+		return $NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS[$thisId];
+	}
+
+	$NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS[$thisId] = array();
+
 	$ntsdb =& dbWrapper::getInstance();
 
 	/* get the resources */
@@ -111,12 +124,14 @@ function ntsPluginFilterCustumers_AllowCustomers()
 
 			$uif =& ntsUserIntegratorFactory::getInstance();
 			$integrator =& $uif->getIntegrator();
-			$remain_users = $integrator->getUsers( $where );
+			$NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS = $integrator->loadUsers( $where );
+
+/*
 			foreach( $remain_users as $ru )
 			{
 				$NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS[] = $ru['id'];
 			}
-
+*/
 		/*
 			$filter_result = $ntsdb->select(
 				'id',
@@ -136,6 +151,7 @@ function ntsPluginFilterCustumers_AllowCustomers()
 
 	$filter_ids = array_merge( $filter_ids1, $filter_ids2, $NTS_PLUGIN_FILTER_CUSTOMERS_NOAPPS );
 	$filter_ids = array_unique( $filter_ids );
+	$NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS[$thisId] = $filter_ids;
 	return $filter_ids;
 }
 ?>

@@ -181,6 +181,10 @@ if( isset($track[$className]) )
 		$time = time();
 		$currentUserId = ntsLib::getCurrentUserId();
 		$currentUserId = $this->act_as ? $this->act_as : ntsLib::getCurrentUserId();
+
+		$description = $object->_change_reason ? $object->_change_reason : '';
+		$object->_change_reason = '';
+
 		foreach( $log_changes as $property_name => $old_value )
 		{
 			$log = array(
@@ -189,7 +193,8 @@ if( isset($track[$className]) )
 				'obj_class'		=> $className,
 				'obj_id'		=> $objId,
 				'property_name'	=> $property_name,
-				'old_value'		=> $old_value
+				'old_value'		=> $old_value,
+				'description'	=> $description,
 				);
 			$result = $ntsdb->insert(
 				'logaudit',

@@ -332,5 +332,6 @@ CREATE TABLE IF NOT EXISTS `{PRFX}logaudit` (
 
 	`property_name` varchar(32) NOT NULL DEFAULT '',
 	`old_value` TEXT,
+	`description` TEXT,
 	PRIMARY KEY  (`id`)
 	);

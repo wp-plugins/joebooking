@@ -732,6 +732,7 @@
 
 #nts span.btn {
 	cursor: auto;
+	cursor: inherit;
 	}
 #nts .btn:active,
 #nts .btn.active {

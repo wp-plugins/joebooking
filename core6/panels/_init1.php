@@ -34,6 +34,31 @@ $requested_panel = str_replace( '%2F', '/', $requested_panel );
 $_NTS['REQUESTED_PANEL'] = $requested_panel;
 $_NTS['WAS_REQUESTED_PANEL'] = $_NTS['REQUESTED_PANEL'];
 
+if( isset($GLOBALS['NTS_CONFIG'][$app]['DEFAULT_PARAMS']) )
+{
+	reset( $GLOBALS['NTS_CONFIG'][$app]['DEFAULT_PARAMS'] );
+	foreach( $GLOBALS['NTS_CONFIG'][$app]['DEFAULT_PARAMS'] as $k => $v )
+	{
+		switch( $k )
+		{
+			case 'fix_resource':
+				$GLOBALS['NTS_FIX_RESOURCE'] = ntsLib::parseCommaSeparated( $v );
+				break;
+
+			case 'fix_service':
+				$GLOBALS['NTS_FIX_SERVICE'] = ntsLib::parseCommaSeparated( $v );
+				break;
+
+			case 'fix_location':
+				$GLOBALS['NTS_FIX_LOCATION'] = ntsLib::parseCommaSeparated( $v );
+				break;
+		}
+	}
+}
+
+
+
+
 if( $_NTS['REQUESTED_PANEL'] == 'system/attach' )
 {
 	if( ob_get_length() )

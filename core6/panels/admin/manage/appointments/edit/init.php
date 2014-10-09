@@ -43,4 +43,8 @@ else
 	$object->setId( $id );
 }
 ntsLib::setVar( 'admin/manage/appointments/edit::OBJECT', $object );
+
+$current_user = ntsLib::getCurrentUser();
+$canDelete = ( $current_user->getProp('_admin_level') == 'staff' ) ? FALSE : TRUE;
+ntsLib::setVar( 'admin/manage/appointments/edit::canDelete', $canDelete );
 ?>

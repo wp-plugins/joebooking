@@ -35,17 +35,22 @@ $menu[] = array(
 	);
 
 /* DELETE */
-//$menu[] = '-divider-';
-$menu[] = array(
-	'href'	=> ntsLink::makeLink(
-		'admin/manage/appointments/update',
-		'delete-confirm',
-		array(
-			'_id' => $app->getId(),
-			NTS_PARAM_RETURN	=> 'calendar',
-			)
-		),
-	'title'	=> '<i class="fa fa-times text-danger"></i> ' . M('Delete'),
-	'class'	=> 'hc-confirm',
-	);
+$current_user = ntsLib::getCurrentUser();
+$canDelete = ( $current_user->getProp('_admin_level') == 'staff' ) ? FALSE : TRUE;
+if( $canDelete )
+{
+	//$menu[] = '-divider-';
+	$menu[] = array(
+		'href'	=> ntsLink::makeLink(
+			'admin/manage/appointments/update',
+			'delete-confirm',
+			array(
+				'_id' => $app->getId(),
+				NTS_PARAM_RETURN	=> 'calendar',
+				)
+			),
+		'title'	=> '<i class="fa fa-times text-danger"></i> ' . M('Delete'),
+		'class'	=> 'hc-confirm',
+		);
+}
 ?>

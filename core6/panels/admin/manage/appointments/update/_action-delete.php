@@ -1,4 +1,13 @@
 <?php
+$current_user = ntsLib::getCurrentUser();
+$canDelete = ( $current_user->getProp('_admin_level') == 'staff' ) ? FALSE : TRUE;
+if( ! $canDelete )
+{
+	$errorText = M('Permission Denied');
+	ntsView::addAnnounce( $errorText, 'error' );
+	return;
+}
+
 $resultCount = 0;
 for( $ii = 0; $ii < count($object); $ii++ ){
 	$cm->runCommand( $object[$ii], 'delete' );

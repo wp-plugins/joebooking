@@ -489,7 +489,11 @@ class ntsUserIntegrator {
 
 	/* user ids */
 		$ids = $this->loadUsers( $where, $order, $limit, $userStatus );
-		if( (count($where) == 1) && isset($where['id']) && ($where['id'][0] == 'IN') )
+		if(
+			(count($where) == 1) && 
+			isset($where['id']) && 
+			($where['id'][0] == 'IN')
+			)
 		{
 			ntsObjectFactory::preload( 'user', $where['id'][1] );
 			reset( $ids );
@@ -528,7 +532,9 @@ class ntsUserIntegrator {
 	/* modifies $where */
 		reset( $this->plugins );
 		foreach( $this->plugins as $pf )
+		{
 			require( $pf );
+		}
 
 		$cacheString = serialize( $where );
 
@@ -664,7 +670,7 @@ class ntsUserIntegrator {
 				unset( $whereC['_role'] );
 
 				if( $whereC ){
-					if( $ids ){
+					if( $noIds ){
 						$whereC['id'] = array('NOT IN', $ids);
 						}
 					list( $ids, $count ) = $this->queryUsersMeta( $whereC, $orderC, $limitC, $userStatus );

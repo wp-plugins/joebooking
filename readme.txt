@@ -48,7 +48,16 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
-= 6.0.7 =
+= 6.1.1 =
+* Now you can add parameters for shortcode: fix_location, fix_service, fix_resource to filter these options in the front-end.
+* BUG: in the customer iCal export file cancelled and no-show appointments were included. Now only approved and not completed appointments are listed.
+* Admin or staff members can again give the reason for rejecting appointment, in addition now it is also stored in the appointment change history.
+* A setting if to count the min advance booking period from now or from tomorrow's earliest available time.
+* In the admin area now there is a filter for customers with restricitions, i.e. with Email Not Confirmed, Not Approved, Suspended to easily locate them.
+* Staff members now can not completely delete appointments, only administrators can do that.
+* Now invoices can be deleted in the admin area.
+
+= 6.1.0 =
 * BUG: Appointments in customer panel were not properly sorted thus appointments from one month might have appeared under another month title.
 * Hide SMS configuration and logs from staff members
 * BUG: SMS text message were sent even if "No Notification" checkbox was on

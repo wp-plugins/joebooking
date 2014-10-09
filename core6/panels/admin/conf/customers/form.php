@@ -1,5 +1,6 @@
 <?php
 global $NTS_CURRENT_USER;
+$ri = ntsLib::remoteIntegration();
 ?>
 
 <table class="ntsForm">
@@ -77,56 +78,58 @@ global $NTS_CURRENT_USER;
 	</td>
 </tr>
 
-<tr>
-	<td class="ntsFormLabel"><?php echo M('Use Email As Username'); ?></td>
-	<td class="ntsFormValue">
-<?php
-	$ri = ntsLib::remoteIntegration();
-	$thisFieldReadonly = $ri ? TRUE : FALSE;
-	$attr = array(
-		'id'		=> 'emailAsUsername'
-		);
-	if( $thisFieldReadonly ){
-		$attr['readonly'] = 1;
-		$attr['value'] = 0;
-		}
-	echo $this->makeInput (
-	/* type */
-		'checkbox',
-	/* attributes */
-		$attr
-		);
-?>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-	<i><?php echo M('When enabling this, be sure you remember your own email address'); ?>:</i> <b><?php echo $NTS_CURRENT_USER->getProp('email'); ?></b>
-	</td>
-</tr>
+<?php if( ! $ri ) : ?>
+	<tr>
+		<td class="ntsFormLabel"><?php echo M('Use Email As Username'); ?></td>
+		<td class="ntsFormValue">
+	<?php
+		$thisFieldReadonly = $ri ? TRUE : FALSE;
+		$attr = array(
+			'id'		=> 'emailAsUsername'
+			);
+		if( $thisFieldReadonly ){
+			$attr['readonly'] = 1;
+			$attr['value'] = 0;
+			}
+		echo $this->makeInput (
+		/* type */
+			'checkbox',
+		/* attributes */
+			$attr
+			);
+	?>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<i><?php echo M('When enabling this, be sure you remember your own email address'); ?>:</i> <b><?php echo $NTS_CURRENT_USER->getProp('email'); ?></b>
+		</td>
+	</tr>
+<?php endif; ?>
 
-<tr>
-	<td class="ntsFormLabel"><?php echo M('Allow Duplicate Emails'); ?></td>
-	<td class="ntsFormValue">
-<?php
-	$ri = ntsLib::remoteIntegration();
-	$thisFieldReadonly = $ri ? TRUE : FALSE;
-	$attr = array(
-		'id'		=> 'allowDuplicateEmails'
-		);
-	if( $thisFieldReadonly ){
-		$attr['readonly'] = 1;
-		$attr['value'] = 0;
-		}
-	echo $this->makeInput (
-	/* type */
-		'checkbox',
-	/* attributes */
-		$attr
-		);
-?>
-	</td>
-</tr>
+<?php if( ! $ri ) : ?>
+	<tr>
+		<td class="ntsFormLabel"><?php echo M('Allow Duplicate Emails'); ?></td>
+		<td class="ntsFormValue">
+	<?php
+		$thisFieldReadonly = $ri ? TRUE : FALSE;
+		$attr = array(
+			'id'		=> 'allowDuplicateEmails'
+			);
+		if( $thisFieldReadonly ){
+			$attr['readonly'] = 1;
+			$attr['value'] = 0;
+			}
+		echo $this->makeInput (
+		/* type */
+			'checkbox',
+		/* attributes */
+			$attr
+			);
+	?>
+		</td>
+	</tr>
+<?php endif; ?>
 
 <tr>
 	<td class="ntsFormLabel"><?php echo M('Allow No Email'); ?></td>

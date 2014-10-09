@@ -7,6 +7,7 @@ class ntsCurrency
 		$formatConf = $conf->get( 'priceFormat' );
 		list( $beforeSign, $decPoint, $thousandSep, $afterSign ) = $formatConf;
 
+		$amount = floatval( $amount );
 		$amount = number_format( $amount, 2, $decPoint, $thousandSep );
 		$return = $amount;
 		return $return;

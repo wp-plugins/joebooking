@@ -187,6 +187,27 @@ echo ntsForm::wrapInput(
 	);
 ?>
 
+<?php
+$minFromNowOptions = array(
+	array( 'now', M('Now') ),
+	array( 'tomorrow', M('Start Of Tomorrow Availability') ),
+	);
+echo ntsForm::wrapInput(
+	M('Apply Min Advance Booking From'),
+	$this->buildInput (
+	/* type */
+		'select',
+	/* attributes */
+		array(
+			'id'		=> 'minFromNowTomorrow',
+			'options'	=> $minFromNowOptions,
+			'help'		=> M('For tomorrow availability, when applying Min Advance Booking, count from now or from the start of availability time') . '?',
+			)
+		)
+	);
+?>
+
+
 <?php echo $this->makePostParams('-current-', 'update'); ?>
 <?php
 echo ntsForm::wrapInput(

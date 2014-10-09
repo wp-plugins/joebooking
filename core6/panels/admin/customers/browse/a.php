@@ -138,6 +138,22 @@ switch( $filter )
 		}
 		break;
 
+	case 'email_not_confirmed':
+	case 'not_approved':
+	case 'suspended':
+		$res = $integrator->getUsers(
+			array(
+				'_restriction'	=> array('=', $filter),
+				)
+			);
+
+		reset( $res );
+		foreach( $res as $r )
+		{
+			$filterIds[] = $r['id'];
+		}
+		break;
+
 	case 'active':
 		$filterIds = $ntsdb->get_select(
 			'customer_id',
@@ -217,9 +233,10 @@ $users = $integrator->getUsers(
 
 reset( $users );
 $userIds = array();
-foreach( $users as $u ){
+foreach( $users as $u )
+{
 	$userIds[] = $u['id'];
-	}
+}
 
 /* if filter then sort by ids */
 if( $filterIds )
@@ -308,6 +325,23 @@ if( $userIds ){
 ntsLib::setVar( 'admin/customers::upcomingCount', $upcomingCount );
 ntsLib::setVar( 'admin/customers::oldCount', $oldCount );
 
+/* count users that are disabled, pending approval etc */
+//$ntsdb->_debug = TRUE;
+$restricted_count = array();
+$restricts = array( 'email_not_confirmed', 'not_approved', 'suspended'  );
+foreach( $restricts as $r )
+{
+	$this_where = array(
+//		'_role'			=> array( '=', 'customer' ),
+		'_restriction'	=> array( '=', $r ),
+		);
+	$this_count = $integrator->countUsers( $this_where );
+	if( $this_count )
+		$restricted_count[$r] = $this_count;
+}
+//$ntsdb->_debug = FALSE;
+$this->data['restricted_count'] = $restricted_count;
+
 switch( $action ){
 	case 'export':
 		$fileName = 'customers-' . $t->formatDate_Db() . '.csv';
@@ -319,5 +353,8 @@ switch( $action ){
 		break;
 	}
 
-$this->render( dirname(__FILE__) . '/index.php' );
+$this->render( 
+	dirname(__FILE__) . '/index.php',
+	$this->data
+	);
 ?>

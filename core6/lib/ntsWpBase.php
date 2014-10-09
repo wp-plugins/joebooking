@@ -187,15 +187,7 @@ class ntsWpBase2 extends hcWpBase4
 
 			if( $this->require_shortcode )
 			{
-				if( $this->pages )
-				{
-/*
-					$front_url = $GLOBALS['NTS_CONFIG'][$this->app]['FRONTEND_WEBPAGE'];
-					$announceText = '<a target="_blank" href="' . $front_url . '">' . M('Frontend View')  . '</a>';
-					ntsView::setAdminAnnounce( $announceText, 'ok' );
-*/
-				}
-				else
+				if( ! $this->pages )
 				{
 					$announceText = "You have not yet added the <strong>&#91;" . $this->slug . "&#93;</strong> shortcode to any of your posts or pages, the customer booking interface will not work!";
 					ntsView::setAdminAnnounce( $announceText, 'alert' );

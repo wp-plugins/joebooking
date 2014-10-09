@@ -328,6 +328,8 @@ class ntsObject {
 	var $updatedProps = array();
 	var $id = 0;
 	var $notFound = false;
+	var $_change_reason = '';
+
 	protected $cost_actions = array(
 		'coupon::apply',
 		'promotion::apply',
@@ -347,7 +349,7 @@ class ntsObject {
 			'obj_id'	=> array( '=', $myId ),
 			);
 		$my_logs = $ntsdb->get_select( 
-			array( 'user_id', 'action_time', 'property_name', 'old_value' ),
+			array( 'user_id', 'action_time', 'property_name', 'old_value', 'description' ),
 			'logaudit',
 			$where,
 			'ORDER BY action_time DESC'

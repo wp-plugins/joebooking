@@ -1,11 +1,14 @@
 <?php
 $aam =& ntsAccountingAssetManager::getInstance();
+$ntsConf =& ntsConf::getInstance();
 
 $tabs = array();
 
 $object = ntsLib::getVar( 'admin/manage/appointments/edit::OBJECT' );
 $appEdit = ntsLib::getVar( 'admin/manage:appEdit' );
 $hide = ntsLib::getVar( 'admin/manage/appointments/edit::hide' );
+
+$canDelete = ntsLib::getVar( 'admin/manage/appointments/edit::canDelete' );
 
 $tabs['overview'] = array(
 	'title'	=> '<i class="fa fa-edit"></i> ' . M('Overview'),
@@ -27,7 +30,6 @@ if( ! is_array($object) )
 				'data-attr'		=> array(
 					'wrap-ajax-child'	=> 'li',
 					)
-//				'link-class'	=> 'nts-ajax-loader',
 				);
 		}
 
@@ -61,7 +63,6 @@ if( ! is_array($object) ){
 			);
 	}
 
-	$ntsConf =& ntsConf::getInstance();
 	$attachEnableCompany = $ntsConf->get('attachEnableCompany');
 	if( $attachEnableCompany )
 	{
@@ -73,7 +74,6 @@ if( ! is_array($object) ){
 	}
 }
 
-$ntsConf =& ntsConf::getInstance();
 $sendCcForAppointment = $ntsConf->get('sendCcForAppointment');
 if( (! is_array($object)) && $sendCcForAppointment )
 {
@@ -164,16 +164,19 @@ if( ! is_array($object) )
 			);
 	}
 
-	if( in_array($rid, $appEdit) )
+	if( $canDelete )
 	{
-		$tabs['delete'] = array(
-			'title'		=> '<i class="fa fa-times text-danger"></i> ' . M('Delete'),
-			'panel'		=> '../update',
-			'params'	=> array( 
-				NTS_PARAM_ACTION	=> 'delete',
-				),
-			'alert'		=> 1,
-			);
+		if( in_array($rid, $appEdit) )
+		{
+			$tabs['delete'] = array(
+				'title'		=> '<i class="fa fa-times text-danger"></i> ' . M('Delete'),
+				'panel'		=> '../update',
+				'params'	=> array( 
+					NTS_PARAM_ACTION	=> 'delete',
+					),
+				'alert'		=> 1,
+				);
+		}
 	}
 }
 ?>

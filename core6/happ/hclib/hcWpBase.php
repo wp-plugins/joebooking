@@ -389,28 +389,38 @@ class hcWpBase4
 				$GLOBALS['NTS_CONFIG'][$this->app]['FORCE_LOGIN_NAME'] = $current_user->user_email;
 
 				$url = parse_url( get_permalink($post) );
-				$base_url = $url['path'];
+//				$base_url = $url['path'];
+				switch( $this->system_type )
+				{
+					case 'nts':
+						$base_url = $url['scheme'] . '://'. $url['host'] . $url['path'];
+						break;
+
+					case 'ci':
+						$base_url = $url['path'];
+						break;
+				}
 				$index_page = (isset($url['query']) && $url['query']) ? '?' . $url['query'] . '&' : $this->query_prefix;
 
 				$GLOBALS['NTS_CONFIG'][$this->app]['BASE_URL'] = $base_url;
 				$GLOBALS['NTS_CONFIG'][$this->app]['INDEX_PAGE'] = $index_page;
 				$return = TRUE;
 
+				global $post;
+				// might be shortcode with params
+				$pattern = '\[' . $this->slug . '\s+(.+)\]';
+				if(
+					preg_match('/'. $pattern .'/s', $post->post_content, $matches)
+					)
+				{
+					$GLOBALS['NTS_CONFIG'][$this->app]['DEFAULT_PARAMS'] = shortcode_parse_atts( $matches[1] );
+				}
+
 				switch( $this->system_type )
 				{
 					case 'ci':
 						$GLOBALS['NTS_CONFIG'][$this->app]['FORCE_USER_LEVEL'] = 0;
 					// action
-
-						global $post;
-						// might be shortcode with params
-						$pattern = '\[' . $this->slug . '\s+(.+)\]';
-						if(
-							preg_match('/'. $pattern .'/s', $post->post_content, $matches)
-							)
-						{
-							$GLOBALS['NTS_CONFIG'][$this->app]['DEFAULT_PARAMS'] = shortcode_parse_atts( $matches[1] );
-						}
 						require( $this->happ_path . '/application/index_action.php' );
 						$GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED'] = 1;
 						break;
@@ -629,10 +639,13 @@ class hcWpBase4
 				ID 
 			FROM $wpdb->posts 
 			WHERE 
-				(post_type = 'post' OR post_type = 'page') AND 
+				( post_type = 'post' OR post_type = 'page' ) 
+				AND 
 				(
 				post_content LIKE '%" . $shortcode . "%]%'
 				)
+				AND 
+				( post_status <> 'trash' )
 			"
 			);
 		foreach( $pages as $p )

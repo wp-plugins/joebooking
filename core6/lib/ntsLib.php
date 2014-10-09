@@ -128,6 +128,24 @@ class ntsMoneyCalc
 }
 
 class ntsLib {
+	static function parseCommaSeparated( $string )
+	{
+		$return = array();
+		if( strpos($string, ',') === FALSE )
+		{
+			$return = array( $string );
+		}
+		else
+		{
+			$parts = explode( ',', $string );
+			foreach( $parts as $p )
+			{
+				$return[] = trim( $p );
+			}
+		}
+		return $return;
+	}
+
 	static function migrate()
 	{
 		$ntsConf =& ntsConf::getInstance();

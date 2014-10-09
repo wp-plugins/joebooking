@@ -383,6 +383,11 @@ class ntsConf {
 					$return = 'default';
 				break;
 
+			case 'minFromNowTomorrow':
+				if( ! $rawValue )
+					$return = 'tomorrow';
+				break;
+
 			case 'appointmentFlow':
 				if( ! $rawValue )
 				{

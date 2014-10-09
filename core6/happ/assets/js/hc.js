@@ -31,6 +31,12 @@
   };
 })();
 
+jQuery(document).on( 'click', '.hc-target ul.dropdown-menu', function(e)
+{
+	e.stopPropagation();
+//	e.preventDefault();
+});
+
 jQuery(document).on( 'click', 'a.hc-confirm', function(event)
 {
 	if( window.confirm("Are you sure?") )
@@ -96,6 +102,8 @@ function hc_click_ajax_loader( obj ){
 			}
 			myParent.after( data );
 			myParent.removeClass( 'hc-loading' );
+
+			myParent[0].scrollIntoView();
 			});
 	}
 
