@@ -129,7 +129,7 @@ class hcWpBase4
 			}
 
 			$full = FALSE;
-			$prfx = array('http://', 'https://');
+			$prfx = array('http://', 'https://', '//');
 			reset( $prfx );
 			foreach( $prfx as $prf )
 			{
@@ -560,12 +560,24 @@ class hcWpBase4
 				}
 				else
 				{
-					wp_enqueue_script( $sa[0], $sa[1] );
+					wp_enqueue_script(
+						$sa[0],
+						$sa[1],
+						array(),
+						''
+						// TRUE // in footer
+						);
 				}
 			}
 			else
 			{
-				wp_enqueue_script( $sa[0] );
+				wp_enqueue_script(
+					$sa[0],
+					'',
+					array(),
+					''
+					// TRUE // in footer
+					);
 			}
 		}
 	}

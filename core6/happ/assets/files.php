@@ -3,6 +3,7 @@ $css_files = array(
 	'happ/assets/bootstrap/css/_bootstrap3.css',
 	'happ/assets/bootstrap/css/datepicker.css',
 	'happ/assets/bootstrap/css/font-awesome.min.css',
+//	'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
 //	array('happ/assets/bootstrap/css/font-awesome-ie7.min.css', 'lt IE 7'),
 	'happ/assets/css/hitcode.css',
 	);

@@ -28,15 +28,13 @@ $confirmForm =& $ff->makeForm( dirname(__FILE__) . '/confirmForm' );
 	<?php endif; ?>
 <?php endif; ?>
 
-<table>
-<tr>
-	<td>
-	<?php
-	$confirmForm->display();
-	?>
-	</td>
-	<td>
-	<A HREF="javascript:history.go(-1);"><?php echo M('Cancel'); ?></A>
-	</td>
-</tr>
-</table>
+<ul class="list-inline list-hori-separated">
+	<li>
+		<?php
+		$confirmForm->display();
+		?>
+	</li>
+	<li>
+		<a class="btn btn-default btn-sm" href="javascript:history.go(-1);"><?php echo M('Cancel'); ?></A>
+	</li>
+</ul>

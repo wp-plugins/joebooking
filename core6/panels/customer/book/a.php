@@ -267,6 +267,23 @@ if(
 }
 /* END OF READY */
 
+/* resort locations, resources and services */
+if( count($locations) > 1 )
+{
+	$sort_locs = ntsObjectFactory::getAllIds( 'location' );
+	$locations = ntsLib::ksortArrayByArray( $locations, $sort_locs );
+}
+if( count($resources) > 1 )
+{
+	$sort_ress = ntsObjectFactory::getAllIds( 'resource' );
+	$resources = ntsLib::ksortArrayByArray( $resources, $sort_ress );
+}
+if( count($services) > 1 )
+{
+	$sort_sers = ntsObjectFactory::getAllIds( 'service' );
+	$services = ntsLib::ksortArrayByArray( $services, $sort_sers );
+}
+
 $view = array(
 	'this_a'		=> $this_a,
 	'locations'		=> $locations,

@@ -127,6 +127,7 @@ else
 		NTS_RUN_DIR . '/theme/',
 		NTS_APP_DIR . '/../theme/'
 		);
+
 	foreach( $check_dirs as $checkd )
 	{
 		if( file_exists($checkd) )

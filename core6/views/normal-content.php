@@ -1,4 +1,5 @@
 <?php
+global $NTS_MENU, $_NTS, $NTS_VIEW;
 $ri = ntsLib::remoteIntegration();
 $i_inside = isset($NTS_VIEW['isInside']) ? $NTS_VIEW['isInside'] : FALSE;
 $container = ($ri OR $i_inside) ? 'container-fluid' : 'container';
@@ -42,7 +43,6 @@ $t->setNow();
 
 <!-- MENU  -->
 <?php
-global $NTS_MENU, $_NTS;
 if( isset($_NTS['ROOT_INFO']) && $_NTS['ROOT_INFO'] && isset($_NTS['ROOT_INFO'][1]) )
 {
 	$menu_root = $_NTS['ROOT_INFO'][1];

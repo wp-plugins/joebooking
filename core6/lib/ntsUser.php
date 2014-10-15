@@ -387,6 +387,7 @@ class ntsUser extends ntsObject {
 				'admin/forms',
 				'admin/promo',
 				'admin/customers/edit/admin',
+				'admin/customers/edit/delete',
 				'admin/sms',
 				'admin/freshbooks',
 				)

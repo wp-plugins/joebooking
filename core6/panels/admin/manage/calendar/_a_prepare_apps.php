@@ -24,9 +24,22 @@ foreach( $all_apps as $a )
 	$preload['location'][$a['location_id']] = 1;
 	$preload['resource'][$a['resource_id']] = 1;
 	$preload['service'][$a['service_id']] = 1;
+}
 
+foreach( $preload as $class => $ids )
+{
+//	if( $class == 'appointment' )
+//		continue;
+	ntsObjectFactory::preload( $class, array_keys($ids) );
+}
+
+
+reset( $all_apps );
+foreach( $all_apps as $a )
+{
 	$app = ntsObjectFactory::get('appointment');
-	$app->setByArray( $a );
+//	$app->setByArray( $a );
+	$app->setId( $a['id'] );
 	$t->setTimestamp( $a['starts_at'] );
 
 	switch( $split_by )
@@ -195,13 +208,6 @@ if( !
 			$rex_date = $t->formatDate_Db();
 		}
 	}
-}
-
-foreach( $preload as $class => $ids )
-{
-	if( $class == 'appointment' )
-		continue;
-	ntsObjectFactory::preload( $class, array_keys($ids) );
 }
 
 $am =& ntsAccountingManager::getInstance();

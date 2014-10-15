@@ -654,21 +654,48 @@ class ntsLib {
 		fclose($fp);
 		}
 
-	static function sortArrayByArray( $array, $orderArray ){
+	static function sortArrayByArray( $array, $orderArray )
+	{
 		$return = array();
 		reset( $orderArray );
-		foreach( $orderArray as $o ){
-			if( in_array($o, $array) ){
+		foreach( $orderArray as $o )
+		{
+			if( in_array($o, $array) )
+			{
 				$return[] = $o;
-				}
 			}
+		}
 		reset( $array );
-		foreach( $array as $a ){
+		foreach( $array as $a )
+		{
 			if( ! in_array($a, $return) )
 				$return[] = $a;
-			}
-		return $return;
 		}
+		return $return;
+	}
+
+	static function ksortArrayByArray( $array, $orderArray )
+	{
+		$return = array();
+		$original_keys = array_keys($array);
+
+		reset( $orderArray );
+		foreach( $orderArray as $o )
+		{
+			if( in_array($o, $original_keys) )
+			{
+				$return[$o] = $array[$o];
+			}
+		}
+
+		reset( $array );
+		foreach( $array as $k => $v )
+		{
+			if( ! isset($return[$k]) )
+				$return[$k] = $v;
+		}
+		return $return;
+	}
 
 	static function findAllFiles( $path, $file ){
 		$return = array();

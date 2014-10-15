@@ -317,6 +317,29 @@ $cost = $app->getCost();
 				</li>
 			<?php endif; ?>
 		</ul>
+
+		<?php
+		$notes = $app->getProp('_note');
+		?>
+		<?php if( $notes ) : ?>
+			<ul class="list-unstyled">
+			<?php foreach( $notes as $n ) : ?>
+				<?php
+				list( $note_time, $note_user_id ) = explode( ':', $n[1] );
+				$note_user = new ntsUser;
+				$note_user->setId( $note_user_id );
+				$t->setTimestamp( $note_time );
+				$note_user_view = ntsView::objectTitle( $note_user, TRUE );
+				?>
+				<li>
+					<i class="fa fa-comment-o fa-fw"></i> <?php echo $note_user_view; ?>
+				</li>
+				<li class="text-muted text-smaller">
+					<?php echo $n[0]; ?>
+				</li>
+			<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
 	</div>
 
 	<?php if( $menu && (! $collapse_in) ) : ?>

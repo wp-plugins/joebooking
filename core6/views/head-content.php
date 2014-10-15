@@ -11,11 +11,26 @@ else
 }
 require( dirname(__FILE__) . '/../assets/happ_files.php' );
 require( dirname(__FILE__) . '/../assets/files.php' );
+
+$prfx = array('http://', 'https://', '//');
 ?>
 <?php foreach( $css_files as $f ) : ?>
 	<?php
 	$file = is_array($f) ? $f[0] : $f;
-	$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $happ_web_dir . '/' . $file : $web_dir . '/' . $file;
+	$full = FALSE;
+	reset( $prfx );
+	foreach( $prfx as $prf )
+	{
+		if( substr($file, 0, strlen($prf)) == $prf )
+		{
+			$full = TRUE;
+			break;
+		}
+	}
+	if( $full )
+		$full_file = $f;
+	else
+		$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $happ_web_dir . '/' . $file : $web_dir . '/' . $file;
 	?>
 	<?php if( is_array($f) ) : ?>
 		<!--[if <?php echo $f[1]; ?>]>
@@ -29,7 +44,20 @@ require( dirname(__FILE__) . '/../assets/files.php' );
 <?php foreach( $js_files as $f ) : ?>
 	<?php
 	$file = is_array($f) ? $f[0] : $f;
-	$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $happ_web_dir . '/' . $file : $web_dir . '/' . $file;
+	$full = FALSE;
+	reset( $prfx );
+	foreach( $prfx as $prf )
+	{
+		if( substr($file, 0, strlen($prf)) == $prf )
+		{
+			$full = TRUE;
+			break;
+		}
+	}
+	if( $full )
+		$full_file = $f;
+	else
+		$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $happ_web_dir . '/' . $file : $web_dir . '/' . $file;
 	?>
 	<?php if( is_array($f) ) : ?>
 		<!--[if <?php echo $f[1]; ?>]>

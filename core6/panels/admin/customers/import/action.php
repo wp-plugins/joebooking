@@ -39,6 +39,7 @@ foreach( $customer_fields as $fn )
 	}
 }
 
+$customer_fields[] = 'password';
 $customer_fields[] = '_notes';
 $customer_fields[] = '_restriction';
 $NTS_VIEW['customer_fields'] = $customer_fields;

@@ -5,13 +5,14 @@ $paid_amount = $a->getPaidAmount();
 $default_due = $pm->getPrepayAmount( $app );
 
 $due_amount = isset($prepay[$a->getId()]) ? $prepay[$a->getId()] : $default_due;
+
 if( is_array($due_amount) )
 {
 }
 else
 {
-	if( $due_amount > $price )
-		$due_amount = $price;
+	if( $due_amount > $cost )
+		$due_amount = $cost;
 
 	if( ! $has_online )
 		$due_amount = 0;
@@ -22,7 +23,7 @@ else
 	}
 }
 
-if( ($paid_amount OR $due_amount) OR ($price && $has_online) )
+if( ($paid_amount OR $due_amount) OR ($cost && $has_online) )
 {
 	if( is_array($due_amount) )
 	{
@@ -47,7 +48,7 @@ if( ($paid_amount OR $due_amount) OR ($price && $has_online) )
 	}
 
 	$default_due = trim($default_due);
-	$price = trim($price);
+	$cost = trim($cost);
 	$money_due_amount = is_array($due_amount) ? $default_due : trim($due_amount);
 
 	if( $has_offline && $money_due_amount )
@@ -79,9 +80,9 @@ if( ($paid_amount OR $due_amount) OR ($price && $has_online) )
 	{
 		$possible_prepay[] = $default_due;
 	}
-	if( ($price != $money_due_amount) && ($price > $paid_amount) )
+	if( ($cost != $money_due_amount) && ($cost > $paid_amount) )
 	{
-		$possible_prepay[] = $price;
+		$possible_prepay[] = $cost;
 	}
 
 	if( $paid_amount < $money_due_amount )
@@ -96,7 +97,8 @@ if( ($paid_amount OR $due_amount) OR ($price && $has_online) )
 		}
 	}
 
-	$payment_options[] = M('Pay Online');
+	if( $possible_prepay )
+		$payment_options[] = M('Pay Online');
 	foreach( $possible_prepay as $pp )
 	{
 		$link = ntsLink::makeLink(

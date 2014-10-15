@@ -48,12 +48,21 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.1.2 =
+* Now it is possible to make use of full HTML including <html> and <head> tags in the message templates, previously it was allowed only in the header and the footer, for the body if the head part was used it got corrupted.
+* BUG: locations, resources and services sometimes were not sorted according to settings defined in the admin area.
+* BUG: a customer could not make use of balance if a package was configured to allow only a selection of services rather than all.
+* BUG: if more than one appointment were booked at a time by a customer, then the payment amounts for all appointments were set as the price of the last appointment.
+* Staff members now can not delete customer accounts, only administrators can do that.
+* Appointment notes if any are now also displayed in the calendar and list views in the admin area.
+* BUG: session handling might be conflicting with other plugins or themes
+
 = 6.1.1 =
 * Now you can add parameters for shortcode: fix_location, fix_service, fix_resource to filter these options in the front-end.
 * BUG: in the customer iCal export file cancelled and no-show appointments were included. Now only approved and not completed appointments are listed.
 * Admin or staff members can again give the reason for rejecting appointment, in addition now it is also stored in the appointment change history.
 * A setting if to count the min advance booking period from now or from tomorrow's earliest available time.
-* In the admin area now there is a filter for customers with restricitions, i.e. with Email Not Confirmed, Not Approved, Suspended to easily locate them.
+* In the admin area now there is a filter for customers with restrictions, i.e. with Email Not Confirmed, Not Approved, Suspended to easily locate them.
 * Staff members now can not completely delete appointments, only administrators can do that.
 * Now invoices can be deleted in the admin area.
 

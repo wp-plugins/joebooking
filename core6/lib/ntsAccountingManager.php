@@ -1622,9 +1622,12 @@ class ntsAccountingManager
 	/* service */
 		if( isset($asset['service']) )
 		{
-			if( strpos($asset['service'], '-') !== FALSE )
+			if( ! is_array($asset['service']) )
 			{
-				$asset['service'] = explode( '-', $asset['service'] );
+				if( strpos($asset['service'], '-') !== FALSE )
+				{
+					$asset['service'] = explode( '-', $asset['service'] );
+				}
 			}
 			if( ! is_array($asset['service']) )
 				$asset['service'] = array( $asset['service'] );

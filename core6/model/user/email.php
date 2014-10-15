@@ -14,7 +14,29 @@ $conf =& ntsConf::getInstance();
 $commonHeader = $conf->get('emailCommonHeader');
 $commonFooter = $conf->get('emailCommonFooter');
 
-$body = $commonHeader. "\n" . nl2br($body) . "\n" . $commonFooter;
+$need_nl2br = TRUE;
+// check if there's <html> or <head> in message so don't add br
+if( 
+	( strpos($body, '<html>') !== FALSE ) OR
+	( strpos($body, '<head>') !== FALSE )
+	)
+{
+	$need_nl2br = FALSE;
+}
+
+$final_body = '';
+$final_body .= $commonHeader. "\n";
+if( $need_nl2br )
+{
+	$final_body .= nl2br($body);
+}
+else
+{
+	$final_body .= $body;
+}
+$final_body .= "\n" . $commonFooter;
+
+$body = $final_body;
 
 /* --- ADD RECIPIENT TAGS --- */
 $om =& objectMapper::getInstance();

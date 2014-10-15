@@ -166,7 +166,7 @@ class ntsSession {
 	var $userdata					= array();
 	var $now;
 
-	var $session_key_name = 'userdata';
+	var $session_key_name = 'nts_userdata';
 
 	/**
 	 * Session Constructor
