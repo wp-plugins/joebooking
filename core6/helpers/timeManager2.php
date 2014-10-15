@@ -1372,7 +1372,7 @@ EOT;
 					{
 						if( ! isset($occupiedPerLocation[$tts][$app_lid]) )
 							$occupiedPerLocation[$tts][$app_lid] = 0;
-						$occupiedPerLocation[$tts][$app_lid] += $a['seats'];
+						$occupiedPerLocation[$tts][$app_lid] += $app_seats;
 					}
 				}
 			}

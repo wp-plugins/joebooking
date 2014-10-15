@@ -489,10 +489,13 @@ class ntsLib {
 			$app = ntsLib::getAppProduct();
 			$option_name = $app . '_license_code';
 			$currentLicense = get_site_option( $option_name );
+			$slug = $_REQUEST['page'];
+			$myUrl = get_admin_url() . 'admin.php?page=' . $slug;
 		}
 		else
 		{
 			$currentLicense = $conf->get('licenseCode');
+			$myUrl = ntsLink::makeLinkFull( ntsLib::getFrontendWebpage() );
 		}
 
 		$installationId = $conf->get( 'installationId' );
@@ -503,7 +506,6 @@ class ntsLib {
 		$myProduct = $appInfo['app_short'];
 		$app = $appInfo['app'];
 
-		$myUrl = ntsLink::makeLinkFull( ntsLib::getFrontendWebpage() );
 	// strip started http:// as apache seems to have troubles with it
 		$myUrl = preg_replace( '/https?\:\/\//', '', $myUrl );
 
