@@ -36,7 +36,7 @@ $showDuplicate = count($fromOptions) && count($toOptions);
 ?>
 
 <?php if( $showDuplicate ) : ?>
-<a class="btn btn-default" href="#" id="<?php echo $this->getName(); ?>duplicate-form"><?php echo M('Copy Availability'); ?></a>
+<a class="btn btn-default" href="#" id="<?php echo $this->getName(); ?>duplicate-form"><?php echo M('Availability') . ': ' . M('Copy'); ?></a>
 
 <p>
 <div id="<?php echo $this->getName(); ?>duplicate-wrapper">
@@ -59,7 +59,7 @@ $showDuplicate = count($fromOptions) && count($toOptions);
 			array(
 				array(
 					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required Field'),
+					'error'		=> M('Required'),
 					),
 				)
 			);
@@ -78,7 +78,7 @@ $showDuplicate = count($fromOptions) && count($toOptions);
 			array(
 				array(
 					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required Field'),
+					'error'		=> M('Required'),
 					),
 				)
 			);
@@ -107,7 +107,7 @@ $showDuplicate = count($fromOptions) && count($toOptions);
 			array(
 				array(
 					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required Field'),
+					'error'		=> M('Required'),
 					),
 				array(
 					'code'		=> 'notEqualTo.php', 

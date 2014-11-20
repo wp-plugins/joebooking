@@ -119,26 +119,37 @@ class ntsValidator
 	function greaterThan()
 	{
 		$return = TRUE;
-		if( isset($this->validationParams['compareFields']) ){
-			for( $ii = 0; $ii < count($this->validationParams['compareFields']); $ii++ ){
+		if( isset($this->validationParams['compareFields']) )
+		{
+			for( $ii = 0; $ii < count($this->validationParams['compareFields']); $ii++ )
+			{
 				$fa = $this->validationParams['compareFields'][$ii];
 				$me = $this->formValues[ $fa[0] ];
 				$other = $this->formValues[ $fa[1] ];
 
-				if( $ii == ( count($this->validationParams['compareFields']) - 1 ) ){ // last one
-					if( $me <= $other ){
+				if( $ii == ( count($this->validationParams['compareFields']) - 1 ) )
+				{ // last one
+					if( $me <= $other )
+					{
 						$return = FALSE;
 						break;
-						}
 					}
-				else {
-					if( $me < $other ){
+				}
+				else
+				{
+					if( $me > $other )
+					{
+						$return = TRUE;
+						break;
+					}
+					if( $me < $other )
+					{
 						$return = FALSE;
 						break;
-						}
 					}
 				}
 			}
+		}
 		else {
 			$this->checkValue = trim( $this->checkValue );
 			if( isset($this->validationParams['compareWithField']) ){
@@ -154,6 +165,7 @@ class ntsValidator
 				}
 			}
 		return $return;
+	exit;
 	}
 
 	function lessEqualThan()
@@ -217,7 +229,7 @@ class ntsValidator
 
 	function notEmpty_display()
 	{
-		return array( array('mobilephone', 'text', 'textarea'), M('Required field') );
+		return array( array('mobilephone', 'text', 'textarea'), M('Required') );
 	}
 
 	function notEqualTo()
@@ -404,7 +416,7 @@ class ntsValidator
 
 	function checkUsername_display()
 	{
-		return array( array('text', 'textarea'), M('Unique Username') );
+		return array( array('text', 'textarea'), M('Unique') . ': ' . M('Username') );
 	}
 
 	function checkUserEmail()
@@ -437,7 +449,7 @@ class ntsValidator
 
 	function checkUserEmail_display()
 	{
-		return array( array('text', 'textarea'), M('Unique Email') );
+		return array( array('text', 'textarea'), M('Unique') . ': ' . M('Email') );
 	}
 
 	function checkUniqueProperty()

@@ -20,7 +20,7 @@ echo ntsForm::wrapInput(
 		array(
 			array(
 				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				),
 			array(
 				'code'		=> 'checkUniqueProperty.php', 
@@ -71,7 +71,7 @@ echo ntsForm::wrapInput(
 		array(
 			array(
 				'code'		=> 'greaterThan.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				'params'	=> array(
 					'compareWith'	=> 0,
 					)

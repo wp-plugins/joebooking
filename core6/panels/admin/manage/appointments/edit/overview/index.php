@@ -1,6 +1,5 @@
 <?php
 $ntsConf =& ntsConf::getInstance();
-$customerAcknowledge = $ntsConf->get( 'customerAcknowledge' );
 $attachEnableCompany = $ntsConf->get('attachEnableCompany');
 
 $availability_status = $NTS_VIEW['availability_status'];
@@ -35,16 +34,11 @@ $resource = ntsObjectFactory::get( 'resource' );
 $resource->setId( $resourceId );
 
 $NTS_VIEW['t']->setTimestamp( $startsAt );
-$dateView = ( $startsAt > 0 ) ? $NTS_VIEW['t']->formatWeekdayShort() . ', ' . $NTS_VIEW['t']->formatDate() : M('Not Scheduled');
+$dateView = $NTS_VIEW['t']->formatWeekdayShort() . ', ' . $NTS_VIEW['t']->formatDate();
 
-if( $startsAt > 0 ){
-	$timeView = $NTS_VIEW['t']->formatTime();
-	$NTS_VIEW['t']->modify( '+' . $duration . ' seconds' );
-	$timeView .= ' - ' . $NTS_VIEW['t']->formatTime();
-	}
-else {
-	$timeView = M('Not Scheduled');
-	}
+$timeView = $NTS_VIEW['t']->formatTime();
+$NTS_VIEW['t']->modify( '+' . $duration . ' seconds' );
+$timeView .= ' - ' . $NTS_VIEW['t']->formatTime();
 
 $customerId = $object->getProp('customer_id');
 $customer = new ntsUser;

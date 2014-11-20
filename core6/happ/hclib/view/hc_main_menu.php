@@ -7,9 +7,7 @@ if( ! $menu )
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nts-navbar-collapse">
 			<span class="sr-only">Toggle navigation</span>
-			<span class="fa fa-bar"></span>
-			<span class="fa fa-bar"></span>
-			<span class="fa fa-bar"></span>
+			<span class="fa fa-bars"></span>
 		</button>
 	</div>
 

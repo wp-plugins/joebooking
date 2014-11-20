@@ -9,7 +9,6 @@ $has_online = $pgm->hasOnline();
 $has_offline = $pgm->hasOffline();
 
 $conf =& ntsConf::getInstance();
-$customerAcknowledge = $conf->get('customerAcknowledge');
 $canCancel = $conf->get('customerCanCancel');
 $canReschedule = $conf->get('customerCanReschedule');
 $canReschedule = 0;

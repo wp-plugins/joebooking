@@ -1,8 +1,8 @@
 <div class="row">
 <div class="col-sm-2">
 	<div class="list-group">
-		<a class="list-group-item" href="<?php echo ntsLink::makeLink('-current-', 'make' ); ?>"><?php echo M('Download Backup'); ?></a>
-		<a class="list-group-item" href="<?php echo ntsLink::makeLink('-current-/upload', '' ); ?>"><?php echo M('Restore From Backup'); ?></a>
+		<a class="list-group-item" href="<?php echo ntsLink::makeLink('-current-', 'make' ); ?>"><?php echo M('Download'); ?></a>
+		<a class="list-group-item" href="<?php echo ntsLink::makeLink('-current-/upload', '' ); ?>"><?php echo M('Restore'); ?></a>
 	</div>
 </div>
 

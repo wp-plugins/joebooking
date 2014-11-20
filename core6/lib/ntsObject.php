@@ -1204,10 +1204,10 @@ class ntsObjectMapper {
 	// user's
 		$userControls = array();
 		if( ! NTS_EMAIL_AS_USERNAME )
-			$userControls[] = array( 'username',		'Username',	 	'text',	array('size' => 24), array( array('code' => 'notEmpty', 'error' => 'Required field'), array('code' => 'checkUsername', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
-		$userControls[] = array( 'email',			'Email',			'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required field'), array('code' => 'checkUserEmail', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
-		$userControls[] = array( 'first_name',	'First Name',	'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required field') ) );
-		$userControls[] = array( 'last_name',		'Last Name',		'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required field') ) );
+			$userControls[] = array( 'username',		'Username',	 	'text',	array('size' => 24), array( array('code' => 'notEmpty', 'error' => 'Required'), array('code' => 'checkUsername', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
+		$userControls[] = array( 'email',			'Email',			'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required'), array('code' => 'checkUserEmail', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
+		$userControls[] = array( 'first_name',	'First Name',	'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required') ) );
+		$userControls[] = array( 'last_name',		'Last Name',		'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required') ) );
 
 		$order = 1;
 		foreach( $userControls as $c ){
@@ -1231,8 +1231,8 @@ class ntsObjectMapper {
 		// provider's
 		$providerControls = array();
 		if( ! NTS_EMAIL_AS_USERNAME )
-			$providerControls[] = array( 'username',		'Username',	 	'text',	array('size' => 24), array( array('code' => 'notEmpty', 'error' => 'Required field'), array('code' => 'checkUsername', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
-		$providerControls[] = array( 'email',			'Email',		'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required field'), array('code' => 'checkUserEmail', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
+			$providerControls[] = array( 'username',		'Username',	 	'text',	array('size' => 24), array( array('code' => 'notEmpty', 'error' => 'Required'), array('code' => 'checkUsername', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
+		$providerControls[] = array( 'email',			'Email',		'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required'), array('code' => 'checkUserEmail', 'error' => 'Already in use', 'params' => array('skipMe'	=> 1) ) ) );
 		$providerControls[] = array( 'first_name',	'First Name',	'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Please enter the first name') ) );
 		$providerControls[] = array( 'last_name',		'Last Name',	'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Please enter the last name') ) );
 //		$providerControls[] = array( '_description',	'Description',	'textarea',	array('cols' => 42, 'rows' => 4), array() );
@@ -1365,7 +1365,7 @@ EOT;
 						$c2['validators'] = array(
 							array(
 								'code' => 'notEmpty.php',
-								'error' => 'Required field'
+								'error' => 'Required'
 								)
 							);
 

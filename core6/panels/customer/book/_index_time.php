@@ -54,8 +54,10 @@ $t->setDateDb( $requested_cal );
 		?>
 
 		<li style="padding: 0 0;">
-			<a class="btn btn-default btn-sm nts-row-spaced nts-time-link nts-no-ajax" href="<?php echo ntsLink::makeLink('-current-', '', $link); ?>">
-				<?php echo $t->formatTime(); ?>
+			<a class="nts-row-spaced nts-time-link nts-no-ajax" href="<?php echo ntsLink::makeLink('-current-', '', $link); ?>">
+				<span class="btn btn-default btn-sm">
+					<?php echo $t->formatTime(); ?>
+				</span>
 			</a>
 		</li>
 	<?php endforeach; ?>

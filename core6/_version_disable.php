@@ -43,7 +43,7 @@ $disable['common'] = array(
 		'admin/promo',
 		),
 	'files'	=> array(
-		'theme',
+//		'theme',
 		'core6/version_hitappoint_demo.php',
 
 		'core6/plugins/bundles',

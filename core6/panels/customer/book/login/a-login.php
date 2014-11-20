@@ -39,19 +39,19 @@ if( $form->validate() )
 		$display = '';
 		if( in_array('email_not_confirmed', $restrictions) )
 		{
-			$msg = M('Your email is not yet confirmed');
+			$msg = M('Email') . ': ' . M('Not Confirmed');
 		}
 		elseif( in_array('not_approved', $restrictions) )
 		{
-			$msg = M('Your account is not yet approved');
+			$msg = M('Account') . ': ' . M('Not Approved');
 		}
 		elseif( in_array('suspended', $restrictions) )
 		{
-			$msg = M('Your account is suspended');
+			$msg = M('Account') . ': ' . M('Suspended');
 		}
 		else 
 		{
-			$msg = M('There is a problem with your account');
+			$msg = M('Error');
 		}
 
 		ntsView::addAnnounce( $msg, 'error' );

@@ -37,7 +37,7 @@ switch( $action ){
 					}
 				}
 			else {
-				ntsView::setAnnounce( M('This email is not registered'), 'error' );
+				ntsView::setAnnounce( M('Email') . ': ' . M('Not Registered'), 'error' );
 				}
 
 		/* continue to login page */

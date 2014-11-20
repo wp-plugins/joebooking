@@ -6,8 +6,6 @@ $locs = ntsLib::getVar( 'admin::locs' );
 $ress = ntsLib::getVar( 'admin::ress' );
 $sers = ntsLib::getVar( 'admin::sers' );
 
-$showCompleted = $conf->get( 'showCompletedAppsAdmin' );
-
 $tm2->setLocation( $locs );
 $tm2->setResource( $ress );
 $tm2->setService( $sers );
@@ -65,9 +63,6 @@ $where = array(
 	'resource_id'						=> array( 'IN', $ress ),
 //		'completed'							=> array( 'NOT IN', array(HA_STATUS_CANCELLED, HA_STATUS_NOSHOW) ),
 	);
-if( $showCompleted ){
-	$where['completed'] = array( 'NOT IN', array(HA_STATUS_CANCELLED, HA_STATUS_NOSHOW) );
-	}
 
 $totalCount = $tm2->countAppointments( $where );
 

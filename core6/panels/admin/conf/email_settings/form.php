@@ -6,7 +6,7 @@ $tags = $tm->getTags( 'common-header-footer' );
 
 <?php
 echo ntsForm::wrapInput(
-	M('Sender Email'),
+	M('From') . ': ' . M('Email'),
 	$this->buildInput (
 	/* type */
 		'text',
@@ -21,7 +21,7 @@ echo ntsForm::wrapInput(
 		array(
 			array(
 				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				),
 			)
 		)
@@ -30,7 +30,7 @@ echo ntsForm::wrapInput(
 
 <?php
 echo ntsForm::wrapInput(
-	M('Sender Name'),
+	M('From') . ': ' . M('Name'),
 	$this->buildInput (
 	/* type */
 		'text',
@@ -45,7 +45,7 @@ echo ntsForm::wrapInput(
 		array(
 			array(
 				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				),
 			)
 		)

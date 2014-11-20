@@ -184,6 +184,282 @@ EOT;
 		}
 		}
 
+	function getDatesWithSomething( $startDate, $howManyDates, $backward = 0 )
+	{
+		$ntsdb =& dbWrapper::getInstance();
+
+		$return = array();
+		$okDate = $startDate;
+
+		$mainWhere = array();
+		$mainWhere['location_id'] = array( 'IN', $this->locationIds );
+		$mainWhere['resource_id'] = array( 'IN', $this->resourceIds ); 
+		$mainWhere['service_id'] = array( 'IN', $this->serviceIds ); 
+		if( $this->processCompleted )
+		{
+			$mainWhere['completed'] = array( '<>', HA_STATUS_CANCELLED );
+			$mainWhere['completed '] = array( '<>', HA_STATUS_NOSHOW );
+		}
+
+		$this->companyT->setDateDb( $startDate );
+		if( $backward )
+		{
+			$this->companyT->modify( '+1 day' );
+		}
+		else
+		{
+			$this->companyT->modify( '-1 day' );
+		}
+		$okDate = $this->companyT->formatDate_Db();
+
+	// check with appointments
+		while( $okDate )
+		{
+//			$return[] = $okDate;
+
+		// ok full
+			if( count($return) >= $howManyDates )
+			{
+				break;
+			}
+
+			$this->companyT->setDateDb( $okDate );
+			$startTime = $this->companyT->getTimestamp();
+			if( $backward )
+				$this->companyT->modify( '-1 day' );
+			else
+				$this->companyT->modify( '+1 day' );
+			$check_next_day = $this->companyT->formatDate_Db();
+
+			$this->companyT->setDateDb( $okDate );
+			$endTime = $this->companyT->getEndDay();
+
+		// get next date to check
+			$nextDate = '';
+
+		// 1 - get nearest appointment which end is greater than the end of this day
+			$nextDate1 = '';
+			$where = $mainWhere;
+			if( $backward )
+			{
+				$where['starts_at - lead_in'] = array('<', $startTime);
+				$nextApp = $this->getAppointments( 
+					$where,
+					'ORDER BY (starts_at-lead_in) DESC',
+					array(0,1),
+					array('starts_at', 'lead_in')
+					);
+			}
+			else
+			{
+				$where['starts_at + duration + lead_out'] = array('>', $endTime);
+				$nextApp = $this->getAppointments( 
+					$where,
+					'ORDER BY (starts_at-lead_in) ASC',
+					array(0,1),
+					array('starts_at', 'lead_in')
+					);
+			}
+
+			if( $nextApp )
+			{
+				$nextApp = array_shift( $nextApp );
+				$ts = $nextApp['starts_at'] - $nextApp['lead_in'];
+				if( $backward )
+				{
+					if( $ts >= $startTime )
+						$ts = $startTime - 1;
+				}
+				else
+				{
+					if( $ts <= $endTime )
+						$ts = $endTime + 1;
+				}
+				$this->companyT->setTimestamp( $ts );
+				$nextDate1 = $this->companyT->formatDate_Db();
+			}
+
+			$nextDate2 = '';
+		// 2 - get nearest blocks
+			if( $nextDate1 && ($nextDate1 == $check_next_day) )
+			{
+				$nextDate = $nextDate1;
+			}
+			else
+			{
+				$nextDate2 = '';
+				$blocksWhere = array();
+				if( $this->locationIds )
+				{
+					if( $blocksWhere )
+						$blocksWhere[] = 'AND';
+					$blocksWhere[] = array(
+						array( 'location_id' => array( 'IN', $this->locationIds) ),
+						array( 'location_id' => array( '=', 0 ) ),
+						);
+				}
+
+				if( $this->resourceIds )
+				{
+					if( $blocksWhere )
+						$blocksWhere[] = 'AND';
+					$blocksWhere[] = array(
+						array( 'resource_id' => array( 'IN', $this->resourceIds) ),
+						array( 'resource_id' => array( '=', 0 ) ),
+						);
+				}
+
+				if( $this->serviceIds )
+				{
+					if( $blocksWhere )
+						$blocksWhere[] = 'AND';
+					$blocksWhere[] = array(
+						array( 'service_id' => array( 'IN', $this->serviceIds) ),
+						array( 'service_id' => array( '=', 0 ) ),
+						);
+				}
+
+				$where = $blocksWhere;
+				if( $where )
+					$where[] = 'AND';
+				$where[] = array( 'valid_to' => array('>', $okDate) );
+
+			/* first check if we have future blocks at all */
+				if( $backward )
+				{
+					$result = $ntsdb->select( 'MAX(valid_from) AS max_valid_from, MIN(valid_to) AS min_valid_to', 'timeblocks', $where );
+					$e = $result->fetch();
+					if( $e && $e['max_valid_from'] )
+					{
+						if( $e['max_valid_from'] < $okDate )
+							$checkFrom = $e['max_valid_from'];
+						else {
+							$checkFrom = $check_next_day;
+							}
+						$checkTo = $e['min_valid_to'];
+
+						while( $checkFrom )
+						{
+							$this->companyT->setDateDb( $checkFrom );
+							$checkFromWeekday = $this->companyT->getWeekday();
+
+							$where = $blocksWhere;
+							if( $where )
+								$where[] = 'AND';
+							$where[] = array( 'valid_from' => array('<=', $checkFrom) );
+							$where[] = 'AND';
+							$where[] = array( 'applied_on' => array('=', $checkFromWeekday) );
+
+							/* ok, now find for exact date */
+							$result2 = $ntsdb->select( 'MAX(valid_from) AS max_valid_from', 'timeblocks', $where );
+							$e2 = $result2->fetch();
+
+							if( $e2 && $e2['max_valid_from'] )
+							{
+								$nextDate2 = $checkFrom;
+								break;
+							}
+							else
+							{
+								$this->companyT->modify( '-1 day' );
+								$checkFrom = $this->companyT->formatDate_Db();
+								if( $nextDate1 && ($checkFrom <= $nextDate1) )
+								{
+									break;
+								}
+								if( $checkFrom < $checkTo )
+								{
+									break;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					$result = $ntsdb->select( 'MIN(valid_from) AS min_valid_from, MAX(valid_to) AS max_valid_to', 'timeblocks', $where );
+					$e = $result->fetch();
+					if( $e && $e['min_valid_from'] )
+					{
+						if( $e['min_valid_from'] > $okDate )
+							$checkFrom = $e['min_valid_from'];
+						else {
+							$checkFrom = $check_next_day;
+							}
+						$checkTo = $e['max_valid_to'];
+
+						while( $checkFrom )
+						{
+							$this->companyT->setDateDb( $checkFrom );
+							$checkFromWeekday = $this->companyT->getWeekday();
+
+							$where = $blocksWhere;
+							if( $where )
+								$where[] = 'AND';
+							$where[] = array( 'valid_to' => array('>=', $checkFrom) );
+							$where[] = 'AND';
+							$where[] = array( 'applied_on' => array('=', $checkFromWeekday) );
+
+							/* ok, now find for exact date */
+							$result2 = $ntsdb->select( 'MIN(valid_from) AS min_valid_from', 'timeblocks', $where );
+							$e2 = $result2->fetch();
+							if( $e2 && $e2['min_valid_from'] )
+							{
+								if( $e2['min_valid_from'] > $checkFrom )
+									$nextDate2 = $e2['min_valid_from'];
+								else
+									$nextDate2 = $checkFrom;
+								break;
+							}
+							else
+							{
+								$this->companyT->modify( '+1 day' );
+								$checkFrom = $this->companyT->formatDate_Db();
+								if( $nextDate1 && ($checkFrom >= $nextDate1) )
+								{
+									break;
+								}
+								if( $checkFrom > $checkTo )
+								{
+									break;
+								}
+							}
+						}
+					}
+				}
+
+				if( $nextDate2 && $nextDate1 )
+				{
+					if( $backward )
+						$nextDate = ($nextDate2 > $nextDate1) ? $nextDate2 : $nextDate1;
+					else
+						$nextDate = ($nextDate2 < $nextDate1) ? $nextDate2 : $nextDate1;
+				}
+				elseif( $nextDate2 )
+				{
+					$nextDate = $nextDate2;
+				}
+				elseif( $nextDate1 )
+				{
+					$nextDate = $nextDate1;
+				}
+			}
+
+			$okDate = $nextDate;
+			if( $okDate )
+			{
+				$return[] = $okDate;
+			}
+		}
+
+		
+		if( $backward )
+		{
+			sort( $return, SORT_NUMERIC );
+		}
+		return $return;
+	}
+
 	function setSkip( $skip_id )
 	{
 		if( ! is_array($skip_id) )
@@ -490,8 +766,15 @@ EOT;
 		}
 
 		$ntsdb =& dbWrapper::getInstance();
+		if( $fields && ! in_array('id', $fields) )
+		{
+			$fields[] = 'id';
+		}
+
 		if( ! $fields )
+		{
 			$fields = 'id, starts_at, created_at, lead_in, duration, lead_out, location_id, resource_id, service_id, seats, approved, completed, customer_id, price';
+		}
 
 		if( ! preg_match('/order by/i', $addon) )
 		{

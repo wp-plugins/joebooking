@@ -45,26 +45,34 @@
 				</span>
 			</li>
 		<?php endif; ?>
-			<?php
-			$btn_label = array();
-			if( $grand_balance_count )
-			{
-				$btn_label[] = M('Pay By Balance');
-			}
-			if( $grand_prepay_amount )
-			{
-				$btn_label[] = M('Pay Online') . ' ' . '<strong>' . ntsCurrency::formatPrice($grand_prepay_amount) . '</strong>';
-			}
-			$btn_label = join( ' &amp; ', $btn_label );
-			?>
-			<li>
-				<?php echo M('Click Here To'); ?> 
-			</li>
-			<li>
-				<a class="btn btn-success btn-lg" href="<?php echo ntsLink::makeLink('-current-', 'pay'); ?>">
-					<?php echo $btn_label; ?>
-				</a>
-			</li>
+
+		<?php
+		$btn_label = array();
+		if( $grand_balance_count )
+		{
+			$btn_label[] = M('Pay By Balance');
+		}
+		if( $grand_prepay_amount )
+		{
+			$btn_label[] = M('Pay Online') . ' ' . '<strong>' . ntsCurrency::formatPrice($grand_prepay_amount) . '</strong>';
+		}
+		$btn_label = join( ' &amp; ', $btn_label );
+		?>
+		<li>
+			<?php echo M('Click Here To'); ?> 
+		</li>
+		<li>
+			<a class="btn btn-success btn-lg" href="<?php echo ntsLink::makeLink('-current-', 'pay'); ?>">
+				<?php echo $btn_label; ?>
+			</a>
+		</li>
+
+	<?php elseif( $has_offline ) : ?>
+		<li>
+			<a class="btn btn-success btn-lg" href="<?php echo ntsLink::makeLink('-current-', 'pay'); ?>">
+				<?php echo $has_offline; ?>
+			</a>
+		</li>
 	<?php endif; ?>
 	</ul>
 <?php endif; ?>

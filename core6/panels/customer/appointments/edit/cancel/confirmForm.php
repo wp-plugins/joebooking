@@ -10,7 +10,7 @@ $requireCancelReason = $conf->get( 'requireCancelReason' );
 ?>
 <?php if( $requireCancelReason ) : ?>
 	<p>
-	<?php echo M('Please provide the cancel reason'); ?>
+	<?php echo M('Please give a reason'); ?>
 	</p>
 	<p>
 	<?php

@@ -5,15 +5,19 @@ $ri = ntsLib::remoteIntegration();
 
 <table class="ntsForm">
 <tr>
-	<td class="ntsFormLabel"><?php echo M('Enable Registration'); ?>?</td>
+	<td class="ntsFormLabel"><?php echo M('Registration'); ?></td>
 	<td class="ntsFormValue">
 <?php
 	echo $this->makeInput (
 	/* type */
-		'checkbox',
+		'select',
 	/* attributes */
 		array(
 			'id'	=> 'enableRegistration',
+			'options'	=> array(
+				array( 1, M('Yes') ),
+				array( 0, M('No') ),
+				),
 			)
 		);
 ?>
@@ -21,36 +25,39 @@ $ri = ntsLib::remoteIntegration();
 </tr>
 
 <tr>
-	<td class="ntsFormLabel"><?php echo M('Approval Required'); ?></td>
+	<td class="ntsFormLabel"><?php echo M('Approval'); ?></td>
 	<td class="ntsFormValue">
 <?php
 	echo $this->makeInput (
 	/* type */
-		'checkbox',
+		'select',
 	/* attributes */
 		array(
 			'id'	=> 'userAdminApproval',
+			'options'	=> array(
+				array( 1, M('Required') ),
+				array( 0, M('No') ),
+				),
 			)
 		);
 ?>
 	</td>
 </TR>
-<tr>
-	<td colspan="2">
-	<i><?php echo M('The administrator will need to manually approve new user accounts before they can access the system'); ?></i>
-	</td>
-</tr>
 
 <tr>
-	<td class="ntsFormLabel"><?php echo M('User Login Required?'); ?></td>
+	<td class="ntsFormLabel"><?php echo M('Login'); ?></td>
 	<td class="ntsFormValue">
 <?php
 	echo $this->makeInput (
 	/* type */
-		'checkbox',
+		'select',
 	/* attributes */
 		array(
 			'id'	=> 'userLoginRequired',
+			'options'	=> array(
+				array( 1, M('Required') ),
+				array( 0, M('Not Required') ),
+				),
 			)
 		);
 ?>
@@ -58,25 +65,24 @@ $ri = ntsLib::remoteIntegration();
 </tr>
 
 <tr>
-	<td class="ntsFormLabel"><?php echo M('Email Confirmation Required'); ?>?</td>
+	<td class="ntsFormLabel"><?php echo M('Email') . ': ' . M('Confirmation'); ?></td>
 	<td class="ntsFormValue">
-<?php
+	<?php
 	echo $this->makeInput (
 	/* type */
-		'checkbox',
+		'select',
 	/* attributes */
 		array(
 			'id'	=> 'userEmailConfirmation',
+			'options'	=> array(
+				array( 1, M('Required') ),
+				array( 0, M('No') ),
+				),
 			)
 		);
-?>
+	?>
 	</TD>
 </TR>
-<tr>
-	<td colspan="2">
-	<i><?php echo M('Newly registered users will be asked to confirm their email by following a confirmation link in the email message'); ?></i>
-	</td>
-</tr>
 
 <?php if( ! $ri ) : ?>
 	<tr>
@@ -109,22 +115,20 @@ $ri = ntsLib::remoteIntegration();
 
 <?php if( ! $ri ) : ?>
 	<tr>
-		<td class="ntsFormLabel"><?php echo M('Allow Duplicate Emails'); ?></td>
+		<td class="ntsFormLabel"><?php echo M('Emails'); ?>: <?php echo M('Duplicated'); ?></td>
 		<td class="ntsFormValue">
 	<?php
-		$thisFieldReadonly = $ri ? TRUE : FALSE;
-		$attr = array(
-			'id'		=> 'allowDuplicateEmails'
-			);
-		if( $thisFieldReadonly ){
-			$attr['readonly'] = 1;
-			$attr['value'] = 0;
-			}
 		echo $this->makeInput (
 		/* type */
-			'checkbox',
+			'select',
 		/* attributes */
-			$attr
+			array(
+				'id'		=> 'allowDuplicateEmails',
+				'options'	=> array(
+					array( 1, M('Allowed') ),
+					array( 0, M('No') ),
+					),
+				)
 			);
 	?>
 		</td>
@@ -132,12 +136,16 @@ $ri = ntsLib::remoteIntegration();
 <?php endif; ?>
 
 <tr>
-	<td class="ntsFormLabel"><?php echo M('Allow No Email'); ?></td>
+	<td class="ntsFormLabel"><?php echo M('No Email'); ?></td>
 	<td class="ntsFormValue">
 <?php
 	$thisFieldReadonly = false;
 	$attr = array(
-		'id'		=> 'allowNoEmail'
+		'id'		=> 'allowNoEmail',
+		'options'	=> array(
+			array( 1, M('Allowed') ),
+			array( 0, M('No') ),
+			),
 		);
 	if( $thisFieldReadonly ){
 		$attr['readonly'] = 1;
@@ -145,7 +153,7 @@ $ri = ntsLib::remoteIntegration();
 		}
 	echo $this->makeInput (
 	/* type */
-		'checkbox',
+		'select',
 	/* attributes */
 		$attr
 		);
@@ -154,15 +162,19 @@ $ri = ntsLib::remoteIntegration();
 </tr>
 
 <tr>
-	<td class="ntsFormLabel"><?php echo M('Customers Can Cancel Appointments'); ?></td>
+	<td class="ntsFormLabel"><?php echo M('Appointment'); ?>: <?php echo M('Cancel'); ?></td>
 	<td class="ntsFormValue">
 <?php
 	echo $this->makeInput (
 	/* type */
-		'checkbox',
+		'select',
 	/* attributes */
 		array(
 			'id'	=> 'customerCanCancel',
+			'options'	=> array(
+				array( 1, M('Allowed') ),
+				array( 0, M('No') ),
+				),
 			)
 		);
 ?>
@@ -171,7 +183,7 @@ $ri = ntsLib::remoteIntegration();
 
 <?php if( 0 ) : ?>
 <tr>
-	<td class="ntsFormLabel"><?php echo M('Customers Can Reschedule Appointments'); ?></td>
+	<td class="ntsFormLabel"><?php echo M('Appointment'); ?>: <?php echo M('Reschedule'); ?></td>
 	<td class="ntsFormValue">
 <?php
 	echo $this->makeInput (
@@ -192,9 +204,9 @@ $ri = ntsLib::remoteIntegration();
 	<td class="ntsFormValue">
 <?php
 $tzOptions = array(
-	array( 1, M('Allow To Set Own Timezone') ),
-	array( 0, M('Only View The Timezone') ),
-	array( -1, M('Do Not Show The Timezone') ),
+	array( 1, M('Edit') ),
+	array( 0, M('View') ),
+	array( -1, M('Hide') ),
 	);
 echo $this->makeInput (
 /* type */

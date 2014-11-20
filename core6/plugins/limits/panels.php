@@ -1,5 +1,5 @@
 <?php
 $panels = array(
-	array( 'admin/company/services/restrict', M('Customer Limits') ),
+	array( 'admin/company/services/restrict', M('Customer Limit') ),
 	);
 ?>

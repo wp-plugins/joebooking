@@ -17,11 +17,16 @@ else
 	</div>
 <?php endif; ?>
 
+	<?php if( $time_view_needed ) : ?>
 		<div class="text-left squeeze-in"><?php echo $timeViewStart; ?></div>
-		<?php if( $calendarField ) : ?>
-			<div class="text-center squeeze-in"><?php echo $slotInfo; ?></div>
-		<?php endif; ?>
+	<?php endif; ?>
+	<?php if( $calendarField ) : ?>
+		<div class="text-center squeeze-in"><?php echo $slotInfo; ?></div>
+	<?php endif; ?>
+	<?php if( $time_view_needed ) : ?>
 		<div class="text-right squeeze-in"><?php echo $timeViewEnd; ?></div>
+	<?php endif; ?>
+
 <?php if( $need_link ) : ?>
 	</a>
 <?php endif; ?>

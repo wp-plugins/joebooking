@@ -3,6 +3,9 @@ $class = 'customer';
 $om =& objectMapper::getInstance();
 $fields = $om->getFields( $class, 'internal' );
 reset( $fields );
+
+$conf =& ntsConf::getInstance();
+$enableRegistration = $conf->get('enableRegistration');
 ?>
 
 <?php foreach( $fields as $f ) : ?>
@@ -93,7 +96,7 @@ $languages = $lm->getActiveLanguages();
 	?>
 <?php endif; ?>
 
-<?php if( ! NTS_ENABLE_REGISTRATION ) : ?>
+<?php if( ! $enableRegistration ) : ?>
 	<?php
 	echo ntsForm::wrapInput(
 		M('Login Details'),
@@ -192,7 +195,7 @@ $languages = $lm->getActiveLanguages();
 		/* attributes */
 			array(
 				'id'		=> 'notify',
-				'default'	=> NTS_ENABLE_REGISTRATION ? 1 : 0,
+				'default'	=> $enableRegistration ? 1 : 0,
 				)
 			)
 		);
@@ -235,7 +238,7 @@ jQuery("#<?php echo $this->getName(); ?>noEmail").live( 'click', function()
 </script>
 <?php endif; ?>
 
-<?php if( ! NTS_ENABLE_REGISTRATION ) : ?>
+<?php if( ! $enableRegistration ) : ?>
 <script language="JavaScript">
 jQuery(document).ready( function(){
 	if( jQuery("#<?php echo $this->getName(); ?>login-details").is(":checked") )

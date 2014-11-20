@@ -25,7 +25,14 @@ if( $items )
 	}
 	else
 	{
-		$msg = M('Make Invoice') . ': ' . M('Error');
+		$msg = join( ': ',
+			array(
+				M('Invoice'),
+				M('Create'),
+				M('Error'),
+				)
+			);
+
 		$forwardTo = ntsLink::makeLink( '-current-' );
 		ntsView::addAnnounce( $msg, 'error' );
 	}

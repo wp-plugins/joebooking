@@ -130,15 +130,11 @@ else
 
 	foreach( $check_dirs as $checkd )
 	{
-		if( file_exists($checkd) )
+		$checkf = $checkd . 'index.php';
+		if( file_exists($checkf) )
 		{
 			$NTS_VIEW['isInside'] = TRUE;
-//			$NTS_VIEW['headFile'] = $checkd . '/head.php';
-//			$NTS_VIEW['headerFile'] = $checkd . '/header.php';
-//			$NTS_VIEW['footerFile'] = $checkd . '/footer.php';
-
-			$NTS_VIEW['isTheme'] = $checkd . '/index.php';
-
+			$NTS_VIEW['isTheme'] = $checkf;
 			break;
 		}
 	}

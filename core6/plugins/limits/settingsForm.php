@@ -21,7 +21,7 @@ echo ntsForm::wrapInput(
 		array(
 			array(
 				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				),
 			)
 		)
@@ -42,7 +42,7 @@ echo ntsForm::wrapInput(
 		array(
 			array(
 				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				),
 			)
 		)

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<emails>
+
+<message>
+<key>appointment-require_approval-customer</key>
+<subject>Reservacion pendiente de aprovacion</subject>
+<body>
+Gracias por solicitar su reservacion.
+Le rogamos espere un poco mientras se revisa su solicitud. Nosotros le notificaremos cuando su reserva sea aceptada. 
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-approve-customer</key>
+<subject>Reservacion aprovada</subject>
+<body>
+Gracias por su solicitud de reservacion. Su reservacion esta ahora aprovada.
+
+Detalles de su encabezado:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-customer</key>
+<subject>Reservacion rechazada</subject>
+<body>
+Gracias por su solicitud de reservacion. Lo sentimos, su reserva ha sido rechazada.
+
+Razones de rechazo:
+{REJECT_REASON}
+
+Your appointment details:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-customer</key>
+<subject>Reservacion marcada como Ausente</subject>
+<body>
+Lo sentimos, su reservacion ha sido marcada como ausente.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-request-customer</key>
+<subject>Su solicitud de reservacion</subject>
+<body>
+Gracias por su solicitud de reservacion. Su reserva está ahora aprobada.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-customer</key>
+<subject>Reserva cancelada</subject>
+<body>
+Esta es una confirmacion de que su reservacion ha sido cancelada a peticion suya.
+
+Razon de la cancelacion:
+{CANCEL_REASON}
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-customer</key>
+<subject>Su reservacion ha sido movida a otro lugar</subject>
+<body>
+Su reservacion ha sido movida a otro lugar.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-customer</key>
+<subject>Su reservacion ha sido modificada</subject>
+<body>
+Su reservacion ha sido modificada desde {OLD_APPOINTMENT.STARTS_AT} a {APPOINTMENT.STARTS_AT}.
+
+Detalles de la nueva reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-customer</key>
+<subject>Su reservacion a sido asignada a otro provedor</subject>
+<body>
+Su reservacion ha sido asignada a otro provedor.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+
+
+<message>
+<key>appointment-require_approval-provider</key>
+<subject>Su nueva reservacion requiere aprovacion</subject>
+<body>
+Hay una nueva reservacion solicitada por usted.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+Enlaces rapidos para su reservacion:
+{APPOINTMENT.QUICK_LINK_APPROVE} {APPOINTMENT.QUICK_LINK_REJECT}
+</body>
+</message>
+
+<message>
+<key>appointment-request-provider</key>
+<subject>Nueva reservacion solicitada</subject>
+<body>
+Hay una nueva reservacion solicitada por usted que ha sido aprovada automaticamente.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-provider</key>
+<subject>Reservacion cancelada por el provedor</subject>
+<body>
+Este es una confirmación de que su reservacion ha sido cancelada por el provedor.
+
+Razon de la cancelacion:
+{CANCEL_REASON}
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-provider</key>
+<subject>Reserva rechazada</subject>
+<body>
+Su reservacion ha sido rechazada.
+
+Razón del rechazo:
+{REJECT_REASON}
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-provider</key>
+<subject>Reservacion marcada como no presentado</subject>
+<body>
+Su reservacion ha sido marcada como no presentado.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>appointment-approve-provider</key>
+<subject>Reservacion aprovada</subject>
+<body>
+Su reservacion esta ahora aprovada.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-provider</key>
+<subject>Reservacion movida a otro provedor</subject>
+<body>
+Su reserva ha sido movida a otro provedor.
+
+Detalles de su reservacion
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-provider</key>
+<subject>Su reservacion ha sido modificada</subject>
+<body>
+Su reservacion ha sido modificada de {OLD_APPOINTMENT.STARTS_AT} a {APPOINTMENT.STARTS_AT}.
+
+Nuevos detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-provider</key>
+<subject>Nueva reservacion reasignada</subject>
+<body>
+Una nueva reservacion ha sido reasignada a usted.
+
+Detalles de su reservasion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign_from-provider</key>
+<subject>Su reservacion a sido reasignada a otro club</subject>
+<body>
+Su reservacion a sido reasignada a otro club.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>user-require_email_confirmaion-user</key>
+<subject>Porfavor, confirme su dirección de correo electronico</subject>
+<body>
+Gracias por registrarse! Ahora necesitamos que confirme su correo electronico.
+
+{USER.CONFIRMATION_LINK}
+</body>
+</message>
+
+<message>
+<key>user-require_approval-user</key>
+<subject>Registro pendiente de aprovacion</subject>
+<body>
+Gracias por registrarse!
+Ahora necesitamos que espere un poco a que manualmente aprovemos su cuenta. Le  notificaremos cuando su cuenta este activa.
+</body>
+</message>
+
+<message>
+<key>user-require_approval-admin</key>
+<subject>Nuevo usuario registrado, necesita su aprovacion</subject>
+<body>
+Un nuevo usuario se ha registrado. Porfavor, ve al panel de administracion para aprovar este nuevo usuario.
+
+Informacion del nuevo usuario:
+{USER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>user-activate-user</key>
+<subject>Su registro esta ahora activo</subject>
+<body>
+Enhorabena!
+Su cuenta de usuario esta ahora activa. Esta es su informacion para identificarse:
+
+Usuario   : {USER.USERNAME}
+Contraseña: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>user-reset_password-user</key>
+<subject>Contraseña restablecida</subject>
+<body>
+Tras su peticion, su contraseña ha sido restablecida. Esta es su nueva informacion para identificarse:
+
+Usuario   : {USER.USERNAME}
+Contraseña: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-customer</key>
+<subject>Recordatorio de reservacion</subject>
+<body>.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-provider</key>
+<subject>Recordatorio de reservacion</subject>
+<body>
+Este es un recordatorio de su reservacion.
+
+Detalles de su reservacion:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+<message>
+<key>appointment-change-customer</key>
+<subject>Su Reservacion ha cambiado</subject>
+<body>
+
+Su reservacion a cambiado, nuevos detalles de la reservacion:
+{APPOINTMENT.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-change-provider</key>
+<subject>Su Reservacion ha Cambiado</subject>
+<body>
+
+Su reservacion ha cambiado, estos son los nuevos detellas de la reservacion:
+{APPOINTMENT.-ALL-}
+
+Customer details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>user-require_email_confirmation-user</key>
+<subject>Por favor confirme su direccion de correo electronica</subject>
+<body>
+
+Gracias por registrarse! solo requerimos que confirme su direccion de correo elecronica siguiendo este enlace
+{USER.CONFIRMATION_LINK}
+
+</body>
+</message>
+
+<message>
+<key>appointment-showup-provider</key>
+<subject>Su reserva Desmarcada como No Mostrada</subject>
+<body>
+Su reserva Desmarcada como No Mostrada.
+
+Detalles:
+{APPOINTMENT.-ALL-}
+
+Detalles:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+</emails>

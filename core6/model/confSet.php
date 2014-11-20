@@ -108,7 +108,7 @@ switch( $name ){
 
 	case 'languages':
 		if( ! $value )
-			$return = 'en-builtin';
+			$return = 'en';
 		else {
 			$return = join( '||', $value );
 			}

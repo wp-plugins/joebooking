@@ -10,6 +10,7 @@ $css_files = array(
 
 $js_files = array(
 	'happ/assets/js/jquery-1.8.3.min.js',
+//	'//code.jquery.com/jquery-1.8.3.min.js',
 	'happ/assets/bootstrap/js/bootstrap.min.js',
 	array('happ/assets/bootstrap/js/html5shiv.js', 'lt IE 9'),
 	array('happ/assets/bootstrap/js/respond.min.js', 'lt IE 9'),

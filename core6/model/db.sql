@@ -335,3 +335,11 @@ CREATE TABLE IF NOT EXISTS `{PRFX}logaudit` (
 	`description` TEXT,
 	PRIMARY KEY  (`id`)
 	);
+
+CREATE TABLE IF NOT EXISTS `{PRFX}languages` (
+	`id` int(11) NOT NULL auto_increment,
+	`lang` varchar(16) NOT NULL,
+	`original` TEXT,
+	`custom` TEXT,
+	PRIMARY KEY  (`id`)
+	);

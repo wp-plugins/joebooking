@@ -103,13 +103,22 @@ if( ! isset($GLOBALS['NTS_CONFIG'][$app]['FRONTEND_WEBPAGE']) )
 }
 
 /* session start */
-if( ! defined('NTS_SESSION_NAME') ){
-	define( 'NTS_SESSION_NAME', 'ntssess_' . $installationId );
-	}
+$session_name = isset($GLOBALS['NTS_CONFIG'][$app]['SESSION_NAME']) ? $GLOBALS['NTS_CONFIG'][$app]['SESSION_NAME'] : 'ntssess_' . $installationId;
+if( ! defined('NTS_SESSION_NAME') )
+{
+	define( 'NTS_SESSION_NAME', $session_name );
+}
 if( ! isset($_SESSION) )
 {
-	session_name( NTS_SESSION_NAME );
+	session_name( $session_name );
 	session_start();
+}
+
+/* force upgrade */
+if( isset($_GET['nts-force-upgrade']) )
+{
+	ntsLib::migrate( '6.0.1' );
+	exit;
 }
 
 /* run other file */

@@ -94,7 +94,9 @@ foreach( $titles as $title ){
 // resources terminology
 $resnameSing = 'Massage Therapist';
 $resnamePlu = 'Massage Therapists';
-$conf->set( 'text-Bookable Resource', $resnameSing );
-$conf->set( 'text-Bookable Resources', $resnamePlu );
+$lm =& ntsLanguageManager::getInstance();
+$lm->set_custom( 'en', 'Bookable Resource', $resnameSing );
+$lm->set_custom( 'en', 'Bookable Resources', $resnamePlu );
+
 $conf->set( 'htmlTitle', 'Massage Salon Scheduling' );
 ?>

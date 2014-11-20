@@ -1,0 +1,2833 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<file>
+<language>Dutch-Nederlands</language>
+<author>Frank Westerhout</author>
+<lastUpdate>November 2010</lastUpdate>
+<charset>utf-8</charset>
+
+<string>
+	<original>- Any -</original>
+	<translate>- Alle -</translate>
+</string>
+<string>
+	<original>Accept Invitation</original>
+	<translate>Reservering bevestigen</translate>
+</string>
+<string>
+	<original>Account Suspended</original>
+	<translate>Deze account is uitgeschakeld</translate>
+</string>
+<string>
+	<original>Actions</original>
+	<translate>Acties</translate>
+</string>
+<string>
+	<original>Activate</original>
+	<translate>Activeren</translate>
+</string>
+<string>
+	<original>Activate Anyway</original>
+	<translate>Toch activeren</translate>
+</string>
+<string>
+	<original>Nearest Availability</original>
+	<translate>Eerst beschikbaar</translate>
+</string>
+<string>
+	<original>Description of My Service </original>
+	<translate>Beschrijving </translate>
+</string> 
+<string>
+	<original>Activated</original>
+	<translate>Geactiveerd</translate>
+</string>
+<string>
+	<original>Active</original>
+	<translate>Actief</translate>
+</string>
+<string>
+	<original>Add</original>
+	<translate>Toevoegen</translate>
+</string>
+<string>
+	<original>Add Payment</original>
+	<translate>Betaling toevoegen</translate>
+</string>
+<string>
+	<original>Add Time Slot</original>
+	<translate>Tijdblok toevoegen</translate>
+</string>
+<string>
+	<original>Add To Admins</original>
+	<translate>Toewijzen aan beheerders</translate>
+</string>
+<string>
+	<original>Add To Managers</original>
+	<translate>Toewijzen aan bedrijfsleiders</translate>
+</string>
+<string>
+	<original>Add Validation</original>
+	<translate>Controle toevoegen</translate>
+</string>
+<string>
+	<original>Admin</original>
+	<translate>Beheerder</translate>
+</string>
+<string>
+	<original>Admin Approval Required</original>
+	<translate>Bevestiging van een beheerder vereist</translate>
+</string>
+<string>
+	<original>Admin Area</original>
+	<translate>Beheer</translate>
+</string>
+<string>
+	<original>Admin Notifications</original>
+	<translate>Kennisgevingen voor de beheerder</translate>
+</string>
+<string>
+	<original>Advanced Search</original>
+	<translate>Uitgebreid zoeken</translate>
+</string>
+<string>
+	<original>All</original>
+	<translate>Alle</translate>
+</string>
+<string>
+	<original>Allow Queued Appointments</original>
+	<translate>Reserveringen in een wachtrij toestaan</translate>
+</string>
+<string>
+	<original>Allow your customers to reserve appointments without time selection, then the staff assigns the exact date and time</original>
+	<translate>Gasten toestaan om zonder opgave van een tijd te reserveren. Een consulent(e) wijst uiteindelijk de datum en tijd toe.</translate>
+</string>
+<string>
+	<original>Already Approved</original>
+	<translate>Reeds bevestigd</translate>
+</string>
+<string>
+	<original>Already have an account?</original>
+	<translate>Heeft u al een account bij ons?</translate>
+</string>
+<string>
+	<original>Already in use</original>
+	<translate>Reeds in gebruik</translate>
+</string>
+<string>
+	<original>Amount</original>
+	<translate>Hoeveelheid</translate>
+</string>
+<string>
+	<original>Application Upgraded</original>
+	<translate>Bijgewerkt</translate>
+</string>
+<string>
+	<original>Applied On</original>
+	<translate>Toegepast op</translate>
+</string>
+<string>
+	<original>Apply to all other providers too</original>
+	<translate>Ook op alle andere medewerkers toepassen</translate>
+</string>
+<string>
+	<original>Appointment</original>
+	<translate>Reservering</translate>
+</string>
+<string>
+	<original>Appointment Approval Required</original>
+	<translate>Bevestiging van de reserving is vereist</translate>
+</string>
+<string>
+	<original>Appointment Approved</original>
+	<translate>De reservering is bevestigd</translate>
+</string>
+<string>
+	<original>Appointment Cancelled By Customer</original>
+	<translate>De reservering is geannuleerd door de gast</translate>
+</string>
+<string>
+	<original>Appointment Details</original>
+	<translate>Reserveringsdetails</translate>
+</string>
+<string>
+	<original>Appointment Flow</original>
+	<translate>Volgorde</translate>
+</string>
+<string>
+	<original>Appointment Forms</original>
+	<translate>Reserveringsformulieren</translate>
+</string>
+<string>
+	<original>Appointment Moved To Another Location</original>
+	<translate>De afspraak is verplaatst naar een andere locatie</translate>
+</string>
+<string>
+	<original>Appointment No Show</original>
+	<translate>De afspraak kan helaas niet doorgaan</translate>
+</string>
+<string>
+	<original>Appointment Not Allowed</original>
+	<translate>Deze reservering niet toegestaan</translate>
+</string>
+<string>
+	<original>Appointment Not Found</original>
+	<translate>Reservering niet gevonden</translate>
+</string>
+<string>
+	<original>Appointment Not Recommended</original>
+	<translate>Deze reservering is niet aanbevolen</translate>
+</string>
+<string>
+	<original>Appointment Pack</original>
+	<translate>Arrangement</translate>
+</string>
+<string>
+	<original>Appointment Packs</original>
+	<translate>Arrangementen</translate>
+</string>
+<string>
+	<original>Appointment Reasigned From You</original>
+	<translate>De afspraak is aan een andere consulent(e) toegewezen</translate>
+</string>
+<string>
+	<original>Appointment Reasigned To You</original>
+	<translate>De afspraak is aan u toegewezen</translate>
+</string>
+<string>
+	<original>Appointment Reassigned To Another Provider</original>
+	<translate>De afspraak is aan een andere consulent(e) toegewezen</translate>
+</string>
+<string>
+	<original>Appointment Rejected</original>
+	<translate>De reservering is afgewezen</translate>
+</string>
+<string>
+	<original>Appointment Reminder</original>
+	<translate>Herinnering afspraak</translate>
+</string>
+<string>
+	<original>Appointment Request (Automatically Approved)</original>
+	<translate>Reserveringsaanvraag (automatische bevestiging)</translate>
+</string>
+<string>
+	<original>Appointment Rescheduled</original>
+	<translate>De reservering is aangepast</translate>
+</string>
+<string>
+	<original>Appointment aleady approved</original>
+	<translate>Deze reservering is reeds bevestigd</translate>
+</string>
+<string>
+	<original>Appointment is not allowed due to low balance</original>
+	<translate>Reserveren is niet mogelijk door een te lage bezetting</translate>
+</string>
+<string>
+	<original>Appointments</original>
+	<translate>Reserveringen</translate>
+</string>
+<string>
+	<original>Appointments In Pack</original>
+	<translate>Samenstelling arrangement</translate>
+</string>
+<string>
+	<original>Appointments In Total</original>
+	<translate>Totaal reserveringen</translate>
+</string>
+<string>
+	<original>Approve</original>
+	<translate>Bevestigen</translate>
+</string>
+<string>
+	<original>Approved</original>
+	<translate>Bevestigd</translate>
+</string>
+<string>
+	<original>Apr</original>
+	<translate>April</translate>
+</string>
+<string>
+	<original>Assign</original>
+	<translate>Toewijzen</translate>
+</string>
+<string>
+	<original>Assigned To Services</original>
+	<translate>Toegewezen aan de soort faciliteit</translate>
+</string>
+<string>
+	<original>Attach Ical File To Appointment Notification Email</original>
+	<translate>Voeg een Ical bestand toe aan de bevestigingsmail</translate>
+</string>
+<string>
+	<original>Aug</original>
+	<translate>Augustus</translate>
+</string>
+<string>
+	<original>Author</original>
+	<translate>Auteur</translate>
+</string>
+<string>
+	<original>Auto Confirmed</original>
+	<translate>Automatisch bevestigd</translate>
+</string>
+<string>
+	<original>Available</original>
+	<translate>Beschikbaar</translate>
+</string>
+<string>
+	<original>Available In Packs Only</original>
+	<translate>Is uitsluitend in een arrangement beschikbaar</translate>
+</string>
+<string>
+	<original>Browse</original>
+	<translate>Bladeren</translate>
+</string>
+<string>
+	<original>Bulk Actions</original>
+	<translate>Bulk verwerking</translate>
+</string>
+<string>
+	<original>CC To Managers/Admins</original>
+	<translate>C.c. aan bedrijfsleiders en beheerders</translate>
+</string>
+<string>
+	<original>CSV Field Delimiter</original>
+	<translate>CSV scheidingsteken</translate>
+</string>
+<string>
+	<original>Cancel</original>
+	<translate>Annuleren</translate>
+</string>
+<string>
+	<original>Cancellation/Reschedule Deadline</original>
+	<translate>Uiterste tijd voor annuleren of wijzigen reservering</translate>
+</string>
+<string>
+	<original>Cancelled</original>
+	<translate>Geannuleerd</translate>
+</string>
+<string>
+	<original>Categories</original>
+	<translate>Categorieen</translate>
+</string>
+<string>
+	<original>Category</original>
+	<translate>Categorie</translate>
+</string>
+<string>
+	<original>Change Password</original>
+	<translate>Wachtwoord wijzigen</translate>
+</string>
+<string>
+	<original>Check this if an appointment of this service allows other appointments at the same time in the same location. Otherwise, the location will be blocked for other providers.</original>
+	<translate>Aanvinken indien u reserveringen van anderen wilt toestaan voor deze soort faciliteit op dezelfde tijd op deze locatie. Anders kan deze locatie niet gereserveerd worden door andere medewerkers.</translate>
+</string>
+<string>
+	<original>Checkbox On</original>
+	<translate>Aangevinkt</translate>
+</string>
+<string>
+	<original>Choose Location</original>
+	<translate>Kies een locatie</translate>
+</string>
+<string>
+	<original>Choose Provider</original>
+	<translate>Kies een consulent(e)</translate>
+</string>
+<string>
+	<original>Click here to confirm your email</original>
+	<translate>Klik hier om de e-mail te bevestigen</translate>
+</string>
+<string>
+	<original>Click to activate</original>
+	<translate>Klik hier om te activeren</translate>
+</string>
+<string>
+	<original>Click to disable</original>
+	<translate>Klik hier om uit te schakelen</translate>
+</string>
+<string>
+	<original>Close</original>
+	<translate>Sluiten</translate>
+</string>
+<string>
+	<original>Company Confirmation Required</original>
+	<translate>Bevestiging vereist</translate>
+</string>
+<string>
+	<original>Company Timezone</original>
+	<translate>Uw tijzone</translate>
+</string>
+<string>
+	<original>Confirm</original>
+	<translate>Bevestig</translate>
+</string>
+<string>
+	<original>Confirm Appointment</original>
+	<translate>Bevestig reservering</translate>
+</string>
+<string>
+	<original>Confirm Password</original>
+	<translate>Bevestig uw wachtwoord</translate>
+</string>
+<string>
+	<original>Confirm Reschedule</original>
+	<translate>Bevestig de wijziging</translate>
+</string>
+<string>
+	<original>Congratulations, your account has been created and activated</original>
+	<translate>Uw account is succesvol aangemaakt en geactiveerd!</translate>
+</string>
+<string>
+	<original>Contact Information</original>
+	<translate>Contactinformatie</translate>
+</string>
+<string>
+	<original>Continue</original>
+	<translate>Doorgaan</translate>
+</string>
+<string>
+	<original>Continue With Recurring Appointments</original>
+	<translate>Doorgaan met terugkerende reserveringen</translate>
+</string>
+<string>
+	<original>Continue With Single Appointment</original>
+	<translate>Doorgaan met eenmalige reserveringen</translate>
+</string>
+<string>
+	<original>Create</original>
+	<translate>Aanmaken</translate>
+</string>
+<string>
+	<original>Create Appointment</original>
+	<translate>Nieuwe reservering</translate>
+</string>
+<string>
+	<original>Create Appointment Anyway</original>
+	<translate>Reservering toch aanmaken</translate>
+</string>
+<string>
+	<original>Create Appointment Pack</original>
+	<translate>Aanmaken arrangementen</translate>
+</string>
+<string>
+	<original>Create New Field</original>
+	<translate>Nieuw veld aanmaken</translate>
+</string>
+<string>
+	<original>Create New Form</original>
+	<translate>Nieuw formulier aanmaken</translate>
+</string>
+<string>
+	<original>Create New Form Field</original>
+	<translate>Nieuw formulierveld aanmaken</translate>
+</string>
+<string>
+	<original>Create New Language File</original>
+	<translate>Nieuw taalbestand aanmaken</translate>
+</string>
+<string>
+	<original>Create New Session</original>
+	<translate>Nieuwe sessie aanmaken</translate>
+</string>
+<string>
+	<original>Create Schedule</original>
+	<translate>Planning aanmaken</translate>
+</string>
+<string>
+	<original>Create Service Category</original>
+	<translate>Categorie aanmaken</translate>
+</string>
+<string>
+	<original>Create Timeoff</original>
+	<translate>Afwezigheid aanmaken</translate>
+</string>
+<string>
+	<original>Create a new customer</original>
+	<translate>Nieuwe gast aanmaken</translate>
+</string>
+<string>
+	<original>Created</original>
+	<translate>Aangemaakt</translate>
+</string>
+<string>
+	<original>Currency</original>
+	<translate>Valuta</translate>
+</string>
+<string>
+	<original>Currency and Price Formatting</original>
+	<translate>Valuta- en prijsinstellingen</translate>
+</string>
+<string>
+	<original>Custom Form</original>
+	<translate>Aangepast formulier</translate>
+</string>
+<string>
+	<original>Custom Forms</original>
+	<translate>Aangepaste formulieren</translate>
+</string>
+<string>
+	<original>Customer</original>
+	<translate>Gast</translate>
+</string>
+<string>
+	<original>Customer Access</original>
+	<translate>Toegang voor gasten</translate>
+</string>
+<string>
+	<original>Customer Form Fields</original>
+	<translate>Formuliervelden voor gasten</translate>
+</string>
+<string>
+	<original>Customer Notifications</original>
+	<translate>Kennisgevingen voor gasten</translate>
+</string>
+<string>
+	<original>Customer Registration</original>
+	<translate>Registratie nieuwe gast</translate>
+</string>
+<string>
+	<original>Customers</original>
+	<translate>Gasten</translate>
+</string>
+<string>
+	<original>Customize Form</original>
+	<translate>Formulieren aanpassen</translate>
+</string>
+<string>
+	<original>Date</original>
+	<translate>Datum</translate>
+</string>
+<string>
+	<original>Date Format</original>
+	<translate>Datumformaat</translate>
+</string>
+<string>
+	<original>Date and Time</original>
+	<translate>Datum en tijd</translate>
+</string>
+<string>
+	<original>Dates</original>
+	<translate>Data</translate>
+</string>
+<string>
+	<original>Day</original>
+	<translate>Dag</translate>
+</string>
+<string>
+	<original>Days</original>
+	<translate>Dagen</translate>
+</string>
+<string>
+	<original>Days To Show In Calendar For Admin/Provider</original>
+	<translate>Aantal dagen dat in de kalender moet worden weergegeven voor beheerders en consulenten</translate>
+</string>
+<string>
+	<original>Days To Show In Calendar For Customer</original>
+	<translate>Aantal dagen dat in de kalender voor de gast moet worden weergegeven</translate>
+</string>
+<string>
+	<original>Dec</original>
+	<translate>December</translate>
+</string>
+<string>
+	<original>Define possible services for every appointment in your pack</original>
+	<translate>Bepaal welke faciliteiten deel uitmaken van een arrangement</translate>
+</string>
+<string>
+	<original>Delete</original>
+	<translate>Verwijderen</translate>
+</string>
+<string>
+	<original>Deleted</original>
+	<translate>Verwijderd</translate>
+</string>
+<string>
+	<original>Description</original>
+	<translate>Omschrijving</translate>
+</string>
+<string>
+	<original>Desired Username</original>
+	<translate>Gewenste gebruikersnaam</translate>
+</string>
+<string>
+	<original>Detailed View</original>
+	<translate>Detail overzicht</translate>
+</string>
+<string>
+	<original>Details</original>
+	<translate>Details</translate>
+</string>
+<string>
+	<original>Disable</original>
+	<translate>Uitschakelen</translate>
+</string>
+<string>
+	<original>Disable Email</original>
+	<translate>E-mail uitschakelen</translate>
+</string>
+<string>
+	<original>Discount</original>
+	<translate>Korting</translate>
+</string>
+<string>
+	<original>Display By Location</original>
+	<translate>Toon per locatie</translate>
+</string>
+<string>
+	<original>Display By Provider</original>
+	<translate>Toon per consulent(e)</translate>
+</string>
+<string>
+	<original>Do you really want to cancel this appointment?</original>
+	<translate>Weet u zeker dat u deze reservering wilt annuleren?</translate>
+</string>
+<string>
+	<original>Do you really want to delete?</original>
+	<translate>Wilt u dit echt verwijderen?</translate>
+</string>
+<string>
+	<original>Do you really want to mark this appointment as no show?</original>
+	<translate>Weet u zeker dat u deze reservering wilt markeren als geannuleerde sessie?</translate>
+</string>
+<string>
+	<original>Do you really want to reject this appointment?</original>
+	<translate>Weet u zeker dat u deze reservering wilt afwijzen?</translate>
+</string>
+<string>
+	<original>Don't have an account yet?</original>
+	<translate>Heeft u zich nog niet bij ons ingeschreven?</translate>
+</string>
+<string>
+	<original>Down</original>
+	<translate>Naar beneden</translate>
+</string>
+<string>
+	<original>Drop Down Box</original>
+	<translate>Keuzelijst</translate>
+</string>
+<string>
+	<original>Due Value</original>
+	<translate>Nog te voldoen</translate>
+</string>
+<string>
+	<original>Duplicate</original>
+	<translate>Dupliceren</translate>
+</string>
+<string>
+	<original>Duplicate To All Days</original>
+	<translate>Naar iedere dag dupliceren</translate>
+</string>
+<string>
+	<original>Duplicated</original>
+	<translate>Gedupliceerd</translate>
+</string>
+<string>
+	<original>Duration</original>
+	<translate>Duur</translate>
+</string>
+<string>
+	<original>Each option on new line</original>
+	<translate>Elke waarde op een nieuwe regel</translate>
+</string>
+<string>
+	<original>Edit</original>
+	<translate>Bewerken</translate>
+</string>
+<string>
+	<original>Edit Footer</original>
+	<translate>Bewerk voettekst</translate>
+</string>
+<string>
+	<original>Edit Header</original>
+	<translate>Bewerk koptekst</translate>
+</string>
+<string>
+	<original>Email</original>
+	<translate>E-mail</translate>
+</string>
+<string>
+	<original>Email Confirmation Required</original>
+	<translate>E-mail bevestiging vereist</translate>
+</string>
+<string>
+	<original>Email Not Confirmed</original>
+	<translate>E-mail nog niet bevestigd</translate>
+</string>
+<string>
+	<original>Email Notifications Templates</original>
+	<translate>E-mail sjablonen voor kennisgevingen</translate>
+</string>
+<string>
+	<original>Email Settings</original>
+	<translate>E-mail instelingen</translate>
+</string>
+<string>
+	<original>Email Templates</original>
+	<translate>E-mail sjablonen</translate>
+</string>
+<string>
+	<original>Email Test Mode</original>
+	<translate>E-mail testinstelling</translate>
+</string>
+<string>
+	<original>Enable Customer Registration</original>
+	<translate>Schakel gastenregistratie in</translate>
+</string>
+<string>
+	<original>English Letters, Numbers, Underscores Only</original>
+	<translate>Alleen letters, cijfers en underscores!</translate>
+</string>
+<string>
+	<original>Error Message If Validation Fails</original>
+	<translate>Foutmelding indien de controle mislukt</translate>
+</string>
+<string>
+	<original>Every</original>
+	<translate>Elke</translate>
+</string>
+<string>
+	<original>Every 3 Weeks</original>
+	<translate>Elke drie weken</translate>
+</string>
+<string>
+	<original>Every Day</original>
+	<translate>Elke dag</translate>
+</string>
+<string>
+	<original>Every Fortnight</original>
+	<translate>Elk weekend</translate>
+</string>
+<string>
+	<original>Every Month</original>
+	<translate>Elke maand</translate>
+</string>
+<string>
+	<original>Every Other Day</original>
+	<translate>Om de dag</translate>
+</string>
+<string>
+	<original>Every Week</original>
+	<translate>Elke week</translate>
+</string>
+<string>
+	<original>Extra Seat Price</original>
+	<translate>Prijs voor een extra persoon</translate>
+</string>
+<string>
+	<original>Failed</original>
+	<translate>Mislukt</translate>
+</string>
+<string>
+	<original>Feb</original>
+	<translate>Februari</translate>
+</string>
+<string>
+	<original>Field Name</original>
+	<translate>Veldnaam</translate>
+</string>
+<string>
+	<original>Field Type</original>
+	<translate>Soort veld</translate>
+</string>
+<string>
+	<original>Fields</original>
+	<translate>Velden</translate>
+</string>
+<string>
+	<original>Fill in if required by your web hosting. You may need to consult your web hosting administrator or help documentation.</original>
+	<translate>Invullen indien uw provider dit vereist. Raadpleeg bij twijfel uw provider of de documentatie van de webserver.</translate>
+</string>
+<string>
+	<original>Filter</original>
+	<translate>Filteren</translate>
+</string>
+<string>
+	<original>Find an existing customer</original>
+	<translate>Zoek een bestaande gast</translate>
+</string>
+<string>
+	<original>Footer For All Emails</original>
+	<translate>Voettekst voor alle e-mails</translate>
+</string>
+<string>
+	<original>Forgot Your Password</original>
+	<translate>Wachtwoord vergeten</translate>
+</string>
+<string>
+	<original>Form</original>
+	<translate>Formulier</translate>
+</string>
+<string>
+	<original>Form Field</original>
+	<translate>Formulierveld</translate>
+</string>
+<string>
+	<original>Form Field Type and Options</original>
+	<translate>Soort formulierveld en opties</translate>
+</string>
+<string>
+	<original>Free</original>
+	<translate>Gratis</translate>
+</string>
+<string>
+	<original>Fri</original>
+	<translate>VR</translate>
+</string>
+<string>
+	<original>Friday</original>
+	<translate>vrijdag</translate>
+</string>
+<string>
+	<original>From</original>
+	<translate>Van</translate>
+</string>
+<string>
+	<original>From Number</original>
+	<translate>Van nummer</translate>
+</string>
+<string>
+	<original>From {COUNT} seats</original>
+	<translate>Van {COUNT} personen</translate>
+</string>
+<string>
+	<original>Fully Booked</original>
+	<translate>Volgeboekt</translate>
+</string>
+<string>
+	<original>Fully Paid</original>
+	<translate>Volledig voldaan</translate>
+</string>
+<string>
+	<original>Gateway</original>
+	<translate>Betaalprovider</translate>
+</string>
+<string>
+	<original>Gateway Reference</original>
+	<translate>Referenties</translate>
+</string>
+<string>
+	<original>Gateway Response</original>
+	<translate>Reactie</translate>
+</string>
+<string>
+	<original>Go</original>
+	<translate>Verwerk</translate>
+</string>
+<string>
+	<original>Go Back</original>
+	<translate>Ga terug</translate>
+</string>
+<string>
+	<original>Header For All Emails</original>
+	<translate>Koptekst voor alle e-mails</translate>
+</string>
+<string>
+	<original>Hidden</original>
+	<translate>Verborgen</translate>
+</string>
+<string>
+	<original>Home</original>
+	<translate>Start</translate>
+</string>
+<string>
+	<original>Hour</original>
+	<translate>Uur</translate>
+</string>
+<string>
+	<original>Hours</original>
+	<translate>Uren</translate>
+</string>
+<string>
+	<original>How Many Seats?</original>
+	<translate>Hoeveel personen?</translate>
+</string>
+<string>
+	<original>If set correctly, your company time is now [b]{TIME_STRING}[/b]. If it is wrong, please set your company correct time zone.</original>
+	<translate>Uw plaatselijke tijd is momenteel [b]{TIME_STRING}[/b]. Als dit onjuist is dient u uw tijdzone aan te passen.</translate>
+</string>
+<string>
+	<original>If set to 1, the recurring appointments option will be disabled</original>
+	<translate>Gebruik '1' om de optie terugkerende reserveringen uit te schakelen</translate>
+</string>
+<string>
+	<original>If set to Minute for example, it will show 90 Minutes rather than 1 Hour 30 Minutes.</original>
+	<translate>Als u hier bijvoorbeeld 'minuut' kiest dan wordt er '90 minuten' weergegeen i.p.v. 1 uur en 30 minuten.</translate>
+</string>
+<string>
+	<original>Indien aangevinkt worden de te verzenden e-mails op het scherm weergegeven i.p.v. werkelijk verzonden</original>
+	<translate>If set, email messages will be printed on screen rather than sent</translate>
+</string>
+<string>
+	<original>Info &amp; Upgrade</original>
+	<translate>Info &amp; Nieuwe versie</translate>
+</string>
+<string>
+	<original>Input Validation</original>
+	<translate>Controle toevoegen</translate>
+</string>
+<string>
+	<original>Install</original>
+	<translate>Installeren</translate>
+</string>
+<string>
+	<original>Installed</original>
+	<translate>Geinstalleerd</translate>
+</string>
+<string>
+	<original>Installed Version</original>
+	<translate>Geinstalleerde versie</translate>
+</string>
+<string>
+	<original>Integers Only</original>
+	<translate>Gebruik alleen Integers</translate>
+</string>
+<string>
+	<original>Invitation Sent</original>
+	<translate>Uitnodiging verzonden</translate>
+</string>
+<string>
+	<original>Invoice</original>
+	<translate>Rekening</translate>
+</string>
+<string>
+	<original>Invoice Value</original>
+	<translate>Prijs voor deze reservering</translate>
+</string>
+<string>
+	<original>Jan</original>
+	<translate>Januari</translate>
+</string>
+<string>
+	<original>Jul</original>
+	<translate>Juli</translate>
+</string>
+<string>
+	<original>Jun</original>
+	<translate>Juni</translate>
+</string>
+<string>
+	<original>Label For Customers</original>
+	<translate>Label voor gasten</translate>
+</string>
+<string>
+	<original>Language</original>
+	<translate>Taal</translate>
+</string>
+<string>
+	<original>Languages</original>
+	<translate>Talen</translate>
+</string>
+<string>
+	<original>Last Update</original>
+	<translate>Laatste update</translate>
+</string>
+<string>
+	<original>Lead In</original>
+	<translate>Voorbereidingstijd</translate>
+</string>
+<string>
+	<original>Lead Out</original>
+	<translate>Afhandeltijd</translate>
+</string>
+<string>
+	<original>Leave these blank to autogenerate a random password</original>
+	<translate>Als u dit veld leeg laat wordt er automatich een wachtwoord aangemaakt</translate>
+</string>
+<string>
+	<original>Legend</original>
+	<translate>Legenda</translate>
+</string>
+<string>
+	<original>List</original>
+	<translate>Lijst</translate>
+</string>
+<string>
+	<original>Loading...</original>
+	<translate>Ophalen...</translate>
+</string>
+<string>
+	<original>Location</original>
+	<translate>Locatie</translate>
+</string>
+<string>
+	<original>Location Can Be Shared With Other Providers</original>
+	<translate>De locatie kan gedeeld worden met andere medewerkers</translate>
+</string>
+<string>
+	<original>Location Occupied</original>
+	<translate>Locatie bezet</translate>
+</string>
+<string>
+	<original>Locations</original>
+	<translate>Locaties</translate>
+</string>
+<string>
+	<original>Logged out</original>
+	<translate>Afgemeld</translate>
+</string>
+<string>
+	<original>Login</original>
+	<translate>Aanmelden</translate>
+</string>
+<string>
+	<original>Login details</original>
+	<translate>Aanmeldgegevens</translate>
+</string>
+<string>
+	<original>Logout</original>
+	<translate>Afmelden</translate>
+</string>
+<string>
+	<original>Logs</original>
+	<translate>Logboekinformatie</translate>
+</string>
+<string>
+	<original>Lowercase English Letters, Numbers, Underscores Only</original>
+	<translate>Alleen kleine letters, cijfers en underscores gebruiken!</translate>
+</string>
+<string>
+	<original>Manage</original>
+	<translate>Beheer</translate>
+</string>
+<string>
+	<original>Manage Appointments</original>
+	<translate>Reserveringen beheren</translate>
+</string>
+<string>
+	<original>Manager</original>
+	<translate>Bedrijfsleider</translate>
+</string>
+<string>
+	<original>Managers have access to everything but the system settings</original>
+	<translate>Bedrijfsleiders hebben toegang tot alles behalve tot de systeeminstellingen</translate>
+</string>
+<string>
+	<original>Mar</original>
+	<translate>Maart</translate>
+</string>
+<string>
+	<original>Marked As No Show</original>
+	<translate>Gemarkeerd als vervallen</translate>
+</string>
+<string>
+	<original>Max Advance Booking</original>
+	<translate>Maximaal vooruit te boeken</translate>
+</string>
+<string>
+	<original>Max For One Booking</original>
+	<translate>Maximum voor ййn reservering</translate>
+</string>
+<string>
+	<original>Max Number Of Appointments In Pack</original>
+	<translate>Maximum aantal reserveringen voor een arrangement</translate>
+</string>
+<string>
+	<original>Max Number Of Recurring Appointments</original>
+	<translate>Maximum aantal terugkerende reserveringen</translate>
+</string>
+<string>
+	<original>Max Time Measure In Duration Display</original>
+	<translate>Maximale tijdseenheid in weergave van de duur</translate>
+</string>
+<string>
+	<original>May</original>
+	<translate>Mei</translate>
+</string>
+<string>
+	<original>Message</original>
+	<translate>Mededeling</translate>
+</string>
+<string>
+	<original>Message Text</original>
+	<translate>Tekst van de mededeling</translate>
+</string>
+<string>
+	<original>Min Advance Booking</original>
+	<translate>Minimaal vooruit te reserveren</translate>
+</string>
+<string>
+	<original>Min For One Booking</original>
+	<translate>Minimum voor ййn reservering</translate>
+</string>
+<string>
+	<original>Minute</original>
+	<translate>Minuut</translate>
+</string>
+<string>
+	<original>Minutes</original>
+	<translate>Minuten</translate>
+</string>
+<string>
+	<original>Misc</original>
+	<translate>Diverse</translate>
+</string>
+<string>
+	<original>Mon</original>
+	<translate>MA</translate>
+</string>
+<string>
+	<original>Monday</original>
+	<translate>maandag</translate>
+</string>
+<string>
+	<original>Months To Show In Calendar</original>
+	<translate>Weer te geven maanden in de kalender</translate>
+</string>
+<string>
+	<original>Move</original>
+	<translate>Verplaatsen</translate>
+</string>
+<string>
+	<original>Move To This Location</original>
+	<translate>Verplaats naar deze locatie</translate>
+</string>
+<string>
+	<original>Moved Down</original>
+	<translate>Naar beneden verplaatst</translate>
+</string>
+<string>
+	<original>Moved Up</original>
+	<translate>Naar boven verplaatst</translate>
+</string>
+<string>
+	<original>My Appointments</original>
+	<translate>Mijn reserveringen</translate>
+</string>
+<string>
+	<original>My Old Appointments</original>
+	<translate>Mijn vorige reserveringen</translate>
+</string>
+<string>
+	<original>My Profile</original>
+	<translate>Mijn gegevens</translate>
+</string>
+<string>
+	<original>My Timezone</original>
+	<translate>Mijn tijdzone</translate>
+</string>
+<string>
+	<original>My Upcoming Appointments</original>
+	<translate>Mijn volgende reserveringen</translate>
+</string>
+<string>
+	<original>N/A</original>
+	<translate>Niet beschikbaar</translate>
+</string>
+<string>
+	<original>New</original>
+	<translate>Nieuw</translate>
+</string>
+<string>
+	<original>New Appointment</original>
+	<translate>Nieuwe reservering</translate>
+</string>
+<string>
+	<original>New Customer</original>
+	<translate>Nieuwe gast</translate>
+</string>
+<string>
+	<original>New Form</original>
+	<translate>Nieuw formulier</translate>
+</string>
+<string>
+	<original>New Form Assigned To Service</original>
+	<translate>Nieuw formulier aan de faciliteit gekoppeld</translate>
+</string>
+<string>
+	<original>New Location</original>
+	<translate>Nieuwe locatie</translate>
+</string>
+<string>
+	<original>New Provider</original>
+	<translate>Nieuwe consulent(e)</translate>
+</string>
+<string>
+	<original>New Schedule</original>
+	<translate>Nieuwe planning</translate>
+</string>
+<string>
+	<original>New Schedule For</original>
+	<translate>Nieuwe planning voor</translate>
+</string>
+<string>
+	<original>New Service</original>
+	<translate>Nieuwe faciliteit</translate>
+</string>
+<string>
+	<original>New Time Slot</original>
+	<translate>Nieuw tijdblok</translate>
+</string>
+<string>
+	<original>New Timeoff</original>
+	<translate>Nieuwe afwezigheid</translate>
+</string>
+<string>
+	<original>New Version</original>
+	<translate>Nieuwe versie</translate>
+</string>
+<string>
+	<original>New Version Files Uploaded, Upgrade Procedure Required</original>
+	<translate>Nieuwe versie beschikbaar, wij adviseren u om een upgrade uit te voeren</translate>
+</string>
+<string>
+	<original>New appointment has been created and automatically approved.</original>
+	<translate>Er is een nieuwe reservering gemaakt die automatisch is goedgekeurd.</translate>
+</string>
+<string>
+	<original>New to our site? Please take a moment to register!</original>
+	<translate>Heeft u nog geen account bij ons?[BR]Schrijft u zich dan gratis in!</translate>
+</string>
+<string>
+	<original>Newly registered users will be asked to confirm their email by following a confirmation link in the email message</original>
+	<translate>Nieuw ingeschreven gasten worden verzocht om hun e-mailadres te bevestigen door op een link in de ontvangen e-mail te klikken.</translate>
+</string>
+<string>
+	<original>Newsletter</original>
+	<translate>Nieuwsbrief</translate>
+</string>
+<string>
+	<original>Newsletter sent to {USER_COUNT} user(s)</original>
+	<translate>De nieuwsbrief is aan {USER_COUNT} ingeschreven gasten verzonden</translate>
+</string>
+<string>
+	<original>Next Timeoffs</original>
+	<translate>Volgende afwezigheid</translate>
+</string>
+<string>
+	<original>No</original>
+	<translate>Nee</translate>
+</string>
+<string>
+	<original>No Appointments Found</original>
+	<translate>Geen reserveringen gevonden</translate>
+</string>
+<string>
+	<original>No Show</original>
+	<translate>Beschikbaarheid geannuleerd</translate>
+</string>
+<string>
+	<original>No Upgrade Procedure To Run</original>
+	<translate>Geen upgrade beschikbaar</translate>
+</string>
+<string>
+	<original>No fields defined for this form</original>
+	<translate>Er zijn geen velden in dit formulier aangemaakt</translate>
+</string>
+<string>
+	<original>No payments for this appointment</original>
+	<translate>Er zijn geen betalingen voor deze reservering</translate>
+</string>
+<string>
+	<original>No schedules yet</original>
+	<translate>Er is momenteel geen planning</translate>
+</string>
+<string>
+	<original>No users found matching your search</original>
+	<translate>Er zijn geen gebruikers gevonden die aan uw zoekcriteria voldoen</translate>
+</string>
+<string>
+	<original>Non Registered Customers</original>
+	<translate>Niet geregistreerde gasten</translate>
+</string>
+<string>
+	<original>Non Working Time</original>
+	<translate>Geen werktijd</translate>
+</string>
+<string>
+	<original>None</original>
+	<translate>Niet toegewezen</translate>
+</string>
+<string>
+	<original>Not Allowed</original>
+	<translate>Niet toegestaan</translate>
+</string>
+<string>
+	<original>Not Approved</original>
+	<translate>Niet goedgekeurd</translate>
+</string>
+<string>
+	<original>Not Paid</original>
+	<translate>Niet voldaan</translate>
+</string>
+<string>
+	<original>Not Shown For Security Reasons</original>
+	<translate>Niet weergegeven om veiligheidsredenen</translate>
+</string>
+<string>
+	<original>Not The First Option In Select List</original>
+	<translate>Niet de eerste optie in de keuzelijst</translate>
+</string>
+<string>
+	<original>Not Working Time</original>
+	<translate>Geen werktijd</translate>
+</string>
+<string>
+	<original>Not in list</original>
+	<translate>Niet in de lijst</translate>
+</string>
+<string>
+	<original>Not you?</original>
+	<translate>Bent u dit niet?</translate>
+</string>
+<string>
+	<original>Notification Activated</original>
+	<translate>Kennisgeving geactiveerd</translate>
+</string>
+<string>
+	<original>Notification Disabled</original>
+	<translate>Kennisgeving uitgeschakeld</translate>
+</string>
+<string>
+	<original>Nov</original>
+	<translate>November</translate>
+</string>
+<string>
+	<original>Numbers only</original>
+	<translate>Alleen cijfers</translate>
+</string>
+<string>
+	<original>Occupied</original>
+	<translate>Bezet</translate>
+</string>
+<string>
+	<original>Oct</original>
+	<translate>Oktober</translate>
+</string>
+<string>
+	<original>Old Appointment</original>
+	<translate>Eerdere reservering</translate>
+</string>
+<string>
+	<original>Old Appointments</original>
+	<translate>Eerdere reserveringen</translate>
+</string>
+<string>
+	<original>Old Timeoffs</original>
+	<translate>Eerdere afwezigheden</translate>
+</string>
+<string>
+	<original>One Appointment Free</original>
+	<translate>Eйn reservering gratis</translate>
+</string>
+<string>
+	<original>One Entry Only</original>
+	<translate>Slechts ййn ingave toegestaan</translate>
+</string>
+<string>
+	<original>Only lowercase English letters, numbers, and underscores please!</original>
+	<translate>Alleen kleine letters, cijfers en underscores gebruiken!</translate>
+</string>
+<string>
+	<original>Or Recurring Appointments?</original>
+	<translate>Of terugkerende reserveringen?</translate>
+</string>
+<string>
+	<original>Other Appointments During This Time</original>
+	<translate>Andere reserveringen op deze tijd</translate>
+</string>
+<string>
+	<original>Other Views &amp; Export</original>
+	<translate>Overige weergaven &amp; Export</translate>
+</string>
+<string>
+	<original>Pages</original>
+	<translate>Pagina's</translate>
+</string>
+<string>
+	<original>Paid Through</original>
+	<translate>Betaald met</translate>
+</string>
+<string>
+	<original>Paid Value</original>
+	<translate>Betaald bedrag</translate>
+</string>
+<string>
+	<original>Partially Booked</original>
+	<translate>Gedeeltelijk geboekt</translate>
+</string>
+<string>
+	<original>Partially Occupied</original>
+	<translate>Gedeeltelijk bezet</translate>
+</string>
+<string>
+	<original>Partially Paid</original>
+	<translate>Gedeeltelijk betaald</translate>
+</string>
+<string>
+	<original>Password</original>
+	<translate>Wachtwoord</translate>
+</string>
+<string>
+	<original>Password Changed</original>
+	<translate>Wachtwoord gewijzigd</translate>
+</string>
+<string>
+	<original>Password Reset</original>
+	<translate>Wachtwoord opnieuw instellen</translate>
+</string>
+<string>
+	<original>Passwords don't match!</original>
+	<translate>Wachtwoorden komen niet overeen!</translate>
+</string>
+<string>
+	<original>Payment</original>
+	<translate>Betaling</translate>
+</string>
+<string>
+	<original>Payment Added</original>
+	<translate>Betaling toegevoegd</translate>
+</string>
+<string>
+	<original>Payment Gateway</original>
+	<translate>Betaalprovider</translate>
+</string>
+<string>
+	<original>Payment Gateways</original>
+	<translate>Betaalproviders</translate>
+</string>
+<string>
+	<original>Payment Options</original>
+	<translate>Betalingsopties</translate>
+</string>
+<string>
+	<original>Payment Required</original>
+	<translate>Wijze van betaling</translate>
+</string>
+<string>
+	<original>Payment Settings</original>
+	<translate>Betalingsinstellingen</translate>
+</string>
+<string>
+	<original>Payments</original>
+	<translate>Betalingen</translate>
+</string>
+<string>
+	<original>Paypal Email</original>
+	<translate>Paypal E-mailadres</translate>
+</string>
+<string>
+	<original>Pending</original>
+	<translate>In behandeling</translate>
+</string>
+<string>
+	<original>Permissions</original>
+	<translate>Permissies</translate>
+</string>
+<string>
+	<original>Phone number should have at least {NUM} digits</original>
+	<translate>Het telefoonnummer dient minimaal {NUM} cijfers te bevatten</translate>
+</string>
+<string>
+	<original>Please Confirm Your Email</original>
+	<translate>Bevestig a.u.b. uw e-mailadres</translate>
+</string>
+<string>
+	<original>Please choose at least one location</original>
+	<translate>Kies a.u.b. minimaal ййn locatie</translate>
+</string>
+<string>
+	<original>Please choose at least one option</original>
+	<translate>Kies a.u.b. minimaal ййn optie</translate>
+</string>
+<string>
+	<original>Please choose at least one service</original>
+	<translate>Kies a.u.b. minimaal ййn faciliteit</translate>
+</string>
+<string>
+	<original>Please choose the session duration</original>
+	<translate>Kies a.u.b. de duur van de sessie</translate>
+</string>
+<string>
+	<original>Please choose whom to send your newsletter to</original>
+	<translate>Kies a.u.b. aan wie de nieuwsbrief verzonden met worden</translate>
+</string>
+<string>
+	<original>Please confirm the password</original>
+	<translate>Bevestig a.u.b. uw wachtwoord</translate>
+</string>
+<string>
+	<original>Please login</original>
+	<translate>Meld u hier aan met uw gegevens</translate>
+</string>
+<string>
+	<original>Please provide the cancel reason</original>
+	<translate>Geef a.u.b. de reden van de annulering aan</translate>
+</string>
+<string>
+	<original>Please provide the reject reason</original>
+	<translate>Geef a.u.b. de reden van de afwijzing aan</translate>
+</string>
+<string>
+	<original>Please provide your contact details</original>
+	<translate>Geef a.u.b. uw contactgegevens in</translate>
+</string>
+<string>
+	<original>Please register</original>
+	<translate>Gratis registreren als nieuwe gast</translate>
+</string>
+<string>
+	<original>Plugin</original>
+	<translate>Uitbreiding</translate>
+</string>
+<string>
+	<original>Plugins</original>
+	<translate>Uitbreidingen</translate>
+</string>
+<string>
+	<original>Price</original>
+	<translate>Prijs</translate>
+</string>
+<string>
+	<original>Price Format</original>
+	<translate>Prijs weergave</translate>
+</string>
+<string>
+	<original>Pricing</original>
+	<translate>Prijzen</translate>
+</string>
+<string>
+	<original>Print</original>
+	<translate>Print</translate>
+</string>
+<string>
+	<original>Proceed</original>
+	<translate>Doorgaan</translate>
+</string>
+<string>
+	<original>Provider</original>
+	<translate>Uw consulent(e)</translate>
+</string>
+<string>
+	<original>Provider Area</original>
+	<translate>Medewerkers</translate>
+</string>
+<string>
+	<original>Provider Notifications</original>
+	<translate>Kennisgevingen voor medewerkers</translate>
+</string>
+<string>
+	<original>Provider Presence Required</original>
+	<translate>De aanwezigheid van een consulent(e) is vereist</translate>
+</string>
+<string>
+	<original>Providers</original>
+	<translate>Medewerkers</translate>
+</string>
+<string>
+	<original>Really Cancel This Appointment</original>
+	<translate>Deze reservering echt verwijderen?</translate>
+</string>
+<string>
+	<original>Really Delete</original>
+	<translate>Echt verwijderen?</translate>
+</string>
+<string>
+	<original>Really Reject</original>
+	<translate>Echt afwijzen?</translate>
+</string>
+<string>
+	<original>Reassign</original>
+	<translate>Opnieuw toewijzen?</translate>
+</string>
+<string>
+	<original>Reassign To This Provider</original>
+	<translate>Opnieuw toewijzen aan deze consulent(e)</translate>
+</string>
+<string>
+	<original>Recurring</original>
+	<translate>Terugkerend</translate>
+</string>
+<string>
+	<original>Recurring Appointments</original>
+	<translate>Terugkerende afspraken</translate>
+</string>
+<string>
+	<original>Recurring Options</original>
+	<translate>Terugkerende opties</translate>
+</string>
+<string>
+	<original>Register</original>
+	<translate>Registeren</translate>
+</string>
+<string>
+	<original>Registered Customers</original>
+	<translate>Geregistreerde gasten</translate>
+</string>
+<string>
+	<original>Reject</original>
+	<translate>Afwijzen</translate>
+</string>
+<string>
+	<original>Rejected</original>
+	<translate>Afgewezen</translate>
+</string>
+<string>
+	<original>Release No Show</original>
+	<translate>Geannuleerde faciliteit weer activeren</translate>
+</string>
+<string>
+	<original>Released From No Show</original>
+	<translate>De geannuleerde faciliteit is weer actief</translate>
+</string>
+<string>
+	<original>Reminders</original>
+	<translate>Herinneringen</translate>
+</string>
+<string>
+	<original>Remove From Admins</original>
+	<translate>Verwijderen uit beheerders</translate>
+</string>
+<string>
+	<original>Remove From Managers</original>
+	<translate>Verwijderen uit bedrijfsleiders</translate>
+</string>
+<string>
+	<original>Request Permissions</original>
+	<translate>Goedkeuring aanvragen</translate>
+</string>
+<string>
+	<original>Required field</original>
+	<translate>Verplicht veld</translate>
+</string>
+<string>
+	<original>Reschedule</original>
+	<translate>Opnieuw plannen</translate>
+</string>
+<string>
+	<original>Reschedule Appointment</original>
+	<translate>Reservering opnieuw inplannen</translate>
+</string>
+<string>
+	<original>Resend Confirmation Code</original>
+	<translate>Bevestigingscode opnieuw sturen</translate>
+</string>
+<string>
+	<original>Reset To Defaults</original>
+	<translate>Standaardinstellingen terugzetten</translate>
+</string>
+<string>
+	<original>Response</original>
+	<translate>Reactie</translate>
+</string>
+<string>
+	<original>Review</original>
+	<translate>Overzicht</translate>
+</string>
+<string>
+	<original>Revise Search?</original>
+	<translate>Zoekactie aanpassen?</translate>
+</string>
+<string>
+	<original>Role</original>
+	<translate>Functie</translate>
+</string>
+<string>
+	<original>Run Upgrade Procedure</original>
+	<translate>Upgrade uitvoeren</translate>
+</string>
+<string>
+	<original>SMS</original>
+	<translate>SMS</translate>
+</string>
+<string>
+	<original>SMS Notifications Templates</original>
+	<translate>SMS sjablonen voor kennisgevingen</translate>
+</string>
+<string>
+	<original>SMTP Host</original>
+	<translate>SMTP server</translate>
+</string>
+<string>
+	<original>SMTP Password</original>
+	<translate>SMTP wachtwoord</translate>
+</string>
+<string>
+	<original>SMTP Settings</original>
+	<translate>SMTP instelingen</translate>
+</string>
+<string>
+	<original>SMTP Username</original>
+	<translate>SMTP gebruikersnaam</translate>
+</string>
+<string>
+	<original>Sat</original>
+	<translate>ZA</translate>
+</string>
+<string>
+	<original>Saturday</original>
+	<translate>zaterdag</translate>
+</string>
+<string>
+	<original>Save</original>
+	<translate>Opslaan</translate>
+</string>
+<string>
+	<original>Schedule</original>
+	<translate>Plannen</translate>
+</string>
+<string>
+	<original>Schedules</original>
+	<translate>Planning</translate>
+</string>
+<string>
+	<original>Schedules Duplicated</original>
+	<translate>Planning gedupliceerd</translate>
+</string>
+<string>
+	<original>Search</original>
+	<translate>Zoeken</translate>
+</string>
+<string>
+	<original>Seat Price</original>
+	<translate>Prijs per persoon</translate>
+</string>
+<string>
+	<original>Seats</original>
+	<translate>Aantal personen</translate>
+</string>
+<string>
+	<original>Select</original>
+	<translate>Selecteer</translate>
+</string>
+<string>
+	<original>Select Customer</original>
+	<translate>Selecteer gast</translate>
+</string>
+<string>
+	<original>Select Date &amp; Time</original>
+	<translate>Selecteer datum &amp; tijd</translate>
+</string>
+<string>
+	<original>Select Date and Time</original>
+	<translate>Selecteer datum en tijd</translate>
+</string>
+<string>
+	<original>Select Location</original>
+	<translate>Selecteer locatie</translate>
+</string>
+<string>
+	<original>Select Options</original>
+	<translate>Selecteer opties</translate>
+</string>
+<string>
+	<original>Select Provider</original>
+	<translate>Selecteer consulent(e)</translate>
+</string>
+<string>
+	<original>Select Service</original>
+	<translate>Selecteer faciliteit</translate>
+</string>
+<string>
+	<original>Selectable Times</original>
+	<translate>Beschikbare tijden</translate>
+</string>
+<string>
+	<original>Selecting Now</original>
+	<translate>Maak uw selectie...</translate>
+</string>
+<string>
+	<original>Send</original>
+	<translate>Verzenden</translate>
+</string>
+<string>
+	<original>Send Invitation</original>
+	<translate>Reservering verzenden</translate>
+</string>
+<string>
+	<original>Send New Password</original>
+	<translate>Nieuw wachtwoord verzenden</translate>
+</string>
+<string>
+	<original>Send Reminder Before</original>
+	<translate>Eerder een herinnering verzonden</translate>
+</string>
+<string>
+	<original>Send To</original>
+	<translate>Verzend aan</translate>
+</string>
+<string>
+	<original>Sender Email</original>
+	<translate>E-mail verzender</translate>
+</string>
+<string>
+	<original>Sender Name</original>
+	<translate>Naam verzender</translate>
+</string>
+<string>
+	<original>Sent At</original>
+	<translate>Verzonden op</translate>
+</string>
+<string>
+	<original>Sep</original>
+	<translate>September</translate>
+</string>
+<string>
+	<original>Service</original>
+	<translate>Faciliteit</translate>
+</string>
+<string>
+	<original>Service Categories</original>
+	<translate>Categorie van de faciliteiten</translate>
+</string>
+<string>
+	<original>Service Category</original>
+	<translate>Categorie van de faciliteit</translate>
+</string>
+<string>
+	<original>Service Selection Display Style</original>
+	<translate>Keuzeweergave van de faciliteiten</translate>
+</string>
+<string>
+	<original>Service selection should come before date &amp; time selection</original>
+	<translate>Maak eerst uw keuze voor de gewenste faciliteit en maak daarna de datum &amp; tijd selectie</translate>
+</string>
+<string>
+	<original>Services</original>
+	<translate>Faciliteiten</translate>
+</string>
+<string>
+	<original>Session</original>
+	<translate>Session</translate>
+</string>
+<string>
+	<original>Sessions</original>
+	<translate>Sessie</translate>
+</string>
+<string>
+	<original>Settings</original>
+	<translate>Instellingen</translate>
+</string>
+<string>
+	<original>Show Session Duration For Clients</original>
+	<translate>Toon de tijdsduur aan gasten</translate>
+</string>
+<string>
+	<original>Show old appointments</original>
+	<translate>Toon eerdere reserveringen</translate>
+</string>
+<string>
+	<original>Show upcoming appointments</original>
+	<translate>Toon komende reserveringen</translate>
+</string>
+<string>
+	<original>Showing {SHOW_FROM} - {SHOW_TO} of {TOTAL_COUNT}</original>
+	<translate>Overzicht van {SHOW_FROM} - {SHOW_TO} van totaal {TOTAL_COUNT}</translate>
+</string>
+<string>
+	<original>Single Or Recurring Appointments?</original>
+	<translate>Eenmalige of terugkerende reserveringen?</translate>
+</string>
+<string>
+	<original>Something short and descriptive, like Summer Schedule, etc</original>
+	<translate>Geef hier een korte, duidelijke omschrijving, bijvoorbeeld Winterplanning</translate>
+</string>
+<string>
+	<original>Sorry, appointment is not allowed at this time</original>
+	<translate>Helaas is reserveren niet mogelijk op deze tijd</translate>
+</string>
+<string>
+	<original>Sorry, this service is not available now</original>
+	<translate>Helaas is deze faciliteit momenteel niet beschikbaar</translate>
+</string>
+<string>
+	<original>Sorry, you are not allowed to view this appointment</original>
+	<translate>U kunt deze reservering niet inzien</translate>
+</string>
+<string>
+	<original>Sorry, you seen to have followed an invalid confirmation link</original>
+	<translate>U heeft waarschijnlijk een onjuiste link voor de bevestiging gevolgd...</translate>
+</string>
+<string>
+	<original>Status</original>
+	<translate>Status</translate>
+</string>
+<string>
+	<original>String(s) missing</original>
+	<translate>Ontbrekende gegevens</translate>
+</string>
+<string>
+	<original>Subject</original>
+	<translate>Onderwerp</translate>
+</string>
+<string>
+	<original>Sun</original>
+	<translate>ZO</translate>
+</string>
+<string>
+	<original>Sunday</original>
+	<translate>zondag</translate>
+</string>
+<string>
+	<original>Suspend</original>
+	<translate>Uitschakelen</translate>
+</string>
+<string>
+	<original>Suspended</original>
+	<translate>Uitgeschakeld</translate>
+</string>
+<string>
+	<original>Switch To Customer View</original>
+	<translate>Weergave voor gasten</translate>
+</string>
+<string>
+	<original>System Name</original>
+	<translate>Systeemnaam</translate>
+</string>
+<string>
+	<original>Tags</original>
+	<translate>Variabelen</translate>
+</string>
+<string>
+	<original>Template</original>
+	<translate>Template</translate>
+</string>
+<string>
+	<original>Template has been reset to default</original>
+	<translate>Sjabloon teruggezet naar standaardinstellingen</translate>
+</string>
+<string>
+	<original>Templates</original>
+	<translate>Sjablonen</translate>
+</string>
+<string>
+	<original>Text</original>
+	<translate>Tekst</translate>
+</string>
+<string>
+	<original>Text Field Size</original>
+	<translate>Veldgrootte</translate>
+</string>
+<string>
+	<original>Textarea</original>
+	<translate>Tekstvak</translate>
+</string>
+<string>
+	<original>Textarea Columns</original>
+	<translate>Tekstvak kolommen</translate>
+</string>
+<string>
+	<original>Textarea Rows</original>
+	<translate>Tekstvak rijen</translate>
+</string>
+<string>
+	<original>Thank you for registering![br]Now we kindly ask you to confirm your email. Please open your inbox and click the confirmation link in our message.</original>
+	<translate>Hartelijk dank voor uw registratie![br]Wij verzoeken u om de e-mail die wij aan u hebben verzonden te bevestigen door op de bevestingingslink in de mail te klikken.</translate>
+</string>
+<string>
+	<original>The administrator will need to manually approve new customer accounts before they can access the system</original>
+	<translate>De beheerder dient eerste nieuwe registraties goed te keuren voordat nieuwe gasten zich kunnen aanmelden</translate>
+</string>
+<string>
+	<original>The order to choose service, date and time, location, and provider. Please note that service selection should come before date and time selection.</original>
+	<translate>De volgorde waarin de faciliteit, de datum en tijd, de locatie en de consulent(e) gekozen kan worden. Selectie van de faciliteit moet altijd vууr de selectie van de datum en tijd geschieden.</translate>
+</string>
+<string>
+	<original>Theme Activated</original>
+	<translate>Kleurenschema geactiveerd</translate>
+</string>
+<string>
+	<original>Themes</original>
+	<translate>Kleurenschema</translate>
+</string>
+<string>
+	<original>There are [b]{APPS_COUNT}[/b] appointment(s) for this service. If you delete the service, these appointments will be cancelled.</original>
+	<translate>Er is (zijn) [b]{APPS_COUNT}[/b] reservering(en) voor deze faciliteit! Als u deze faciliteit verwijdert zullen deze reserveringen definitief vervallen!!</translate>
+</string>
+<string>
+	<original>There are [b]{APPS_COUNT}[/b] appointment(s) for this session. If you delete the session, these appointments will be cancelled.</original>
+	<translate>Er is (zijn) [b]{APPS_COUNT}[/b] reservering(en) voor deze sessie! Als u deze sessie verwijdert zullen deze reserveringen definitief vervallen!!</translate>
+</string>
+<string>
+	<original>There are [b]{APPS_COUNT}[/b] appointment(s) in this location. If you delete the location, these appointments will be cancelled.</original>
+	<translate>Er is (zijn) [b]{APPS_COUNT}[/b] reservering(en) voor deze locatie! Als u deze locatie verwijdert zullen deze reserveringen definitief vervallen!!</translate>
+</string>
+<string>
+	<original>There has been a problem with your payment</original>
+	<translate>Er is een probleem opgetreden met uw betaling!</translate>
+</string>
+<string>
+	<original>There is an error with your account.</original>
+	<translate>Er is een probleem met uw account.</translate>
+</string>
+<string>
+	<original>These upgrade scripts have been executed</original>
+	<translate>De upgradescripts zijn uitgevoerd</translate>
+</string>
+<string>
+	<original>This email is already confirmed</original>
+	<translate>Is reeds bevestigd!</translate>
+</string>
+<string>
+	<original>This email is not registered</original>
+	<translate>Deze e-mail is niet geregistreerd</translate>
+</string>
+<string>
+	<original>This may depend on your Excel regional settings</original>
+	<translate>Dit kan afhangen van uw Excel regioinstellingen</translate>
+</string>
+<string>
+	<original>This should not be greater than the total seats value</original>
+	<translate>Dit mag niet hoger zijn dan het maximum aantal personen dat mag reserveren</translate>
+</string>
+<string>
+	<original>This should not be smaller than the min advance booking</original>
+	<translate>Dit mag niet lager zijn dan de minimaal vooruit te reserveren instelling</translate>
+</string>
+<string>
+	<original>This should not be smaller than the min seats value</original>
+	<translate>Dit mag niet lager zijn dan het minmimaal aantal personen dat mag reserveren</translate>
+</string>
+<string>
+	<original>This title already exists</original>
+	<translate>Deze omschrijving bestaat reeds</translate>
+</string>
+<string>
+	<original>This title is already in use</original>
+	<translate>Deze omschrijving is al in gebruik</translate>
+</string>
+<string>
+	<original>This username is already in use</original>
+	<translate>Deze gebruikersnaam is reeds in gebruik</translate>
+</string>
+<string>
+	<original>Thu</original>
+	<translate>DO</translate>
+</string>
+<string>
+	<original>Thursday</original>
+	<translate>donderdag</translate>
+</string>
+<string>
+	<original>Time</original>
+	<translate>Tijd</translate>
+</string>
+<string>
+	<original>Time Format</original>
+	<translate>Tijdformaat</translate>
+</string>
+<string>
+	<original>Time Frame</original>
+	<translate>Tijdraster</translate>
+</string>
+<string>
+	<original>Time Slot</original>
+	<translate>Tijdblok</translate>
+</string>
+<string>
+	<original>Time Slots</original>
+	<translate>Tijdblokken</translate>
+</string>
+<string>
+	<original>Time Unit, min</original>
+	<translate>Tijdeenheid, minuten</translate>
+</string>
+<string>
+	<original>Timeoff</original>
+	<translate>Afwezigheid</translate>
+</string>
+<string>
+	<original>Timezone</original>
+	<translate>Tijdzone</translate>
+</string>
+<string>
+	<original>Title</original>
+	<translate>Omschrijving</translate>
+</string>
+<string>
+	<original>To</original>
+	<translate>Tot</translate>
+</string>
+<string>
+	<original>To Number</original>
+	<translate>Tot</translate>
+</string>
+<string>
+	<original>Total</original>
+	<translate>Totaal</translate>
+</string>
+<string>
+	<original>Total Amount</original>
+	<translate>Totaalbedrag</translate>
+</string>
+<string>
+	<original>Total Duration</original>
+	<translate>Totaal duur</translate>
+</string>
+<string>
+	<original>Total Price</original>
+	<translate>Totaalprijs</translate>
+</string>
+<string>
+	<original>Total Seats</original>
+	<translate>Totaal aantal personen</translate>
+</string>
+<string>
+	<original>Try again</original>
+	<translate>Probeert u het opnieuw a.u.b...</translate>
+</string>
+<string>
+	<original>Tue</original>
+	<translate>DI</translate>
+</string>
+<string>
+	<original>Tuesday</original>
+	<translate>dinsdag</translate>
+</string>
+<string>
+	<original>Uncategorized</original>
+	<translate>Geen categorie</translate>
+</string>
+<string>
+	<original>Uncheck this if the service books location only</original>
+	<translate>Haal het vinkje weg indien deze faciliteit alleen de locatie boekt</translate>
+</string>
+<string>
+	<original>Uninstall</original>
+	<translate>Installatie ongedaan maken</translate>
+</string>
+<string>
+	<original>Uninstalled</original>
+	<translate>Installatie ongedaan gemaakt</translate>
+</string>
+<string>
+	<original>Unique Email</original>
+	<translate>Uniek e-mailadres</translate>
+</string>
+<string>
+	<original>Unique Username</original>
+	<translate>Unieke gebruikersnaam</translate>
+</string>
+<string>
+	<original>Up</original>
+	<translate>Omhoog</translate>
+</string>
+<string>
+	<original>Up to {COUNT} seats</original>
+	<translate>tot {COUNT} personen</translate>
+</string>
+<string>
+	<original>Upcoming Appointments</original>
+	<translate>Komende reserveringen</translate>
+</string>
+<string>
+	<original>Update</original>
+	<translate>Bijwerken</translate>
+</string>
+<string>
+	<original>Updated</original>
+	<translate>Bijgewerkt</translate>
+</string>
+<string>
+	<original>Uploaded Version</original>
+	<translate>Uploaded Versie</translate>
+</string>
+<string>
+	<original>Use Email As Username</original>
+	<translate>Gebruik het e-mailadres als gebruikersnaam</translate>
+</string>
+<string>
+	<original>User</original>
+	<translate>Gebruiker</translate>
+</string>
+<string>
+	<original>User Account Activated</original>
+	<translate>Gebruikersaccount geactiveerd</translate>
+</string>
+<string>
+	<original>User Login Required?</original>
+	<translate>Gebruikersaanmelding vereist?</translate>
+</string>
+<string>
+	<original>User Notifications</original>
+	<translate>Kennisgevingen voor gebruiker</translate>
+</string>
+<string>
+	<original>User Registration</original>
+	<translate>Gebruikersregistratie</translate>
+</string>
+<string>
+	<original>User Status</original>
+	<translate>Gebruikersstatus</translate>
+</string>
+<string>
+	<original>Username</original>
+	<translate>Uw login naam</translate>
+</string>
+<string>
+	<original>Users</original>
+	<translate>Gebruikers</translate>
+</string>
+<string>
+	<original>Valid From Date</original>
+	<translate>Geldig vanaf datum</translate>
+</string>
+<string>
+	<original>Valid To Date</original>
+	<translate>Geldig tot datum</translate>
+</string>
+<string>
+	<original>Valid URL Syntax</original>
+	<translate>Geldige URL Syntax</translate>
+</string>
+<string>
+	<original>Validation</original>
+	<translate>Controle</translate>
+</string>
+<string>
+	<original>View Only</original>
+	<translate>Alleen inzien</translate>
+</string>
+<string>
+	<original>View and Update</original>
+	<translate>Inzien en wijzigen</translate>
+</string>
+<string>
+	<original>Waiting For Approval</original>
+	<translate>Wacht op goedkeuring</translate>
+</string>
+<string>
+	<original>Wed</original>
+	<translate>WO</translate>
+</string>
+<string>
+	<original>Wednesday</original>
+	<translate>woensdag</translate>
+</string>
+<string>
+	<original>Week Starts On</original>
+	<translate>Een week begint op</translate>
+</string>
+<string>
+	<original>Weekday</original>
+	<translate>Weekdag</translate>
+</string>
+<string>
+	<original>Weeks</original>
+	<translate>Weken</translate>
+</string>
+<string>
+	<original>When</original>
+	<translate>Wanneer</translate>
+</string>
+<string>
+	<original>When enabling this, be sure you remenber your own email address</original>
+	<translate>Als u dit wilt activeren dient u uw eigen e-mailadres goed te onthouden!</translate>
+</string>
+<string>
+	<original>Working Time</original>
+	<translate>Werktijden</translate>
+</string>
+<string>
+	<original>Wrong username or password</original>
+	<translate>Onjuiste gebruikersnaam of wachtwoord</translate>
+</string>
+<string>
+	<original>Yes</original>
+	<translate>Ja</translate>
+</string>
+<string>
+	<original>Yes/No</original>
+	<translate>Ja/Nee</translate>
+</string>
+<string>
+	<original>You are about to schedule appointment at a time that is not available for customers. Do you really want to proceed?</original>
+	<translate>U staat op het punt een reservering vast te leggen op een tijd die niet beschikbaar is voor gasten. Wilt u doorgaan?</translate>
+</string>
+<string>
+	<original>You can also provide individual Paypal accounts for every provider. If no Paypal email is given for a provider, this global account will be used.</original>
+	<translate>U kunt ook individuele Paypal accounts beschikbaar stellen voor iedere consulent(e). Als een consulent(e) geen Paypal account heeft zal het algemene Paypal account worden gebruikt.</translate>
+</string>
+<string>
+	<original>You can use the * wildcard to match any set of characters</original>
+	<translate>U kunt hier de * wildcard gebruiken om iedere karakterset te gebruiken</translate>
+</string>
+<string>
+	<original>You cannot cancel or reschedule this appointment now</original>
+	<translate>U kunt deze reservering momenteel niet verwijderen of opnieuw inplannen</translate>
+</string>
+<string>
+	<original>Your Name</original>
+	<translate>Uw naam</translate>
+</string>
+<string>
+	<original>Your account is temporarily suspended</original>
+	<translate>Uw account is tijdelijk uitgeschakeld</translate>
+</string>
+<string>
+	<original>Your appointment has been rescheduled.</original>
+	<translate>Uw reservering heeft een nieuwe planning gekregen.</translate>
+</string>
+<string>
+	<original>Your email is not confirmed yet. Please open your inbox and click the confirmation link in our message.</original>
+	<translate>Wij hebben nog geen bevestiging van u ontvangen op onze e-mail. Kijk in uw Postvak-in en klik in de ontvangen mail op de bevestigingslink.</translate>
+</string>
+<string>
+	<original>Your new password has been sent to your email</original>
+	<translate>Het nieuwe wachtwoord is per e-mail aan u verzonden</translate>
+</string>
+<string>
+	<original>[b]{CURRENCY}[/b] is not supported by this payment gateway</original>
+	<translate>[b]{CURRENCY}[/b] is helaas niet ondersteund door deze betaalprovider</translate>
+</string>
+<string>
+	<original>[b]{PROVIDER_NAME}[/b] Timeoff</original>
+	<translate>[b]{PROVIDER_NAME}[/b] Afwezigheid</translate>
+</string>
+<string>
+	<original>[b]{PROVIDER_NAME}[/b] can not provide [b]{SERVICE_NAME}[/b] at [b]{TIME}[/b]</original>
+	<translate>[b]{PROVIDER_NAME}[/b] is niet in staat om [b]{SERVICE_NAME}[/b] te bieden om [b]{TIME}[/b]</translate>
+</string>
+<string>
+	<original>[b]{PROVIDER_NAME}[/b] can not provide [b]{SERVICE_NAME}[/b] in [b]{LOCATION_NAME}[/b] at [b]{TIME}[/b]</original>
+	<translate>[b]{PROVIDER_NAME}[/b] is niet in staat om [b]{SERVICE_NAME}[/b] in [b]{LOCATION_NAME}[/b] te bieden om [b]{TIME}[/b]</translate>
+</string>
+<string>
+	<original>hitAppoint Path</original>
+	<translate>Applicatie path</translate>
+</string>
+<string>
+	<original>hours</original>
+	<translate>uren</translate>
+</string>
+<string>
+	<original>{APPS_COUNT} Appointments(s) Approved</original>
+	<translate>{APPS_COUNT} reserveringen goedgekeurd</translate>
+</string>
+<string>
+	<original>{APPS_COUNT} Appointments(s) Cancelled</original>
+	<translate>{APPS_COUNT} reserveringen geannuleerd</translate>
+</string>
+<string>
+	<original>{PRICE} per seat</original>
+	<translate>{PRICE} per persoon</translate>
+</string>
+<string>
+	<original>{PRICE} per seat up to {SEATS} seats, {EXTRA_PRICE} extra seat</original>
+	<translate>{PRICE} per persoon tot {SEATS} personen, {EXTRA_PRICE} voor ieder extra persoon</translate>
+</string>
+<string>
+	<original>{PRICE} per seat, {EXTRA_PRICE} extra seat</original>
+	<translate>{PRICE} per persoon, {EXTRA_PRICE} extra persoon</translate>
+</string>
+<string>
+	<original>{USER_COUNT} User Account(s) Activated</original>
+	<translate>{USER_COUNT} gebruikersaccounts geactiveerd</translate>
+</string>
+<string>
+	<original>{USER_COUNT} User Account(s) Suspended</original>
+	<translate>{USER_COUNT} gebruikersaccounts uitgeschakeld</translate>
+</string>
+<string>
+	<original>If set, email messages will be printed on screen rather than sent</original>
+	<translate>Indien geactiveerd worden e-mailberichten niet verzonden maar op het scherm weergegeven</translate>
+</string>
+<string>
+	<original>Leave this empty to return to the start page</original>
+	<translate>Laat dit leeg om terug te keren naar de startpagina</translate>
+</string>
+<string>
+	<original>New Pet</original>
+	<translate>Nieuw huisdier</translate>
+</string>
+<string>
+	<original>Not Shown</original>
+	<translate>Niet weergegeven</translate>
+</string>
+<string>
+	<original>Pets</original>
+	<translate>Huisdieren</translate>
+</string>
+<string>
+	<original>URL To Return After Appointment Request</original>
+	<translate>De URL die aangeroepen wordt na het maken van een reservering</translate>
+</string>
+<string>
+	<original>Leave this empty to return to hitAppoint start page</original>
+	<translate>Laat dit leeg om terug te keren naar de startpagina</translate>
+</string>
+<string>
+	<original>Access Denied</original>
+	<translate>Toegang geweigerd</translate>
+</string>
+<string>
+	<original>Add a star sign (*) before the default value</original>
+	<translate>Zet een (*) voor de standaard waarde</translate>
+</string>
+<string>
+	<original>Administrative User</original>
+	<translate>Administratieve gebruiker</translate>
+</string>
+<string>
+	<original>Administrative Users</original>
+	<translate>Administratieve Gebruikers</translate>
+</string>
+<string>
+	<original>All Days</original>
+	<translate>Alle Dagen</translate>
+</string>
+<string>
+	<original>Allow Duplicate Emails</original>
+	<translate>Dubbele Emails Toestaan</translate>
+</string>
+<string>
+	<original>Allow No Email</original>
+	<translate>Geen Email Toestaan</translate>
+</string>
+<string>
+	<original>Allow To Set Own Timezone</original>
+	<translate>Instellen eigen tijdzone toestaan</translate>
+</string>
+<string>
+	<original>Already Confirmed</original>
+	<translate>Reeds bevestigd</translate>
+</string>
+<string>
+	<original>Appointment Form</original>
+	<translate>Afspraken formulier</translate>
+</string>
+<string>
+	<original>Approval Required</original>
+	<translate>Bevestiging vereist</translate>
+</string>
+<string>
+	<original>Are you sure?</original>
+	<translate>Weet je het zeker?</translate>
+</string>
+<string>
+	<original>Attach Ical File To Notification Email</original>
+	<translate>Ical Aan Confirmatie Email Toevoegen</translate>
+</string>
+<string>
+	<original>Automatically Select Any Available</original>
+	<translate>Selecteer Automatisch Elke Beschikbaarheid</translate>
+</string>
+<string>
+	<original>Availability</original>
+	<translate>Beschikbaarheid</translate>
+</string>
+<string>
+	<original>Backup</original>
+	<translate>Backup</translate>
+</string>
+<string>
+	<original>Backup File</original>
+	<translate>Backup Bestand</translate>
+</string>
+<string>
+	<original>Bookable Resource</original>
+	<translate>Boekbare Faciliteit</translate>
+</string>
+<string>
+	<original>Bookable Resources</original>
+	<translate>Boekbare Faciliteiten</translate>
+</string>
+<string>
+	<original>Capacity</original>
+	<translate>Capaciteit</translate>
+</string>
+<string>
+	<original>Change</original>
+	<translate>Verander</translate>
+</string>
+<string>
+	<original>Change Appointment</original>
+	<translate>Verander Afspraak</translate>
+</string>
+<string>
+	<original>Class/Lesson</original>
+	<translate>Klas/Les</translate>
+</string>
+<string>
+	<original>Copy</original>
+	<translate>Kopie</translate>
+</string>
+<string>
+	<original>Days To Show In Calendar For External User</original>
+	<translate>Dagen In Kalender Voor Externe Gebruikers</translate>
+</string>
+<string>
+	<original>Days To Show In Calendar For Internal User</original>
+	<translate>Dagen In Kalender Voor Interne Gebruikers</translate>
+</string>
+<string>
+	<original>Default Value</original>
+	<translate>Standaard Waarde</translate>
+</string>
+<string>
+	<original>Do Not Show The Timezone</original>
+	<translate>Verberg Tijdzone</translate>
+</string>
+<string>
+	<original>Don't have a particular preference</original>
+	<translate>Geen Voorkeur</translate>
+</string>
+<string>
+	<original>Download Backup</original>
+	<translate>Download Backup</translate>
+</string>
+<string>
+	<original>Drop Down</original>
+	<translate>Drop Down</translate>
+</string>
+<string>
+	<original>Duplicate To</original>
+	<translate>Dupliceer Naar</translate>
+</string>
+<string>
+	<original>Enable Registration</original>
+	<translate>Registratie Toestaan</translate>
+</string>
+<string>
+	<original>Every 6 Weeks</original>
+	<translate>Elke 6 Weken</translate>
+</string>
+<string>
+	<original>External User Access</original>
+	<translate>Toegang Externe Gebruikers</translate>
+</string>
+<string>
+	<original>Find</original>
+	<translate>Zoek</translate>
+</string>
+<string>
+	<original>First Name</original>
+	<translate>Voornaam</translate>
+</string>
+<string>
+	<original>Fixed</original>
+	<translate>Vast</translate>
+</string>
+<string>
+	<original>Footer</original>
+	<translate>Footer</translate>
+</string>
+<string>
+	<original>Form Fields</original>
+	<translate>Formulier Velden</translate>
+</string>
+<string>
+	<original>Forms</original>
+	<translate>Formulieren</translate>
+</string>
+<string>
+	<original>Frontend View</original>
+	<translate>Gebruikers View</translate>
+</string>
+<string>
+	<original>Full Name</original>
+	<translate>Volledige Naam</translate>
+</string>
+<string>
+	<original>Header</original>
+	<translate>Header</translate>
+</string>
+<string>
+	<original>Help Text</original>
+	<translate>Help Tekst</translate>
+</string>
+<string>
+	<original>Hide</original>
+	<translate>Verberg</translate>
+</string>
+<string>
+	<original>Host</original>
+	<translate>Host</translate>
+</string>
+<string>
+	<original>If more than one seat available, then all appointments should start at the same time. Otherwise, any overlapping allowed.</original>
+	<translate>Indien meer dan 1 plaats beschikbaar, starten alle afspraken op dezelfde tijd, anders is overlap toegestaan.</translate>
+</string>
+<string>
+	<original>If set to 1, the recurring option will be disabled</original>
+	<translate>Als deze op 1 staat, is de herhaal optie niet beschikbaar</translate>
+</string>
+<string>
+	<original>If you proceed, these appointments will be cancelled</original>
+	<translate>Als u doorgaat, worden deze afspraken verwijderd</translate>
+</string>
+<string>
+	<original>Info</original>
+	<translate>Info</translate>
+</string>
+<string>
+	<original>It seems that you have not made a backup for some time, it's highly recommended to do it now</original>
+	<translate>Het lijkt erop dat het een tijd geleden is dat u een backup heeft gemaakt, we raden u aan dit nu te doen</translate>
+</string>
+<string>
+	<original>Keep Cancelled/Rejected Appointments In Database</original>
+	<translate>Bewaar Afgezegde Afspraken In Database</translate>
+</string>
+<string>
+	<original>Label</original>
+	<translate>Label</translate>
+</string>
+<string>
+	<original>Last Name</original>
+	<translate>Achternaam</translate>
+</string>
+<string>
+	<original>Let Customer Select</original>
+	<translate>Laat Klant Selecteren</translate>
+</string>
+<string>
+	<original>Let Customer Select With Auto Assign Option</original>
+	<translate>Laat Klant Selecteren Met Automatische Toewijs Optie</translate>
+</string>
+<string>
+	<original>List Appointment Packs Above Regular Services</original>
+	<translate>Toon Afspraken Pakket Boven Normale Faciliteiten</translate>
+</string>
+<string>
+	<original>Loading</original>
+	<translate>Laden</translate>
+</string>
+<string>
+	<original>Month</original>
+	<translate>Maand</translate>
+</string>
+<string>
+	<original>Name</original>
+	<translate>Naam</translate>
+</string>
+<string>
+	<original>No Access</original>
+	<translate>Geen Toegang</translate>
+</string>
+<string>
+	<original>No Email?</original>
+	<translate>Geen Email?</translate>
+</string>
+<string>
+	<original>No Selectable Times</original>
+	<translate>Geen Tijden Te Selecteren</translate>
+</string>
+<string>
+	<original>No administrative users to manage appointments!</original>
+	<translate>Geen Administratieve Gebruikers Om Afspraken Te Behandelen!</translate>
+</string>
+<string>
+	<original>No administrative users to manage schedules!</original>
+	<translate>Geen Administratieve Gebruikers Om Tijdschema's Te Behandelen!</translate>
+</string>
+<string>
+	<original>No more available</original>
+	<translate>Niet Beschikbaar</translate>
+</string>
+<string>
+	<original>No payment gateways configured!</original>
+	<translate>Geen Betaalwijzen Geconfigureerd!</translate>
+</string>
+<string>
+	<original>No schedules configured!</original>
+	<translate>Geen Tijdschema's Geconfigureerd!</translate>
+</string>
+<string>
+	<original>Non Registered Users</original>
+	<translate>Niet Geregistreerde Gebruikers</translate>
+</string>
+<string>
+	<original>Not Available Now</original>
+	<translate>Niet Beschikbaar Nu</translate>
+</string>
+<string>
+	<original>Not Registered</original>
+	<translate>Niet Geregistreerd</translate>
+</string>
+<string>
+	<original>Notification</original>
+	<translate>Notificatie</translate>
+</string>
+<string>
+	<original>Notifications</original>
+	<translate>Notificaties</translate>
+</string>
+<string>
+	<original>Notify Customer On Account Creation</original>
+	<translate>Waarschuw Klant Na Account Aanmaak</translate>
+</string>
+<string>
+	<original>OK</original>
+	<translate>OK</translate>
+</string>
+<string>
+	<original>Only View The Timezone</original>
+	<translate>Bekijk De Tijdzone</translate>
+</string>
+<string>
+	<original>Optional</original>
+	<translate>Optioneel</translate>
+</string>
+<string>
+	<original>Or select one below</original>
+	<translate>Of Selecteer 1 Beneden</translate>
+</string>
+<string>
+	<original>Other end time?</original>
+	<translate>Andere eind tijd?</translate>
+</string>
+<string>
+	<original>Period</original>
+	<translate>Periode</translate>
+</string>
+<string>
+	<original>Periodic</original>
+	<translate>Periodiek</translate>
+</string>
+<string>
+	<original>Permission Denied</original>
+	<translate>Toegang Geweigerd</translate>
+</string>
+<string>
+	<original>Please try again</original>
+	<translate>Probeer nogmaals</translate>
+</string>
+<string>
+	<original>Purge</original>
+	<translate>Verwijderen</translate>
+</string>
+<string>
+	<original>Purge Cancelled</original>
+	<translate>Verwijderen Gecancelled</translate>
+</string>
+<string>
+	<original>Purged</original>
+	<translate>Verwijderd</translate>
+</string>
+<string>
+	<original>Registered Users</original>
+	<translate>Geregistreerde Gebruikers</translate>
+</string>
+<string>
+	<original>Remind Me To Backup</original>
+	<translate>Herinner Me Aan Backup</translate>
+</string>
+<string>
+	<original>Reminder</original>
+	<translate>Herrinering</translate>
+</string>
+<string>
+	<original>Request (Automatically Approved)</original>
+	<translate>Aanvraag (Automatisch Goedkeuren)</translate>
+</string>
+<string>
+	<original>Require Clients Give Appointment Cancellation Reason</original>
+	<translate>Verplicht Klanten Reden Te Geven Voor Annulering</translate>
+</string>
+<string>
+	<original>Restore</original>
+	<translate>Restore</translate>
+</string>
+<string>
+	<original>Restore From Backup</original>
+	<translate>Restore Van Backup</translate>
+</string>
+<string>
+	<original>Secure</original>
+	<translate>Beveilig</translate>
+</string>
+<string>
+	<original>Selection Display Style</original>
+	<translate>Selectie Weergave Stijl</translate>
+</string>
+<string>
+	<original>Service selection should come before the date and time selection</original>
+	<translate>Faciliteit selectie moet voor de tijd en datum selectie</translate>
+</string>
+<string>
+	<original>Show</original>
+	<translate>Toon</translate>
+</string>
+<string>
+	<original>Sort By</original>
+	<translate>Sorteer Op</translate>
+</string>
+<string>
+	<original>Split</original>
+	<translate>Verdeel</translate>
+</string>
+<string>
+	<original>System Access Level</original>
+	<translate>Systeem Toegangs Nivo</translate>
+</string>
+<string>
+	<original>Terminology</original>
+	<translate>Terminologie</translate>
+</string>
+<string>
+	<original>The administrator will need to manually approve new user accounts before they can access the system</original>
+	<translate>De administrator moet handmatig nieuwe gebruikers goedkeuren voor ze toegang hebben</translate>
+</string>
+<string>
+	<original>Theme</original>
+	<translate>Thema</translate>
+</string>
+<string>
+	<original>There are [b]{APPS_COUNT}[/b] appointment(s)</original>
+	<translate>Er zijn [b]{APPS_COUNT}[/b] afspraak(en)</translate>
+</string>
+<string>
+	<original>There is a problem with your account</original>
+	<translate>Er is een probleem met je account</translate>
+</string>
+<string>
+	<original>Times shown in [b]{TIME_ZONE}[/b] time zone</original>
+	<translate>Tijden aangegeven [b]{TIME_ZONE}[/b] tijdzone</translate>
+</string>
+<string>
+	<original>Together</original>
+	<translate>Samen</translate>
+</string>
+<string>
+	<original>Type</original>
+	<translate>Type</translate>
+</string>
+<string>
+	<original>Until Closed</original>
+	<translate>Tot Sluiting</translate>
+</string>
+<string>
+	<original>Upgrade</original>
+	<translate>Upgrade</translate>
+</string>
+<string>
+	<original>Valid</original>
+	<translate>Geldig</translate>
+</string>
+<string>
+	<original>View</original>
+	<translate>Bekijk</translate>
+</string>
+<string>
+	<original>Warning: your current data will be deleted by restoring from backup file</original>
+	<translate>Let Op: de huidige data word overschreven als je een backup terugzet</translate>
+</string>
+<string>
+	<original>Web Page Title</original>
+	<translate>Pagina Titel</translate>
+</string>
+<string>
+	<original>Week</original>
+	<translate>Week</translate>
+</string>
+<string>
+	<original>Welcome</original>
+	<translate>Welkom</translate>
+</string>
+<string>
+	<original>When enabling this, be sure you remember your own email address</original>
+	<translate>Als je dit aanzet, onthoud dan uw eigen email adres bijzonder goed</translate>
+</string>
+<string>
+	<original>Wrong Confirmation Link</original>
+	<translate>Verkeerde Bevestig Link</translate>
+</string>
+<string>
+	<original>You have nothing to manage</original>
+	<translate>Er is niets om te beheren</translate>
+</string>
+<string>
+	<original>iCal Subscription</original>
+	<translate>iCal Abonnement</translate>
+</string>
+
+</file>

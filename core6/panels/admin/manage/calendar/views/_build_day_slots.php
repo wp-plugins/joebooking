@@ -1,6 +1,7 @@
 <?php
 $tm2 = ntsLib::getVar( 'admin::tm2' );
-$cals = array( $start_date );
+//$cals = array( $start_date );
+//_print_r( $cals );
 
 $slotsArray = array();
 foreach( $cals as $cal ){
@@ -84,14 +85,9 @@ foreach( $cals as $cal ){
 		'starts_at'							=> array('<', $dayEnd)
 		);
 
-	if( 0 && $showCompleted )
-	{
-		$where['completed'] = array( '<>', HA_STATUS_CANCELLED );
-		$where['completed '] = array( '<>', HA_STATUS_NOSHOW );
-	}
-
-	$apps = $tm2->getAppointments( $where, 'ORDER BY starts_at ASC' );
-	reset( $apps );
+//	$apps = $tm2->getAppointments( $where, 'ORDER BY starts_at ASC' );
+	$this_apps = isset($apps[$cal]) ? $apps[$cal] : array();
+	reset( $this_apps );
 
 	$slotApps = array();
 	$index = array();
@@ -127,7 +123,8 @@ foreach( $cals as $cal ){
 		}
 	}
 
-	foreach( $apps as $app ){
+	foreach( $this_apps as $app ){
+		$app = $app->getByArray();
 		if( ! in_array($app['location_id'], $locs) )
 			continue;
 		if( ! in_array($app['resource_id'], $ress) )

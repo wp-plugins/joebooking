@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <file>
-<language>Your Language</language>
-<author>Your Name</author>
-<lastUpdate>15 August, 2014</lastUpdate>
-<charset>iso-8859-1</charset>
+<language>English Built-In</language>
+<author>HitCode</author>
+<lastUpdate>17 November, 2014</lastUpdate>
+<charset>utf-8</charset>
 
 <string>
 	<original>1st</original>
@@ -34,16 +34,8 @@
 	<translate>Access Level</translate>
 </string>
 <string>
-	<original>Acknowledge</original>
-	<translate>Acknowledge</translate>
-</string>
-<string>
-	<original>Acknowledge Completion</original>
-	<translate>Acknowledge Completion</translate>
-</string>
-<string>
-	<original>Acknowledged</original>
-	<translate>Acknowledged</translate>
+	<original>Account</original>
+	<translate>Account</translate>
 </string>
 <string>
 	<original>Actions</original>
@@ -52,6 +44,10 @@
 <string>
 	<original>Activate</original>
 	<translate>Activate</translate>
+</string>
+<string>
+	<original>Activated</original>
+	<translate>Activated</translate>
 </string>
 <string>
 	<original>Active</original>
@@ -64,10 +60,6 @@
 <string>
 	<original>Add Another Appointment</original>
 	<translate>Add Another Appointment</translate>
-</string>
-<string>
-	<original>Add Payment</original>
-	<translate>Add Payment</translate>
 </string>
 <string>
 	<original>Add To Customer</original>
@@ -84,10 +76,6 @@
 <string>
 	<original>Additional Information</original>
 	<translate>Additional Information</translate>
-</string>
-<string>
-	<original>Admin</original>
-	<translate>Admin</translate>
 </string>
 <string>
 	<original>Admin Area</original>
@@ -114,16 +102,8 @@
 	<translate>All Day</translate>
 </string>
 <string>
-	<original>Allow Duplicate Emails</original>
-	<translate>Allow Duplicate Emails</translate>
-</string>
-<string>
-	<original>Allow No Email</original>
-	<translate>Allow No Email</translate>
-</string>
-<string>
-	<original>Allow To Set Own Timezone</original>
-	<translate>Allow To Set Own Timezone</translate>
+	<original>Allowed</original>
+	<translate>Allowed</translate>
 </string>
 <string>
 	<original>Allowed Types</original>
@@ -142,8 +122,8 @@
 	<translate>Already Confirmed</translate>
 </string>
 <string>
-	<original>Already Registered?</original>
-	<translate>Already Registered?</translate>
+	<original>Already Registered</original>
+	<translate>Already Registered</translate>
 </string>
 <string>
 	<original>Already in use</original>
@@ -178,6 +158,10 @@
 	<translate>Apply</translate>
 </string>
 <string>
+	<original>Apply Min Advance Booking From</original>
+	<translate>Apply Min Advance Booking From</translate>
+</string>
+<string>
 	<original>Appointment</original>
 	<translate>Appointment</translate>
 </string>
@@ -186,28 +170,16 @@
 	<translate>Appointment Blocks Day</translate>
 </string>
 <string>
-	<original>Appointment Custom Form</original>
-	<translate>Appointment Custom Form</translate>
-</string>
-<string>
-	<original>Appointment Custom Forms</original>
-	<translate>Appointment Custom Forms</translate>
-</string>
-<string>
 	<original>Appointment Flow</original>
 	<translate>Appointment Flow</translate>
-</string>
-<string>
-	<original>Appointment Status</original>
-	<translate>Appointment Status</translate>
 </string>
 <string>
 	<original>Appointments</original>
 	<translate>Appointments</translate>
 </string>
 <string>
-	<original>Approval Required</original>
-	<translate>Approval Required</translate>
+	<original>Approval</original>
+	<translate>Approval</translate>
 </string>
 <string>
 	<original>Approve</original>
@@ -254,10 +226,6 @@
 	<translate>Aug</translate>
 </string>
 <string>
-	<original>Author</original>
-	<translate>Author</translate>
-</string>
-<string>
 	<original>Auto Approved</original>
 	<translate>Auto Approved</translate>
 </string>
@@ -276,6 +244,10 @@
 <string>
 	<original>Automatically Activate Packages Even Without Payment</original>
 	<translate>Automatically Activate Packages Even Without Payment</translate>
+</string>
+<string>
+	<original>Automatically Select Any Available</original>
+	<translate>Automatically Select Any Available</translate>
 </string>
 <string>
 	<original>Availability</original>
@@ -304,10 +276,6 @@
 <string>
 	<original>Balance</original>
 	<translate>Balance</translate>
-</string>
-<string>
-	<original>Bandle</original>
-	<translate>Bandle</translate>
 </string>
 <string>
 	<original>Bookable Resource</original>
@@ -454,6 +422,10 @@
 	<translate>Confirm Password</translate>
 </string>
 <string>
+	<original>Confirmation</original>
+	<translate>Confirmation</translate>
+</string>
+<string>
 	<original>Conflicts</original>
 	<translate>Conflicts</translate>
 </string>
@@ -468,10 +440,6 @@
 <string>
 	<original>Copy</original>
 	<translate>Copy</translate>
-</string>
-<string>
-	<original>Copy Availability</original>
-	<translate>Copy Availability</translate>
 </string>
 <string>
 	<original>Coupon</original>
@@ -530,8 +498,8 @@
 	<translate>Current</translate>
 </string>
 <string>
-	<original>Current Version</original>
-	<translate>Current Version</translate>
+	<original>Custom</original>
+	<translate>Custom</translate>
 </string>
 <string>
 	<original>Custom Dates</original>
@@ -542,36 +510,20 @@
 	<translate>Custom Form</translate>
 </string>
 <string>
+	<original>Custom Forms</original>
+	<translate>Custom Forms</translate>
+</string>
+<string>
 	<original>Customer</original>
 	<translate>Customer</translate>
-</string>
-<string>
-	<original>Customer Form</original>
-	<translate>Customer Form</translate>
-</string>
-<string>
-	<original>Customer Form Fields</original>
-	<translate>Customer Form Fields</translate>
 </string>
 <string>
 	<original>Customer Limit</original>
 	<translate>Customer Limit</translate>
 </string>
 <string>
-	<original>Customer Limits</original>
-	<translate>Customer Limits</translate>
-</string>
-<string>
 	<original>Customers</original>
 	<translate>Customers</translate>
-</string>
-<string>
-	<original>Customers Can Cancel Appointments</original>
-	<translate>Customers Can Cancel Appointments</translate>
-</string>
-<string>
-	<original>Customers Can Reschedule Appointments</original>
-	<translate>Customers Can Reschedule Appointments</translate>
 </string>
 <string>
 	<original>Date</original>
@@ -650,10 +602,6 @@
 	<translate>Discount</translate>
 </string>
 <string>
-	<original>Do Not Show The Timezone</original>
-	<translate>Do Not Show The Timezone</translate>
-</string>
-<string>
 	<original>Down</original>
 	<translate>Down</translate>
 </string>
@@ -678,8 +626,8 @@
 	<translate>Due Date</translate>
 </string>
 <string>
-	<original>Duplicate</original>
-	<translate>Duplicate</translate>
+	<original>Duplicated</original>
+	<translate>Duplicated</translate>
 </string>
 <string>
 	<original>Duration</original>
@@ -694,24 +642,16 @@
 	<translate>Email</translate>
 </string>
 <string>
-	<original>Email Confirmation Required</original>
-	<translate>Email Confirmation Required</translate>
-</string>
-<string>
-	<original>Email Not Confirmed</original>
-	<translate>Email Not Confirmed</translate>
-</string>
-<string>
 	<original>Email Notifications Templates</original>
 	<translate>Email Notifications Templates</translate>
 </string>
 <string>
-	<original>Enable Company Side Attachments</original>
-	<translate>Enable Company Side Attachments</translate>
+	<original>Emails</original>
+	<translate>Emails</translate>
 </string>
 <string>
-	<original>Enable Registration</original>
-	<translate>Enable Registration</translate>
+	<original>Enable Company Side Attachments</original>
+	<translate>Enable Company Side Attachments</translate>
 </string>
 <string>
 	<original>Ends At</original>
@@ -790,10 +730,6 @@
 	<translate>Export</translate>
 </string>
 <string>
-	<original>Export To Freshbooks</original>
-	<translate>Export To Freshbooks</translate>
-</string>
-<string>
 	<original>External User Access</original>
 	<translate>External User Access</translate>
 </string>
@@ -820,6 +756,10 @@
 <string>
 	<original>Finance Settings</original>
 	<translate>Finance Settings</translate>
+</string>
+<string>
+	<original>First Purchase</original>
+	<translate>First Purchase</translate>
 </string>
 <string>
 	<original>First Time Visitors Splash Screen</original>
@@ -858,6 +798,10 @@
 	<translate>For example, if set to Minute, it will show 90 Minutes rather than 1 Hour 30 Minutes.</translate>
 </string>
 <string>
+	<original>For tomorrow availability, when applying Min Advance Booking, count from now or from the start of availability time</original>
+	<translate>For tomorrow availability, when applying Min Advance Booking, count from now or from the start of availability time</translate>
+</string>
+<string>
 	<original>Forgot Your Password</original>
 	<translate>Forgot Your Password</translate>
 </string>
@@ -880,10 +824,6 @@
 <string>
 	<original>Free</original>
 	<translate>Free</translate>
-</string>
-<string>
-	<original>Freshbooks</original>
-	<translate>Freshbooks</translate>
 </string>
 <string>
 	<original>Fri</original>
@@ -938,10 +878,6 @@
 	<translate>Go</translate>
 </string>
 <string>
-	<original>Go Back</original>
-	<translate>Go Back</translate>
-</string>
-<string>
 	<original>Header</original>
 	<translate>Header</translate>
 </string>
@@ -956,6 +892,10 @@
 <string>
 	<original>Hidden</original>
 	<translate>Hidden</translate>
+</string>
+<string>
+	<original>Hide</original>
+	<translate>Hide</translate>
 </string>
 <string>
 	<original>History</original>
@@ -1062,6 +1002,10 @@
 	<translate>Jun</translate>
 </string>
 <string>
+	<original>Just One Option Per Page</original>
+	<translate>Just One Option Per Page</translate>
+</string>
+<string>
 	<original>Label</original>
 	<translate>Label</translate>
 </string>
@@ -1074,16 +1018,16 @@
 	<translate>Languages</translate>
 </string>
 <string>
-	<original>Last Update</original>
-	<translate>Last Update</translate>
-</string>
-<string>
 	<original>Leave these blank to autogenerate a random password</original>
 	<translate>Leave these blank to autogenerate a random password</translate>
 </string>
 <string>
-	<original>Leave this empty to return to the default start page</original>
-	<translate>Leave this empty to return to the default start page</translate>
+	<original>Let Customer Select</original>
+	<translate>Let Customer Select</translate>
+</string>
+<string>
+	<original>Let Customer Select With Auto Assign Option</original>
+	<translate>Let Customer Select With Auto Assign Option</translate>
 </string>
 <string>
 	<original>License Code</original>
@@ -1118,10 +1062,6 @@
 	<translate>Login Details</translate>
 </string>
 <string>
-	<original>Login details</original>
-	<translate>Login details</translate>
-</string>
-<string>
 	<original>Logout</original>
 	<translate>Logout</translate>
 </string>
@@ -1132,10 +1072,6 @@
 <string>
 	<original>Lowercase English Letters, Numbers, Underscores Only</original>
 	<translate>Lowercase English Letters, Numbers, Underscores Only</translate>
-</string>
-<string>
-	<original>Make Invoice</original>
-	<translate>Make Invoice</translate>
 </string>
 <string>
 	<original>Mandatory Fields Missing</original>
@@ -1188,6 +1124,10 @@
 <string>
 	<original>Message</original>
 	<translate>Message</translate>
+</string>
+<string>
+	<original>Migrated To Version</original>
+	<translate>Migrated To Version</translate>
 </string>
 <string>
 	<original>Min Advance Booking</original>
@@ -1290,24 +1230,8 @@
 	<translate>New Item</translate>
 </string>
 <string>
-	<original>New Package</original>
-	<translate>New Package</translate>
-</string>
-<string>
-	<original>New Version</original>
-	<translate>New Version</translate>
-</string>
-<string>
-	<original>New Version Files Uploaded, Upgrade Procedure Required</original>
-	<translate>New Version Files Uploaded, Upgrade Procedure Required</translate>
-</string>
-<string>
 	<original>New to our site? Please take a moment to register!</original>
 	<translate>New to our site? Please take a moment to register!</translate>
-</string>
-<string>
-	<original>Newly registered users will be asked to confirm their email by following a confirmation link in the email message</original>
-	<translate>Newly registered users will be asked to confirm their email by following a confirmation link in the email message</translate>
 </string>
 <string>
 	<original>Newsletter</original>
@@ -1334,10 +1258,6 @@
 	<translate>No Show</translate>
 </string>
 <string>
-	<original>No Upgrade Required</original>
-	<translate>No Upgrade Required</translate>
-</string>
-<string>
 	<original>No availability configured</original>
 	<translate>No availability configured</translate>
 </string>
@@ -1362,8 +1282,8 @@
 	<translate>Not Available</translate>
 </string>
 <string>
-	<original>Not Changed</original>
-	<translate>Not Changed</translate>
+	<original>Not Confirmed</original>
+	<translate>Not Confirmed</translate>
 </string>
 <string>
 	<original>Not For Sale</original>
@@ -1374,10 +1294,6 @@
 	<translate>Not Found</translate>
 </string>
 <string>
-	<original>Not Limited</original>
-	<translate>Not Limited</translate>
-</string>
-<string>
 	<original>Not Paid</original>
 	<translate>Not Paid</translate>
 </string>
@@ -1386,8 +1302,8 @@
 	<translate>Not Registered</translate>
 </string>
 <string>
-	<original>Not Scheduled</original>
-	<translate>Not Scheduled</translate>
+	<original>Not Required</original>
+	<translate>Not Required</translate>
 </string>
 <string>
 	<original>Not Shown For Security Reasons</original>
@@ -1404,10 +1320,6 @@
 <string>
 	<original>Not Used</original>
 	<translate>Not Used</translate>
-</string>
-<string>
-	<original>Not Used Yet</original>
-	<translate>Not Used Yet</translate>
 </string>
 <string>
 	<original>Not Valid</original>
@@ -1482,10 +1394,6 @@
 	<translate>Only This One</translate>
 </string>
 <string>
-	<original>Only View The Timezone</original>
-	<translate>Only View The Timezone</translate>
-</string>
-<string>
 	<original>Only lowercase English letters, numbers, and underscores please!</original>
 	<translate>Only lowercase English letters, numbers, and underscores please!</translate>
 </string>
@@ -1502,10 +1410,6 @@
 	<translate>Other Appointment</translate>
 </string>
 <string>
-	<original>Other end time?</original>
-	<translate>Other end time?</translate>
-</string>
-<string>
 	<original>Overpaid</original>
 	<translate>Overpaid</translate>
 </string>
@@ -1516,10 +1420,6 @@
 <string>
 	<original>Package</original>
 	<translate>Package</translate>
-</string>
-<string>
-	<original>Package Details</original>
-	<translate>Package Details</translate>
 </string>
 <string>
 	<original>Package Order</original>
@@ -1572,6 +1472,10 @@
 <string>
 	<original>Past</original>
 	<translate>Past</translate>
+</string>
+<string>
+	<original>Pay At Our Office</original>
+	<translate>Pay At Our Office</translate>
 </string>
 <string>
 	<original>Pay By Balance</original>
@@ -1638,6 +1542,10 @@
 	<translate>Phone number should have at least {NUM} digits</translate>
 </string>
 <string>
+	<original>Pick one randomly from available ones in the front end</original>
+	<translate>Pick one randomly from available ones in the front end</translate>
+</string>
+<string>
 	<original>Please Confirm Your Email</original>
 	<translate>Please Confirm Your Email</translate>
 </string>
@@ -1662,20 +1570,8 @@
 	<translate>Please choose at least 2 options</translate>
 </string>
 <string>
-	<original>Please choose at least one option</original>
-	<translate>Please choose at least one option</translate>
-</string>
-<string>
-	<original>Please choose whom to send your newsletter to</original>
-	<translate>Please choose whom to send your newsletter to</translate>
-</string>
-<string>
 	<original>Please confirm the password</original>
 	<translate>Please confirm the password</translate>
-</string>
-<string>
-	<original>Please enter singular and plural forms for your business items</original>
-	<translate>Please enter singular and plural forms for your business items</translate>
 </string>
 <string>
 	<original>Please give a reason</original>
@@ -1686,8 +1582,8 @@
 	<translate>Please note that this operation can not be reverted!</translate>
 </string>
 <string>
-	<original>Please provide the cancel reason</original>
-	<translate>Please provide the cancel reason</translate>
+	<original>Please open your inbox and click the confirmation link in our message</original>
+	<translate>Please open your inbox and click the confirmation link in our message</translate>
 </string>
 <string>
 	<original>Please try again</original>
@@ -1700,10 +1596,6 @@
 <string>
 	<original>Plugins</original>
 	<translate>Plugins</translate>
-</string>
-<string>
-	<original>Plural</original>
-	<translate>Plural</translate>
 </string>
 <string>
 	<original>Preview</original>
@@ -1746,12 +1638,8 @@
 	<translate>Quantity</translate>
 </string>
 <string>
-	<original>Reassign From</original>
-	<translate>Reassign From</translate>
-</string>
-<string>
-	<original>Reassign To</original>
-	<translate>Reassign To</translate>
+	<original>Reassign</original>
+	<translate>Reassign</translate>
 </string>
 <string>
 	<original>Recent</original>
@@ -1760,10 +1648,6 @@
 <string>
 	<original>Recurring</original>
 	<translate>Recurring</translate>
-</string>
-<string>
-	<original>Recurring Options</original>
-	<translate>Recurring Options</translate>
 </string>
 <string>
 	<original>Ref Code</original>
@@ -1784,6 +1668,10 @@
 <string>
 	<original>Registered Customers</original>
 	<translate>Registered Customers</translate>
+</string>
+<string>
+	<original>Registration</original>
+	<translate>Registration</translate>
 </string>
 <string>
 	<original>Reject</original>
@@ -1830,14 +1718,6 @@
 	<translate>Required</translate>
 </string>
 <string>
-	<original>Required Field</original>
-	<translate>Required Field</translate>
-</string>
-<string>
-	<original>Required field</original>
-	<translate>Required field</translate>
-</string>
-<string>
 	<original>Reschedule</original>
 	<translate>Reschedule</translate>
 </string>
@@ -1862,20 +1742,12 @@
 	<translate>Restore</translate>
 </string>
 <string>
-	<original>Restore From Backup</original>
-	<translate>Restore From Backup</translate>
-</string>
-<string>
 	<original>Restrictions</original>
 	<translate>Restrictions</translate>
 </string>
 <string>
 	<original>Role</original>
 	<translate>Role</translate>
-</string>
-<string>
-	<original>Run Upgrade Procedure</original>
-	<translate>Run Upgrade Procedure</translate>
 </string>
 <string>
 	<original>SMS</original>
@@ -1970,14 +1842,6 @@
 	<translate>Send To</translate>
 </string>
 <string>
-	<original>Sender Email</original>
-	<translate>Sender Email</translate>
-</string>
-<string>
-	<original>Sender Name</original>
-	<translate>Sender Name</translate>
-</string>
-<string>
 	<original>Sent At</original>
 	<translate>Sent At</translate>
 </string>
@@ -1996,10 +1860,6 @@
 <string>
 	<original>Service Bundles</original>
 	<translate>Service Bundles</translate>
-</string>
-<string>
-	<original>Service Forms</original>
-	<translate>Service Forms</translate>
 </string>
 <string>
 	<original>Services</original>
@@ -2022,24 +1882,12 @@
 	<translate>Set to 0 to disable</translate>
 </string>
 <string>
-	<original>Setting this to 0 keeps the location available as long as there are resources available</original>
-	<translate>Setting this to 0 keeps the location available as long as there are resources available</translate>
-</string>
-<string>
 	<original>Settings</original>
 	<translate>Settings</translate>
 </string>
 <string>
-	<original>Show Completed Appointments In Admin Calendar</original>
-	<translate>Show Completed Appointments In Admin Calendar</translate>
-</string>
-<string>
 	<original>Show Order</original>
 	<translate>Show Order</translate>
-</string>
-<string>
-	<original>Singular</original>
-	<translate>Singular</translate>
 </string>
 <string>
 	<original>Slot Type</original>
@@ -2058,16 +1906,16 @@
 	<translate>Staff do not have access to company configuration, payments, and system settings</translate>
 </string>
 <string>
+	<original>Start Of Tomorrow Availability</original>
+	<translate>Start Of Tomorrow Availability</translate>
+</string>
+<string>
 	<original>Starts At</original>
 	<translate>Starts At</translate>
 </string>
 <string>
 	<original>Status</original>
 	<translate>Status</translate>
-</string>
-<string>
-	<original>String(s) missing</original>
-	<translate>String(s) missing</translate>
 </string>
 <string>
 	<original>Subject</original>
@@ -2096,6 +1944,10 @@
 <string>
 	<original>Synchronization</original>
 	<translate>Synchronization</translate>
+</string>
+<string>
+	<original>System</original>
+	<translate>System</translate>
 </string>
 <string>
 	<original>System Access Level</original>
@@ -2130,10 +1982,6 @@
 	<translate>Templates</translate>
 </string>
 <string>
-	<original>Terminology</original>
-	<translate>Terminology</translate>
-</string>
-<string>
 	<original>Text</original>
 	<translate>Text</translate>
 </string>
@@ -2154,24 +2002,8 @@
 	<translate>Textarea Rows</translate>
 </string>
 <string>
-	<original>Thank you for registering![br]Now we kindly ask you to confirm your email. Please open your inbox and click the confirmation link in our message.</original>
-	<translate>Thank you for registering![br]Now we kindly ask you to confirm your email. Please open your inbox and click the confirmation link in our message.</translate>
-</string>
-<string>
-	<original>The administrator will need to manually approve new user accounts before they can access the system</original>
-	<translate>The administrator will need to manually approve new user accounts before they can access the system</translate>
-</string>
-<string>
 	<original>The end time should be after the start</original>
 	<translate>The end time should be after the start</translate>
-</string>
-<string>
-	<original>Themes</original>
-	<translate>Themes</translate>
-</string>
-<string>
-	<original>There are [b]{APPS_COUNT}[/b] appointment(s)</original>
-	<translate>There are [b]{APPS_COUNT}[/b] appointment(s)</translate>
 </string>
 <string>
 	<original>There has been a problem with your payment</original>
@@ -2182,16 +2014,8 @@
 	<translate>There is a problem with your account</translate>
 </string>
 <string>
-	<original>These upgrade scripts have been executed</original>
-	<translate>These upgrade scripts have been executed</translate>
-</string>
-<string>
 	<original>This Date Only</original>
 	<translate>This Date Only</translate>
-</string>
-<string>
-	<original>This email is not registered</original>
-	<translate>This email is not registered</translate>
 </string>
 <string>
 	<original>This may depend on your Excel regional settings</original>
@@ -2294,10 +2118,6 @@
 	<translate>URL For Customer</translate>
 </string>
 <string>
-	<original>URL To Return After Appointment Request</original>
-	<translate>URL To Return After Appointment Request</translate>
-</string>
-<string>
 	<original>Uncategorized</original>
 	<translate>Uncategorized</translate>
 </string>
@@ -2306,12 +2126,8 @@
 	<translate>Uninstall</translate>
 </string>
 <string>
-	<original>Unique Email</original>
-	<translate>Unique Email</translate>
-</string>
-<string>
-	<original>Unique Username</original>
-	<translate>Unique Username</translate>
+	<original>Unique</original>
+	<translate>Unique</translate>
 </string>
 <string>
 	<original>Unit Price</original>
@@ -2322,12 +2138,8 @@
 	<translate>Unlimited</translate>
 </string>
 <string>
-	<original>Unmark Completed</original>
-	<translate>Unmark Completed</translate>
-</string>
-<string>
-	<original>Unmark No Show</original>
-	<translate>Unmark No Show</translate>
+	<original>Unmark</original>
+	<translate>Unmark</translate>
 </string>
 <string>
 	<original>Unpaid Invoices</original>
@@ -2360,10 +2172,6 @@
 <string>
 	<original>Uploaded</original>
 	<translate>Uploaded</translate>
-</string>
-<string>
-	<original>Uploaded Version</original>
-	<translate>Uploaded Version</translate>
 </string>
 <string>
 	<original>Uploads Directory</original>
@@ -2408,10 +2216,6 @@
 <string>
 	<original>User</original>
 	<translate>User</translate>
-</string>
-<string>
-	<original>User Login Required?</original>
-	<translate>User Login Required?</translate>
 </string>
 <string>
 	<original>User Registration</original>
@@ -2568,30 +2372,6 @@
 <string>
 	<original>Yes, I've configured the cron job</original>
 	<translate>Yes, I've configured the cron job</translate>
-</string>
-<string>
-	<original>Yes/No</original>
-	<translate>Yes/No</translate>
-</string>
-<string>
-	<original>Your account is not yet approved</original>
-	<translate>Your account is not yet approved</translate>
-</string>
-<string>
-	<original>Your account is suspended</original>
-	<translate>Your account is suspended</translate>
-</string>
-<string>
-	<original>Your email is not confirmed yet. Please open your inbox and click the confirmation link in our message.</original>
-	<translate>Your email is not confirmed yet. Please open your inbox and click the confirmation link in our message.</translate>
-</string>
-<string>
-	<original>Your email is not yet confirmed</original>
-	<translate>Your email is not yet confirmed</translate>
-</string>
-<string>
-	<original>Your invoice #{REFNO} is ready, to review please click {SEND_LINK}</original>
-	<translate>Your invoice #{REFNO} is ready, to review please click {SEND_LINK}</translate>
 </string>
 <string>
 	<original>Your new password has been sent to your email</original>

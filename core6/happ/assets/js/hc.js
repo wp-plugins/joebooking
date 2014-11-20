@@ -65,6 +65,7 @@ function hc_click_ajax_loader( obj ){
 /* search in children */
 	var myParent = obj.closest( '.hc-ajax-parent' );
 	var targetDiv = myParent.find('.hc-ajax-container');
+	var scrollInto = obj.hasClass('hc-ajax-scroll') ? true : false;
 
 	if( targetDiv.length )
 	{
@@ -80,7 +81,8 @@ function hc_click_ajax_loader( obj ){
 		}
 
 		targetDiv.data( 'targetUrl', targetUrl );
-		targetDiv.load( targetUrl, function(){
+		targetDiv.load( targetUrl, function()
+		{
 			if( highlightTarget )
 			{
 				targetDiv.removeClass( 'hc-loading' );
@@ -89,7 +91,16 @@ function hc_click_ajax_loader( obj ){
 			{
 				myParent.removeClass( 'hc-loading' );
 			}
-			});
+
+			if( scrollInto )
+			{
+				jQuery('html, body').animate(
+					{
+					scrollTop: targetDiv.offset().top - 20,
+					}
+				);
+			}
+		});
 	}
 	else // append after parent
 	{

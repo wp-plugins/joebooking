@@ -62,7 +62,7 @@ require( dirname(__FILE__) . '/_keys.php' );
 <table>
 <tr>
 	<th><?php echo M('User'); ?></th>
-	<th><?php echo M('Admin'); ?></th>
+	<th><?php echo M('Administrator'); ?></th>
 </tr>
 <tr>
 <td style="vertical-align: top;">

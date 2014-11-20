@@ -43,7 +43,14 @@
 		<div class="panel-collapse collapse<?php echo $this_collapse; ?>">
 			<div class="panel-body">
 				<ul class="list-unstyled <?php echo $row_class; ?>">
-					<?php $count = 0; ?>
+					<?php
+					$count = 0;
+					if( count($resources) >= 4 )
+						$per_row = 4;
+					else
+						$per_row = count($resources);
+					require( dirname(__FILE__) . '/_index_column_class.php' );
+					?>
 					<?php foreach( $resources as $id => $obj ) : ?>
 						<?php
 						$count++;

@@ -18,7 +18,7 @@ if( $resultCount ){
 		$msg = array( M('Appointment'), ntsView::objectTitle($object[0]) );
 	else
 		$msg = array( $resultCount . ' ' . M('Appointments') );
-	$msg[] = M('Unmark No Show');
+	$msg[] = M('Unmark') . ': ' . M('No Show');
 	$msg[] = M('OK');
 	$msg = join( ': ' , $msg );
 	ntsView::addAnnounce( $msg, 'ok' );

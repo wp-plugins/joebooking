@@ -1,7 +1,7 @@
 <?php
 $conf['options'] = array(
 	array('text',		M('Text') ),
-	array('checkbox',	M('Yes/No') ),
+	array('checkbox',	M('Yes') . '/' . M('No') ),
 	array('textarea',	M('Textarea') ),
 	array('select',		M('Select') ),
 	);

@@ -14,6 +14,27 @@ class ntsUser extends ntsObject {
 		return $NTS_CURRENT_USER;
 	}
 
+	function setProp( $pName, $pValue, $fromStorage = false )
+	{
+		switch( $pName )
+		{
+			case '_timezone':
+				if( $this->getId() == 0 )
+				{
+					$_SESSION['nts_timezone'] = $pValue;
+				}
+				else
+				{
+					return parent::setProp( $pName, $pValue, $fromStorage );
+				}
+				break;
+
+			default:
+				return parent::setProp( $pName, $pValue, $fromStorage );
+				break;
+		}
+	}
+
 	function setLanguage( $lng )
 	{
 		$lm =& ntsLanguageManager::getInstance();
@@ -55,7 +76,7 @@ class ntsUser extends ntsObject {
 		$lm =& ntsLanguageManager::getInstance(); 
 		$activeLanguages = $lm->getActiveLanguages();
 		if( ! $activeLanguages )
-			$activeLanguages = array( 'en-builtin' );
+			$activeLanguages = array( 'en' );
 
 		if( $lng )
 		{
@@ -96,7 +117,7 @@ class ntsUser extends ntsObject {
 		if( in_array('email_not_confirmed', $restrictions) )
 		{
 			$class[] = $main . '-default';
-			$message = M('Email Not Confirmed');
+			$message = M('Email') . ': ' . M('Not Confirmed');
 		}
 		elseif( in_array('not_approved', $restrictions) )
 		{
@@ -146,7 +167,7 @@ class ntsUser extends ntsObject {
 		if( in_array('email_not_confirmed', $restrictions) ){
 			$alert = 1;
 			$cssClass = 'warning';
-			$message = M('Email Not Confirmed');
+			$message = M('Email') . ': ' . M('Not Confirmed');
 			}
 		elseif( in_array('not_approved', $restrictions) ){
 			$alert = 1;
@@ -357,6 +378,62 @@ class ntsUser extends ntsObject {
 			}
 		return $return;
 		}
+
+	function getPreference( $k )
+	{
+		$return = '';
+		$all = $this->getPreferences();
+		if( isset($all[$k]) )
+		{
+			$return = $all[$k];
+		}
+		return $return;
+	}
+
+	function getPreferences()
+	{
+		$return = '';
+		if( $this->getId() > 0 )
+		{
+			$return = $this->getProp('_preferences');
+		}
+		else
+		{
+			if( isset($_SESSION['nts_preferences']) )
+			{
+				$return = $_SESSION['nts_preferences'];
+			}
+		}
+
+		if( strlen($return) )
+		{
+			$return = unserialize( $return );
+		}
+		else
+		{
+			$return = array();
+		}
+		return $return;
+	}
+
+	function setPreference( $k, $v )
+	{
+		$array = $this->getPreferences();
+		$array[ $k ] = $v;
+
+		$set = serialize( $array );
+
+		if( $this->getId() > 0 )
+		{
+			$return = $this->setProp('_preferences', $set);
+			$cm =& ntsCommandManager::getInstance();
+			$cm->runCommand( $this, 'update' );
+		}
+		else
+		{
+			$_SESSION['nts_preferences'] = $set;
+		}
+	}
 
 	function getPanelPermissions(){
 		$return = array();
@@ -1444,13 +1521,11 @@ class ntsAdminPermissionsManager {
 				array( 'admin/conf/email_templates', M('Notifications') ),
 				array( 'admin/conf/reminders', M('Reminders') ),
 				array( 'admin/conf/cron', M('Automatic Actions') ),
-				array( 'admin/conf/terminology', M('Terminology') ),
 				array( 'admin/conf/datetime', M('Date and Time') ),
 				array( 'admin/conf/currency', M('Currency') ),
 				array( 'admin/conf/payment_gateways', M('Payment Gateways') ),
 				array( 'admin/conf/languages', M('Languages') ),
 				array( 'admin/conf/flow', M('Appointment Flow') ),
-				array( 'admin/conf/themes', M('Themes') ),
 				array( 'admin/conf/plugins', M('Plugins') ),
 				array( 'admin/conf/misc', M('Misc') ),
 				array( 'admin/conf/upgrade', M('Info') ),

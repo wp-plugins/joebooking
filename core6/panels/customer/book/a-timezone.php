@@ -3,6 +3,7 @@ $current_user = ntsLib::getCurrentUser();
 $timezoneSelected = $_NTS['REQ']->getParam( 'tz' );
 
 $current_user->setProp('_timezone', $timezoneSelected );
+
 $cm =& ntsCommandManager::getInstance();
 $cm->runCommand( $current_user, 'update' );
 

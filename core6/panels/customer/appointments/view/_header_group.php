@@ -53,7 +53,7 @@ reset( $objects );
 			<?php echo M('Partially Paid'); ?>
 		<?php endif; ?>
 	<?php else : ?>
-		<?php echo M('Appointment Status'); ?>
+		<?php echo M('Status'); ?>
 	<?php endif; ?>
 	</h2>
 </div>

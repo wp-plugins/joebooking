@@ -56,8 +56,8 @@ if( ! $cm->isOk() ){
 // FORM CONTROLS
 $order = 0;
 $controls = array(
-	array( 'username',		'Username', 	'text',	array('size' => 24), array( array('code' => 'notEmpty', 'error' => M('Required field')), array('code' => 'checkUsername', 'error' => 'This username is already in use', 'params' => array('skipMe'	=> 1) ) ) ),
-	array( 'email',			'Email',		'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required field'), array('code' => 'checkUserEmail', 'error' => 'This email is already in use', 'params' => array('skipMe'	=> 1) ) ) ),
+	array( 'username',		'Username', 	'text',	array('size' => 24), array( array('code' => 'notEmpty', 'error' => M('Required')), array('code' => 'checkUsername', 'error' => 'This username is already in use', 'params' => array('skipMe'	=> 1) ) ) ),
+	array( 'email',			'Email',		'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Required'), array('code' => 'checkUserEmail', 'error' => 'This email is already in use', 'params' => array('skipMe'	=> 1) ) ) ),
 	array( 'first_name',	'First Name',	'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Please enter the first name') ) ),
 	array( 'last_name',		'Last Name',	'text',	array('size' => 32), array( array('code' => 'notEmpty', 'error' => 'Please enter the last name') ) ),
 	);

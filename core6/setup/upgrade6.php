@@ -5,7 +5,14 @@ ini_set( 'memory_limit', '256M' );
 global $table_prefix;
 if( isset($table_prefix) && $table_prefix )
 {
-	$oldPrefix = $table_prefix . 'ha_v5_';
+	if( isset($_GET['from4']) && $_GET['from4'] )
+	{
+		$oldPrefix = $table_prefix . 'ha45_';
+	}
+	else
+	{
+		$oldPrefix = $table_prefix . 'ha_v5_';
+	}
 	$wordpress = true;
 	$newPrefix = $table_prefix . 'ha_v6_';
 }

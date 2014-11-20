@@ -91,17 +91,12 @@ $conf =& ntsConf::getInstance();
 $GLOBALS['NTS_CONF'] = $conf;
 
 /* some essential configs */
-/* if registration enabled */
-$enableRegistration = $conf->get('enableRegistration');
-define( 'NTS_ENABLE_REGISTRATION', $enableRegistration );
-
 $timeUnit = $conf->get('timeUnit');
 define( 'NTS_TIME_UNIT', $timeUnit );
 $timeStarts = $conf->get('timeStarts');
 define( 'NTS_TIME_STARTS', $timeStarts );
 $timeEnds = $conf->get('timeEnds');
 define( 'NTS_TIME_ENDS', $timeEnds );
-
 
 /*
 1, 'Allow To Set Own Timezone'

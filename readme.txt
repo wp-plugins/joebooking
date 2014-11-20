@@ -48,6 +48,17 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.2.0 =
+* BUG: error in payments form for payment gateways other than Paypal
+* BUG: when upgrading from older versions (4 and 5) there might be some availability timeblocks hidden in the admin area
+* BUG: quite a specific bug, if you have the "filter customers" plugin enabled, and a customer purchases a package, then the notification email was sent to all admins rather than those who can see this customer.
+* Calendar view preference (month, week, or next days) now is saved in the admin panel
+* Multilanguage interface, as well as online edit for the text used within the applicatation
+* Day view extended to display several days that have appointments or availability defined
+* Admin now can generate an invoice for an appointment and send it to the customer if needed
+* Appointment cart is cleared upon logout to prevent issues on shared computers
+* Extended the Event Actions module, now there is a new option to add automatically add an item to a first invoice of a customer, for example a registration fee.
+
 = 6.1.2 =
 * Now it is possible to make use of full HTML including <html> and <head> tags in the message templates, previously it was allowed only in the header and the footer, for the body if the head part was used it got corrupted.
 * BUG: locations, resources and services sometimes were not sorted according to settings defined in the admin area.

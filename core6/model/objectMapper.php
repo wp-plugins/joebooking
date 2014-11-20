@@ -30,7 +30,6 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'user',	'_calendar_field',		false,	0,	'' );
 
 		$this->registerProp( 'user',	'_admin_level',			false,	0,	'admin' ); // "admin" or "staff"
-
 		$this->registerProp( 'user',	'_login_hash',	false,	0,	'' );
 
 		$this->registerProp( 'user',	'_assign_resource',		false,	1,	array() );
@@ -39,6 +38,8 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'user',	'_assign_service_only',	false,	0,	0 );
 		$this->registerProp( 'user',	'_assign_location',		false,	1,	array() );
 		$this->registerProp( 'user',	'_assign_location_only',	false,	0,	0 );
+
+		$this->registerProp( 'user',	'_preferences',			false,	0,	'' );
 
 		$this->registerClass( 'form', 'forms' );
 		$this->registerProp( 'form',	'title' );
@@ -132,7 +133,6 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'appointment',	'_note',	false,	3,	array() );
 		$this->registerProp( 'appointment',	'_order',	false,	1,	array() );
 		$this->registerProp( 'appointment',	'_cc',		false,	1,	array() );
-		$this->registerProp( 'appointment',	'_ack',	false,	0, 0 ); // customer acknowledge
 
 		$this->registerClass( 'order', 'orders' );
 		$this->registerProp( 'order',	'created_at' );
@@ -206,19 +206,12 @@ class objectMapper extends ntsObjectMapper {
 
 		$showTimezone = ( $enableTimezones == -1 ) ? 0 : 1;
 
-		if( $ts > 0 )
+		$timeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($object->getProp('duration'), $showTimezone);
+		if( isset($changes['duration']) && (! isset($changes['starts_at'])) )
 		{
-			$timeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($object->getProp('duration'), $showTimezone);
-			if( isset($changes['duration']) && (! isset($changes['starts_at'])) )
-			{
-				$t->setTimestamp( $object->getProp('starts_at') );
-				$oldTimeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($changes['duration'], $showTimezone);
-				$timeFormatted .= ' (' . M('Old') . ': ' . $oldTimeFormatted . ')';
-			}
-		}
-		else
-		{
-			$timeFormatted = M('Not Scheduled');
+			$t->setTimestamp( $object->getProp('starts_at') );
+			$oldTimeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($changes['duration'], $showTimezone);
+			$timeFormatted .= ' (' . M('Old') . ': ' . $oldTimeFormatted . ')';
 		}
 
 		if( isset($changes['starts_at']) )

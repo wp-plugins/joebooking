@@ -74,7 +74,7 @@ if( $pack_count OR $am->get_postings('customer', $customerId) )
 
 $pm =& ntsPaymentManager::getInstance();
 $ids = $pm->getInvoicesOfCustomer( $customerId );
-if( $ids )
+if( 1 OR $ids )
 {
 	$tabs['payments'] = array(
 		'title'	=> '<i class="fa fa-file-text-o"></i> ' . M('Invoices') . ' [' . count($ids) . ']',

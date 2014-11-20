@@ -252,22 +252,24 @@ class ntsEmailTemplateManager {
 
 		/* also load from database */
 		$ntsdb =& dbWrapper::getInstance();
-
-		$sql = "SELECT template, subject, body FROM {PRFX}templates WHERE lang = '$lang'";
-		$result = $ntsdb->runQuery( $sql );
-		if( $result )
+		if( $ntsdb->tableExists('templates') )
 		{
-			while( $t = $result->fetch() )
+			$sql = "SELECT template, subject, body FROM {PRFX}templates WHERE lang = '$lang'";
+			$result = $ntsdb->runQuery( $sql );
+			if( $result )
 			{
-				if( ( ! $this->dbKeyPrefix ) || ( substr($t['template'], 0, strlen($this->dbKeyPrefix)) == $this->dbKeyPrefix ) )
+				while( $t = $result->fetch() )
 				{
-					if( $this->dbKeyPrefix )
-						$t['template'] = substr( $t['template'], strlen($this->dbKeyPrefix) );
-					
-					$this->templates[ $lang ][ $t['template'] ] = array(
-						'subject'	=> $t['subject'],
-						'body'		=> $t['body'],
-						);
+					if( ( ! $this->dbKeyPrefix ) || ( substr($t['template'], 0, strlen($this->dbKeyPrefix)) == $this->dbKeyPrefix ) )
+					{
+						if( $this->dbKeyPrefix )
+							$t['template'] = substr( $t['template'], strlen($this->dbKeyPrefix) );
+						
+						$this->templates[ $lang ][ $t['template'] ] = array(
+							'subject'	=> $t['subject'],
+							'body'		=> $t['body'],
+							);
+					}
 				}
 			}
 		}

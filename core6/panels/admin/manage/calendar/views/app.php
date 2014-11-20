@@ -58,7 +58,9 @@ $t->setTimestamp( $app_starts_at );
 $app_start_date = $t->formatDate_Db();
 $app_start_view = $t->formatDateFull() . ' ' . $t->formatTime();
 
-$t->setTimestamp( $app_starts_at + $duration );
+//$t->setTimestamp( $app_starts_at + $duration );
+$t->setTimestamp( $app_starts_at );
+$t->modify( '+ ' . $duration . ' seconds' );
 $app_end_date = $t->formatDate_Db();
 $app_end_view = $t->formatDateFull() . ' ' . $t->formatTime();
 
@@ -89,9 +91,13 @@ elseif( // starts before, ends today
 	($app_end_date == $date)
 	)
 {
-	$t->setTimestamp( $app_starts_at + $duration );
-	$time_label = ' &laquo; ' . $t->formatTime();
-	$add_more[] = '<i class="fa fa-angle-double-left"></i>' . $app_start_view;
+//	$t->setTimestamp( $app_starts_at + $duration );
+	$t->setTimestamp( $app_starts_at );
+	$t->modify( '+ ' . $duration . ' seconds' );
+//	$time_label = ' &laquo; ' . $t->formatTime();
+	$time_label = ' &raquo; ' . $t->formatTime();
+//	$add_more[] = '<i class="fa fa-angle-double-left"></i>' . $app_start_view;
+	$add_more[] = $app_start_view . '<i class="fa fa-angle-double-right"></i>';
 }
 elseif( // starts today, ends after
 	($app_start_date == $date) && 

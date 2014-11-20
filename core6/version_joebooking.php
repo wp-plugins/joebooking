@@ -13,7 +13,7 @@ $my_disable = array(
 	'appointment_flow',
 	'hooks',
 	'payment',
-	'language',
+//	'language',
 	'packs',
 	'promotions',
 	'custom_fields',

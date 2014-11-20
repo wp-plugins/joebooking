@@ -24,6 +24,8 @@ if( count($apps) > 1 )
 for( $ii = 0; $ii < count($apps); $ii++ )
 {
 	$apps[$ii]['group_ref'] = $group_ref;
+	$customer_id = $apps[$ii]['customer_id'];
+	$cm->act_as = $customer_id;
 
 	$object = ntsObjectFactory::get( 'appointment' );
 	$object->setByArray( $apps[$ii] );

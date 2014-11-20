@@ -4,11 +4,9 @@ $params = array(
 	'appsInCart',
 	'attachIcal',
 	'csvDelimiter',
-	'returnAfterRequest',
 	'requireCancelReason',
 	'useCaptcha',
 	'strongPassword',
-	'showCompletedAppsAdmin',
 	'sendCcForAppointment',
 	);
 $myDir = dirname(__FILE__);

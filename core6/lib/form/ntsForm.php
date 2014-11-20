@@ -335,7 +335,7 @@ class ntsForm {
 
 	// SHOW REQUIRED TEXT
 		if( $this->requiredFields > 0 && ( ! $this->skipRequiredAlert) ){
-			$formContent = "\n<P>" . '<i>' . '* ' . M('Required field') . '</i></p>' . $formContent;
+			$formContent = "\n<P>" . '<i>' . '* ' . M('Required') . '</i></p>' . $formContent;
 			}
 		ob_end_clean();
 

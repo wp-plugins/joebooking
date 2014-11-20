@@ -8,6 +8,7 @@ $description = $obj->getProp('description');
 $duration = $obj->getProp('duration');
 $lead_out = $obj->getProp('lead_out');
 $duration_view = ntsTime::formatPeriodShort($duration);
+$duration_view_long = ntsTime::formatPeriod($duration);
 
 $price_view = '';
 if( ! isset($this_a) )
@@ -32,13 +33,13 @@ if( $base_amount )
 	<li>
 		<ul class="list-inline list-separated">
 			<li>
-				<span class="btn btn-default-o btn-condensed">
-					<i class="fa fa-clock-o"></i> <?php echo $duration_view; ?>
+				<span class="btn btn-default-o btn-condensed" title="<?php echo M('Duration'); ?>: <?php echo $duration_view_long; ?>">
+					<i class="fa fa-clock-o"></i> <?php echo $duration_view_long; ?>
 				</span>
 			</li>
 		<?php if( $price_view ) : ?>
 			<li>
-				<span class="btn btn-default-o btn-condensed">
+				<span class="btn btn-default-o btn-condensed" title="<?php echo M('Price'); ?>: <?php echo $price_view; ?>">
 					<?php echo $price_view; ?>
 				</span>
 			</li>

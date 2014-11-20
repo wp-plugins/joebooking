@@ -108,30 +108,6 @@ echo $this->makeInput (
 </tr>
 
 <tr>
-	<td class="ntsFormLabel"><?php echo M('URL To Return After Appointment Request'); ?></td>
-	<td class="ntsFormValue">
-	<?php
-	echo $this->makeInput (
-	/* type */
-		'text',
-	/* attributes */
-		array(
-			'id'	=> 'returnAfterRequest',
-			'attr'	=> array(
-				'size'	=> 48
-				),
-			)
-		);
-	?>
-	</td>
-</tr>
-<tr>
-	<td class="ntsFormValue" colspan="2">
-	<i><?php echo M('Leave this empty to return to the default start page'); ?></i>
-	</td>
-</tr>
-
-<tr>
 	<td class="ntsFormLabel"><?php echo M('Use Captcha For Non-Registered Users'); ?></td>
 	<td class="ntsFormValue">
 	<?php
@@ -157,22 +133,6 @@ echo $this->makeInput (
 	/* attributes */
 		array(
 			'id'	=> 'strongPassword',
-			)
-		);
-	?>
-	</td>
-</tr>
-
-<tr>
-	<td class="ntsFormLabel"><?php echo M('Show Completed Appointments In Admin Calendar'); ?></td>
-	<td class="ntsFormValue">
-	<?php
-	echo $this->makeInput (
-	/* type */
-		'checkbox',
-	/* attributes */
-		array(
-			'id'	=> 'showCompletedAppsAdmin',
 			)
 		);
 	?>

@@ -67,11 +67,11 @@ $NTS_MENU = array(
 	'admin/sync'	=> '<i class="fa fa-chain"></i> ' . M('Synchronization'),
 	'admin/conf'	=> '<i class="fa fa-cog"></i> ' . M('Settings'),
 			'admin/conf/forms_customers'		=> array(
-				'title'	=> M('Customer Form'),
+				'title'	=> M('Custom Forms') . ': ' . M('Customer'),
 				'panel'	=> 'admin/forms/customers/browse',
 				),
 			'admin/conf/forms_appointments'		=> array(
-				'title'	=> M('Service Forms'),
+				'title'	=> M('Custom Forms') . ': ' . M('Appointment'),
 				'panel'	=> 'admin/forms/appointments/assign',
 				),
 		'admin/conf/divider2'	=> '-divider-',
@@ -87,7 +87,6 @@ $NTS_MENU = array(
 
 		'admin/conf/email_settings'		=> M('Email'),
 		'admin/conf/email_templates'	=> M('Notifications'),
-		'admin/conf/terminology'		=> M('Terminology'),
 
 		'admin/conf/cron'				=> M('Automatic Actions'),
 		'admin/conf/events'				=> M('Event Actions'),
@@ -96,9 +95,6 @@ $NTS_MENU = array(
 		'admin/conf/languages'			=> M('Languages'),
 		'admin/conf/attachments'		=> M('Attachments'),
 
-/*
-		'admin/conf/themes'				=> M('Themes'),
-*/
 		'admin/conf/plugins'			=> M('Plugins'),
 		'admin/conf/misc'				=> M('Misc'),
 		'admin/conf/upgrade'			=> M('Info'),

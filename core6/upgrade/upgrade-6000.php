@@ -35,7 +35,6 @@ CREATE TABLE IF NOT EXISTS `{PRFX}logaudit` (
 EOT;
 $result = $ntsdb->runQuery( $sql );
 
-
 /* invoice items */
 $sql =<<<EOT
 CREATE TABLE IF NOT EXISTS `{PRFX}invoice_items` (

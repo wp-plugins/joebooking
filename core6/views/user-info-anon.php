@@ -1,4 +1,7 @@
 <?php
+$conf =& ntsConf::getInstance();
+$enableRegistration = $conf->get('enableRegistration');
+
 $current_panel = $_NTS['CURRENT_PANEL'];
 $active_link = '';
 $actives = array(
@@ -47,7 +50,7 @@ $links['login'] = array(
 	ntsLink::makeLink('anon/login'),
 	'<i class="fa fa-sign-in"></i> ' . M('Login')
 	);
-if( NTS_ENABLE_REGISTRATION )
+if( $enableRegistration )
 {
 	$links['register'] = array(
 		ntsLink::makeLink('anon/register'),

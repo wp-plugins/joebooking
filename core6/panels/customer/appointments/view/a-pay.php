@@ -50,7 +50,12 @@ foreach( $objects as $object )
 	}
 	else
 	{
+		if( ! $prepay_amount )
+		{
+			$prepay_amount = $object->getCost();
+		}
 		$paid_amount = $object->getPaidAmount();
+
 		if( $prepay_amount > $paid_amount )
 		{
 			$items[] = $object;
@@ -76,7 +81,13 @@ if( $amounts )
 	}
 	else
 	{
-		$msg = M('Make Invoice') . ': ' . M('Error');
+		$msg = join( ': ',
+			array(
+				M('Invoice'),
+				M('Create'),
+				M('Error'),
+				)
+			);
 		$forwardTo = ntsLink::makeLink( '-current-' );
 		ntsView::addAnnounce( $msg, 'error' );
 	}

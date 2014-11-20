@@ -71,16 +71,6 @@ if( ! $completedStatus )
 		}
 	}
 }
-else
-{
-	if( $customerAcknowledge && (! $a->getProp('_ack')) )
-	{
-		$actions[] = array(
-			ntsLink::makeLink('-current-/../edit/ack', '', array('_id' => $a->getId(), NTS_PARAM_RETURN => 'all') ),
-			M('Acknowledge Completion'),
-			);
-	}
-}
 
 if( $group_ref )
 {

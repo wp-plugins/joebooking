@@ -14,7 +14,6 @@ $params = array(
 	'firstTimeSplash',
 	'customerCanCancel',
 	'customerCanReschedule',
-	'customerAcknowledge',
 	);
 
 switch( $action ){

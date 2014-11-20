@@ -157,7 +157,10 @@ EOT;
 
 			$event->setProperty( 'summary', $summary );
 			$event->setProperty( 'description', $description );
-			$event->setProperty( 'location', ntsView::objectTitle($location) );
+			if( ! NTS_SINGLE_LOCATION )
+			{
+				$event->setProperty( 'location', ntsView::objectTitle($location) );
+			}
 
 			$event->setProperty( 'attendee', $customer->getProp('first_name') . ' ' . $customer->getProp('last_name') . ' <' . $customer->getProp('email') . '>'  );
 //			$event->setProperty( 'organizer', $resource->getProp('title') );

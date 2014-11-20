@@ -2,6 +2,9 @@
 global $NTS_CURRENT_USER;
 $class = 'customer';
 
+$conf =& ntsConf::getInstance();
+$enableRegistration = $conf->get('enableRegistration');
+
 $ff =& ntsFormFactory::getInstance();
 $formFile = dirname( __FILE__ ) . '/form';
 $NTS_VIEW['form'] =& $ff->makeForm( $formFile );
@@ -9,12 +12,14 @@ $NTS_VIEW['form'] =& $ff->makeForm( $formFile );
 switch( $action ){
 	case 'create-customer':
 		$removeValidation = array();
-		if( NTS_ALLOW_NO_EMAIL && $_NTS['REQ']->getParam('noEmail') ){
+		if( NTS_ALLOW_NO_EMAIL && $_NTS['REQ']->getParam('noEmail') )
+		{
 			$removeValidation[] = 'email';
-			}
-		if( (! NTS_ENABLE_REGISTRATION) && (! $_NTS['REQ']->getParam('login-details')) ){
+		}
+		if( (! $enableRegistration) && (! $_NTS['REQ']->getParam('login-details')) )
+		{
 			$removeValidation[] = 'username';
-			}
+		}
 
 		if( $NTS_VIEW['form']->validate($removeValidation) ){
 			$formValues = $NTS_VIEW['form']->getValues();

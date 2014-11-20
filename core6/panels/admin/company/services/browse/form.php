@@ -78,7 +78,7 @@ if( $lead_out )
 		array(
 			array(
 				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				),
 			array(
 				'code'		=> 'integer.php', 

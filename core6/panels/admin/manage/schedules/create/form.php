@@ -169,7 +169,7 @@ elseif( count($allSers) == 1 )
 			array(
 				array(
 					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required Field'),
+					'error'		=> M('Required'),
 					),
 				)
 			)
@@ -233,7 +233,7 @@ elseif( count($allSers) == 1 )
 				array(
 					array(
 						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required Field'),
+						'error'		=> M('Required'),
 						),
 					)
 				)
@@ -309,7 +309,7 @@ if( $max_end == 24 * 60 * 60 )
 				array(
 					array(
 						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required field'),
+						'error'		=> M('Required'),
 						),
 					)
 				),
@@ -330,7 +330,7 @@ if( $max_end == 24 * 60 * 60 )
 				array(
 					array(
 						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required field'),
+						'error'		=> M('Required'),
 						),
 					array(
 						'code'		=> 'greaterThan.php', 
@@ -376,7 +376,7 @@ if( $max_end == 24 * 60 * 60 )
 			array(
 				array(
 					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required field'),
+					'error'		=> M('Required'),
 					),
 				)
 			)
@@ -404,7 +404,7 @@ if( $max_end == 24 * 60 * 60 )
 				array(
 					array(
 						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required field'),
+						'error'		=> M('Required'),
 						),
 					array(
 						'code'		=> 'integer.php', 
@@ -506,7 +506,7 @@ if( $max_end == 24 * 60 * 60 )
 				array(
 					array(
 						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required Field'),
+						'error'		=> M('Required'),
 						),
 					)
 				)

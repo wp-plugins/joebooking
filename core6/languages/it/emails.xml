@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<emails>
+
+<message>
+<key>appointment-require_approval-customer</key>
+<subject>La tua prenotazione è in attesa di approvazione</subject>
+<body>
+Grazie per la tua richiesta di prenotazione.
+Ti preghiamo di attendere mentre processiamo la tua richiesta. Ti invieremo una email non appena la tua prenotazione sarà confermato.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-approve-customer</key>
+<subject>La tua prenotazione è stata confermata</subject>
+<body>
+Grazie per la tua richiesta di prenotazione. La tua prenotazione adesso è confermata.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-customer</key>
+<subject>La tua prenotazione è stato rifiutata</subject>
+<body>
+
+Grazie per la tua richiesta di prenotazione. Ci dispiace, la tua prenotazione è stato rifiutata.
+
+Motivo del rifiuto:
+{REJECT_REASON}
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-customer</key>
+<subject>La tua prenotazione è stata marcata come mancata</subject>
+<body>
+Ci dispiace, la tua prenotazione è stata marcata come saltata.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-request-customer</key>
+<subject>La tua richiesta per una prenotazione</subject>
+<body>
+Grazie per la tua richiesta di prenotazione. La tua prenotazione adesso è confermata.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-customer</key>
+<subject>La tua prenotazione è stata cancellata</subject>
+<body>
+Questa è una conferma che la tua prenotazione, su tua richiesta, è stata cancellata.
+
+Motivo della cancellazione:
+{CANCEL_REASON}
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-customer</key>
+<subject>La tua prenotazione è stato spostata in altro luogo</subject>
+<body>
+La tua prenotazione è stata spostata in un altro luogo.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-customer</key>
+<subject>La tua prenotazione è stata cambiata</subject>
+<body>
+La tua prenotazione è stata cambiata da {OLD_APPOINTMENT.STARTS_AT} a {APPOINTMENT.STARTS_AT}.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-customer</key>
+<subject>La tua prenotazione è stata assegnata a un altro fornitore</subject>
+<body>
+La tua prenotazione è stata ri-assegnata a un altro fornitore.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-require_approval-provider</key>
+<subject>Richiesta di approvazione per una nuova prenotazione</subject>
+<body>
+C'è una richiesta per una nuova prenotazione.
+
+Dettagli prenotazione:
+{APPOINTMENT.-ALL-}
+
+Dettagli Cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+Link veloci per questa prenotazione:
+{APPOINTMENT.QUICK_LINK_APPROVE} {APPOINTMENT.QUICK_LINK_REJECT}
+</body>
+</message>
+
+<message>
+<key>appointment-request-provider</key>
+<subject>Nuova richiesta di prenotazione</subject>
+<body>
+C'è una nuova richiesta di prenotazione, è stata approvata automaticamente.
+
+Dettagli prenotazione:
+{APPOINTMENT.-ALL-}
+
+Dettagli Cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-provider</key>
+<subject>La tua prenotazione è stata cancellata dal cliente</subject>
+<body>
+Questa è la conferma che la tua prenotazione è stata cancellata dal cliente.
+
+Motivo della cancellazione:
+{CANCEL_REASON}
+
+Dettagli prenotazione:
+{APPOINTMENT.-ALL-}
+
+Dettagli Cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-provider</key>
+<subject>La tua prenotazione è stata rifiutata</subject>
+<body>
+La tua prenotazione è stata rifiutata.
+
+Motivo del rifiuto:
+{REJECT_REASON}
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+
+Dettagli Cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-provider</key>
+<subject>La tua prenotazione è stata marcata come mancato</subject>
+<body>
+La tua prenotazione è stata marcata come mancata.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+
+Dettagli Cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>appointment-approve-provider</key>
+<subject>La tua prenotazione è stata approvata</subject>
+<body>
+La tua prenotazione adesso è confermata.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-provider</key>
+<subject>La tua prenotazione è stata spostata ad altro luogo</subject>
+<body>
+La tua prenotazione è stata spostata in un altro luogo.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-provider</key>
+<subject>La tua prenotazione è stata cambiata</subject>
+<body>
+La tua prenotazione è stata cambiata da {OLD_APPOINTMENT.STARTS_AT} a {APPOINTMENT.STARTS_AT}.
+
+I nuovi dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-provider</key>
+<subject>Una nuova prenotazione è stata ri-assegnata a te</subject>
+<body>
+Una nuova prenotazione ti è stata riassegnata.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign_from-provider</key>
+<subject>La tua prenotazione è stata assegnata ad altro fornitore</subject>
+<body>
+La tua prenotazione è stata riassegnata a un altro fornitore.
+
+Dettagli prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>user-require_email_confirmaion-user</key>
+<subject>Per favore conferma il tuo indirizzo email</subject>
+<body>
+Grazie per esserti registrato! Adesso ti chiediamo, per favore, di confermare il tuo indirizzo di email. Fai click sul link qui sotto per confermare la tua email.
+
+{USER.CONFIRMATION_LINK}
+</body>
+</message>
+
+<message>
+<key>user-require_approval-user</key>
+<subject>Il tuo account è in attesa di approvazione</subject>
+<body>
+Grazie per esserti regiastrato!
+Per favore attendi la nostra conferma, dobbiamo approvare manualmente i nuovi account. Ti invieremo una email di notifica non appena il tuo Account sarà attivo.
+</body>
+</message>
+
+<message>
+<key>user-require_approval-admin</key>
+<subject>Nuovo utente registrato, serve la tua approvazione</subject>
+<body>
+Un nuovo utente si è registrato al sito. Per favore vai al pannello di amministrazione per approvare o rifiutare questo utente.
+
+Informazioni sul nuovo utente:
+{USER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>user-activate-user</key>
+<subject>Il tuo account adesso è attivo</subject>
+<body>
+Congratulazioni!
+Il tuo account utente adesso è attivo. Ecco le tue credenziali per il login:
+
+Nome Utente: {USER.USERNAME}
+Password: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>user-reset_password-user</key>
+<subject>Reimpostazione della tua password</subject>
+<body>
+Su tua richiesta, la tua password  stata reimpostata. Ecco le tue nuove credenziali per il login:
+
+Nome Utente: {USER.USERNAME}
+Password: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-customer</key>
+<subject>Promemoria prenotazione</subject>
+<body>
+Questo è un promemoria per la tua prenotazione.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-provider</key>
+<subject>Promemoria prenotazione</subject>
+<body>
+Questo è un promemoria per la tua prenotazione.
+
+I dettagli della tua prenotazione:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-showup-customer</key>
+<subject>Your Appointment Unmarked As No Show</subject>
+<body>
+
+Your appointment has been unmarked as no show.
+
+Your appointment details:
+{APPOINTMENT.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-complete-customer</key>
+<subject>Your Appointment Completed</subject>
+<body>
+
+Thank you, your appointment is now completed.
+
+Your appointment details:
+{APPOINTMENT.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-change-customer</key>
+<subject>Your Appointment Changed</subject>
+<body>
+
+Your appointment has been changed, your new appointment details:
+{APPOINTMENT.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-showup-provider</key>
+<subject>Your Appointment Unmarked As No Show</subject>
+<body>
+
+Your appointment has been unmarked as no show.
+
+Your appointment details:
+{APPOINTMENT.-ALL-}
+
+Customer details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-complete-provider</key>
+<subject>Your Appointment Completed</subject>
+<body>
+
+Your appointment is now completed.
+
+Your appointment details:
+{APPOINTMENT.-ALL-}
+
+Customer details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-change-provider</key>
+<subject>Your Appointment Changed</subject>
+<body>
+
+Your appointment has been changed, your new appointment details:
+{APPOINTMENT.-ALL-}
+
+Customer details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-reassign_to-provider</key>
+<subject>New Appointment Reassigned To You</subject>
+<body>
+
+New appointment has been reassigned to you:
+{APPOINTMENT.-ALL-}
+
+Customer details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>user-require_email_confirmation-user</key>
+<subject>Please Confirm Your Email Address</subject>
+<body>
+
+Thank you for registering! Now we kindly ask you to confirm your email.
+
+{USER.CONFIRMATION_LINK}
+
+</body>
+</message>
+
+<message>
+<key>user-activate-admin</key>
+<subject>New User Account Active</subject>
+<body>
+
+a new user account is now active in your appointment system.
+
+New user information:
+{USER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>order-request-customer</key>
+<subject>Package Purchase</subject>
+<body>
+
+Thank you for your package purchase. Your future appointments are now waiting for scheduling.
+
+Your package details:
+{ORDER.TITLE}
+
+</body>
+</message>
+
+<message>
+<key>order-request-admin</key>
+<subject>Package Purchase</subject>
+<body>
+
+A customer purchased a package.
+
+The package details:
+{ORDER.TITLE}
+
+Customer details:
+{ORDER.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-acknowledge-customer</key>
+<subject>Your Appointment Completion Acknowledged</subject>
+<body>
+
+This is the confirmation that your appointment completion has been acknowledged by you.
+
+Your appointment details:
+{APPOINTMENT.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-acknowledge-provider</key>
+<subject>Your Appointment Completion Acknowledged</subject>
+<body>
+
+Your appointment completion has been acknowledged by the customer.
+
+Your appointment details:
+{APPOINTMENT.-ALL-}
+
+</body>
+</message>
+
+
+</emails>

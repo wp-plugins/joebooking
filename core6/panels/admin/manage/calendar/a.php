@@ -9,6 +9,9 @@ else
 	$t->setNow();
 }
 $start_date = $t->formatDate_Db();
+$dates = array();
+$active_dates = array();
+$how_many_days = 1;
 
 if( $display == 'calendar' )
 {
@@ -18,6 +21,42 @@ if( $display == 'calendar' )
 		case 'dayloc':
 			$start_date = $t->formatDate_Db();
 			$end_date = $start_date;
+
+			$tm2 = ntsLib::getVar( 'admin::tm2' );
+			$tm2->processCompleted = TRUE;
+
+			$current_filter = ntsLib::getVar( 'admin/manage:current_filter' );
+			if( $range == 'dayloc')
+				$list_by = 'location';
+			else
+			{
+				if( (count($ress) <= 1) && (count($locs) <= 1) )
+					$list_by = 'resource';
+				elseif( count($ress) > 1 )
+					$list_by = 'resource';
+				else
+					$list_by = 'location';
+			}
+			$list = array();
+			switch( $list_by )
+			{
+				case 'resource':
+					$list = isset($current_filter['r']) ? array($current_filter['r']) : $ress;
+					break;
+
+				case 'location':
+					$list = isset($current_filter['l']) ? array($current_filter['l']) : $locs;
+			}
+
+			$totalMax = 6;
+			$how_many_days = (count($list) > 1) ? ceil( $totalMax / count($list) ) : $totalMax;
+
+			$active_dates = $tm2->getDatesWithSomething( $start_date, $how_many_days );
+			if( $active_dates )
+			{
+				$start_date = $active_dates[0];
+				$end_date = $active_dates[ count($active_dates) - 1 ];
+			}
 			break;
 
 		case 'week':
@@ -99,20 +138,36 @@ $split_by = 'day';
 require( dirname(__FILE__) . '/_a_prepare_apps.php' );
 require( dirname(__FILE__) . '/_a_labels.php' );
 
-$dates = array();
 if( $display == 'calendar' )
 {
-	$rex_date = $start_date;
-	while( $rex_date <= $end_date )
+	if( $active_dates )
 	{
-		$t->setDateDb( $rex_date );
-		$startDay = $t->getStartDay();
-		$t->modify( '+1 day' );
-		$endDay = $t->getTimestamp();
+		reset( $active_dates );
+		foreach( $active_dates as $rex_date )
+		{
+			$t->setDateDb( $rex_date );
+			$startDay = $t->getStartDay();
+			$t->modify( '+1 day' );
+			$endDay = $t->getTimestamp();
 
-		$selectable = 0;
-		$dates[ $rex_date ] = array( $startDay, $endDay, $selectable );
-		$rex_date = $t->formatDate_Db();
+			$selectable = 0;
+			$dates[ $rex_date ] = array( $startDay, $endDay, $selectable );
+		}
+	}
+	else
+	{
+		$rex_date = $start_date;
+		while( $rex_date <= $end_date )
+		{
+			$t->setDateDb( $rex_date );
+			$startDay = $t->getStartDay();
+			$t->modify( '+1 day' );
+			$endDay = $t->getTimestamp();
+
+			$selectable = 0;
+			$dates[ $rex_date ] = array( $startDay, $endDay, $selectable );
+			$rex_date = $t->formatDate_Db();
+		}
 	}
 
 	reset( $dates );
@@ -137,6 +192,7 @@ $view = array(
 	'apps'			=> $apps,
 	'dates'			=> $dates,
 	'stats'			=> $stats,
+	'how_many_days'	=> $how_many_days,
 	);
 
 switch( $display )
@@ -160,9 +216,10 @@ switch( $display )
 		break;
 }
 
+ntsLib::setVar( 'admin::tm2', $tm2 );
+
 $this->render( 
 	dirname(__FILE__) . '/views/' . $view_file . '.php',
 	$view
 	);
-
 ?>

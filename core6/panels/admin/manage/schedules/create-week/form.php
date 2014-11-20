@@ -208,7 +208,7 @@ elseif( count($allSers) == 1 )
 				array(
 					array(
 						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required Field'),
+						'error'		=> M('Required'),
 						),
 					)
 				)
@@ -245,7 +245,7 @@ $max = $maxEnd;
 				array(
 					array(
 						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required field'),
+						'error'		=> M('Required'),
 						),
 					array(
 						'code'		=> 'integer.php', 
@@ -445,7 +445,7 @@ $t->setStartWeek();
 							array(
 								array(
 									'code'		=> 'notEmpty.php', 
-									'error'		=> M('Required field'),
+									'error'		=> M('Required'),
 									),
 								)
 							),
@@ -466,7 +466,7 @@ $t->setStartWeek();
 							array(
 								array(
 									'code'		=> 'notEmpty.php', 
-									'error'		=> M('Required field'),
+									'error'		=> M('Required'),
 									),
 								array(
 									'code'		=> 'greaterThan.php', 
@@ -511,7 +511,7 @@ $t->setStartWeek();
 					array(
 						array(
 							'code'		=> 'notEmpty.php', 
-							'error'		=> M('Required field'),
+							'error'		=> M('Required'),
 							),
 						)
 					); 

@@ -13,7 +13,8 @@ class ntsService extends ntsObject {
 			return $return;
 		}
 
-		$prepay = $this->getProp('prepay');
+		$prepay = $this->getPrepay();
+
 		if( substr($prepay, -1) == '%' )
 		{
 			$percent = (int) substr($prepay, 0, -1);

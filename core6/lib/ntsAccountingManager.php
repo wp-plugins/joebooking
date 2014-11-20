@@ -1563,8 +1563,8 @@ class ntsAccountingManager
 			'appointment::discount'		=> M('Discount'),
 			'appointment::refund'		=> M('Appointment') . ': ' . M('Refund'),
 			'appointment::fund'			=> M('Pay By Balance'),
-			'transaction::create'		=> M('Add Payment'),
-			'order::request'			=> M('New Package'),
+			'transaction::create'		=> join( ': ', array(M('Payment'), M('Add')) ),
+			'order::request'			=> join( ': ', array(M('Package'), M('Add')) ),
 			);
 
 		$return = $key;

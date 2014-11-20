@@ -99,6 +99,7 @@ else {
 <?php
 // check if there's an older 5.x install
 require( dirname(__FILE__) . '/../init_db.php' );
+
 $oldPrefix = $tbPrefix . 'v5_';
 $oldWrapper = new ntsMysqlWrapper(
 	$db['hostname'],
@@ -111,14 +112,46 @@ $oldWrapper = new ntsMysqlWrapper(
 $oldWrapper->init();
 $oldTables = $oldWrapper->getTablesInDatabase();
 $currentVersion = 0;
-if( in_array('conf', $oldTables) ){
+if( in_array('conf', $oldTables) )
+{
 	// conf table exists, search installed version
 	$sql = 'SELECT value FROM {PRFX}conf WHERE NAME="currentVersion"';
 	$result = $oldWrapper->runQuery($sql);
-	if( $i = $result->fetch() ){
+	if( $i = $result->fetch() )
+	{
 		$currentVersion = $currentVersion = $i['value'];
+	}
+}
+
+$upgrade_from4 = 0;
+
+if( ! $currentVersion )
+{
+	$oldPrefix = substr($tbPrefix, 0, -1) . '45_';
+
+	$oldWrapper = new ntsMysqlWrapper(
+		$db['hostname'],
+		$db['username'],
+		$db['password'],
+		$db['database'],
+		$oldPrefix
+		);
+
+	$oldWrapper->init();
+	$oldTables = $oldWrapper->getTablesInDatabase();
+	$currentVersion = 0;
+	if( in_array('conf', $oldTables) )
+	{
+		// conf table exists, search installed version
+		$sql = 'SELECT value FROM {PRFX}conf WHERE NAME="currentVersion"';
+		$result = $oldWrapper->runQuery($sql);
+		if( $i = $result->fetch() )
+		{
+			$currentVersion = $currentVersion = $i['value'];
+			$upgrade_from4 = 1;
 		}
 	}
+}
 ?>
 <?php if( $currentVersion ) : ?>
 	<h2>Upgrade</h2>
@@ -126,6 +159,11 @@ if( in_array('conf', $oldTables) ){
 	Upgrade from <b><?php echo $currentVersion; ?></b>
 <?php
 $upgradeLink = '?step=upgrade6';
+if( $upgrade_from4 )
+{
+	$upgradeLink .= '&from4=1';
+}
+
 $app = ntsLib::getAppProduct();
 $slug = $app;
 if( substr($slug, -strlen('_salon_pro')) == '_salon_pro' )

@@ -93,7 +93,7 @@ reset( $fields );
 </table>
 
 <p>
-<h3><?php echo M('Login details'); ?></h3>
+<h3><?php echo M('Login Details'); ?></h3>
 
 <?php if( ! NTS_EMAIL_AS_USERNAME ) : ?>
 	<?php
@@ -107,7 +107,7 @@ reset( $fields );
 		$validators = array(
 			array(
 				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required field'),
+				'error'		=> M('Required'),
 				),
 			array(
 				'code'		=> 'checkUsername.php', 
@@ -144,7 +144,7 @@ reset( $fields );
 $passwordValidate = array();
 $passwordValidate[] = array(
 	'code'		=> 'notEmpty.php', 
-	'error'		=> M('Required field'),
+	'error'		=> M('Required'),
 	);
 if( $strongPassword )
 {

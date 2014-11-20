@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<emails>
+
+<message>
+<key>appointment-require_approval-customer</key>
+<subject>Uw reservering is in behandeling ter bevestiging!</subject>
+<body>
+Dank u voor uw reserveringsaanvraag!
+Uw aanvraag is in behandeling genomen. Wij zullen u spoedig berichten over de definitieve bevestiging.
+Indien u vragen heeft kunt u te allen tijde contact met ons opnemen.
+
+Uw reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-approve-customer</key>
+<subject>Bevestiging van uw reservering!</subject>
+<body>
+Dank u voor uw reserveringsaanvraag, die wij bijgaand bevestigen.
+Wij verwelkomen u graag op de afgesproken datum en tijd en wensen u een aangenaam verblijf bij ons. 
+
+Uw reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-customer</key>
+<subject>Uw reserveringsaanvraag kan helaas niet bevestigd worden...</subject>
+<body>
+Dank voor uw reserveringsaanvraag. Helaas moeten wij u mededelen dat wij uw aanvraag niet kunnen bevestigen.
+Neemt u gerust contact met ons op voor nadere details.
+
+Reden van het niet kunnen bevestigen:
+{REJECT_REASON}
+
+Uw reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-customer</key>
+<subject>Uw reservering kan helaas geen doorgang vinden</subject>
+<body>
+Het spijt ons u te moeten mededelen dat uw reservering niet kan doorgaan wegens onvoorziene uitval.
+Neemt u gerust contact met ons op voor nadere details of voor het maken van een andere afspraak.
+
+Uw reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-request-customer</key>
+<subject>Uw reserveringsaanvraag</subject>
+<body>
+Hartelijk dank voor uw reserveringsaanvraag, welke wij graag bijgaand bevestigen!
+Wij verwelkomen u graag op de afgesproken datum en tijd en wensen u op voorhand een aangenaam verblijf bij ons.
+
+Your Appointment Details:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-customer</key>
+<subject>Uw reserveringsaanvraag is geannuleerd</subject>
+<body>
+Bijgaand bevestigen wij dat uw reservering bij ons op uw verzoek is geannuleerd.
+Wij zien u heel graag een andere keer terug!
+
+Reden van annuleren:
+{CANCEL_REASON}
+
+Uw reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-customer</key>
+<subject>Uw reserveringsaanvraag is gewijzigd</subject>
+<body>
+Hierbij delen wij u mede dat uw reserveringsaanvraag verplaatst is naar een andere locatie.
+Uiteraard kunt u te allen tijde contact met ons op nemen voor aanvullende details.
+
+Uw reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-customer</key>
+<subject>Uw reserveringsaanvraag is verplaatst</subject>
+<body>
+Hierbij delen wij u mede dat uw reserveringsaanvraag is verplaatst van {OLD_APPOINTMENT.STARTS_AT} naar {APPOINTMENT.STARTS_AT}.
+Voor aanvullende vragen kunt u te allen tijde contact met ons opnemen.
+
+Uw nieuwe reserveringsdetails zijn:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-customer</key>
+<subject>Uw reserveringsaanvraag is aan een andere medewerker toegewezen</subject>
+<body>
+Hierbij delen wij u mede dat uw reserveringsaanvraag is toegewezen aan een andere medewerker.
+Voor aanvullende informatie kunt u te allen tijde contact met ons opnemen.
+
+Uw reserveringsdetails zijn:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+
+
+<message>
+<key>appointment-require_approval-provider</key>
+<subject>Nieuw reserveringsverzoek - wacht op bevestiging -</subject>
+<body>
+Er is een nieuw reserveringsverzoek binnengekomen dat nog door ons bevestigd moet worden.
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+
+Gast details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+Links om te volgen voor deze reservering:
+{APPOINTMENT.QUICK_LINK_APPROVE} {APPOINTMENT.QUICK_LINK_REJECT}
+</body>
+</message>
+
+<message>
+<key>appointment-request-provider</key>
+<subject>Nieuw reserveringsverzoek - automatische bevestiging -</subject>
+<body>
+Er is een nieuw reserveringsverzoek binnengekomen dat reeds automatisch bevestigd is.
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+
+Gast details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-provider</key>
+<subject>Reservering geannuleerd door gast</subject>
+<body>
+Dit is een bevestiging van een annulering van onderstaande reservering.
+De annulering is door de gast zelf gedaan.
+
+Reden van annulering:
+{CANCEL_REASON}
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+
+Gast details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-provider</key>
+<subject>Reservering afgewezen</subject>
+<body>
+Deze reservering is afgewezen.
+
+Reden van afwijzing:
+{REJECT_REASON}
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+
+Gast details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-provider</key>
+<subject>Reservering kan niet doorgaan door uitval</subject>
+<body>
+Onderstaande reservering is kan door uitval niet doorgaan.
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+
+Gast details:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>appointment-approve-provider</key>
+<subject>Reservering is bevestigd</subject>
+<body>
+Deze reservering is bevestigd.
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-provider</key>
+<subject>De reservering is verplaatst naar een andere locatie</subject>
+<body>
+Deze reservering is verplaatst naar een andere locatie.
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-provider</key>
+<subject>Reservering verzet</subject>
+<body>
+Onderstaand reservering is verzet van {OLD_APPOINTMENT.STARTS_AT} naar {APPOINTMENT.STARTS_AT}.
+
+De nieuwe reserveringsdetails zijn:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-provider</key>
+<subject>Nieuwe reservering toegewezen aan u</subject>
+<body>
+Er is een nieuwe reservering toegewezen aan u.
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign_from-provider</key>
+<subject>Reservering is toegewezen aan een andere medewerker</subject>
+<body>
+Onderstaande reservering is aan een andere medewerker toegewezen.
+
+Reserveringsdetails:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>user-require_email_confirmation-user</key>
+<subject>Bevestig a.u.b. uw e-mailadres</subject>
+<body>
+Hartelijk dank voor uw registratie op onze site.
+Om er zeker van te zijn dat u deze registratie zelf heeft gedaan vragen wij u om op onderstaande link te klikken en daarmee uw aanvraag aan ons te bevestigen.
+
+{USER.CONFIRMATION_LINK}
+</body>
+</message>
+
+<message>
+<key>user-require_approval-user</key>
+<subject>Uw aanmelding wacht op bevestiging</subject>
+<body>
+Hartelijk dank voor uw registratie op onze site.
+Uw registratie dienen wij eerst te bevestigen alvorens u hiervan gebruik kunt maken. Als uw account actief is ontvangt u hier automatisch een bericht van.
+</body>
+</message>
+
+<message>
+<key>user-require_approval-admin</key>
+<subject>Nieuwe gebruikersaanmelding, bevestiging vereist!</subject>
+<body>
+Een nieuwe gebruiker heeft zich aangemeld op de website. Ga naar het beheergedeelte om deze aanmelding te bevestigen of af te wijzen.
+
+Gebruikersinformatie:
+{USER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>user-activate-user</key>
+<subject>Uw gebruikersaccount op onze site is geactiveerd!</subject>
+<body>
+Gefeliciteerd!
+Uw gebruikersaccount is nu actief. Hieronder treft u uw aanmeldgegevens aan:
+
+Gebruikersnaam: {USER.USERNAME}
+Wachtwoord: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>user-reset_password-user</key>
+<subject>Uw wachtwoord is veranderd!</subject>
+<body>
+Op uw verzoek hebbeb wij een nieuw wachtwoord voor u aangemaakt. Uw nieuwe gegevens zijn:
+
+Gebruikersnaam: {USER.USERNAME}
+Wachtwoord: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-customer</key>
+<subject>Herinnering voor uw reserveringsverzoek</subject>
+<body>
+Bijgaand sturen wij ter herinnering de informatie van uw bij ons geplaatste reservering.
+
+Uw reserveringsdetails zijn:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-provider</key>
+<subject>Herinnering reservering</subject>
+<body>
+Dit is een reserveringsherinnering.
+
+De details zijn:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+</emails>

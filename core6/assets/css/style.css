@@ -198,6 +198,13 @@
     background-color: #eee;
 	}
 
+#nts .nts-cal-link {
+	display: block;
+	text-decoration: none;
+	}
+
 #nts .nts-time-link {
 	width: 6em;
+	display: block;
+	text-decoration: none;
 	}

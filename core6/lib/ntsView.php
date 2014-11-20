@@ -549,26 +549,35 @@ class ntsView {
 				$serviceView = ntsView::objectTitle( $service );
 
 				$t = isset($NTS_VIEW['t']) ? $NTS_VIEW['t'] : new ntsTime;
-				$startsAt = $object->getProp('starts_at');
-				if( $startsAt )
-				{
-					$t->setTimestamp( $startsAt ); 
-					$dateView = $t->formatWeekdayShort() . ', ' . $t->formatDate();
-					$timeView = $t->formatTime( $object->getProp('duration') );
 
-					if( isset($params['skip']) && in_array('date',$params['skip']) )
+				$display_timezone = FALSE;
+				$current_user =& ntsLib::getCurrentUser();
+				if( ! ($current_user->hasRole('admin')) )
+				{
+					$customer = new ntsUser();
+					$customer->setId( $object->getProp('customer_id') );
+
+					$current_timezone = $t->timezone;
+					$customer_timezone = $customer->getTimezone();
+					if( $customer_timezone != $current_timezone )
 					{
-						$return = $timeView . ' ' . $serviceView;
+						$t->setTimezone( $customer_timezone );
+						$display_timezone = TRUE;
 					}
-					else
-					{
-						$return = $dateView . ' ' . $timeView . ' ' . $serviceView;
-					}
+				}
+
+				$startsAt = $object->getProp('starts_at');
+				$t->setTimestamp( $startsAt ); 
+				$dateView = $t->formatWeekdayShort() . ', ' . $t->formatDate();
+				$timeView = $t->formatTime( $object->getProp('duration'),$display_timezone );
+
+				if( isset($params['skip']) && in_array('date',$params['skip']) )
+				{
+					$return = $timeView . ' ' . $serviceView;
 				}
 				else
 				{
-					$timeView = M('Not Scheduled');
-					$return = $serviceView . ' [' . $timeView . ']';
+					$return = $dateView . ' ' . $timeView . ' ' . $serviceView;
 				}
 
 				$id = $object->getId();

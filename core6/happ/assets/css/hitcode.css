@@ -519,6 +519,7 @@
 	padding: 0.5em 1em;
 }
 
+#nts .list-separated-hori>li,
 #nts .list-hori-separated>li {
 	margin-right: 0.5em;
 	margin-left: 0.5em;
@@ -879,6 +880,10 @@
 #nts .hc_month .row .today .alert-condensed {
 	border-color: #060;
 }
+
+#nts a>span.btn {
+	display: block;
+	}
 
 /* conficts in wordpress with some themes */
 #nts .dropdown {

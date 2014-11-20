@@ -78,8 +78,8 @@ $prevMoLink = isset($linkDates[$previousMo]) ? $linkDates[$previousMo] : ntsLink
 ?>
 	<div class="row">
 		<?php if( ! (isset($skipPrevLink) && $skipPrevLink) ) : ?>
-			<a class="btn btn-default pull-left" href="<?php echo $prevMoLink; ?>">
-				&laquo;
+			<a class="pull-left nts-cal-link" href="<?php echo $prevMoLink; ?>">
+				<span class="btn btn-default">&laquo;</span>
 			</a>
 		<?php endif; ?>
 
@@ -89,7 +89,9 @@ $prevMoLink = isset($linkDates[$previousMo]) ? $linkDates[$previousMo] : ntsLink
 		$nextMoLink = isset($linkDates[$nextMo]) ? $linkDates[$nextMo] : ntsLink::makeLink('-current-', '', $myParams);
 		?>
 		<?php if( ! (isset($skipNextLink) && $skipNextLink) ) : ?>
-			<a class="btn btn-default pull-right" href="<?php echo $nextMoLink; ?>">&raquo;</a>
+			<a class="pull-right nts-cal-link" href="<?php echo $nextMoLink; ?>">
+				<span class="btn btn-default">&raquo;</span>
+			</a>
 		<?php endif; ?>
 
 		<span class="btn display-block text-center">
@@ -179,7 +181,11 @@ $prevMoLink = isset($linkDates[$previousMo]) ? $linkDates[$previousMo] : ntsLink
 						$targetLink = ntsLink::makeLink($targetPanel, '', $myParams);
 					}
 					?>
-					<a class="<?php echo $class; ?>" title="<?php echo $label; ?>" href="<?php echo $targetLink; ?>"><?php echo $day; ?></a>
+					<a class="nts-cal-link" title="<?php echo $label; ?>" href="<?php echo $targetLink; ?>">
+						<span class="<?php echo $class; ?>" >
+							<?php echo $day; ?>
+						</span>
+					</a>
 				<?php else : ?>
 					<span class="<?php echo $class; ?>" title="<?php echo $label; ?>">
 						<?php echo $day; ?>

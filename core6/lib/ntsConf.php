@@ -343,9 +343,10 @@ class ntsConf {
 				break;
 
 			case 'languages':
-				if( ! $rawValue ){
-					$return = array( 'en-builtin' );
-					}
+				if( ! $rawValue )
+				{
+					$return = array( 'en' );
+				}
 				else
 					$return = explode( '||', $rawValue );
 				break;
@@ -509,13 +510,6 @@ class ntsConf {
 					$return = $rawValue;
 				break;
 
-			case 'showCompletedAppsAdmin':
-				if( strlen($rawValue) == 0 )
-					$return = 1;
-				else
-					$return = $rawValue;
-				break;
-
 			case 'sendCcForAppointment':
 				if( strlen($rawValue) == 0 )
 					$return = 0;
@@ -540,13 +534,6 @@ class ntsConf {
 			case 'customerCanReschedule':
 				if( strlen($rawValue) == 0 )
 					$return = 1;
-				else
-					$return = $rawValue;
-				break;
-
-			case 'customerAcknowledge':
-				if( strlen($rawValue) == 0 )
-					$return = 0;
 				else
 					$return = $rawValue;
 				break;
@@ -602,6 +589,17 @@ class ntsPluginManager {
 	function getActivePlugins(){
 		return $this->plugins;
 		}
+
+	function isActive( $plugin )
+	{
+		$return = FALSE;
+		$active = $this->getActivePlugins();
+		if( in_array($plugin, $active) )
+		{
+			$return = TRUE;
+		}
+		return $return;
+	}
 
 	function getPanels( $plugin ){
 		$return = array();
@@ -675,12 +673,17 @@ class ntsPluginManager {
 
 		$currentPlugins = $this->getActivePlugins();
 		$newCurrentPlugins = array();
-		reset( $currentPlugins );
-		foreach( $currentPlugins as $plg ){
-			if( $plg == $plugin )
-				continue;
-			$newCurrentPlugins[] = $plg;
+
+		if( is_array($currentPlugins) )
+		{
+			reset( $currentPlugins );
+			foreach( $currentPlugins as $plg )
+			{
+				if( $plg == $plugin )
+					continue;
+				$newCurrentPlugins[] = $plg;
 			}
+		}
 		$newCurrentPlugins = array_unique( $newCurrentPlugins );
 
 		$conf->set( 'plugins', $newCurrentPlugins );
@@ -1030,49 +1033,50 @@ function M( $str, $params = array(), $skipCustom = false )
 	}
 
 	$return = '';
-	/* get in database is any custom tweaks */
-	if( ! $skipCustom )
+
+	$current_lang = $GLOBALS['NTS_CURRENT_LANGUAGE'];
+	if( $current_lang == 'en-builtin' )
+		$current_lang = 'en';
+
+/* replace html if any */
+	$str = preg_replace( '/\<(.+)\>/U', '[\\1]', $str );
+
+	$languageCustom = isset($GLOBALS['NTS_LANGUAGE_CUSTOM'][$current_lang]) ? $GLOBALS['NTS_LANGUAGE_CUSTOM'][$current_lang] : array();
+	if( isset($languageCustom[$str]) )
 	{
-		if( isset($GLOBALS['NTS_CONF']) )
+		$return = $languageCustom[$str];
+	}
+	else
+	{
+		if( $current_lang == 'en' )
 		{
-			$conf = $GLOBALS['NTS_CONF'];
+			$return = $str;
 		}
 		else
 		{
-			$conf =& ntsConf::getInstance();
-			$GLOBALS['NTS_CONF'] = $conf;
-		}
-
-		$realPropName = 'text-' . $str;
-		$return = $conf->get( $realPropName );
-	}
-
-	if( ! $return ){
-		if( $GLOBALS['NTS_CURRENT_LANGUAGE'] == 'en-builtin' ){
-			$return = $str;
-			}
-		else {
 			$languageConf = $GLOBALS['NTS_CURRENT_LANGUAGE_CONF'];
-
-		/* replace html if any */
-			$str = preg_replace( '/\<(.+)\>/U', '[\\1]', $str );
-
 			if( isset($languageConf['interface'][$str]) )
+			{
 				$return = $languageConf['interface'][$str];
+			}
 			else
+			{
 				$return = $str;
 			}
 		}
+	}
 
 	/* put back html if any */
 	$return = preg_replace( '/\[(.+)\]/U', '<\\1>', $return );
 
-	if( $params ){
+	if( $params )
+	{
 		reset( $params );
-		foreach( $params as $key => $value ){
+		foreach( $params as $key => $value )
+		{
 			$return = str_replace( '{' . $key . '}', $value, $return );
-			}
 		}
+	}
 	return $return;
 }
 
@@ -1085,7 +1089,13 @@ class ntsLanguageManager {
 	var $languages;
 
 	function ntsLanguageManager(){
-		$this->dir = NTS_EXTENSIONS_DIR . '/languages';
+//		$this->dir = NTS_EXTENSIONS_DIR . '/languages';
+
+		$this->dir = array(
+			NTS_EXTENSIONS_DIR . '/languages',
+			NTS_APP_DIR . '/languages'
+			);
+
 		$this->languages = array();
 		$this->init();
 		}
@@ -1103,6 +1113,113 @@ class ntsLanguageManager {
 		}
 	}
 
+	function reset_custom( $lng, $original )
+	{
+		$ntsdb =& dbWrapper::getInstance();
+		$where = array(
+			'lang'		=> array('=', $lng),
+			'original'	=> array('=', $original),
+			);
+		$ntsdb->delete(
+			'languages',
+			$where
+			);
+	}
+
+	function set_custom( $lng, $original, $custom )
+	{
+		$current_custom = $this->get_custom( $lng );
+		$update = isset($current_custom[$original]) ? TRUE : FALSE;
+
+		$ntsdb =& dbWrapper::getInstance();
+		if( $update )
+		{
+			if(
+				( $lng == 'en' )
+				&&
+				( $original == $custom )
+			)
+			{
+				$this->reset_custom( $lng, $original );
+			}
+			else
+			{
+				$what = array(
+					'custom'	=> $custom,
+					);
+				$where = array(
+					'lang'		=> array('=', $lng),
+					'original'	=> array('=', $original),
+					);
+
+				$ntsdb->update(
+					'languages',
+					$what,
+					$where
+					);
+			}
+		}
+		else
+		{
+			if(
+				( $lng == 'en' )
+				&&
+				( $original == $custom )
+			)
+			{
+				/* no need for that as it's not changed */
+				$this->reset_custom( $lng, $original );
+			}
+			else
+			{
+				$what = array(
+					'lang'		=> $lng,
+					'original'	=> $original,
+					'custom'	=> $custom,
+					);
+				$ntsdb->insert(
+					'languages',
+					$what
+					);
+			}
+		}
+	}
+
+	function get_custom( $lng )
+	{
+		if( $lng == 'en-builtin' )
+			$lng = 'en';
+
+		if( ! isset($GLOBALS['NTS_LANGUAGE_CUSTOM']) )
+		{
+			$GLOBALS['NTS_LANGUAGE_CUSTOM'] = array();
+		}
+
+		if( ! isset($GLOBALS['NTS_LANGUAGE_CUSTOM'][$lng]) )
+		{
+			$GLOBALS['NTS_LANGUAGE_CUSTOM'][$lng] = array();
+
+			$ntsdb =& dbWrapper::getInstance();
+//			$ntsdb->_debug = TRUE;
+			if( $ntsdb->tableExists('languages') )
+			{
+				$where = array(
+					'lang'	=> array('=', $lng),
+					);
+				$custom = $ntsdb->get_select(
+					array('original', 'custom'),
+					'languages',
+					$where
+					);
+				foreach( $custom as $c )
+				{
+					$GLOBALS['NTS_LANGUAGE_CUSTOM'][$lng][$c['original']] = $c['custom'];
+				}
+			}
+//			$ntsdb->_debug = FALSE;
+		}
+		return $GLOBALS['NTS_LANGUAGE_CUSTOM'][$lng];
+	}
 
 	function setLanguage( $lng )
 	{
@@ -1116,11 +1233,16 @@ class ntsLanguageManager {
 			$newSetting = $this->languageDisable( $currentLanguage );
 			$conf->set( 'languages', $newSetting );
 			if( $newSetting )
+			{
 				$currentLanguage = $newSetting[0];
+			}
 			else
-				$currentLanguage = 'en-builtin';
+			{
+				$currentLanguage = 'en';
+			}
 			$languageConf = $this->getLanguageConf( $currentLanguage );
 		}
+		$this->get_custom( $lng );
 
 	/* file ok */
 		$GLOBALS['NTS_CURRENT_LANGUAGE'] = $currentLanguage;
@@ -1181,7 +1303,9 @@ class ntsLanguageManager {
 	function getDefaultLanguage(){
 		$activeLanguages = $this->getActiveLanguages();
 		if( ! $activeLanguages )
-			$activeLanguages = array( 'en-builtin' );
+		{
+			$activeLanguages = array( 'en' );
+		}
 
 		if( defined('NTS_DEFAULT_LANGUAGE') && NTS_DEFAULT_LANGUAGE && in_array(NTS_DEFAULT_LANGUAGE, $activeLanguages) )
 		{
@@ -1194,66 +1318,136 @@ class ntsLanguageManager {
 		return $lng;
 		}
 
-	function getActiveLanguages(){
+	function getActiveLanguages()
+	{
 		$active = array();
 		$conf =& ntsConf::getInstance();
 		$languages = $this->getLanguages();
 		$activeLanguages = $conf->get('languages');
 
 		reset( $languages );
-		foreach( $languages as $l ){
+		foreach( $languages as $l )
+		{
 			if( in_array($l, $activeLanguages) )
 				$active[] = $l;
-			}
+		}
 
 		if( ! $active )
-			$active = array( 'en-builtin' );
+		{
+			$active = array( 'en' );
+		}
 
 		return $active;
-		}
+	}
 
 	function getLanguages(){
 		$languages = array();
 
-		$folders = ntsLib::listSubfolders( $this->dir );
+		reset( $this->dir );
+		$folders = array();
+		foreach( $this->dir as $d )
+		{
+			$this_folders = ntsLib::listSubfolders( $d );
+			$folders = array_merge( $folders, $this_folders );
+		}
+
 		reset( $folders );
-		foreach( $folders as $folder ){
-			$fileName = $this->dir . '/' . $folder . '/interface.xml';
-			if( file_exists($fileName) ){
-				$languages[] = $folder;
+		foreach( $folders as $folder )
+		{
+			reset( $this->dir );
+			foreach( $this->dir as $d )
+			{
+				$fileName = $d . '/' . $folder . '/interface.xml';
+				if( file_exists($fileName) )
+				{
+					if( ! in_array($folder, $languages) )
+					{
+						$languages[] = $folder;
+						break;
+					}
 				}
 			}
+		}
 
-		array_unshift( $languages, 'en-builtin' );
+		if( ! in_array('en', $languages) )
+		{
+			array_unshift( $languages, 'en' );
+		}
 		return $languages;
 		}
 
-	function getLanguageConf( $lng ){
-		if( $lng == 'en-builtin' ){
+	function getLanguageConf( $lng )
+	{
+		if( ($lng == 'en') )
+		{
+			$return = $this->getLanguageConf( 'languageTemplate' );
+			if( $this->languageFileExists($lng) )
+			{
+				if( ! isset($this->languages[$lng]) )
+				{
+					$this->loadLanguageFile( $lng );
+				}
+				$sub_return = $this->languages[$lng];
+				$sub_return['interface'] = array_merge( $return['interface'], $sub_return['interface'] );
+				$return = $sub_return;
+//				$return['language'] = 
+//				$return['interface'] = array_merge( $return['interface'], $this->languages[$lng]['interface'] );
+			}
+			return $return;
+
 			$return = array(
 				'language'	=> 'English Built-In',
 				'error'		=> '',
 				'charset'	=> 'utf-8',
 				);
 			return $return;
-			}
-
-		if( ! isset($this->languages[$lng]) ){
-			$this->loadLanguageFile( $lng );
-			}
-		return $this->languages[$lng];
 		}
 
-	function loadLanguageFile( $lng ){
+		if( ! isset($this->languages[$lng]) )
+		{
+			$this->loadLanguageFile( $lng );
+		}
+		return $this->languages[$lng];
+	}
+
+	function languageFileExists( $lng )
+	{
 		$f = $lng . '/interface.xml';
-
+		$return = '';
 		if( $lng == 'languageTemplate' )
-			$fullFileName = NTS_APP_DIR . '/defaults/language/interface.xml';
+		{
+			$return = NTS_APP_DIR . '/defaults/language/interface.xml';
+		}
 		else
-			$fullFileName = $this->dir . '/' . $f;
-//echo "loading lang file $fullFileName<br>";
+		{
+			reset( $this->dir );
+			foreach( $this->dir as $d )
+			{
+				$fullFileName = $d . '/' . $f;
+				if( file_exists($fullFileName) )
+				{
+					$return = $fullFileName;
+					break;
+				}
+			}
+		}
+		return $return;
+	}
 
-		if( ($lng != 'en-builtin') && file_exists($fullFileName) ){
+	function loadLanguageFile( $lng ){
+
+		$file_exists = FALSE;
+		if( $lng == 'languageTemplate' )
+		{
+			$fullFileName = NTS_APP_DIR . '/defaults/language/interface.xml';
+		}
+		else
+		{
+			$fullFileName = $this->languageFileExists( $lng );
+		}
+
+//echo "loading lang file $fullFileName<br>";
+		if( ($lng != 'en-builtin') && $fullFileName ){
 			$thisLangStrings = array();
 			$xmlCode = ntsLib::fileGetContents( $fullFileName );
 

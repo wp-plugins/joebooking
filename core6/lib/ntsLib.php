@@ -146,12 +146,15 @@ class ntsLib {
 		return $return;
 	}
 
-	static function migrate()
+	static function migrate( $currentVersion = '' )
 	{
 		$ntsConf =& ntsConf::getInstance();
-		$appInfo = ntsLib::getAppInfo();
 
-		$currentVersion = $appInfo['current_version'];
+		if( ! $currentVersion )
+		{
+			$appInfo = ntsLib::getAppInfo();
+			$currentVersion = $appInfo['current_version'];
+		}
 		$currentVersionNum = ntsLib::parseVersion( $currentVersion );
 		$uploadedVersion = ntsLib::getAppVersion();
 
@@ -680,7 +683,6 @@ class ntsLib {
 	{
 		$return = array();
 		$original_keys = array_keys($array);
-
 		reset( $orderArray );
 		foreach( $orderArray as $o )
 		{
@@ -866,25 +868,33 @@ class ntsLib {
 		return $return;
 		}
 
-	static function currentPageUrl(){
+	static function currentPageUrl()
+	{
 		$pageURL = 'http';
-		if( isset($_SERVER['HTTPS']) && ( $_SERVER['HTTPS'] == 'on' ) ){
+		if( 
+			( isset($_SERVER['HTTPS']) && ( $_SERVER['HTTPS'] == 'on' ) )
+			OR
+			( defined('NTS_HTTPS') && NTS_HTTPS )
+			)
+		{
 			$pageURL .= 's';
-			}
+		}
 		$pageURL .= "://";
-		if( isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80'){
+		if( isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80')
+		{
 			$pageURL .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
-			}
-		else {
+		}
+		else
+		{
 			$pageURL .= $_SERVER['SERVER_NAME'];
-			}
+		}
 
 		if ( ! empty($_SERVER['REQUEST_URI']) )
 			$pageURL .= $_SERVER['REQUEST_URI'];
 		else
 			$pageURL .= $_SERVER['SCRIPT_NAME'];
 		return $pageURL;
-		}
+	}
 
 	static function pureUrl( $url ){
 		preg_match( "/(.+)\?.*$/", $url, $matches );

@@ -31,27 +31,19 @@ if( $NTS_VIEW['form'] )
 </p>
 
 <p>
-<strong><?php echo M('Uploaded Version'); ?></strong>:
+<strong>Local version</strong>:
 <?php echo $fileVersion; ?>
 </p>
 
 <?php if( $dgtFileVersion > $dgtCurrentVersion ) : ?>
 	<p>
-		<a class="btn btn-info" href="<?php echo ntsLink::makeLink('-current-/../backup', 'make' ); ?>"><?php echo M('Download Backup'); ?></a> - highly recommended!
+		<a class="btn btn-info" href="<?php echo ntsLink::makeLink('-current-/../backup', 'make' ); ?>"><?php echo M('Backup') . ': ' . M('Download'); ?></a>
 	</p>
 	<p>
-		<a class="btn btn-success btn-lg" href="<?php echo ntsLink::makeLink('-current-', 'upgrade' ); ?>"><?php echo M('Run Upgrade Procedure'); ?>: <?php echo $fileVersion; ?></a>
+		<a class="btn btn-success btn-lg" href="<?php echo ntsLink::makeLink('-current-', 'upgrade' ); ?>"><?php echo M('Upgrade'); ?>: <?php echo $fileVersion; ?></a>
 	</p>
 <?php else: ?>
-	<p>
-		<?php echo M('No Upgrade Required'); ?>
-	</p>
 <?php endif; ?>
-
-<p>
-<strong>PHP</strong>:
-<?php echo PHP_VERSION; ?>
-</p>
 
 <?php
 if( $NTS_VIEW['form'] && file_exists(dirname(__FILE__) . '/index_version.php') )
@@ -59,5 +51,12 @@ if( $NTS_VIEW['form'] && file_exists(dirname(__FILE__) . '/index_version.php') )
 	require( dirname(__FILE__) . '/index_version.php' ); 
 }
 ?>
+
+<hr>
+<p>
+<strong>PHP</strong>:
+<?php echo PHP_VERSION; ?>
+</p>
+
 
 <?php endif; ?>

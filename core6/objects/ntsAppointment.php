@@ -182,11 +182,11 @@ class ntsAppointment extends ntsObject {
 		{
 			if( $completedStatus == HA_STATUS_NOSHOW )
 			{
-				$actions[] = array( 'showup',	ntsAppointment::_statusLabel($approvedStatus, 0, '', 'i') . ' ' . M('Unmark No Show') );
+				$actions[] = array( 'showup',	ntsAppointment::_statusLabel($approvedStatus, 0, '', 'i') . ' ' . M('Unmark') . ': ' . M('No Show') );
 			}
 			if( $completedStatus == HA_STATUS_COMPLETED )
 			{
-				$actions[] = array( 'incomplete',	ntsAppointment::_statusLabel($approvedStatus, 0, '', 'i') . ' ' . M('Unmark Completed') );
+				$actions[] = array( 'incomplete',	ntsAppointment::_statusLabel($approvedStatus, 0, '', 'i') . ' ' . M('Unmark') . ': ' . M('Completed') );
 			}
 		}
 		return $actions;

@@ -119,31 +119,6 @@ class hcWpBase4
 		reset( $css_files );
 		foreach( $css_files as $f )
 		{
-			if( is_array($f) )
-			{
-				$real_f = $f[0];
-			}
-			else
-			{
-				$real_f = $f;
-			}
-
-			$full = FALSE;
-			$prfx = array('http://', 'https://', '//');
-			reset( $prfx );
-			foreach( $prfx as $prf )
-			{
-				if( substr($real_f, 0, strlen($prf)) == $prf )
-				{
-					$full = TRUE;
-					break;
-				}
-			}
-
-			if( ! $full )
-			{
-				$f = $this->happ_web_dir . '/' . $real_f;
-			}
 			$this->register_admin_style($f);
 
 		/* add wp overwriter */
@@ -157,31 +132,6 @@ class hcWpBase4
 		reset( $js_files );
 		foreach( $js_files as $f )
 		{
-			if( is_array($f) )
-			{
-				$real_f = $f[0];
-			}
-			else
-			{
-				$real_f = $f;
-			}
-
-			$full = FALSE;
-			$prfx = array('http://', 'https://');
-			reset( $prfx );
-			foreach( $prfx as $prf )
-			{
-				if( substr($real_f, 0, strlen($prf)) == $prf )
-				{
-					$full = TRUE;
-					break;
-				}
-			}
-
-			if( ! $full )
-			{
-				$f = $this->happ_web_dir . '/' . $real_f;
-			}
 			$this->register_admin_script($f);
 		}
 
@@ -309,13 +259,52 @@ class hcWpBase4
 		$GLOBALS['NTS_CONFIG'][$this->app]['DB_TABLES_PREFIX'] = $mypref;
 	}
 
-	function register_admin_style( $url )
+	function register_admin_style( $f )
 	{
+		$file = is_array($f) ? $f[0] : $f;
+
+		$full = FALSE;
+		$prfx = array('http://', 'https://', '//');
+		reset( $prfx );
+		foreach( $prfx as $prf )
+		{
+			if( substr($file, 0, strlen($prf)) == $prf )
+			{
+				$full = TRUE;
+				break;
+			}
+		}
+
+		if( $full )
+		{
+			$full_file = $file;
+		}
+		else
+		{
+			if( substr($file, 0, strlen('happ/')) == 'happ/' )
+			{
+				$full_file = $this->happ_web_dir . '/' . $file;
+			}
+			else
+			{
+				$full_file = plugins_url($file, $this->full_path);
+			}
+		}
+
+		$full_file = str_replace( 'https://', '//', $full_file );
+		$full_file = str_replace( 'http://', '//', $full_file );
+
+		if( is_array($f) )
+			$f[0] = $full_file;
+		else
+			$f = $full_file;
+
 		$id = $this->app . '-style-admin-' . (count($this->_admin_styles) + 1);
-		$this->_admin_styles[] = array( $id, $url );
+
+		$this->_admin_styles[] = array( $id, $f );
 	}
 
-	function register_admin_script( $url, $id = '' )
+	function register_admin_script( $f, $id = '' )
 	{
 		if( ! $id )
 		{
@@ -323,18 +312,52 @@ class hcWpBase4
 		}
 
 		$skip = FALSE;
-		/* check jquery */
-		$check_url = is_array($url) ? $url[0] : $url;
-		if(
-			preg_match('/\/jquery\-\d/', $check_url)
-		)
+
+		$file = is_array($f) ? $f[0] : $f;
+		$file_id = '';
+
+		$full = FALSE;
+		$prfx = array('http://', 'https://', '//');
+		reset( $prfx );
+		foreach( $prfx as $prf )
 		{
-			$id = 'jquery';
-			$url = '';
+			if( substr($file, 0, strlen($prf)) == $prf )
+			{
+				$full = TRUE;
+				break;
+			}
 		}
 
+		if( $full )
+		{
+			$full_file = $file;
+		}
+		else
+		{
+			/* check jquery */
+			if(
+				preg_match('/\/jquery\-\d/', $file)
+			)
+			{
+				$file_id = 'jquery';
+				$full_file = '';
+			}
+			else
+			{
+				$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $this->happ_web_dir . '/' . $file : plugins_url($file, $this->full_path);
+			}
+		}
+
+		$full_file = str_replace( 'https://', '//', $full_file );
+		$full_file = str_replace( 'http://', '//', $full_file );
+
+		if( is_array($f) )
+			$f[0] = $full_file;
+		else
+			$f = $full_file;
+
 		if( ! $skip )
-			$this->_admin_scripts[] = array( $id, $url );
+			$this->_admin_scripts[] = array( $id, $f );
 	}
 
 	public function admin_total_init()
@@ -360,6 +383,10 @@ class hcWpBase4
 			$GLOBALS['NTS_CONFIG'][$this->app]['BASE_URL'] = get_admin_url();
 			$GLOBALS['NTS_CONFIG'][$this->app]['INDEX_PAGE'] = 'admin.php?page=' . $this->slug . '&';
 			$GLOBALS['NTS_CONFIG'][$this->app]['ADMIN_PANEL'] = 1;
+
+			$session_name = $GLOBALS['NTS_CONFIG'][$this->app]['SESSION_NAME'];
+			session_name( $session_name );
+			@session_start();
 
 			switch( $this->system_type )
 			{
@@ -415,6 +442,10 @@ class hcWpBase4
 				{
 					$GLOBALS['NTS_CONFIG'][$this->app]['DEFAULT_PARAMS'] = shortcode_parse_atts( $matches[1] );
 				}
+
+				$session_name = $GLOBALS['NTS_CONFIG'][$this->app]['SESSION_NAME'];
+				session_name( $session_name );
+				@session_start();
 
 				switch( $this->system_type )
 				{
@@ -693,8 +724,8 @@ class hcWpBase4
 		$session_name = 'ntssess_' . $this->app;
 		$GLOBALS['NTS_CONFIG'][$this->app]['SESSION_NAME'] = $session_name;
 
-		session_name( $session_name );
-		@session_start();
+//		session_name( $session_name );
+//		@session_start();
 		ob_start();
 	}
 
@@ -793,7 +824,6 @@ class hcWpBase4
 			$this->premium->dev_options();
 		}
 	}
-
 }
 }
 ?>

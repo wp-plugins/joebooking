@@ -131,7 +131,7 @@ echo ntsForm::wrapInput(
 			array(
 				array(
 					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required Field'),
+					'error'		=> M('Required'),
 					),
 				array(
 					'code'		=> 'greaterThan.php', 

@@ -3,13 +3,15 @@
 if( isset($params['_silent']) && $params['_silent'] )
 	return;
 
+$conf =& ntsConf::getInstance();
+$enableRegistration = $conf->get('enableRegistration');
 
-if( ! NTS_ENABLE_REGISTRATION ){
+if( ! $enableRegistration )
+{
 	if( $mainActionName == 'require_approval' )
 		return;
-	}
+}
 
-$conf =& ntsConf::getInstance();
 $etm =& ntsEmailTemplateManager::getInstance();
 $om =& objectMapper::getInstance();
 

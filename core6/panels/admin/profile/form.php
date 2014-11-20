@@ -26,7 +26,7 @@ reset( $fields );
 
 /* status */
 $rolesNames = array(
-	'admin'		=> M('Admin'),
+	'admin'		=> M('Administrator'),
 	'staff'		=> M('Staff'),
 	'customer'	=> M('Customer'),
 	);

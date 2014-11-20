@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<emails>
+
+<message>
+<key>appointment-require_approval-customer</key>
+<subject>Agendamento Pendente de Aprovação</subject>
+<body>
+Obrigado por efetuar seu agendamento na Elite Auto Center!
+Nós entraremos em contato assim que seu seu agendamento for aprovado. 
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-approve-customer</key>
+<subject>Agendamento Aprovado</subject>
+<body>
+Obrigado por seu agendamento. Seu pedido foi aprovado.
+
+Detalhes de seu cabeçalho:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-customer</key>
+<subject>Agendamento Recuzado</subject>
+<body>
+Obrigado por seu pedido de agendamento. Desculpe, seu agendamento não pôde ser efetuado.
+
+Motivos do não agendamento:
+{REJECT_REASON}
+
+Detalhes do seu agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-customer</key>
+<subject>Agendamento marcado como OK</subject>
+<body>
+Desculpe, sua reserva foi marcado como OK.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-request-customer</key>
+<subject>O Seu pedido de agendamento</subject>
+<body>
+Obrigado por efetuar seu agendamento na Elite Auto Center! 
+
+Detalhes de seu agendamento
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-customer</key>
+<subject>Agendamento Cancelado</subject>
+<body>
+Esta é uma confirmação de que o seu agendamento foi canceladoa seu pedido.
+
+Motivo do cancelamento:
+{CANCEL_REASON}
+
+Detalhes do agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-customer</key>
+<subject>Seu agendamento foi alterado</subject>
+<body>
+Seu agendamento foi alterado para outro horário.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-customer</key>
+<subject>Seu agendamento foi modificado</subject>
+<body>
+Seu agendamento foi modificado para {OLD_APPOINTMENT.STARTS_AT} a {APPOINTMENT.STARTS_AT}.
+
+Detalhes de seu novo agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-customer</key>
+<subject>Seu agendamento foi encaminhado para outra equipe</subject>
+<body>
+Seu agendamento foi encaminhado para outra equipe.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+
+
+<message>
+<key>appointment-require_approval-provider</key>
+<subject>Seu novo agendamento necessita de aprovação</subject>
+<body>
+Há um novo agendamento solicitado por você.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+Links rápidos para a seu agendamento:
+{APPOINTMENT.QUICK_LINK_APPROVE} {APPOINTMENT.QUICK_LINK_REJECT}
+</body>
+</message>
+
+<message>
+<key>appointment-request-provider</key>
+<subject>Novo agendamento solicitado</subject>
+<body>
+Há um novo agendamento solicitado no site da Elite Auto Center.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-provider</key>
+<subject>Agendamento cancelado pelo operador</subject>
+<body>
+Esta é a confirmação de que seu agendamento foi cancelado pelo operador.
+
+Motivo do cancelamento:
+{CANCEL_REASON}
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-provider</key>
+<subject>Agendamento Cancelado</subject>
+<body>
+Seu agendamento não pôde ser efetuado.
+
+Motivo do cancelamento:
+{REJECT_REASON}
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalles del cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-provider</key>
+<subject>Agendamento marcado como OK.</subject>
+<body>
+Seu agendamento foi marcado como OK.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>appointment-approve-provider</key>
+<subject>Agendamento aprovado</subject>
+<body>
+Su reservacion esta ahora aprovada.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-move-provider</key>
+<subject>Agendamento remanejado para outra equipe</subject>
+<body>
+Seu agendamento foi remanejado para outra equipe.
+
+Detalhes de seu agendamento
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reschedule-provider</key>
+<subject>Seu agendamento foi alterado</subject>
+<body>
+Seu agendamento foi alterado de  {OLD_APPOINTMENT.STARTS_AT} para {APPOINTMENT.STARTS_AT}.
+
+Novos detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign-provider</key>
+<subject>Novo agendamento transferido</subject>
+<body>
+Una novo agendamento foi realizado para você.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reassign_from-provider</key>
+<subject>Seu agendamento foi transferido para outra equipe</subject>
+<body>
+Seu agendamento foi transferido para outra equipe.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>user-require_email_confirmaion-user</key>
+<subject>Por favor, confirme seu endereço de email</subject>
+<body>
+Obrigado por se registar em nosso sistema, por favor, confirma seu endereço de email.
+
+{USER.CONFIRMATION_LINK}
+</body>
+</message>
+
+<message>
+<key>user-require_approval-user</key>
+<subject>Registro pendente de aprovação</subject>
+<body>
+Obrigado por se registrar conosco!!
+Por gentileza aguarde até que sua conta seja aprovada. Vamos notificá-lo quando a sua conta estiver ativa.
+</body>
+</message>
+
+<message>
+<key>user-require_approval-admin</key>
+<subject>Novo usuário registrado aguardando aprovação</subject>
+<body>
+Um novo usuário foi registrado. Por favor, vá ao painel de administração para aprovar esse novo usuário.
+
+Informações do novo usuário:
+{USER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>user-activate-user</key>
+<subject>Seu registro agora está ativado</subject>
+<body>
+Parabéns!
+Sua conta de usuário está ativa. Estes são seus dados de acesso::
+
+Usuário   : {USER.USERNAME}
+Senha: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>user-reset_password-user</key>
+<subject>Senha redefinida</subject>
+<body>
+A seu pedido, sua senha foi redefinida. Esta é a sua nova informação para acesso:
+
+Usuário   : {USER.USERNAME}
+Senha: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-customer</key>
+<subject>Lembrete de agendamento</subject>
+<body>.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-provider</key>
+<subject>Lembrete de agendamento</subject>
+<body>
+Este é um lembrete de seu agendamento.
+
+Detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+<message>
+<key>appointment-change-customer</key>
+<subject>Seu agendamento foi alterado</subject>
+<body>
+
+Seu agendamento foi alterado, novos detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>appointment-change-provider</key>
+<subject>Seu agendamento foi alterado</subject>
+<body>
+
+Seu agendamento foi alterado, novos detalhes de seu agendamento:
+{APPOINTMENT.-ALL-}
+
+Detalhes do cliente:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+<message>
+<key>user-require_email_confirmation-user</key>
+<subject>Por favor confirme se endereço de email</subject>
+<body>
+
+Obrigado por se cadastrar! Pedimos apenas que você confirme o seu endereço de e-mail, seguindo este link 
+{USER.CONFIRMATION_LINK}
+
+</body>
+</message>
+
+<message>
+<key>appointment-showup-provider</key>
+<subject>Seu agendamento desmarcado como não mostrado</subject>
+<body>
+Seu agendamento desmarcado como não mostrado
+
+Detalhes:
+{APPOINTMENT.-ALL-}
+
+Detalhes:
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+</body>
+</message>
+
+</emails>

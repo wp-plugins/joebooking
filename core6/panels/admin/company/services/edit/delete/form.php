@@ -6,7 +6,7 @@ $objId = $object->getId();
 <?php if( $NTS_VIEW['appsCount'] ) : ?>
 	<p>
 	<b><?php echo ntsView::objectTitle($object); ?></b>: 
-	<?php echo M('There are [b]{APPS_COUNT}[/b] appointment(s)', array('APPS_COUNT' => $NTS_VIEW['appsCount']) ); ?>
+	<?php echo M('Appointments'); ?>: <?php echo $NTS_VIEW['appsCount']; ?>
 	<p>
 	<?php echo M('If you proceed, these appointments will be cancelled' ); ?>.
 <?php endif; ?>

@@ -1,6 +1,7 @@
 <?php
 global $NTS_CURRENT_USER;
 $conf =& ntsConf::getInstance();
+$enableRegistration = $conf->get('enableRegistration');
 
 $ff =& ntsFormFactory::getInstance();
 $formFile = dirname( __FILE__ ) . '/_form_register';
@@ -27,7 +28,7 @@ if( $NTS_VIEW['form_register']->validate($removeValidation) )
 	$allowDuplicateEmails = $conf->get( 'allowDuplicateEmails' );
 
 /* if no reg enabled and this email exists, find it first */
-	if( (! NTS_ENABLE_REGISTRATION) && $formValues['email'] && (! $allowDuplicateEmails) )
+	if( (! $enableRegistration) && $formValues['email'] && (! $allowDuplicateEmails) )
 	{
 		$uif =& ntsUserIntegratorFactory::getInstance();
 		$integrator =& $uif->getIntegrator();
@@ -45,7 +46,7 @@ if( $NTS_VIEW['form_register']->validate($removeValidation) )
 		}
 	}
 
-	if( (! NTS_ENABLE_REGISTRATION) && $registerNew )
+	if( (! $enableRegistration) && $registerNew )
 	{
 		if( $formValues['email'] )
 			$formValues['username'] = $formValues['email'];
@@ -69,7 +70,7 @@ if( $NTS_VIEW['form_register']->validate($removeValidation) )
 				$object->setLanguage( $lng );
 			}
 
-			if( NTS_ENABLE_REGISTRATION )
+			if( $enableRegistration )
 			{
 			/* check if we need to require email validation */
 				$userEmailConfirmation = $conf->get('userEmailConfirmation');

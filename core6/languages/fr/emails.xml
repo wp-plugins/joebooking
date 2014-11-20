@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<emails>
+
+<message>
+<key>appointment-require_approval-customer</key>
+<subject>Votre rendez-vous est en attente d'approbation</subject>
+<body>
+Nous vous remercions pour votre demande de rendez-vous.
+Nous vous avertirons dés que votre rendez-vous aura été accepté.
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-approve-customer</key>
+<subject>Votre rendez-vous a été approuvé</subject>
+<body>
+Nous vous remercions pour votre demande de rendez-vous.
+Votre rendez-vous est maintenant approuvé.
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-customer</key>
+<subject>Votre rendez-vous a été refusé</subject>
+<body>
+Nous vous remercions pour votre demande de rendez-vous.
+Malheureusement, votre rendez-vous a été refusé
+
+Raison du refus :
+{APPOINTMENT.REJECT_REASON}
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-customer</key>
+<subject>Vous ne vous êtes pas présenté à votre rendez-vous</subject>
+<body>
+Nous sommes désolé, mais votre rendez-vous est considéré comme
+défection (No Show).
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-request-customer</key>
+<subject>Votre demande de rendez-vous</subject>
+<body>
+Nous vous remercions pour votre demande de rendez-vous.
+Votre rendez-vous est maintenant approuvé.
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-customer</key>
+<subject>Votre rendez-vous a été annulé</subject>
+<body>
+Ceci est la confirmation qu'à votre demande, votre rendez-vous a été
+annulé.
+
+Raison de l'annulation :
+{APPOINTMENT.CANCEL_REASON}
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-change-customer</key>
+<subject>Votre rendez-vous a été modifié</subject>
+<body>
+Voici les détail de votre rendez-vous modifié:
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>appointment-require_approval-provider</key>
+<subject>Une nouvelle demande de rendez-vous nécessite votre approbation</subject>
+<body>
+Vous avez une nouvelle demande de rendez-vous.
+
+Détails du rendez-vous :
+{APPOINTMENT.-ALL-}
+
+Détails sur le client :
+{APPOINTMENT.CUSTOMER.-ALL-}
+
+Liens rapides pour approuver ou refuser ce rendez-vous:
+{APPOINTMENT.QUICK_LINK_APPROVE} {APPOINTMENT.QUICK_LINK_REJECT}
+</body>
+</message>
+
+<message>
+<key>appointment-request-provider</key>
+<subject>Nouvelle demande de rendez-vous</subject>
+<body>
+Vous avez une nouvelle demande de rendez-vous, approuvée automatiquement.
+
+Détails du rendez-vous :
+{APPOINTMENT.-ALL-}
+
+Détails sur le client :
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-cancel-provider</key>
+<subject>Votre rendez-vous a été annulé par le client</subject>
+<body>
+Ceci est la confirmation qu'à la demande du client, votre rendez-vous a
+été annulé.
+
+Raison de l'annulation :
+{APPOINTMENT.CANCEL_REASON}
+
+Détails du rendez-vous :
+{APPOINTMENT.-ALL-}
+
+Détails sur le client :
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-reject-provider</key>
+<subject>Votre rendez-vous a été refusé</subject>
+<body>
+Votre rendez-vous a été refusé
+
+Raison du refus:
+{APPOINTMENT.REJECT_REASON}
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+
+Détails sur le client :
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-noshow-provider</key>
+<subject>Vous ne vous êtes pas présenté à votre rendez-vous</subject>
+<body>
+Vous ne vous êtes pas présenté à votre rendez-vous (no show)
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+
+Détails sur le client :
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+
+<message>
+<key>appointment-approve-provider</key>
+<subject>Confirmation de votre rendez-vous</subject>
+<body>
+Votre rendez-vous est maintenant confirmé.
+
+Détails de votre rendez-vous :
+
+{APPOINTMENT.-ALL-}
+
+Détails sur le client :
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-change-provider</key>
+<subject>Votre rendez-vous a changé</subject>
+<body>
+Votre rendez-vous a changé, voici les détails de votre nouveau rendez-vous
+:
+{APPOINTMENT.-ALL-}
+
+Détails sur le client :
+{APPOINTMENT.CUSTOMER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>user-require_email_confirmation-user</key>
+<subject>Veuillez confirmer votre adresse électronique</subject>
+<body>
+Merci pour votre inscription! Maintenant, nous vous prions de confirmer
+votre adresse courriel.
+
+{USER.CONFIRMATION_LINK}
+</body>
+</message>
+
+<message>
+<key>user-require_approval-user</key>
+<subject>Votre compte est en attente d'approbation</subject>
+<body>
+Merci pour votre inscription !
+Maintenant, nous vous prions d'attendre pour que nous approuvions
+manuellement votre demande. Nous vous aviserons dés que votre compte sera
+actif.
+</body>
+</message>
+
+<message>
+<key>user-require_approval-admin</key>
+<subject>Nouvel inscription utilisateur, votre approbation est
+requise</subject>
+<body>
+Un nouvel utilisateur s'est enregistré. Utilisez l'interface
+d'administration afin d'approuver ou refuser la demande d'inscription.
+
+Informations sur le nouvel utilisateur :
+{USER.-ALL-}
+</body>
+</message>
+
+<message>
+<key>user-activate-user</key>
+<subject>Votre compte est désormais actif</subject>
+<body>
+Félicitations !
+Votre compte utilisateur est maintenant actif. Voici vos informations de
+connexion :
+
+Nom d'utilisateur: {USER.USERNAME}
+Mot de passe: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>user-reset_password-user</key>
+<subject>Réinitialisation de votre mot de passe</subject>
+<body>
+À votre demande, votre mot de passe a été réinitialisé.
+Voici vos nouvelles informations de connexion :
+
+Nom d'utilisateur: {USER.USERNAME}
+Mot de passe: {USER.PASSWORD}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-customer</key>
+<subject>Rappel de rendez-vous</subject>
+<body>
+Ceci est un rappel de rendez-vous.
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+<message>
+<key>appointment-remind-provider</key>
+<subject>Rappel de rendez-vous</subject>
+<body>
+Ceci est un rappel de rendez-vous.
+
+Détails de votre rendez-vous :
+{APPOINTMENT.-ALL-}
+</body>
+</message>
+
+</emails>

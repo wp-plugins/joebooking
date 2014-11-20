@@ -31,6 +31,9 @@ $prfx = array('http://', 'https://', '//');
 		$full_file = $f;
 	else
 		$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $happ_web_dir . '/' . $file : $web_dir . '/' . $file;
+
+	$full_file = str_replace( 'https://', '//', $full_file );
+	$full_file = str_replace( 'http://', '//', $full_file );
 	?>
 	<?php if( is_array($f) ) : ?>
 		<!--[if <?php echo $f[1]; ?>]>
@@ -58,6 +61,9 @@ $prfx = array('http://', 'https://', '//');
 		$full_file = $f;
 	else
 		$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $happ_web_dir . '/' . $file : $web_dir . '/' . $file;
+
+	$full_file = str_replace( 'https://', '//', $full_file );
+	$full_file = str_replace( 'http://', '//', $full_file );
 	?>
 	<?php if( is_array($f) ) : ?>
 		<!--[if <?php echo $f[1]; ?>]>

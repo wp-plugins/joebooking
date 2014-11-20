@@ -91,7 +91,7 @@ switch( $inputAction ){
 		$val->checkValue = $submittedValue_Qty; 
 		if( ! $val->run('notEmpty') ){
 			$validationFailed = TRUE;
-			$validationError = M('Required field');
+			$validationError = M('Required');
 			return;
 			}
 		if( ! $val->run('integer') ){

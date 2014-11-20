@@ -382,6 +382,13 @@ class ntsPaymentManager {
 		$service = ntsObjectFactory::get( 'service' );
 		$service->setId( $r['service_id'] );
 		$prepay = $service->getPrepay();
+
+		$pgm =& ntsPaymentGatewaysManager::getInstance();
+		if( ! $pgm->hasOnline() )
+		{
+			$prepay = '100%';
+		}
+
 		$dueNow = 0;
 		if( $price )
 		{
@@ -634,7 +641,8 @@ class ntsPaymentManager {
 // remove, too slow
 //		$where['exists'] = array( '', '(' . 'SELECT id FROM {PRFX}invoice_items WHERE {PRFX}invoice_items.invoice_id = {PRFX}invoices.id' . ')', TRUE );
 		$direct_invoices = $ntsdb->get_select( 'id', 'invoices', $where );
-		$return = array_merge( $return, $direct_invoices );
+		$new_ones = array_diff( $direct_invoices, $return );
+		$return = array_merge( $return, $new_ones );
 
 		return $return;
 	}
@@ -644,6 +652,7 @@ class ntsPaymentManager {
 		$now = time();
 
 		$makeInvoices = array(); // array( $item, $amount, array(taxrate, taxname) );
+		$customer_id = 0;
 
 		$invoiceAmount = 0;
 		reset( $items );
@@ -665,6 +674,7 @@ class ntsPaymentManager {
 			switch( $className ){
 				case 'appointment':
 					$serviceId = $item->getProp( 'service_id' );
+					$customer_id = $item->getProp( 'customer_id' );
 					$service = ntsObjectFactory::get( 'service' );
 					$service->setId( $serviceId );
 					$startsAt = $item->getProp( 'starts_at' );
@@ -704,6 +714,7 @@ class ntsPaymentManager {
 					break;
 
 				case 'order':
+					$customer_id = $item->getProp( 'customer_id' );
 					$thisAmount = 0;
 					if( $thisForceAmount )
 					{
@@ -788,6 +799,7 @@ class ntsPaymentManager {
 			$invoice = ntsObjectFactory::get( 'invoice' );
 			$invoice->setProp( 'amount', $invoiceAmount );
 			$invoice->setProp( 'due_at', $due );
+			$invoice->setProp( 'customer_id', $customer_id );
 
 			$cm->runCommand( $invoice, 'create' );
 			$invoiceId = $invoice->getId();

@@ -13,7 +13,7 @@ if( $firstTimeSplash && (! isset($_COOKIE['ntsFirstTimeSplash'])) && ($_NTS['CUR
 /* also check permissions and set default panel */
 $allow_nologin = array(
 	'customer/splash',
-	'customer/book',
+//	'customer/book',
 	'customer/invoices/view',
 	);
 
@@ -30,7 +30,11 @@ if( (! ntsLib::getCurrentUserId()) && $userLoginRequired && (! in_array($_NTS['C
 		$_SESSION['return_after_login'] = $returnPage;
 	}
 	/* redirect to login page */
-	$_NTS['REQUESTED_PANEL'] = 'anon/login';
+	$forwardTo = ntsLink::makeLink( 'anon/login' );
+	ntsView::redirect( $forwardTo );
+	exit;
+//	$requested_panel = 'anon/login';
+//	$_NTS['REQUESTED_PANEL'] = $requested_panel;
 }
 
 if( ! isset($_NTS['CURRENT_PANEL']) )

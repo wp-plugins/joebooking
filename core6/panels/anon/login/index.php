@@ -1,3 +1,7 @@
+<?php
+$conf =& ntsConf::getInstance();
+$enableRegistration = $conf->get('enableRegistration');
+?>
 <div class="page-header">
 	<H2><?php echo M('Login'); ?></H2>
 </div>
@@ -22,7 +26,7 @@ echo $NTS_VIEW['form']->display(
 	</div>
 </div>
 
-<?php if( NTS_ENABLE_REGISTRATION ) : ?>
+<?php if( $enableRegistration ) : ?>
 	<div class="form-horizontal">
 		<?php
 		echo ntsForm::wrapInput(

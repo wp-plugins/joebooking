@@ -61,7 +61,7 @@ if( $NTS_VIEW['form']->validate() )
 		$tm2->addBlock( $b );
 	}
 
-	ntsView::addAnnounce( M('Schedules') . ': ' . M('Duplicate') . ': ' . M('OK'), 'ok' );
+	ntsView::addAnnounce( M('Schedules') . ': ' . M('Copy') . ': ' . M('OK'), 'ok' );
 	$forwardTo = ntsLink::makeLink('-current-');
 	ntsView::redirect( $forwardTo );
 	exit;

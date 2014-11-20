@@ -34,7 +34,7 @@ $restrictions = $object->getProp( '_restriction' );
 if( $restrictions )
 {
 	if( in_array('email_not_confirmed', $restrictions) )
-		$status_view = M('Email Not Confirmed');
+		$status_view = M('Email') . ': ' . M('Not Confirmed');
 	elseif( in_array('not_approved', $restrictions) )
 		$status_view = M('Not Approved');
 	elseif( in_array('suspended', $restrictions) )

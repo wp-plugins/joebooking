@@ -1,6 +1,6 @@
 <?php
 $permissionOptions = array(
-	array( 'allowed',		M('Approval Required') ),
+	array( 'allowed',		M('Approval') . ': ' . M('Required') ),
 	array( 'auto_confirm',	M('Auto Approved') ),
 	);
 $groups = array(

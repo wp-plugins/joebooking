@@ -2,6 +2,7 @@
 $conf =& ntsConf::getInstance();
 $useCaptcha = $conf->get( 'useCaptcha' );
 $strongPassword = $conf->get( 'strongPassword' );
+$enableRegistration = $conf->get('enableRegistration');
 
 $om =& objectMapper::getInstance();
 $fields = $om->getFields( 'customer', 'external' );
@@ -23,7 +24,7 @@ reset( $fields );
 		}
 	}
 
-	if( ! NTS_ENABLE_REGISTRATION )
+	if( ! $enableRegistration )
 	{
 		if( $f[0] == 'email' )
 		{
@@ -72,10 +73,10 @@ reset( $fields );
 	<?php endif; ?>
 <?php endforeach; ?>
 
-<?php if( NTS_ENABLE_REGISTRATION ) : ?>
+<?php if( $enableRegistration ) : ?>
 	<hr>
 	<p>
-	<h4><?php echo M('Login details'); ?></h4>
+	<h4><?php echo M('Login Details'); ?></h4>
 
 	<?php if( ! NTS_EMAIL_AS_USERNAME ) : ?>
 		<?php
@@ -89,7 +90,7 @@ reset( $fields );
 			$validators = array(
 				array(
 					'code'		=> 'notEmpty.php', 
-					'error'		=> M('Required field'),
+					'error'		=> M('Required'),
 					),
 				array(
 					'code'		=> 'checkUsername.php', 
@@ -126,7 +127,7 @@ reset( $fields );
 	$passwordValidate = array();
 	$passwordValidate[] = array(
 		'code'		=> 'notEmpty.php', 
-		'error'		=> M('Required field'),
+		'error'		=> M('Required'),
 		);
 	if( $strongPassword ){
 		$passwordValidate[] = array(

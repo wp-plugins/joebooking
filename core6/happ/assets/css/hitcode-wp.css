@@ -95,8 +95,47 @@
 	box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 1px rgba(82,168,236,0.6);
 }
 
+#nts ul li,
 #nts li {
 	background: none;
 	font-weight: inherit;
 	font-size: inherit;
+	padding: 0 0;
+	margin: 0 0;
+}
+
+#nts small {
+	display: inherit;
+	width: inherit;
+	float: inherit;
+}
+
+#nts ul li:before {
+	content: "";
+	position: inherit;
+}
+#nts input {
+	display: inherit;
+	width: inherit;
+}
+
+#nts .nav {
+	position: inherit;
+	width: inherit;
+	width: 100%;
+	z-index: inherit;
+}
+
+#nts a.btn {
+	background: -moz-linear-gradient(none); /* FF3.6+ */
+	background: -webkit-gradient(none); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(none); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(none); /* Opera 11.10+ */
+	background: -ms-linear-gradient(none); /* IE10+ */
+	background: linear-gradient(none); /* W3C */
+
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	text-shadow: none;
 }

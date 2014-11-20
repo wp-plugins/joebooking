@@ -1,11 +1,14 @@
 <?php
-function ntsPluginFilterCustumers_AllowCustomers()
+function ntsPluginFilterCustumers_AllowCustomers( $thisId = 0 )
 {
 	global $NTS_CURRENT_USER;
-	if( ! $NTS_CURRENT_USER )
-		return array();
 
-	$thisId = $NTS_CURRENT_USER->getId();
+	if( ! $thisId )
+	{
+		if( ! $NTS_CURRENT_USER )
+			return array();
+		$thisId = $NTS_CURRENT_USER->getId();
+	}
 
 	global $NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS;
 	if( ! isset($NTS_PLUGIN_FILTER_CUSTOMERS_ALLOW_CUSTOMERS) )
