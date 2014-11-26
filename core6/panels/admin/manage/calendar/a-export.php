@@ -34,12 +34,37 @@ if( ! $all_apps )
 	exit;
 }
 
+$unset = array();
+
+$ff =& ntsFormFactory::getInstance();
+$form_file = dirname(__FILE__) . '/views/_export_form';
+$form =& $ff->makeForm( $form_file );
+
+if( $form->validate() )
+{
+	$formValues = $form->getValues();
+	reset( $formValues );
+	foreach( $formValues as $k => $v )
+	{
+		$k = substr( $k, strlen('field_') );
+		if( ! $v )
+		{
+			$unset[] = $k;
+		}
+	}
+}
+
 $labels = ntsAppointment::dump_labels();
+
+$unset = array_merge(
+	array( 'lrst', 'is_class', 'customer:first_name', 'customer:last_name', 'duration_short', 'clean_up_short' ),
+	$unset
+	);
 
 reset( $all_apps );
 $out = array();
 $header = array();
-$unset = array( 'lrst', 'is_class', 'customer:first_name', 'customer:last_name' );
+
 foreach( $all_apps as $a )
 {
 	$app = ntsObjectFactory::get('appointment');

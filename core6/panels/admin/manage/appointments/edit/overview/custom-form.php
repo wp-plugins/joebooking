@@ -26,7 +26,7 @@ reset( $fields );
 	<?php endforeach; ?>
 
 	<?php if( ! $this->readonly ) : ?>
-		<?php echo $this->makePostParams('-current-', 'update' ); ?>
+		<?php echo $this->makePostParams('-current-', 'update'); ?>
 		<?php
 		echo ntsForm::wrapInput(
 			'',

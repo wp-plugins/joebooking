@@ -170,9 +170,13 @@ class ntsWpBase2 extends hcWpBase4
 		global $NTS_SETUP_ADMINS;
 		$NTS_SETUP_ADMINS = array();
 
-		$role = 'Administrator';
-		$wp_user_search = new WP_User_Search( '', '', $role);
-		$NTS_SETUP_ADMINS = $wp_user_search->get_results();
+		$roles = array( 'Developer', 'Administrator' );
+		reset( $roles );
+		foreach( $roles as $role )
+		{
+			$wp_user_search = new WP_User_Search( '', '', $role);
+			$NTS_SETUP_ADMINS = array_merge( $NTS_SETUP_ADMINS, $wp_user_search->get_results() );
+		}
 
 /* database */
 		$file = $this->dir . '/../model/init.php';

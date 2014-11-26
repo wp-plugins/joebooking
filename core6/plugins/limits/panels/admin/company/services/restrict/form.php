@@ -6,6 +6,6 @@ require( $formFile );
 ?>
 <p>
 <DIV CLASS="buttonBar">
-<?php echo $this->makePostParams('-current-', 'update' ); ?>
+<?php echo $this->makePostParams('-current-', 'update'); ?>
 <INPUT class="btn btn-default" TYPE="submit" VALUE="<?php echo M('Update'); ?>">
 </DIV>

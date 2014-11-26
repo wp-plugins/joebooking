@@ -106,7 +106,7 @@ echo ntsForm::wrapInput(
 	<?php endif; ?>
 <?php endif; ?>
 
-<?php echo $this->makePostParams('-current-', 'update' ); ?>
+<?php echo $this->makePostParams('-current-', 'update'); ?>
 <?php
 echo ntsForm::wrapInput(
 	'',

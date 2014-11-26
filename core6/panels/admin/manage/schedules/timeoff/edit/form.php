@@ -150,7 +150,7 @@ echo ntsForm::wrapInput(
 	);
 ?>
 
-<?php echo $this->makePostParams('-current-', 'update' ); ?>
+<?php echo $this->makePostParams('-current-', 'update'); ?>
 <?php
 $deleteLink = ntsLink::makeLink(
 	'-current-/delete'

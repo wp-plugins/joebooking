@@ -351,7 +351,10 @@ EOT;
 		$wp_user_data = get_userdata( $user_id );
 		if( 
 			isset($wp_user_data->roles) &&
-			in_array('administrator', $wp_user_data->roles)
+			(
+				in_array('administrator', $wp_user_data->roles) OR
+				in_array('developer', $wp_user_data->roles)
+			)
 			)
 		{
 			$return = TRUE;
@@ -363,17 +366,22 @@ EOT;
 	{
 		$return = array();
 
-		$user_query = new WP_User_Query( 
-			array( 
-				'role' => 'Administrator'
-				)
-			);
-
-		if( ! empty($user_query->results) )
+		$roles = array( 'Administrator', 'Developer' );
+		reset( $roles );
+		foreach( $roles as $r )
 		{
-			foreach( $user_query->results as $user )
+			$user_query = new WP_User_Query( 
+				array( 
+					'role' => $r
+					)
+				);
+
+			if( ! empty($user_query->results) )
 			{
-				$return[] = $user->ID;
+				foreach( $user_query->results as $user )
+				{
+					$return[] = $user->ID;
+				}
 			}
 		}
 

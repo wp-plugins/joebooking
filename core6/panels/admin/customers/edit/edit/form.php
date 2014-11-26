@@ -144,7 +144,7 @@ $currentLanguage = $object->getLanguage();
 	?>
 <?php endif; ?>
 
-<?php echo $this->makePostParams('-current-', 'update' ); ?>
+<?php echo $this->makePostParams('-current-', 'update'); ?>
 
 <?php
 $buttons = array();

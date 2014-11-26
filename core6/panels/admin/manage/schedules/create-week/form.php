@@ -69,7 +69,7 @@ if( count($locs) == 1 )
 	/* attributes */
 		array(
 			'id'	=> 'location_id',
-			'value'	=> $allLocs[0],
+			'value'	=> $locs[0],
 			)
 		);
 }

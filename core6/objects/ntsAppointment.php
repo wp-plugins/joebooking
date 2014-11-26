@@ -199,6 +199,7 @@ class ntsAppointment extends ntsObject {
 			'time'		=> M('Starts At'),
 			'time_end'	=> M('Ends At'),
 			'duration'	=> M('Duration'),
+			'clean_up'	=> M('Clean Up'),
 			'location'	=> M('Location'),
 			'resource'	=> M('Bookable Resource'),
 			'service'	=> M('Service'),

@@ -610,6 +610,11 @@
 	*zoom: 1;
 }
 
+#nts .has-error {
+	padding: 0 0;
+	margin: 0 0;
+	}
+
 #nts .has-error .help-inline {
 	color: #b94a48;
 }

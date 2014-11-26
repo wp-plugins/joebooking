@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.2.1 =
+* Made it compatible with Developer Mode plugin so that "Developers" are also admins in JoeBooking
+* Now when downloading the appointments list in CSV (Excel) format, it's possible to select which columns are included
+* BUG: the availability week wizard assigned a wrong location if you first filtered the availability by location.
+
 = 6.2.0 =
 * BUG: error in payments form for payment gateways other than Paypal
 * BUG: when upgrading from older versions (4 and 5) there might be some availability timeblocks hidden in the admin area

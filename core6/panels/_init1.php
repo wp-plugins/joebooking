@@ -215,7 +215,10 @@ if( ! ( isset($NTS_CURRENT_USER) && $NTS_CURRENT_USER ) )
 		$wp_user_data = get_userdata( $current_user_id );
 		if( 
 			isset($wp_user_data->roles) &&
-			in_array('administrator', $wp_user_data->roles)
+			(
+				in_array('administrator', $wp_user_data->roles) OR
+				in_array('developer', $wp_user_data->roles)
+			)
 			)
 		{
 			if( ! $NTS_CURRENT_USER->hasRole('admin') )
@@ -224,30 +227,33 @@ if( ! ( isset($NTS_CURRENT_USER) && $NTS_CURRENT_USER ) )
 				$my_roles[] = 'admin';
 				$NTS_CURRENT_USER->setProp( '_role', $my_roles );
 
+			/* if it is solo then set permissions for all resources */
+				$admins = $integrator->getAdmins();
+				if( count($admins) <= 1 )
+				{
+					$resourceSchedules = array();
+					$resourceApps = array();
+					$res_ids = ntsObjectFactory::getAllIds( 'resource' );
+					reset( $res_ids );
+					foreach( $res_ids as $rid )
+					{
+						$resourceSchedules[ $rid ]['view'] = 1;
+						$resourceSchedules[ $rid ]['edit'] = 1;
+
+						$resourceApps[ $rid ]['view'] = 1;
+						$resourceApps[ $rid ]['edit'] = 1;
+						$resourceApps[ $rid ]['notified'] = 1;
+					}
+
+				/* update user */
+					$NTS_CURRENT_USER->setAppointmentPermissions( $resourceApps );
+					$NTS_CURRENT_USER->setSchedulePermissions( $resourceSchedules );
+				}
+
+
 			/* save */
 				$cm->runCommand( $NTS_CURRENT_USER, 'update' );
 			}
-
-		/* if it is solo then set permissions for all resources */
-			$resourceSchedules = array();
-			$resourceApps = array();
-			$res_ids = ntsObjectFactory::getAllIds( 'resource' );
-			reset( $res_ids );
-			foreach( $res_ids as $rid )
-			{
-				$resourceSchedules[ $rid ]['view'] = 1;
-				$resourceSchedules[ $rid ]['edit'] = 1;
-
-				$resourceApps[ $rid ]['view'] = 1;
-				$resourceApps[ $rid ]['edit'] = 1;
-				$resourceApps[ $rid ]['notified'] = 1;
-			}
-
-		/* update user */
-			$NTS_CURRENT_USER->setAppointmentPermissions( $resourceApps );
-			$NTS_CURRENT_USER->setSchedulePermissions( $resourceSchedules );
-
-			$cm->runCommand( $NTS_CURRENT_USER, 'update' );
 		}
 	}
 }
