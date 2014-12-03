@@ -7,7 +7,15 @@ if(
 	(! $_NTS['WAS_REQUESTED_PANEL'])
 	)
 {
-	$redirectTo = 'admin/manage/calendar';
+	$appView = ntsLib::getVar( 'admin/manage:appView' );
+	if( $appView )
+	{
+		$redirectTo = 'admin/manage/calendar';
+	}
+	else
+	{
+		$redirectTo = 'admin/customers/browse';
+	}
 	$forwardTo = ntsLink::makeLink( $redirectTo );
 	ntsView::redirect( $forwardTo );
 	exit;

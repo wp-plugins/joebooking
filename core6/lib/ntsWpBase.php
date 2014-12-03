@@ -141,18 +141,6 @@ class ntsWpBase2 extends hcWpBase4
 		}
 	}
 
-	public function front_view()
-	{  
-		if( 
-			isset($GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']) && 
-			$GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']
-			)
-		{
-			$file = $this->dir . '/../view.php';
-			require( $file );
-		}
-	}
-
 	public function admin_view()
 	{
 		$file = $this->dir . '/../view.php';

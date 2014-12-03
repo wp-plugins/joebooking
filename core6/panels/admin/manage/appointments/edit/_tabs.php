@@ -17,6 +17,7 @@ $tabs['overview'] = array(
 if( ! is_array($object) )
 {
 	$actions = $object->getStatusActions();
+	$rid = $object->getProp( 'resource_id' );
 
 	if( in_array($rid, $appEdit) )
 	{

@@ -12,19 +12,23 @@ if( $menu && (is_array($menu[count($menu)-1]) OR ($menu[count($menu)-1] != '-div
 }
 
 /* STATUS ACTIONS */
-$menu[] = array(
-	'href'	=> ntsLink::makeLink(
-		'admin/manage/appointments/edit/status', 
-		'', 
-		array(
-			'_id' => $app->getId(),
-			NTS_PARAM_RETURN	=> 'calendar',
-			)
-		),
-	'title'	=> '<i class="fa fa-flag-o"></i> ' . M('Set Status'),
-	'title'	=> $app->statusLabel('', 'i') . ' ' . M('Change Status'),
-	'class'	=> 'hc-ajax-loader'
-	);
+$status_actions = $app->getStatusActions();
+if( $status_actions )
+{
+	$menu[] = array(
+		'href'	=> ntsLink::makeLink(
+			'admin/manage/appointments/edit/status', 
+			'', 
+			array(
+				'_id' => $app->getId(),
+				NTS_PARAM_RETURN	=> 'calendar',
+				)
+			),
+		'title'	=> '<i class="fa fa-flag-o"></i> ' . M('Set Status'),
+		'title'	=> $app->statusLabel('', 'i') . ' ' . M('Change Status'),
+		'class'	=> 'hc-ajax-loader'
+		);
+}
 
 /* EDIT */
 //$menu[] = '-divider-';

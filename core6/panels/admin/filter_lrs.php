@@ -47,6 +47,16 @@ if( $schView || $appView )
 	}
 	$tm2->setService($sers);
 }
+else
+{
+	$locs = $locs2 = array(-1);
+	$ress = $ress2 = array(-1);
+	$sers = $sers2 = array(-1);
+
+	$tm2->setResource($ress);
+	$tm2->setLocation($locs);
+	$tm2->setService($sers);
+}
 
 $sortRess = ntsObjectFactory::getAllIds( 'resource' );
 $ress = ntsLib::sortArrayByArray( $ress, $sortRess );

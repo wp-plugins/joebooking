@@ -1,6 +1,7 @@
 <?php
 $conf =& ntsConf::getInstance();
 $enableRegistration = $conf->get('enableRegistration');
+$userLoginRequired = $conf->get('userLoginRequired');
 
 $current_panel = $_NTS['CURRENT_PANEL'];
 $active_link = '';
@@ -46,16 +47,27 @@ if( $packs_count && $has_online )
 		);
 }
 $links['divider1'] = '';
+
 $links['login'] = array(
 	ntsLink::makeLink('anon/login'),
 	'<i class="fa fa-sign-in"></i> ' . M('Login')
 	);
+
+	
 if( $enableRegistration )
 {
 	$links['register'] = array(
 		ntsLink::makeLink('anon/register'),
 		'<i class="fa fa-pencil"></i> ' . M('Register')
 		);
+}
+
+$ri =  ntsLib::remoteIntegration();
+if( $ri && (! $enableRegistration) && (! $userLoginRequired) )
+{
+	unset( $links['book'] );
+	unset( $links['divider1'] );
+	unset( $links['login'] );
 }
 ?>
 <?php foreach( $links as $lk => $l ) : ?>

@@ -1,5 +1,31 @@
 <?php
+class HC_App
+{
+	static function app_conf()
+	{
+		$CI =& ci_get_instance();
+		return $CI->app_conf; 
+	}
+}
+
 class Hc_lib {
+	static function time()
+	{
+		$return = new HC_Time;
+		return $return;
+	}
+
+	static function ob_start()
+	{
+		ob_start();
+	}
+	static function ob_end()
+	{
+		$return = ob_get_contents();
+		ob_end_clean();
+		return $return;
+	}
+
 	static function sort_array_by_array( $array, $orderArray )
 	{
 		$return = array();

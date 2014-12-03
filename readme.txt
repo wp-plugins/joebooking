@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.2.2 =
+* Pay at our office button at the final confirmation form if this option is enabled.
+* The shortcode output was appearing before the page text even if it was placed after.
+* A few minor optimizations.
+
 = 6.2.1 =
 * Made it compatible with Developer Mode plugin so that "Developers" are also admins in JoeBooking
 * Now when downloading the appointments list in CSV (Excel) format, it's possible to select which columns are included

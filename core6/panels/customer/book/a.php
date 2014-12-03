@@ -1,4 +1,6 @@
 <?php
+$ntsConf =& ntsConf::getInstance();
+$show_months = $ntsConf->get('monthsToShow');
 $t = $NTS_VIEW['t'];
 
 $now = time();
@@ -116,6 +118,26 @@ if( ! $lrs )
 {
 	$is_ajax = ntsLib::isAjax();
 	$view_file = $is_ajax ? 'ajax.php' : 'index.php';
+
+	$times = array();
+	$dates = array();
+	
+	$view = array(
+//		'this_a'		=> $this_a,
+//		'locations'		=> $locations,
+//		'resources'		=> $resources,
+//		'services'		=> $services,
+//		'requested'		=> $requested,
+		'requested_cal'	=> $cal,
+		'dates'			=> $dates,
+		'times'			=> $times,
+		'show_months'	=> $show_months,
+
+//		'auto_resource'		=> $auto_resource,
+//		'auto_location'		=> $auto_location,
+		);
+
+
 	$this->render(
 		dirname(__FILE__) . '/' . $view_file,
 		$view
@@ -169,8 +191,6 @@ $t->setDateDb( $cal );
 $t->setStartMonth();
 $dates_time_from = $t->getTimestamp();
 
-$ntsConf =& ntsConf::getInstance();
-$show_months = $ntsConf->get('monthsToShow');
 if( $show_months > 1 )
 	$t->modify( '+' . ($show_months - 1) . ' months' );
 $t->setEndMonth();

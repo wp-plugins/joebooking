@@ -55,6 +55,7 @@ class hcWpBase4
 	var $deactivate_other = array();
 
 	var $premium = NULL;
+	var $wrap_output = array();
 
 	public function __construct( 
 		$app,
@@ -66,6 +67,7 @@ class hcWpBase4
 		$db_prefix = ''
 		)
 	{
+		$this->wrap_output = array( '<!-- START OF NTS -->', '<!-- END OF NTS -->' );
 		$this->system_type = $system_type;
 
 		$GLOBALS['NTS_APPPATH'] = dirname($full_path) . '/application';
@@ -247,6 +249,28 @@ class hcWpBase4
 		}
 	}
 
+	function strip_p($content)
+	{
+		// strip only within our output
+		$start = stripos( $content, $this->wrap_output[0] );
+		if( $start !== FALSE )
+		{
+			$end = stripos( $content, $this->wrap_output[1], $start );
+			if( $end !== FALSE )
+			{
+				$my_content = substr( $content, $start, ($end - $start) );
+				$my_content = str_replace( '</p>', '', $my_content );
+				$my_content = str_replace( '<p>', '', $my_content );
+				$my_content = str_replace( '<br />', '', $my_content );
+				$my_content = str_replace( array("&#038;","&amp;"), "&", $my_content ); 
+
+				$content = substr_replace( $content, $my_content, $start, ($end - $start) );
+			}
+		}
+
+		return $content;
+	}
+
 	private function _init_db()
 	{
 		global $table_prefix;
@@ -408,6 +432,8 @@ class hcWpBase4
 			{
 				$GLOBALS['NTS_APP'] = $this->app;
 
+				add_filter('the_content', array($this, 'strip_p'), 1000);
+
 				add_action( 'wp_enqueue_scripts',	array($this, 'admin_scripts') );
 				add_action( 'wp_head', 				array($this, 'admin_head') );
 
@@ -463,22 +489,33 @@ class hcWpBase4
 
 	public function front_view()
 	{
-		switch( $this->system_type )
+		if( 
+			isset($GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']) && 
+			$GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']
+			)
 		{
-			case 'ci':
-				if( 
-					isset($GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']) && 
-					$GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']
-					)
-				{
+			ob_start();
+
+			switch( $this->system_type )
+			{
+				case 'ci':
 					$file = $this->happ_path . '/application/index_view.php';
-					ob_start();
 					require( $file );
-					$return = ob_get_contents();
-					ob_end_clean();
-					return $return;
-				}
-				break;
+					break;
+
+				case 'nts':
+					$file = $this->dir . '/../view.php';
+					require( $file );
+					break;
+			}
+
+			$return = '';
+			$return .= "\n" . $this->wrap_output[0] . "\n";
+			$return .= ob_get_contents();
+			$return .= "\n" . $this->wrap_output[1] . "\n";
+
+			ob_end_clean();
+			return $return;
 		}
 	}
 

@@ -1,10 +1,10 @@
 <?php
-$schView = ntsLib::getVar( 'admin/manage:schView' );
+$appView = ntsLib::getVar( 'admin/manage:appView' );
 $ress = ntsLib::getVar( 'admin::ress' );
 
-if( ! ( $schView && array_intersect($ress, $schView) ) )
+if( ! ( $appView && array_intersect($ress, $appView) ) )
 {
-	$msg = M('Schedules') . ': ' . M('View') . ': ' . M('Permission Denied');
+	$msg = M('Appointments') . ': ' . M('View') . ': ' . M('Permission Denied');
 	ntsView::addAnnounce( $msg, 'error' );
 
 	/* continue */

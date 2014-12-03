@@ -13,6 +13,11 @@ $where = array(
 	'completed'		=> array('>=', 0),
 	);
 
+$appView = ntsLib::getVar( 'admin/manage:appView' );
+$where = array(
+	'resource_id'	=> array( 'IN', $appView ),
+	);
+
 $period = $_NTS['REQ']->getParam('period');
 if( $period )
 {
@@ -37,9 +42,8 @@ if( $period )
 }
 
 $tm2 = ntsLib::getVar( 'admin::tm2' );
-
 $all_apps = $tm2->getAppointments(
-	$where, 
+	$where,
 	'ORDER BY starts_at DESC, id DESC'
 	);
 

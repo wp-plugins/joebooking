@@ -1,6 +1,6 @@
 <?php if( $grand_balance_count OR $grand_total_amount OR $grand_prepay_amount OR $grand_paid_amount ) : ?>
 	<hr>
-	<ul class="list-inline">
+	<ul class="list-inline list-separated">
 	<?php if( $grand_total_amount ) : ?>
 		<li>
 			<?php echo M('Total'); ?>
@@ -66,6 +66,13 @@
 				<?php echo $btn_label; ?>
 			</a>
 		</li>
+		<?php if( $has_offline ) : ?>
+			<li>
+				<a class="btn btn-success-o" href="<?php echo ntsLink::makeLink('-current-', 'payoffline'); ?>">
+					<?php echo $has_offline; ?>
+				</a>
+			</li>
+		<?php endif; ?>
 
 	<?php elseif( $has_offline ) : ?>
 		<li>

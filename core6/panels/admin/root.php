@@ -289,10 +289,16 @@ ntsLib::setVar( 'admin/manage:schEdit', $schEdit );
 ntsLib::setVar( 'admin/manage:appView', $appView );
 ntsLib::setVar( 'admin/manage:schView', $schView );
 
+global $NTS_CURRENT_USER;
 if( (! $schView) && (! $schEdit) )
 {
-	global $NTS_CURRENT_USER;
 	$NTS_CURRENT_USER->setDisabledPanel( 'admin/manage/schedules' );
+}
+
+if( (! $appView) && (! $appEdit) )
+{
+	$NTS_CURRENT_USER->setDisabledPanel( 'admin/customers/edit/appointments' );
+	$NTS_CURRENT_USER->setDisabledPanel( 'admin/manage/calendar' );
 }
 
 $tm2->setResource( $ress );
