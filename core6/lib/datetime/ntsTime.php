@@ -51,6 +51,14 @@ class ntsTime extends DateTime {
 		
 		$this->date_icon = '<i class="fa fa-calendar"></i>';
 		$this->time_icon = '<i class="fa fa-clock-o"></i>';
+
+		global $NTS_TIME_MONTH_NAMES, $NTS_TIME_MONTH_NAMES_REPLACE;
+		$NTS_TIME_MONTH_NAMES_REPLACE = array();
+		reset( $NTS_TIME_MONTH_NAMES );
+		foreach( $NTS_TIME_MONTH_NAMES as $mn )
+		{
+			$NTS_TIME_MONTH_NAMES_REPLACE[] = M($mn);
+		}
 	}
 
 	function setNow(){
@@ -173,7 +181,12 @@ class ntsTime extends DateTime {
 			$this->setDateDb( $date2 );
 			$return[] = $this->formatDate();
 		}
+
 		$return = join( ' - ', $return );
+
+		global $NTS_TIME_MONTH_NAMES, $NTS_TIME_MONTH_NAMES_REPLACE;
+		$return = str_replace( $NTS_TIME_MONTH_NAMES, $NTS_TIME_MONTH_NAMES_REPLACE, $return );
+
 		return $return;
 	}
 
@@ -295,12 +308,17 @@ class ntsTime extends DateTime {
 		return $return;
 		}
 
-	function getMonthName(){
-		global $NTS_TIME_MONTH_NAMES;
+	function getMonthName()
+	{
+		global $NTS_TIME_MONTH_NAMES, $NTS_TIME_MONTH_NAMES_REPLACE;
 		$thisMonth = (int) $this->getMonth();
 		$return = $NTS_TIME_MONTH_NAMES[ $thisMonth - 1 ];
+
+	// replace months
+		$return = str_replace( $NTS_TIME_MONTH_NAMES, $NTS_TIME_MONTH_NAMES_REPLACE, $return );
+
 		return $return;
-		}
+	}
 
 	function getDay(){
 		$return = $this->format('d');

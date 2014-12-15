@@ -14,9 +14,7 @@ $where = array(
 	);
 
 $appView = ntsLib::getVar( 'admin/manage:appView' );
-$where = array(
-	'resource_id'	=> array( 'IN', $appView ),
-	);
+$where['resource_id'] = array( 'IN', $appView );
 
 $period = $_NTS['REQ']->getParam('period');
 if( $period )

@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.2.3 =
+* Now the coupon codes can be used in the admin area for existing appointments too.
+* BUG: when viewing the appointments of a customer in Customers > Appointments, appointments of all of customers were displayed
+* BUG: month names were not translated if a foreign language was enabled.
+
 = 6.2.2 =
 * Pay at our office button at the final confirmation form if this option is enabled.
 * The shortcode output was appearing before the page text even if it was placed after.

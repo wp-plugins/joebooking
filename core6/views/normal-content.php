@@ -52,7 +52,8 @@ if( isset($_NTS['ROOT_INFO']) && $_NTS['ROOT_INFO'] && isset($_NTS['ROOT_INFO'][
 		$menu_root = 'anon';
 	}
 
-	$menu = new Hc_Main_Menu('nts');
+	$menu = HC_Html_Factory::widget('main_menu');
+	$menu->set_engine( 'nts' );
 	$menu->set_menu( $NTS_MENU );
 	$menu->set_current( $_NTS['CURRENT_PANEL'] );
 
@@ -61,7 +62,7 @@ if( isset($_NTS['ROOT_INFO']) && $_NTS['ROOT_INFO'] && isset($_NTS['ROOT_INFO'][
 	{
 		$menu->set_disabled( $disabled_panels );
 	}
-	echo $menu->display( $menu_root . '/' );
+	echo $menu->render( $menu_root . '/' );
 }
 ?>
 

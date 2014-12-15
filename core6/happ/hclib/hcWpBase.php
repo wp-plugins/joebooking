@@ -398,6 +398,7 @@ class hcWpBase4
 
 		if( $this->is_me_admin() )
 		{
+			ini_set( 'memory_limit', '512M' );
 			$GLOBALS['NTS_APP'] = $this->app;
 
 			$current_user = wp_get_current_user();

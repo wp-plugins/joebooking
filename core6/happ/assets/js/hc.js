@@ -419,6 +419,16 @@ jQuery(document).ready( function()
 
 	/* scroll into view */
 	document.getElementById("nts").scrollIntoView();
+
+	/* multiselect */
+	jQuery('.hc-multiselect').multiselect();
+
+	/* auto dismiss alerts */
+	jQuery('#nts .hc-auto-dismiss').delay(4000).slideUp(200, function()
+	{
+		jQuery('#nts .hc-auto-dismiss .alert').alert('close');
+	});
+
 });
 
 jQuery(document).on( 'click', '.hc-all-checker', function(event)
@@ -451,7 +461,18 @@ jQuery(document).on( 'click', '.hc-all-checker', function(event)
 			}
 		});
 	}
-	return false;
+
+	if(
+		( thisLink.prop('tagName').toLowerCase() == 'input' ) &&
+		( thisLink.attr('type').toLowerCase() == 'checkbox' )
+		)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 });
 
 /* collapse next */

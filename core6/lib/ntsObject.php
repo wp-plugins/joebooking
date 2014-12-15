@@ -1065,11 +1065,20 @@ class ntsObjectMapper {
 			$c['title'] = M($ma[1]);
 		}
 
-		if( ! $forSearch ){
-			if( isset($c['validators']) && $c['validators'] ){
-				$c['title'] .= ' *';
+		if( ! $forSearch )
+		{
+			if( isset($c['validators']) && $c['validators'] )
+			{
+				foreach( $c['validators'] as $cv  )
+				{
+					if( isset($cv['code']) && (substr($cv['code'], 0, strlen('notEmpty')) == 'notEmpty') )
+					{
+						$c['title'] .= ' *';
+						break;
+					}
 				}
 			}
+		}
 
 		$attributes = array(
 			'id'	=> $c['name'],

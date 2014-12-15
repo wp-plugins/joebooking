@@ -1,5 +1,5 @@
 <?php
-class HC_Html_Widget_Panels
+class HC_Html_Widget_Panels extends HC_Html_Element
 {
 	protected $panels = array();
 	protected $field = '';
@@ -66,7 +66,7 @@ class HC_Html_Widget_Panels
 		$tabs = HC_Html_Factory::element('ul');
 		$tabs->add_attr( 'class', 'nav' );
 		$tabs->add_attr( 'class', 'nav-tabs' );
-		$tabs->set_attr( 'id', $this->id );
+		$tabs->add_attr( 'id', $this->id );
 
 		$content = HC_Html_Factory::element( 'div' );
 		$content->add_attr( 'class', 'tab-content' );
@@ -81,23 +81,19 @@ class HC_Html_Widget_Panels
 			{
 				$tab->add_attr( 'class', 'active' );
 			}
-				$a = HC_Html_Factory::element('a');
-				$a->set_attrs(
-					array(
-						'href'			=> '#' . $pid,
-						'data-toggle'	=> 'tab',
-						'title'			=> $p['label'],
-						)
-					);
-				$a->add_child( $p['label'] );
+			$a = HC_Html_Factory::element('a')
+				->add_attr('href', '#' . $pid)
+				->add_attr('data-toggle', 'tab')
+				->add_attr('title', $p['label'])
+				->add_child( $p['label'] )
+				;
 			$tab->add_child( $a );
-
 			$tabs->add_child( $tab );
 
 		/* tab content */
 			$panel = HC_Html_Factory::element( 'div' );
 			$panel->add_attr( 'class', 'tab-pane' );
-			$panel->set_attr( 'id', $pid );
+			$panel->add_attr( 'id', $pid );
 			if( $active == $pid )
 			{
 				$panel->add_attr( 'class', 'active' );

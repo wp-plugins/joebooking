@@ -285,6 +285,8 @@ class HC_Validator
 	 */
 	protected function _execute($row, $rules, $postdata = NULL, $cycles = 0)
 	{
+		$CI =& ci_get_instance();
+
 		// If the $_POST data is an array we will run a recursive call
 		if (is_array($postdata))
 		{
@@ -398,13 +400,13 @@ class HC_Validator
 			// Call the function that corresponds to the rule
 			if ($callback === TRUE)
 			{
-				if ( ! method_exists($this->CI, $rule))
+				if ( ! method_exists($CI, $rule))
 				{
 					continue;
 				}
 
 				// Run the function and grab the result
-				$result = $this->CI->$rule($postdata, $param);
+				$result = $CI->$rule($postdata, $param);
 
 				// Re-assign the result to the master data array
 				if ($_in_array == TRUE)
@@ -510,6 +512,7 @@ class HC_Validator
 	 */
 	protected function _translate_fieldname($fieldname)
 	{
+		$CI =& ci_get_instance();
 		// Do we need to translate the field name?
 		// We look for the prefix lang: to determine this
 		if (substr($fieldname, 0, 5) == 'lang:')
@@ -518,7 +521,7 @@ class HC_Validator
 			$line = substr($fieldname, 5);
 
 			// Were we able to translate the field name?  If not we use $line
-			if (FALSE === ($fieldname = $this->CI->lang->line($line)))
+			if (FALSE === ($fieldname = $CI->lang->line($line)))
 			{
 				return $line;
 			}
@@ -603,8 +606,9 @@ class HC_Validator
 	 */
 	public function is_unique($str, $field)
 	{
+		$CI =& ci_get_instance();
 		list($table, $field)=explode('.', $field);
-		$query = $this->CI->db->limit(1)->get_where($table, array($field => $str));
+		$query = $CI->db->limit(1)->get_where($table, array($field => $str));
 		
 		return $query->num_rows() === 0;
     }
@@ -737,7 +741,8 @@ class HC_Validator
 	 */
 	public function valid_ip($ip, $which = '')
 	{
-		return $this->CI->input->valid_ip($ip, $which);
+		$CI =& ci_get_instance();
+		return $CI->input->valid_ip($ip, $which);
 	}
 
 	// --------------------------------------------------------------------
@@ -944,7 +949,8 @@ class HC_Validator
 	 */
 	public function xss_clean($str)
 	{
-		return $this->CI->security->xss_clean($str);
+		$CI =& ci_get_instance();
+		return $CI->security->xss_clean($str);
 	}
 
 	// --------------------------------------------------------------------
@@ -961,6 +967,60 @@ class HC_Validator
 		return str_replace(array('<?php', '<?PHP', '<?', '?>'),  array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
 	}
 
+	public function error_array()
+	{
+		return $this->_error_array;
+	}
+
+	public function dropdown_selected($str)
+	{
+		return $this->is_natural_no_zero($str); 
+	}
+
+	public function greater_than_field($str, $field)
+	{
+		if ( ! isset($_POST[$field]))
+			return FALSE;
+		if ( ! is_numeric($str))
+			return FALSE;
+		$min = $_POST[$field];
+		return $str > $min;
+	}
+
+	public function not_greater_than_field($str, $field)
+	{
+		if ( ! isset($_POST[$field]))
+			return FALSE;
+		if ( ! is_numeric($str))
+			return FALSE;
+		$min = $_POST[$field];
+		return $str <= $min;
+	}
+
+	public function less_than_field($str, $field)
+	{
+		if ( ! isset($_POST[$field]))
+			return FALSE;
+		if ( ! is_numeric($str))
+			return FALSE;
+		$max = $_POST[$field];
+		return $str < $max;
+	}
+
+	public function not_less_than_field($str, $field)
+	{
+		if ( ! isset($_POST[$field]))
+			return FALSE;
+		if ( ! is_numeric($str))
+			return FALSE;
+		$min = $_POST[$field];
+		return $str >= $min;
+	}
+
+	public function differs($str, $field)
+	{
+		return ! $this->matches($str, $field);
+	}
 }
 // END HC_Validator
 

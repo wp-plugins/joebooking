@@ -409,7 +409,10 @@
 }
 
 #nts .label {
+	vertical-align: middle;
 	display: inline-block;
+	margin-bottom: 0px;
+	margin-top: 0px;
 }
 
 #nts .label-lg,
@@ -510,9 +513,7 @@
 	margin-bottom: 0.25em;
 }
 #nts .list-inline.list-separated>li {
-	margin-right: 0.25em;
-	margin-left: 0.25em;
-	margin-bottom: 0;
+	margin: 0 0.25em 0 0.25em;
 }
 
 #nts .list-padded>li {
@@ -611,8 +612,10 @@
 }
 
 #nts .has-error {
+/*
 	padding: 0 0;
 	margin: 0 0;
+*/
 	}
 
 #nts .has-error .help-inline {

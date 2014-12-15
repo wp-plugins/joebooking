@@ -1,4 +1,5 @@
 <?php
+include_once( dirname(__FILE__) . '/hc_object_cache.php' );
 class HC_App
 {
 	static function app_conf()
@@ -6,9 +7,166 @@ class HC_App
 		$CI =& ci_get_instance();
 		return $CI->app_conf; 
 	}
+
+	static function model( $model )
+	{
+		$class = ucfirst($model) . '_Model';
+		$return = new $class;
+		return $return;
+	}
+
+	static function icon_for( $class )
+	{
+		$return = '';
+		$conf = array(
+			'time'		=> 'clock-o',
+			'user'		=> 'user',
+			'location'	=> 'home',
+			);
+		if( isset($conf[$class]) )
+			$return = $conf[$class];
+		return $return;
+	}
+
+	static function widget_locations()
+	{
+		$return = array();
+		$return['HC'] = dirname(__FILE__) . '/widgets';
+		if( defined('APPPATH') )
+		{
+			$return['SFT'] = APPPATH . 'widgets';
+		}
+		return $return;
+	}
+}
+
+class HC_Link
+{
+	private $params = array();
+	private $controller = '';
+
+	function __construct( $init = '' )
+	{
+		if( is_array($init) )
+		{
+			$controller = array_shift( $init );
+			$this->set_controller( $controller );
+			$params = hc_parse_args( $init );
+			foreach( $params as $k => $v )
+			{
+				$this->set_param($k, $v);
+			}
+		}
+		else
+		{
+			$this->set_controller( $init );
+		}
+	}
+
+	function set_controller( $controller )
+	{
+		$this->controller = $controller;
+	}
+	function controller()
+	{
+		return $this->controller;
+	}
+
+	function set_param( $key, $value )
+	{
+		$this->params[ $key ] = $value;
+	}
+	function params()
+	{
+		return $this->params;
+	}
+	function param( $key )
+	{
+		return isset($this->params[$key]) ? $this->params[$key] : NULL;
+	}
+
+	function slug()
+	{
+		$args = func_get_args();
+
+		$method = '';
+		$change_params = array();
+
+		if( count($args) == 2 )
+		{
+			$method = $args[0];
+			$change_params = $args[1];
+		}
+		elseif( count($args) == 1 )
+		{
+			if( is_array($args[0]) )
+			{
+				$method = '';
+				$change_params = $args[0];
+			}
+			else
+			{
+				$method = $args[0];
+				$change_params = array();
+			}
+		}
+
+		$return = array();
+
+		$params = $this->params();
+		foreach( $change_params as $k => $v )
+		{
+			$params[ $k ] = $v;
+		}
+
+		$controller = array();
+		$controller[] = $this->controller();
+		if( $method )
+		{
+			$controller[] = $method;
+		}
+		$controller = join( '/', $controller );
+
+		$return[] = $controller;
+		if( $params )
+		{
+			foreach( $params as $k => $v )
+			{
+				$return[] = $k;
+				$return[] = $v;
+			}
+		}
+		return $return;
+	}
+
+	function url()
+	{
+		$args = func_get_args();
+		$slug = call_user_func_array( array($this, 'slug'), $args );
+		$return = ci_site_url( $slug );
+		return $return;
+	}
 }
 
 class Hc_lib {
+	static function cache()
+	{
+		$return = new HC_Object_Cache();
+		return $return;
+	}
+
+	static function link( $start = '' )
+	{
+		$return = new HC_Link( $start );
+		return $return;
+	}
+
+	static function form()
+	{
+		$return = new HC_Form2;
+		return $return;
+	}
+
 	static function time()
 	{
 		$return = new HC_Time;
@@ -42,6 +200,26 @@ class Hc_lib {
 		{
 			if( ! in_array($a, $return) )
 				$return[] = $a;
+		}
+		return $return;
+	}
+
+	static function ksort_array_by_array( $array, $orderArray )
+	{
+		$return = array();
+		reset( $orderArray );
+		foreach( $orderArray as $o )
+		{
+			if( array_key_exists($o, $array) )
+			{
+				$return[$o] = $array[$o];
+			}
+		}
+		reset( $array );
+		foreach( $array as $k => $k )
+		{
+			if( ! array_key_exists($k, $return) )
+				$return[$k] = $v;
 		}
 		return $return;
 	}
@@ -138,6 +316,23 @@ class Hc_lib {
 		}
 
 		$return = $out[$i - 1];
+		return $return;
+	}
+
+	static function pick_random( $array, $many = 1 )
+	{
+		if( $many > 1 )
+		{
+			$return = array();
+			$ids = array_rand($array, $many );
+			foreach( $ids as $id )
+				$return[] = $array[$id];
+		}
+		else
+		{
+			$id = array_rand($array);
+			$return = $array[$id];
+		}
 		return $return;
 	}
 

@@ -41,21 +41,19 @@ class HC_Html_Element_Input_Date extends HC_Html_Element_Input_Text
 
 		$datepicker_format = $t->formatToDatepicker();
 
-		$this->set_attrs(
-			array(
-				'id'					=> $display_id,
-				'data-date-format'		=> $datepicker_format,
-				'data-date-week-start'	=> $t->weekStartsOn,
-				)
-			);
+		$this
+			->add_attr('id', $display_id)
+			->add_attr('data-date-format', $datepicker_format)
+			->add_attr('data-date-week-start', $t->weekStartsOn)
+			;
 		$this->add_attr( 'style', 'width: 8em' );
 
 		$hidden = HC_Html_Factory::input( 'hidden', $name, $value );
-		$hidden->set_attr( 'id', $id );
+		$hidden->add_attr( 'id', $id );
 		$this->add_addon( $hidden );
 
 		$script = HC_Html_Factory::element( 'script' );
-		$script->set_attr( 'language', 'JavaScript' );
+		$script->add_attr( 'language', 'JavaScript' );
 		$js_code = <<<EOT
 
 jQuery('#$display_id').datepicker({

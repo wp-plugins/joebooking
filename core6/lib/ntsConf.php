@@ -1325,10 +1325,10 @@ class ntsLanguageManager {
 		$languages = $this->getLanguages();
 		$activeLanguages = $conf->get('languages');
 
-		reset( $languages );
-		foreach( $languages as $l )
+		reset( $activeLanguages );
+		foreach( $activeLanguages as $l )
 		{
-			if( in_array($l, $activeLanguages) )
+			if( in_array($l, $languages) )
 				$active[] = $l;
 		}
 

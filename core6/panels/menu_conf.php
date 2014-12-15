@@ -16,9 +16,13 @@ $NTS_MENU = array(
 		'panel'		=> 'admin/customers/browse',
 		),
 
-	'admin/company'	=> '<i class="fa fa-building-o"></i> ' . M('Company'),
+	'admin/company'	=> array(
+		'title'		=> M('Company'),
+		'icon'		=> 'building-o',
+		),
 		'admin/company/services'	=> array(
-			'title'	=> '<i class="fa fa-tags"></i> ' . M('Services'),
+			'title'	=> M('Services'),
+			'icon'	=> 'tags',
 			'panel'	=> 'admin/company/services/browse'
 			),
 			'admin/company/services/browse'		=> M('View'),
@@ -28,44 +32,55 @@ $NTS_MENU = array(
 			'admin/company/services/promotions'	=> M('Promotions'),
 
 		'admin/company/resources'	=>  array(
-			'title'	=> '<i class="fa fa-hand-o-up"></i> ' . M('Bookable Resources'),
+			'title'	=> M('Bookable Resources'),
+			'icon'	=> 'hand-o-up',
 			'panel'	=> 'admin/company/resources/browse'
 			),
 			'admin/company/resources/browse'	=> M('View'),
 			'admin/company/resources/create'	=> M('Add'),
 
 		'admin/company/locations'	=>  array(
-			'title'	=> '<i class="fa fa-home"></i> ' . M('Locations'),
+			'title'	=> M('Locations'),
+			'icon'	=> 'home',
 			'panel'	=> 'admin/company/locations/browse'
 			),
 		'admin/company/staff'	=>  array(
-			'title'	=> '<i class="fa fa-user fa-border"></i> ' . M('Administrative Users'),
+			'title'	=> M('Administrative Users'),
+			'icon'	=> 'user',
 			'panel'	=> 'admin/company/staff/browse'
 			),
 
 	'admin/payments'	=> array(
-		'title'		=> '<i class="fa fa-usd"></i> ' . M('Payments'),
+		'title'		=> M('Payments'),
+		'icon'		=> 'usd',
 		'panel'		=> 'admin/payments',
 		),
 		'admin/payments/invoices' => array(
-			'title'		=> '<i class="fa fa-file-text-o"></i> ' . M('Invoices'),
+			'title'		=> M('Invoices'),
+			'icon'		=> 'file-text-o',
 			'panel'		=> 'admin/payments/invoices/browse',
 			),
 		'admin/payments/transactions' => array(
-			'title'		=> '<i class="fa fa-bars"></i> ' . M('Transactions'),
+			'title'		=> M('Transactions'),
+			'icon'		=> 'bars',
 			'panel'		=> 'admin/payments/transactions/browse',
 			),
 		'admin/payments/settings' => array(
-			'title'		=> '<i class="fa fa-usd"></i> ' . M('Finance Settings'),
+			'title'		=> M('Finance Settings'),
+			'icon'		=> 'usd',
 			'panel'		=> 'admin/conf/currency',
 			),
 		'admin/payments/payment_gateways' => array(
-			'title'		=> '<i class="fa fa-credit-card"></i> ' . M('Payment Gateways'),
+			'title'		=> M('Payment Gateways'),
+			'icon'		=> 'credit-card',
 			'panel'		=> 'admin/conf/payment_gateways',
 			),
 
 	'admin/sync'	=> '<i class="fa fa-chain"></i> ' . M('Synchronization'),
-	'admin/conf'	=> '<i class="fa fa-cog"></i> ' . M('Settings'),
+	'admin/conf' => array(
+		'title'		=> M('Settings'),
+		'icon'		=> 'cog',
+		),
 			'admin/conf/forms_customers'		=> array(
 				'title'	=> M('Custom Forms') . ': ' . M('Customer'),
 				'panel'	=> 'admin/forms/customers/browse',
@@ -117,11 +132,13 @@ foreach( $all_services as $s )
 if( $has_price )
 {
 	$NTS_MENU['admin/company/packs'] = array(
-		'title'	=> '<i class="fa fa-suitcase"></i> ' . M('Packages'),
+		'title'	=> M('Packages'),
+		'icon'	=> 'suitcase',
 		'panel'	=> 'admin/company/services/packs/browse',
 		);
 	$NTS_MENU['admin/company/promotions'] = array(
-		'title'	=> '<i class="fa fa-gift"></i> ' . M('Promotions'),
+		'title'	=> M('Promotions'),
+		'icon'	=> 'gift',
 		'panel'	=> 'admin/company/services/promotions/browse',
 		);
 }

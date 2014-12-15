@@ -44,7 +44,8 @@ if( $coupon )
 	/* check if valid */
 	foreach( $apps as $r )
 	{
-		$coupon_promotions = $ntspm->getPromotions( $r, $coupon, TRUE );
+//		$coupon_promotions = $ntspm->getPromotions( $r, $coupon, TRUE );
+		$coupon_promotions = $ntspm->getPromotions( $r, $coupon );
 		if( $coupon_promotions )
 		{
 			break;

@@ -177,45 +177,49 @@ class ntsPaymentManager {
 				}
 			}
 
-		if( $codes && $suppliedCoupon && (! $requireCoupon) )
-		{
-			if( ! isset($this->couponCountLeft[$suppliedCoupon]) )
+			if( $codes && $suppliedCoupon && (! $requireCoupon) )
 			{
-				$thisCoupon = NULL;
-				$coupons = $cp->getCoupons();
-				reset( $coupons );
-				foreach( $coupons as $cpn )
+				if( ! isset($this->couponCountLeft[$suppliedCoupon]) )
 				{
-					if( $suppliedCoupon == $cpn->getProp('code') )
+					$thisCoupon = NULL;
+					$coupons = $cp->getCoupons();
+					reset( $coupons );
+					foreach( $coupons as $cpn )
 					{
-						$thisCoupon = $cpn;
-						break;
+						if( $suppliedCoupon == $cpn->getProp('code') )
+						{
+							$thisCoupon = $cpn;
+							break;
+						}
+					}
+					if( ! $thisCoupon )
+						continue;
+						
+					$useLimit = $thisCoupon->getProp('use_limit');
+					if( $useLimit )
+					{
+						$this->couponCountLeft[$suppliedCoupon] = $useLimit;
+						$alreadyUsed = $thisCoupon->getUseCount();
+						$this->couponCountLeft[$suppliedCoupon] = $this->couponCountLeft[$suppliedCoupon] - $alreadyUsed;
+						if( $this->couponCountLeft[$suppliedCoupon] < 0 )
+							$this->couponCountLeft[$suppliedCoupon] = 0;
+					}
+					else
+					{
+						$this->couponCountLeft[$suppliedCoupon] = -1;
 					}
 				}
-				if( ! $thisCoupon )
-					continue;
-				$useLimit = $thisCoupon->getProp('use_limit');
-				if( $useLimit )
+
+				if( $this->couponCountLeft[$suppliedCoupon] > -1 )
 				{
-					$this->couponCountLeft[$suppliedCoupon] = $useLimit;
-					$alreadyUsed = $thisCoupon->getUseCount();
-					$this->couponCountLeft[$suppliedCoupon] = $this->couponCountLeft[$suppliedCoupon] - $alreadyUsed;
+					if( $this->couponCountLeft[$suppliedCoupon] <= 0 )
+						continue;
+					$this->couponCountLeft[$suppliedCoupon]--;
 				}
-				else
-				{
-					$this->couponCountLeft[$suppliedCoupon] = -1;
-				}
+				$cp->setProp('coupon', $suppliedCoupon );
 			}
 
-			if( $this->couponCountLeft[$suppliedCoupon] > -1 )
-			{
-				if( $this->couponCountLeft[$suppliedCoupon] <= 0 )
-					continue;
-				$this->couponCountLeft[$suppliedCoupon]--;
-			}
-			$cp->setProp('coupon', $suppliedCoupon );
-		}
-		$return[] = $cp;
+			$return[] = $cp;
 		}
 
 	$this->gotPromotions[$rKey] = $return;

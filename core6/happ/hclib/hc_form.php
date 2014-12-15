@@ -1,63 +1,4 @@
 <?php
-class HC_Form_Input
-{
-	protected $type = 'text';
-	protected $name = 'name';
-	protected $error = '';
-	protected $value = NULL;
-
-	function __construct()
-	{
-	}
-
-	function set_type( $type )
-	{
-		$this->type = $type;
-	}
-	function type()
-	{
-		return $this->type;
-	}
-
-	function set_error( $error )
-	{
-		$this->error = $error;
-	}
-	function error()
-	{
-		return $this->error;
-	}
-
-	function set_value( $value )
-	{
-		$this->value = $value;
-	}
-	function value()
-	{
-		return $this->value;
-	}
-
-	function set_name( $name )
-	{
-		$this->name = $name;
-	}
-	function name()
-	{
-		return $this->name;
-	}
-
-	function to_array()
-	{
-		$return = array(
-			'name'	=> $this->name(),
-			'type'	=> $this->type(),
-			'value'	=> $this->value(),
-			'error'	=> $this->error(),
-			);
-		return $return;
-	}
-}
-
 class HC_Form
 {
 	protected $defaults;
@@ -103,14 +44,6 @@ class HC_Form
 			$form .= sprintf("<div style=\"display:none\">%s</div>", form_hidden($hidden));
 		}
 
-/*
-		$errors = $this->errors();
-		if( $errors )
-		{
-			$form .= HC_Html::alert_danger( $errors );
-		}
-*/
-
 		return $form;
 	}
 
@@ -121,7 +54,9 @@ class HC_Form
 		$remained_errors = $this->remained_errors();
 		if( $remained_errors )
 		{
-			$return .= HC_Html::alert_danger( $remained_errors );
+			$danger = HC_Html_Factory::widget('alert', 'danger');
+			$danger->set_items( $remained_errors );
+			$return .= $danger->render();
 		}
 		$return .= HC_Lib::ob_end();
 

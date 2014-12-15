@@ -1,14 +1,23 @@
 <?php
-class Hc_Main_Menu
+class HC_Html_Widget_Main_Menu
 {
-	var $menu = array();
-	var $disabled = array();
-	var $current = '';
-	var $engine = 'ci'; // can also be 'nts'
+	protected $menu = array();
+	protected $disabled = array();
+	protected $current = '';
+	protected $engine = 'ci'; // can also be 'nts'
 
 	public function __construct( $engine = 'ci' )
 	{
+		$this->set_engine( $engine );
+	}
+
+	public function set_engine( $engine )
+	{
 		$this->engine = $engine;
+	}
+	public function engine()
+	{
+		return $this->engine;
 	}
 
 	public function set_menu( $menu )
@@ -46,6 +55,10 @@ class Hc_Main_Menu
 			{
 				$this->menu[$k]['order'] = $order++;
 			}
+			if( ! isset($this->menu[$k]['icon']) )
+			{
+				$this->menu[$k]['icon'] = '';
+			}
 
 			if( ! 
 				(
@@ -54,7 +67,7 @@ class Hc_Main_Menu
 				)
 				)
 			{
-				switch( $this->engine )
+				switch( $this->engine() )
 				{
 					case 'ci':
 						$this->menu[$k]['slug'] = $this->menu[$k]['link'];
@@ -206,12 +219,94 @@ class Hc_Main_Menu
 		return $return;
 	}
 
-	public function display( $root )
+	public function render( $root )
 	{
 		$menu = $this->_get_menu( $root );
+		$return = '';
+		if( ! $menu )
+		{
+			return $return;
+		}
 
-		$renderer = new Hc_renderer;
-		$view_file = dirname(__FILE__) . '/view/hc_main_menu.php';
-		return $renderer->render( $view_file, array('menu' => $menu) );
+		$container = HC_Html_Factory::element('div')
+			->add_attr('class', array('navbar', 'navbar-default'))
+			->add_child(
+				HC_Html_Factory::element('div')
+					->add_attr('class', array('navbar-header'))
+					->add_child(
+						HC_Html_Factory::element('button')
+							->add_attr('type', 'button')
+							->add_attr('class', 'navbar-toggle')
+							->add_attr('data-toggle', 'collapse')
+							->add_attr('data-target', '.nts-navbar-collapse')
+							->add_child(
+								HC_Html_Factory::element('span')->add_child( 'Toggle Navigation' )
+									->add_attr('class', 'sr-only')
+								)
+							->add_child(
+								HC_Html_Factory::element('span')->add_child( HC_Html::icon('bars') )
+								)
+						)
+					)
+			;
+
+		$nav_container = HC_Html_Factory::element('div')
+			->add_attr('class', array('collapse', 'navbar-collapse', 'nts-navbar-collapse'))
+			;
+
+		$nav = HC_Html_Factory::widget('list')
+			->add_attr('class', array('nav', 'navbar-nav'))
+			;
+
+		foreach( $menu as $mk => $m )
+		{
+			$li_attrs = array();
+			if( isset($m['children']) && $m['children'] )
+			{
+				$item = HC_Html_Factory::widget('dropdown_menu');
+				$item->set_items( $m['children'] );
+				$item->set_title(
+					array(
+						'title'	=> $m['title'],
+						'icon'	=> isset($m['icon']) ? $m['icon'] : '',
+						)
+					);
+			}
+			else
+			{
+				if( isset($m['external']) && $m['external'] )
+				{
+					$item = HC_Html_Factory::element('a')
+						->add_attr('href', $m['link'])
+						->add_attr('title', $m['title'])
+						->add_attr('target', '_blank')
+						->add_child( 
+							HC_Html_Factory::element('span')
+								->add_attr('class', array('alert', 'alert-success-o'))
+								->add_child( $m['title'] )
+							)
+						;
+				}
+				else
+				{
+					$item = HC_Html_Factory::element('a')
+						->add_attr('href', $m['href'])
+						->add_attr('title', $m['title'])
+						->add_child( HC_Html::icon($m['icon']) . $m['title'] )
+						;
+				}
+			}
+
+			$nav->add_item( 
+				$mk,
+				$item,
+				$li_attrs
+				);
+		}
+		$nav_container->add_child( $nav );
+		$container->add_child( $nav_container );
+
+		return $container->render();
 	}
 }
+?>

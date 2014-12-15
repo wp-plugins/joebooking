@@ -5,6 +5,7 @@ $lm =& ntsLanguageManager::getInstance();
 switch( $action ){
 	case 'activate':
 		$newLanguage = $_NTS['REQ']->getParam( 'language' );
+
 		$setting = $lm->languageActivate( $newLanguage );
 
 		$newValue = $conf->set( 'languages', $setting );

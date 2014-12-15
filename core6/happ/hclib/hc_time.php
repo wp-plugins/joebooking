@@ -57,6 +57,52 @@ class Hc_time extends DateTime {
 			$this->dateFormat = $date_format;
 		}
 
+	function getDates( $range, $start_end = FALSE )
+	{
+		$save_ts = $this->getTimestamp();
+
+		switch( $range )
+		{
+			case 'week':
+				$this->setStartWeek();
+				$start_date = $this->formatDate_Db();
+				$this->setEndWeek();
+				$end_date = $this->formatDate_Db();
+				break;
+
+			case 'month':
+				$this->setStartMonth();
+				$start_date = $this->formatDate_Db();
+				$this->setEndMonth();
+				$end_date = $this->formatDate_Db();
+				break;
+		}
+
+		$return = array();
+
+	// start and end only
+		if( $start_end )
+		{
+			$return[] = $start_date;
+			$return[] = $end_date;
+		}
+	// all 
+		else
+		{
+			$this->setDateDb( $start_date );
+			$rex_date = $start_date;
+			while( $rex_date <= $end_date )
+			{
+				$return[] = $rex_date;
+				$this->modify('+1 day');
+				$rex_date = $this->formatDate_Db();
+			}
+		}
+
+		$this->setTimestamp( $save_ts );
+		return $return;
+	}
+
 	function formatTimeRange( $ts1, $ts2 )
 	{
 		$return = array();
@@ -423,17 +469,20 @@ class Hc_time extends DateTime {
 			}
 		}
 
-	function setTimestamp( $ts ){
-		if( function_exists('date_timestamp_set') ){
-			return parent::setTimestamp( $ts );
-			}
-		else {
+	function setTimestamp( $ts )
+	{
+		if( function_exists('date_timestamp_set') )
+		{
+			parent::setTimestamp( $ts );
+		}
+		else
+		{
 			$strTime = '@' . $ts;
 			parent::__construct( $strTime );
 			$this->setTimezone( $this->timezone );
-			return;
-			}
 		}
+		return $this;
+	}
 
 	static function splitDate( $string ){
 		$year = substr( $string, 0, 4 );
@@ -811,7 +860,7 @@ class Hc_time extends DateTime {
 		if( $endDate )
 			$this->setDateDb( $endDate );
 		else
-			$this->setEndMonth( $endDate );
+			$this->setEndMonth();
 		$this->setEndWeek();
 		$endDate = $this->formatDate_Db();
 
