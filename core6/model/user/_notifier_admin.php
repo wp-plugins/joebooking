@@ -26,6 +26,7 @@ if( ! $templateInfo ){
 
 /* --- FIND ADMINS --- */
 $admins = $integrator->getUsers( array('_role' => array('=', 'admin')) );
+$admins = $integrator->getAdmins();
 if( ! $admins )
 	return;
 
@@ -39,16 +40,18 @@ $body = str_replace( $tags[0], $tags[1], $templateInfo['body'] );
 
 /* --- SEND EMAIL --- */
 reset( $admins );
-foreach( $admins as $adminInfo ){
+foreach( $admins as $admin ){
+	if( $admin->getProp('_admin_level') != 'admin' )
+		continue;
+
+	$adminInfo = $admin->getByArray();
+
 	if( ! isset( $adminInfo['email'] ) )
 		continue;
 
 	$adminEmail = trim( $adminInfo['email'] );
 	if( ! $adminEmail )
 		continue;
-
-	$admin = new ntsUser();
-	$admin->setByArray( $adminInfo );
 
 /* check if admin has disabled access to customers panel */
 	$disabledPanels = $admin->getProp('_disabled_panels');

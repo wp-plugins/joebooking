@@ -56,7 +56,7 @@ class HC_Html_Widget_Collapse
 
 		$trigger
 			->add_attr('href', '#')
-			->add_attr('data-toggle', 'collapse-next')
+			->add_attr('class', 'hc-collapse-next')
 			->add_attr('class', 'display-block')
 			;
 

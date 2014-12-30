@@ -32,6 +32,10 @@ class HC_Html_Widget_Container extends HC_Html_Element
 	{
 		return $this->items;
 	}
+	function item( $key )
+	{
+		return isset($this->items[$key]) ? $this->items[$key] : NULL;
+	}
 
 	function render()
 	{

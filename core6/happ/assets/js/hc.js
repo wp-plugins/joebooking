@@ -51,6 +51,17 @@ jQuery(document).on( 'click', 'a.hc-confirm', function(event)
 	}
 });
 
+/* load ajax content into flatmodal */
+function hc_click_flatmodal_closer( obj )
+{
+	var myParent = obj.closest( '.hc-flatmodal-parent' );
+	var targetDiv = myParent.find('.hc-flatmodal-container');
+
+	myParent.children().show();
+	obj.hide();
+	targetDiv.hide();
+}
+
 /* load ajax content */
 function hc_click_ajax_loader( obj ){
 	var targetUrl = obj.attr('href');
@@ -69,38 +80,55 @@ function hc_click_ajax_loader( obj ){
 
 	if( targetDiv.length )
 	{
-		var highlightTarget = ( targetDiv.is(':visible') && (targetDiv.html().length > 0) );
-		if( highlightTarget )
+		var currentUrl = targetDiv.data( 'targetUrl' );
+		/* already loaded? then close */
+		if( currentUrl == targetUrl )
 		{
-			targetDiv.addClass( 'hc-loading' );
+			targetDiv.data( 'targetUrl', '' );
+			targetDiv.html('');
 		}
 		else
 		{
-			targetDiv.show();
-			myParent.addClass( 'hc-loading' );
-		}
-
-		targetDiv.data( 'targetUrl', targetUrl );
-		targetDiv.load( targetUrl, function()
-		{
+			var highlightTarget = ( targetDiv.is(':visible') && (targetDiv.html().length > 0) );
 			if( highlightTarget )
 			{
-				targetDiv.removeClass( 'hc-loading' );
+				targetDiv.addClass( 'hc-loading' );
 			}
 			else
 			{
-				myParent.removeClass( 'hc-loading' );
+				targetDiv.show();
+				myParent.addClass( 'hc-loading' );
 			}
 
-			if( scrollInto )
+			targetDiv.data( 'targetUrl', targetUrl );
+			targetDiv.load( targetUrl, function()
 			{
-				jQuery('html, body').animate(
-					{
-					scrollTop: targetDiv.offset().top - 20,
-					}
-				);
-			}
-		});
+				if( highlightTarget )
+				{
+					targetDiv.removeClass( 'hc-loading' );
+				}
+				else
+				{
+					myParent.removeClass( 'hc-loading' );
+				}
+
+				if( scrollInto )
+				{
+					jQuery('html, body').animate(
+						{
+						scrollTop: targetDiv.offset().top - 20,
+						}
+					);
+				}
+
+				/* get some values from elements on the page: */
+				var reloadTargetDiv = obj.closest('.hc-target');
+				if( reloadTargetDiv.length > 0 )
+				{
+					targetDiv.data( 'return-target', reloadTargetDiv );
+				}
+			});
+		}
 	}
 	else // append after parent
 	{
@@ -121,83 +149,224 @@ function hc_click_ajax_loader( obj ){
 	return false;
 }
 
+function hc_close_flatmodal( obj )
+{
+	var myParent = obj.closest( '.hc-flatmodal-parent' );
+	if( myParent.length > 0 )
+	{
+		var targetDiv = myParent.find('.hc-flatmodal-container');
+		var scrollInto = true;
+
+		myParent.children(':not(.hc-flatmodal-closer)').show();
+		targetDiv.hide();
+		myParent.children('.hc-flatmodal-closer').hide();
+
+		if( scrollInto )
+		{
+			var returnDiv = targetDiv.data('return-target');
+			if( returnDiv )
+			{
+				jQuery('html, body').animate(
+					{
+					scrollTop: returnDiv.offset().top - 20,
+					}
+				);
+			}
+		}
+	}
+}
+
 function hc_submit_ajax( method, targetUrl, resultDiv, thisFormData )
 {
 	resultDiv.addClass( 'hc-loading' );
 	jQuery.ajax({
 		type: method,
 		url: targetUrl,
-		dataType: "json",
+//		dataType: "json",
+		dataType: "text",
 		data: thisFormData,
 		success: function(data, textStatus){
 			resultDiv.removeClass( 'hc-loading' );
-			if( data && data.redirect )
+
+			var is_json = true;
+			try
 			{
-				var returnDiv = resultDiv.data('return-target');
-				if( returnDiv )
+				data = jQuery.parseJSON( data );
+			}
+			catch( err )
+			{
+				is_json = false;
+			}
+
+			if( is_json )
+			{
+				if( data && data.redirect )
 				{
-					var src = returnDiv.data('src');
-					returnDiv.addClass( 'hc-loading' );
-					returnDiv.load( src, function()
+					if( resultDiv.closest(".hc-flatmodal-container").length )
 					{
-						returnDiv.removeClass( 'hc-loading' );
-					});
+						hc_close_flatmodal( resultDiv );
+					}
 
-					/* also if we have hc-page-status divs */
-					jQuery('.hc-page-status').each( 
-						function(index)
+					var returnDiv = resultDiv.data('return-target');
+					if( returnDiv )
+					{
+						var src = returnDiv.data('src');
+						returnDiv.addClass( 'hc-loading' );
+						returnDiv.load( src, function()
 						{
-							var thisDiv = jQuery(this);
-							var src = thisDiv.data('src');
-							thisDiv.addClass( 'hc-loading' );
-							thisDiv.load( src, function()
-							{
-								thisDiv.removeClass( 'hc-loading' );
-							});
+							returnDiv.removeClass( 'hc-loading' );
 						});
-				}
-				else
-				{
-					// reload window
-					location.reload();
-				}
 
-			// close the parent modal
-				if( resultDiv.closest("#hc-modal").length )
-				{
-					resultDiv.closest("#hc-modal").modal('hide');
-				}
-			// or itself
-				else
-				{
+						/* also if we have hc-page-status divs */
+						jQuery('.hc-page-status').each( 
+							function(index)
+							{
+								var thisDiv = jQuery(this);
+								var src = thisDiv.data('src');
+								thisDiv.addClass( 'hc-loading' );
+								thisDiv.load( src, function()
+								{
+									thisDiv.removeClass( 'hc-loading' );
+								});
+							});
+					}
+					else
+					{
+						// reload window
+						location.reload();
+					}
+
+				// close the parent modal
+					if( resultDiv.closest("#hc-modal").length )
+					{
+						resultDiv.closest("#hc-modal").modal('hide');
+					}
+				// or itself
+					else
+					{
 //					if( resultDiv.data('return-target') )
 //						resultDiv.hide();
+					}
 				}
-			}
-			else if( data && data.html )
-			{
-				resultDiv.html( data.html );
+				else if( data && data.html )
+				{
+					resultDiv.html( data.html );
+				}
+				else
+				{
+					alert( 'Unrecognized JSON from ' + targetUrl );
+				}
 			}
 			else
 			{
-				alert( 'Unrecognized JSON from ' + targetUrl );
+				resultDiv.html( data );
 			}
-			}
+		}
+	})
+	.fail( function(jqXHR, textStatus, errorThrown){
+		alert( 'Error parsing JSON from ' + targetUrl );
+		alert( jqXHR.responseText );
+		resultDiv.removeClass( 'hc-loading' );
 		})
-		.fail( function(jqXHR, textStatus, errorThrown){
-			alert( 'Error parsing JSON from ' + targetUrl );
-			alert( jqXHR.responseText );
-			resultDiv.removeClass( 'hc-loading' );
-			})
-		.always( function(){
-//			resultDiv.removeClass( 'hc-loading' );
-			});
+	.always( function(){
+//		resultDiv.removeClass( 'hc-loading' );
+		});
 }
 
 jQuery(document).on( 'click', 'a.hc-ajax-loader', function(e)
 {
 	return hc_click_ajax_loader( jQuery(this) );
 });
+
+jQuery(document).on( 'click', 'a.hc-flatmodal-loader', function(e)
+{
+	var obj = jQuery(this);
+	var targetUrl = obj.attr('href');
+	if(
+		( targetUrl.length > 0 ) &&
+		( targetUrl.charAt(targetUrl.length-1) == '#' )
+		)
+	{
+		return false;
+	}
+
+/* search in children */
+	var myParent = obj.closest( '.hc-flatmodal-parent' );
+	if( myParent.length > 0 )
+	{
+		var scrollInto = true;
+		var targetDiv = myParent.find('.hc-flatmodal-container');
+		var currentUrl = targetDiv.data( 'targetUrl' );
+
+		var markParent = obj.closest('div,li');
+
+		markParent.addClass( 'hc-loading' );
+		targetDiv.data( 'targetUrl', targetUrl );
+
+		targetDiv.load( targetUrl, function()
+		{
+			myParent.children(':not(.hc-flatmodal-closer)').hide();
+			myParent.children('.hc-flatmodal-closer').show();
+			targetDiv.show();
+			markParent.removeClass( 'hc-loading' );
+
+			/* get some values from elements on the page: */
+			var reloadTargetDiv = obj.closest('.hc-target');
+			if( reloadTargetDiv.length > 0 )
+			{
+				targetDiv.data( 'return-target', reloadTargetDiv );
+			}
+
+			if( scrollInto )
+			{
+				var closerLink = myParent.find('.hc-flatmodal-closer');
+				var animateTo = (closerLink.length > 0) ? closerLink : targetDiv;
+				jQuery('html, body').animate(
+					{
+					scrollTop: animateTo.offset().top - 20,
+					}
+				);
+			}
+		});
+		return false;
+	}
+});
+
+jQuery(document).on( 'click', 'a.hc-flatmodal-closer', function(e)
+{
+	hc_close_flatmodal( jQuery(this) );
+	var myParent = jQuery(this).closest( '.hc-flatmodal-parent' );
+	if( myParent.length > 0 )
+	{
+		var targetDiv = myParent.find('.hc-flatmodal-container');
+		var returnDiv = targetDiv.data('return-target');
+		if( returnDiv )
+		{
+			var src = returnDiv.data('src');
+			returnDiv.addClass( 'hc-loading' );
+			returnDiv.load( src, function()
+			{
+				returnDiv.removeClass( 'hc-loading' );
+			});
+
+			/* also if we have hc-page-status divs */
+			jQuery('.hc-page-status').each( 
+				function(index)
+				{
+					var thisDiv = jQuery(this);
+					var src = thisDiv.data('src');
+					thisDiv.addClass( 'hc-loading' );
+					thisDiv.load( src, function()
+					{
+						thisDiv.removeClass( 'hc-loading' );
+					});
+				});
+		}
+		return false;
+	}
+});
+
+
 
 jQuery(document).on( 'click', 'a.hc-modal', function(e)
 {
@@ -281,11 +450,16 @@ jQuery(document).on( 'click', 'a.hc-form-submit', function(event)
 });
 
 /*
-	click ajaxified links within hc-target
-	the hc-target is being reloaded with its data-src url after success
+click ajaxified links within hc-target
+the hc-target is being reloaded with its data-src url after success
 */
-jQuery(document).on( 'click', '.hc-target a:not(.hc-ajax-loader,.hc-modal,.hc-parent-loader)', function(event)
+jQuery(document).on( 'click', '.hc-target a:not(.hc-collapse-next,.hc-ajax-loader,.hc-flatmodal-loader,.hc-modal,.hc-parent-loader)', function(event)
 {
+	if( jQuery(this).closest('.hc-ajax-container').length )
+	{
+		return false;
+	}
+
 	if( event.isPropagationStopped() )
 		return false;
 
@@ -314,13 +488,13 @@ jQuery(document).on( 'click', '.hc-target a:not(.hc-ajax-loader,.hc-modal,.hc-pa
 });
 
 /*
-	click ajaxified links within hc-container
-	the hc-container is being reloaded with the URL of the clicked link
+click ajaxified links within hc-ajax-container
+the hc-ajax-container is being reloaded with the URL of the clicked link
 */
-jQuery(document).on( 'click', '.hc-container a:not(.hc-ajax-loader,.hc-modal,.hc-parent-loader)', function(event)
+jQuery(document).on( 'click', '.hc-ajax-container a:not(.hc-ajax-loader,.hc-flatmodal-loader,.hc-modal,.hc-parent-loader)', function(event)
 {
 	var thisLink = jQuery( this );
-	var targetUrl = jQuery(this).attr('href');
+	var targetUrl = thisLink.attr('href');
 	if(
 		( targetUrl.length > 0 ) &&
 			( 
@@ -332,22 +506,35 @@ jQuery(document).on( 'click', '.hc-container a:not(.hc-ajax-loader,.hc-modal,.hc
 		return false;
 	}
 
+	if( event.isPropagationStopped() )
+		return false;
+
 	/* stop form from submitting normally */
 	event.preventDefault();
 
-	var resultDiv = thisLink.closest('.hc-container');
-	hc_submit_ajax( "GET", targetUrl, resultDiv, null );
+	var resultDiv = thisLink.closest('.hc-ajax-container');
+	hc_submit_ajax(
+		"GET",
+		targetUrl,
+		resultDiv,
+		null
+		);
 
 	return false;
 });
 
 
 /*
-	post ajaxified forms within hc-container
-	the hc-target is being reloaded with its data-src url after success
+post ajaxified forms within hc-container
+the hc-target is being reloaded with its data-src url after success
 */
 jQuery(document).on( 'submit', '.hc-target form:not(.hc-form-external)', function(event)
 {
+	if( jQuery(this).closest('.hc-ajax-container').length )
+	{
+		return false;
+	}
+
 	/* stop form from submitting normally */
 	event.preventDefault(); 
 	/* get some values from elements on the page: */
@@ -364,10 +551,10 @@ jQuery(document).on( 'submit', '.hc-target form:not(.hc-form-external)', functio
 });
 
 /*
-	post ajaxified forms within hc-container
-	the hc-container is being posted and displays the response of the submitted form
+post ajaxified forms within hc-ajax-container
+the hc-ajax-container is being posted and displays the response of the submitted form
 */
-jQuery(document).on( 'submit', '.hc-container form:not(.hc-form-external)', function(event)
+jQuery(document).on( 'submit', '.hc-ajax-container form:not(.hc-form-external)', function(event)
 {
 	/* stop form from submitting normally */
 	event.preventDefault(); 
@@ -376,15 +563,20 @@ jQuery(document).on( 'submit', '.hc-container form:not(.hc-form-external)', func
 	var thisFormData = thisForm.serialize();
 
 	var targetUrl = thisForm.attr( 'action' );
-	var resultDiv = thisForm.closest('.hc-container');
+	var resultDiv = thisForm.closest('.hc-ajax-container');
 
 	/* Send the data using post and put the results in a div */
-	hc_submit_ajax( "POST", targetUrl, resultDiv, thisFormData );
+	hc_submit_ajax(
+		"POST",
+		targetUrl,
+		resultDiv,
+		thisFormData
+		);
 	return false;
 });
 
 /*
-	this displays more info divs for radio choices
+this displays more info divs for radio choices
 */
 jQuery(document).on( 'change', '.hc-radio-more-info', function(event)
 {
@@ -395,7 +587,7 @@ jQuery(document).on( 'change', '.hc-radio-more-info', function(event)
 });
 
 /*
-	this displays more info divs for radio choices
+this displays more info divs for radio choices
 */
 jQuery(document).on( 'change', '.hc-radio-more-info', function(event)
 {
@@ -419,6 +611,12 @@ jQuery(document).ready( function()
 
 	/* scroll into view */
 	document.getElementById("nts").scrollIntoView();
+/*
+	jQuery('html, body').animate(
+	{
+		scrollTop: jQuery("#nts").offset().top - 20,
+	}, 0 );
+*/
 
 	/* multiselect */
 	jQuery('.hc-multiselect').multiselect();
@@ -428,7 +626,6 @@ jQuery(document).ready( function()
 	{
 		jQuery('#nts .hc-auto-dismiss .alert').alert('close');
 	});
-
 });
 
 jQuery(document).on( 'click', '.hc-all-checker', function(event)
@@ -476,7 +673,7 @@ jQuery(document).on( 'click', '.hc-all-checker', function(event)
 });
 
 /* collapse next */
-jQuery(document).on('click', '[data-toggle=collapse-next]', function(e)
+jQuery(document).on('click', '.hc-collapse-next,[data-toggle=collapse-next]', function(e)
 {
 	var this_target = jQuery(this).parents('.collapse-panel').find('.collapse');
 	this_target.collapse('toggle');

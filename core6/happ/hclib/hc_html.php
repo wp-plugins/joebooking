@@ -11,7 +11,18 @@ class HC_View_Layout
 	}
 	function partial( $key )
 	{
-		$return = isset($this->partials[$key]) ? $this->partials[$key] : '';
+		$return = '';
+		if( isset($this->partials[$key]) )
+		{
+			if( is_array($this->partials[$key]) )
+			{
+				$return = join( '', $this->partials[$key] );
+			}
+			else
+			{
+				$return = $this->partials[$key];
+			}
+		}
 		return $return;
 	}
 
@@ -49,6 +60,11 @@ class HC_View_Layout
 		$return = isset($this->params[$key]) ? $this->params[$key] : '';
 		return $return;
 	}
+
+	public function __toString()
+	{
+		return $this->render();
+    }
 }
 
 class HC_Html_Factory
@@ -144,7 +160,6 @@ class HC_Html_Factory
 		$args = func_get_args();
 		if( class_exists($class) )
 		{
-
 			$return = new $class();
 			array_shift( $args );
 			if( $args )
@@ -262,6 +277,16 @@ class HC_Html_Element
 	function add_child( $child )
 	{
 		$this->children[] = $child;
+		return $this;
+	}
+	function prepend_child( $child )
+	{
+		array_unshift( $this->children, $child );
+		return $this;
+	}
+	function remove_children()
+	{
+		$this->children = array();
 		return $this;
 	}
 	function children()
@@ -384,7 +409,7 @@ class HC_Html_Element
 		{
 			foreach( $wrap as $wr )
 			{
-				$return = $wr->add_child( $return )->render();
+				$return = $wr->add_child($return)->render();
 			}
 		}
 
@@ -678,121 +703,4 @@ class HC_Html
 	}
 }
 
-class HC_Form_Input
-{
-	protected $type = 'text';
-	protected $name = 'name';
-	protected $error = '';
-	protected $value = NULL;
-
-	function __construct( $name = '' )
-	{
-		if( strlen($name) )
-			$this->set_name( $name );
-	}
-
-	/* this will default classes and more attributes if needed*/
-	function more( $el, $more = array() )
-	{
-		$el->add_attr( 'class', 'form-control', 1 );
-		foreach( $more as $k => $v )
-		{
-			$el->add_attr( $k, $v );
-		}
-		return $el;
-	}
-
-	/* if fails should return the error message otherwise NULL */
-	function _validate()
-	{
-		$return = NULL;
-		return $return;
-	}
-
-	/* this will add error messages and help text if needed*/
-	function decorate( $return )
-	{
-		$error = $this->error();
-		if( $error )
-		{
-			if( is_array($error) )
-			{
-				$error = join( ' ', $error );
-			}
-			$return .= '<span class="help-inline">' . $error . '</span>';
-		}
-
-/*
-		if( $help )
-		{
-			$return .= '<span class="help-block">' . $help . '</span>';
-		}
-*/
-		return $return;
-	}
-
-	function set_type( $type )
-	{
-		$this->type = $type;
-	}
-	function type()
-	{
-		return $this->type;
-	}
-
-	function set_error( $error )
-	{
-		if( ! $this->error )
-			$this->error = $error;
-	}
-	function error()
-	{
-		return $this->error;
-	}
-
-	function set_value( $value )
-	{
-		$this->value = $value;
-		if( $error = $this->_validate() )
-		{
-			$this->set_error( $error );
-		}
-	}
-	function value()
-	{
-		return $this->value;
-	}
-
-	function set_name( $name )
-	{
-		$this->name = $name;
-	}
-	function name()
-	{
-		return $this->name;
-	}
-
-/* will be overwritten in child classes */
-	function grab( $post )
-	{
-		$name = $this->name();
-		$value = NULL;
-		if( isset($post[$name]) )
-		{
-			$value = $post[$name];
-		}
-		$this->set_value( $value );
-	}
-
-	function to_array()
-	{
-		$return = array(
-			'name'	=> $this->name(),
-			'type'	=> $this->type(),
-			'value'	=> $this->value(),
-			'error'	=> $this->error(),
-			);
-		return $return;
-	}
-}
 include_once( dirname(__FILE__) . '/widgets/form/basic.php' );

@@ -36,7 +36,7 @@ class HC_Html_Widget_List_Folded extends HC_Html_Widget_Container
 		{
 			$collapser = HC_Html_Factory::element('a')
 				->add_attr('href', '#')
-				->add_attr('data-toggle', 'collapse-next')
+				->add_attr('class', 'hc-collapse-next')
 				->add_attr('class', 'display-block')
 				->add_child( 'HAHA' )
 				;

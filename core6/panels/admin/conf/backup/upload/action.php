@@ -104,6 +104,12 @@ switch( $action ){
 							}
 						}
 
+				/* if it's wordpress and development install, don't overwrite the admin */
+					if( $tbl == 'users' )
+					{
+						
+					}
+
 					if( $line ){
 						$ntsdb->runQuery( $line );
 						$count++;

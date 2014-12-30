@@ -51,20 +51,18 @@ class HC_Html_Widget_Module
 			$module_params[] = $v;
 		}
 
-		if( $this->self_target() )
+		$return = call_user_func_array( 'Modules::run', $module_params );
+
+		if( strlen($return) && $this->self_target() )
 		{
 			$out = HC_Html_Factory::element('div')
 				->add_attr('class', 'hc-target')
 				->add_attr('data-src', $link->url())
 				->add_child(
-					call_user_func_array( 'Modules::run', $module_params )
+					$return
 					)
 				;
 			$return = $out->render();
-		}
-		else
-		{
-			$return = call_user_func_array( 'Modules::run', $module_params );
 		}
 		return $return;
 	}

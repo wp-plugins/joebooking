@@ -8,6 +8,20 @@ class HC_App
 		return $CI->app_conf; 
 	}
 
+	static function presenter( $model )
+	{
+		$class = ucfirst($model) . '_Presenter';
+		$return = new $class;
+
+		$args = func_get_args();
+		array_shift( $args );
+		if( $args )
+		{
+			call_user_func_array( array($return, "set_model"), $args );
+		}
+		return $return;
+	}
+
 	static function model( $model )
 	{
 		$class = ucfirst($model) . '_Model';
@@ -19,6 +33,7 @@ class HC_App
 	{
 		$return = '';
 		$conf = array(
+			'date'		=> 'calendar',
 			'time'		=> 'clock-o',
 			'user'		=> 'user',
 			'location'	=> 'home',
@@ -66,6 +81,7 @@ class HC_Link
 	function set_controller( $controller )
 	{
 		$this->controller = $controller;
+		return $this;
 	}
 	function controller()
 	{
@@ -75,6 +91,7 @@ class HC_Link
 	function set_param( $key, $value )
 	{
 		$this->params[ $key ] = $value;
+		return $this;
 	}
 	function params()
 	{
@@ -146,6 +163,11 @@ class HC_Link
 		$return = ci_site_url( $slug );
 		return $return;
 	}
+
+	public function __toString()
+	{
+		return $this->url();
+    }
 }
 
 class Hc_lib {

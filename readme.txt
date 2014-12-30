@@ -6,7 +6,7 @@ License: GPLv2 or later
 
 Stable tag: trunk
 Requires at least: 3.3
-Tested up to: 4.0
+Tested up to: 4.1
 
 Switch to accept appointments for your services right from your WordPress powered website. 
 
@@ -47,6 +47,9 @@ Author URI: http://www.joebooking.com
 The upgrade is simply - upload everything up again to your `/wp-content/plugins/` directory, then go to the JoeBooking menu item in the admin panel. It will automatically start the upgrade process if any needed.
 
 == Changelog ==
+
+= 6.2.4 =
+* BUG: customer accounts related notifications (such as new customer should be approved) were sent to all backend users uncluding staff, while only admins should receive them. This applies to Salon Pro version only.
 
 = 6.2.3 =
 * Now the coupon codes can be used in the admin area for existing appointments too.

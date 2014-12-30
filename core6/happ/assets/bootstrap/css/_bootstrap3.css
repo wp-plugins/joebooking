@@ -5209,6 +5209,7 @@
 }
 #nts .hc_cal {
 	margin-bottom: 1em;
+	margin-bottom: 0;
 }
 #nts .hc_cal >.row {
 	width: 100%;

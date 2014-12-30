@@ -1,6 +1,5 @@
 <?php
-include_once( dirname(__FILE__) . '/list.php' );
-class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
+class HC_Html_Widget_Ajax_Loader extends HC_Html_Element
 {
 	protected $title = NULL;
 	protected $no_caret = FALSE;
@@ -43,14 +42,6 @@ class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
 	/* build trigger */
 		$title = $this->title();
 		if( 
-			( $active = $this->active() ) && $this->item($active)
-			)
-		{
-			$title = $this->item($active);
-			$this->remove_item( $active );
-		}
-	
-		if( 
 			is_object($title) &&
 			( $title->tag() == 'a' )
 			)
@@ -72,42 +63,19 @@ class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
 		}
 
 		$trigger
-			->add_attr('href', '#')
-			->add_attr('class', 'dropdown-toggle')
-			->add_attr('data-toggle', 'dropdown')
+			->add_attr('class', 'hc-ajax-loader')
 			;
 
-		if( ! $this->no_caret() )
-		{
-			$trigger
-				->add_child( ' ' )
-				->add_child(
-					HC_Html_Factory::element('b')
-						->add_attr('class', 'caret')
-					)
-				;
-		}
+		$wrap = HC_Html_Factory::element('div')
+			->add_attr('class', 'hc-ajax-parent')
+			;
+		$container = HC_Html_Factory::element('div')
+			->add_attr('class', 'hc-ajax-container')
+			;
+		$wrap->add_child( $trigger );
+		$wrap->add_child( $container );
 
-		$out[] = $trigger->render();
-
-		$this->add_attr('class', 'dropdown-menu');
-		$out[] = parent::render();
-
-		$return = '';
-		foreach( $out as $o )
-		{
-			$return .= $o;
-		}
-
-		if( $this->wrap() )
-		{
-			$wrap = HC_Html_Factory::element('div')
-				->add_attr('class', 'dropdown')
-				->add_child( $return )
-				;
-			$return = $wrap->render();
-		}
-		return $return;
+		return $wrap->render();
 	}
 }
 ?>

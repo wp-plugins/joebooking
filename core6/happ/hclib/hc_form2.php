@@ -65,8 +65,15 @@ class HC_Form2
 
 	function set_input( $name, $type )
 	{
+		if( is_array($type) ) // with convert
+		{
+			list( $type, $convert ) = $type;
+			$this->set_convert( $name, $convert );
+		}
+
 		$input = HC_Html_Factory::input( $type, $name );
 		$this->inputs[ $name ] = $input;
+		return $this;
 	}
 	function input( $name )
 	{
@@ -78,13 +85,9 @@ class HC_Form2
 		reset( $inputs );
 		foreach( $inputs as $name => $type )
 		{
-			if( is_array($type) ) // with convert
-			{
-				list( $type, $convert ) = $type;
-				$this->set_convert( $name, $convert );
-			}
 			$this->set_input( $name, $type );
 		}
+		return $this;
 	}
 
 	function set_convert( $name, $convert )

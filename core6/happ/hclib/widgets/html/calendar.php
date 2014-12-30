@@ -104,14 +104,17 @@ class HC_Html_Widget_Calendar
 
 		foreach( $month_matrix as $week => $days )
 		{
-			$grid = HC_Html_Factory::widget('grid');
-
+			$grid = HC_Html_Factory::widget('grid')
+				->add_attr('class', 'hc-cal-row')
+				;
+ 
 			foreach( $days as $rex_date )
 			{
 				$t->setDateDb( $rex_date );
 
 				$day = HC_Html_Factory::element('div')
 					->add_attr('class', 'thumbnail')
+					->add_attr('class', 'squeeze-in')
 					;
 
 /*
@@ -130,11 +133,26 @@ class HC_Html_Widget_Calendar
 					;
 				$day->add_child( $label );
 */
-				$day->add_child( $this->date_content($rex_date) );
-				$grid->add_item( $day, $slot_width );
-			}
 
+				$date_content = $this->date_content($rex_date);
+				if( $date_content )
+				{
+					$day->add_child( $date_content );
+				}
+				else
+				{
+					$day = '';
+				}
+				$grid->add_item( 
+					$day,
+					$slot_width,
+					array(
+						'class'	=> 'hc-cal-day'
+						)
+					);
+			}
 			$out->add_child( $grid );
+
 		}
 		return $out->render();
 	}

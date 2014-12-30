@@ -49,9 +49,15 @@ class HC_Html_Widget_List extends HC_Html_Widget_Container
 				}
 				if(
 					in_array('nav', $out->attr('class')) && 
-					is_object($item) &&
-					method_exists($item, 'tag') && 
-					( $item->tag() == 'input' )
+					(
+						is_string($item)
+						OR
+						(
+						is_object($item) &&
+						method_exists($item, 'tag') && 
+						( $item->tag() == 'input' )
+						)
+					)
 					)
 				{
 					$item = HC_Html_Factory::element('span')

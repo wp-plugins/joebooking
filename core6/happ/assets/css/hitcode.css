@@ -77,7 +77,8 @@
 #nts .navbar {
 	z-index: 1;
 }
-#nts .nav {
+#nts .nav,
+#nts .hc_cal .hc-ajax-container .nav {
 	margin-left: 0;
 	margin-right: 0;
 	margin-bottom: 1em;
@@ -389,7 +390,7 @@
 .hc-loading {
 	background-color: #eee;
     background-image: url('../img/small-indicator.gif');
-    background-position:  center center;
+    background-position: center center;
     background-repeat: no-repeat;
 	opacity: 1;
 	}
@@ -413,6 +414,7 @@
 	display: inline-block;
 	margin-bottom: 0px;
 	margin-top: 0px;
+/*	font-size: 1em; */
 }
 
 #nts .label-lg,
@@ -506,6 +508,10 @@
 #nts .text-underline {
 	text-decoration: underline;
 	}
+
+#nts .list-padded>li {
+	padding: 0.25em;
+}
 
 #nts .list-separated-ver>li,
 #nts .list-separated>li {
@@ -891,6 +897,10 @@
 
 #nts a>span.btn {
 	display: block;
+	}
+
+#nts .thumbnail {
+	margin-bottom: inherit;
 	}
 
 /* conficts in wordpress with some themes */
