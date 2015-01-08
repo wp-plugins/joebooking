@@ -1,7 +1,10 @@
 <?php
 $timezoneOptions = ntsTime::getTimezones();
 ?>
-<?php echo $this->makePostParams('-current-', 'timezone'); ?>
+<?php
+//echo $this->makePostParams('-current-', 'timezone');
+echo $this->makePostParams('customer/appointments/view', 'timezone');
+?>
 <ul class="list-inline">
 	<li>
 		<?php echo M('Timezone'); ?> 

@@ -3,10 +3,45 @@ $pm =& ntsPaymentManager::getInstance();
 $session = new ntsSession;
 $apps = $session->userdata( 'apps' );
 
+$ff =& ntsFormFactory::getInstance();
+$current_user = ntsLib::getCurrentUser();
+
 $t = $NTS_VIEW['t'];
 $grand_total_amount = 0;
 $grand_base_total_amount = 0;
 ?>
+
+<?php if( NTS_ENABLE_TIMEZONES >= 0 ) : ?>
+	<p>
+	<?php if( NTS_ENABLE_TIMEZONES > 0 ) : ?>
+		<div class="dropdown">
+			<a class="dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
+				<i class="fa fa-fw fa-globe"></i> 
+				<?php echo ntsTime::timezoneTitle($current_user->getTimezone()); ?> <b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu">
+				<li>
+					<span>
+					<?php
+					$formTimezoneParams = array(
+						'tz'	=> $current_user->getTimezone(),
+						);
+					$timezoneForm = NTS_APP_DIR . '/panels/customer/appointments/view/formTimezone';
+					$formTimezone =& $ff->makeForm( $timezoneForm, $formTimezoneParams );
+					$formTimezone->display();
+					?>
+					</span>
+				</li>
+			</ul>
+		</div>
+	<?php elseif( NTS_ENABLE_TIMEZONES == 0 ) : ?>
+		<span class="btn btn-default">
+			<i class="fa fa-fw fa-globe"></i> 
+			<?php echo ntsTime::timezoneTitle($current_user->getTimezone()); ?>
+		</span>
+	<?php endif; ?>
+	</p>
+<?php endif; ?>
 
 <ul class="list-unstyled">
 <?php for( $ai = 1; $ai <= count($apps); $ai++ ) : ?>

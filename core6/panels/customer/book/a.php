@@ -1,6 +1,7 @@
 <?php
 $ntsConf =& ntsConf::getInstance();
 $show_months = $ntsConf->get('monthsToShow');
+$show_booked = $ntsConf->get('showBooked');
 $t = $NTS_VIEW['t'];
 
 $now = time();
@@ -229,7 +230,26 @@ $tm2->dayMode = FALSE;
 $t->setDateDb( $cal );
 $time_start = $t->getStartDay();
 $time_end = $t->getEndDay();
+
 $times = $tm2->getAllTime( $time_start, $time_end );
+
+/* include dry run */
+if( $show_booked )
+{
+	$tm2->dryRun = TRUE;
+	$defined_times = $tm2->getAllTime( $time_start, $time_end );
+	$tm2->dryRun = FALSE;
+
+	foreach( array_keys($defined_times) as $tts )
+	{
+		if( ! isset($times[$tts]) )
+		{
+			$times[$tts] = array();
+		}
+	}
+
+	ksort( $times );
+}
 
 /* SET THIS APPOINTMENT */
 $this_a = array(

@@ -25,7 +25,6 @@ if( ! $templateInfo ){
 	}
 
 /* --- FIND ADMINS --- */
-$admins = $integrator->getUsers( array('_role' => array('=', 'admin')) );
 $admins = $integrator->getAdmins();
 if( ! $admins )
 	return;

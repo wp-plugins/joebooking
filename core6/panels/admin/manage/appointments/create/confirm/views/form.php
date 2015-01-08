@@ -194,9 +194,23 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 	</dl>
 <?php endif; ?>
 
-
-
 <?php if( $custom_fields ) : ?>
+	<?php
+	echo ntsForm::wrapInput(
+		M('Status'),
+		$this->buildInput(
+			'radioSet',
+			array(
+				'id'		=> 'set_status',
+				'default'	=> 'approved',
+				'options'	=> array(
+					array( 'approved',	ntsAppointment::_statusLabel(1, 0) ),
+					array( 'pending',	ntsAppointment::_statusLabel(0, 0) ),
+					),
+				)
+			)
+		);
+	?>
 
 	<?php
 	echo ntsForm::wrapInput(
@@ -210,7 +224,6 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 			)
 		);
 	?>
-
 	<?php
 	echo ntsForm::wrapInput(
 		'',
@@ -218,6 +231,22 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 		);
 	?>
 <?php else : ?>
+	<p>
+	<?php
+	echo $this->makeInput(
+		'radioSet',
+		array(
+			'id'		=> 'set_status',
+			'default'	=> 'approved',
+			'options'	=> array(
+				array( 'approved',	ntsAppointment::_statusLabel(1, 0) ),
+				array( 'pending',	ntsAppointment::_statusLabel(0, 0) ),
+				),
+			)
+		);
+	?>
+	</p>
+
 	<p>
 		<div class="checkbox">
 		<label>

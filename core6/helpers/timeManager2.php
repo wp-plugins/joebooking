@@ -1503,6 +1503,11 @@ EOT;
 		$return_seats = $slot_seats;
 		$this->slot_errors = array();
 
+		if( $this->dryRun )
+		{
+			return $return_seats;
+		}
+
 		$service_min_duration = isset($this->services[$slot_sid]) ? $this->services[$slot_sid]['duration'] + $this->services[$slot_sid]['lead_out'] : $this->minDuration;
 		$slot_leadin = isset($this->services[$slot_sid]) ? $this->services[$slot_sid]['lead_in'] : 0;
 

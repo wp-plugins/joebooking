@@ -1,21 +1,12 @@
 <?php
-class HC_Html_Widget_Tiles
+class HC_Html_Widget_Tiles extends HC_Html_Widget_Container
 {
-	protected $items = array();
 	protected $per_row = 3;
-
-	function set_items( $items )
-	{
-		$this->items = $items;
-	}
-	function items()
-	{
-		return $this->items;
-	}
 
 	function set_per_row( $per_row )
 	{
 		$this->per_row = $per_row;
+		return $this;
 	}
 	function per_row()
 	{
@@ -24,6 +15,7 @@ class HC_Html_Widget_Tiles
 
 	function render()
 	{
+		$out = array();
 		$items = $this->items();
 		$per_row = $this->per_row();
 		$number_of_rows = ceil( count($items) / $per_row );

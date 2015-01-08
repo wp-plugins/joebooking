@@ -203,6 +203,16 @@
 	text-decoration: none;
 	}
 
+#nts .nts-cal-link:hover,
+#nts .nts-cal-link:focus,
+#nts .nts-cal-link:active,
+#nts .nts-time-link:hover,
+#nts .nts-time-link:focus,
+#nts .nts-time-link:active
+{
+	text-decoration: none;
+	}
+
 #nts .nts-time-link {
 	width: 6em;
 	display: block;

@@ -171,6 +171,22 @@ class HC_Link
 }
 
 class Hc_lib {
+	static function is_full_url( $url )
+	{
+		$full = FALSE;
+		$prfx = array('http://', 'https://', '//');
+		reset( $prfx );
+		foreach( $prfx as $prf )
+		{
+			if( substr($url, 0, strlen($prf)) == $prf )
+			{
+				$full = TRUE;
+				break;
+			}
+		}
+		return $full;
+	}
+
 	static function cache()
 	{
 		$return = new HC_Object_Cache();

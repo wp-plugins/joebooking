@@ -503,9 +503,10 @@ class ntsForm {
 
 		$conf = array_merge( ntsForm::_inputDefaults(), $inputArray );
 
-		if( ($type == 'radio') OR ($type == 'radioSet') ){
+		if( ($type == 'radio') OR ($type == 'radioSet') )
+		{
 			$conf['groupValue'] = $this->getValue( $conf['id'], $conf['default'] );
-			}
+		}
 
 		if( ! isset($conf['value']) )
 		{
@@ -572,13 +573,15 @@ class ntsForm {
 
 		$conf = array_merge( ntsForm::_inputDefaults(), $inputArray );
 
-		if( $type == 'radio' ){
+		if( ($type == 'radio') OR ($type == 'radioSet') )
+		{
 			$conf['groupValue'] = $this->getValue( $conf['id'], $conf['default'] );
-			}
+		}
 
-		if( ! isset($conf['value']) ){
+		if( ! isset($conf['value']) )
+		{
 			$conf['value'] = $this->getValue( $conf['id'], $conf['default'] );
-			}
+		}
 
 	/* if it is one entry only */
 		reset( $validators );

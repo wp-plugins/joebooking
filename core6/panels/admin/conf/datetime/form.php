@@ -207,6 +207,19 @@ echo ntsForm::wrapInput(
 	);
 ?>
 
+<?php
+echo ntsForm::wrapInput(
+	M('Show Booked Timeslots In Front End'),
+	$this->buildInput (
+	/* type */
+		'checkbox',
+	/* attributes */
+		array(
+			'id'		=> 'showBooked',
+			)
+		)
+	);
+?>
 
 <?php echo $this->makePostParams('-current-', 'update'); ?>
 <?php

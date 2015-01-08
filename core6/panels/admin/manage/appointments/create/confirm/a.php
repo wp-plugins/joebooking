@@ -67,6 +67,7 @@ switch( $action )
 		if( $form->validate() )
 		{
 			$form_values = $form->getValues();
+			$set_status = isset($form_values['set_status']) ? $form_values['set_status'] : 'approved';
 			$notify_customer = (isset($form_values['notify_customer']) && $form_values['notify_customer']) ? 1 : 0;
 
 			$cm =& ntsCommandManager::getInstance();
@@ -108,9 +109,10 @@ switch( $action )
 					$params['_silent_customer'] = 1;
 				}
 
+				$command_name = ( $set_status == 'pending' ) ? 'require_approval' : 'request';
 				$cm->runCommand( 
 					$apps_objects[$ii],
-					'request',
+					$command_name,
 					$params
 					);
 

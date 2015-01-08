@@ -177,6 +177,7 @@ foreach( $dateStatus as $date => $status )
 		case 1:
 			$dayClass[] = 'alert-available';
 			$dayLabel = M('Available');
+			$okDates[] = $date;
 			break;
 		case 2:
 			$dayClass[] = 'alert-warning'; 

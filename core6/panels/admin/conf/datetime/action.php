@@ -10,6 +10,7 @@ $params = array(
 	'timeStarts',
 	'timeEnds',
 	'minFromNowTomorrow',
+	'showBooked',
 	);
 $myDir = dirname(__FILE__);
 require( dirname(__FILE__) . '/../action_common.php' );

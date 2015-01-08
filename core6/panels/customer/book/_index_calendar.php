@@ -75,6 +75,7 @@ list( $calYear, $calMonth, $calDay ) = ntsTime::splitDate( $selectedDay );
 		}
 	}
 
+	$okDates = $linkedDates;
 	require( NTS_APP_DIR . '/helpers/calendar2.php' );
 	$currentCalendar = array();
 	?>

@@ -198,54 +198,79 @@ function hc_submit_ajax( method, targetUrl, resultDiv, thisFormData )
 				is_json = false;
 			}
 
+			var is_flatmodal = resultDiv.closest(".hc-flatmodal-container").length;
+			var result_in_me = false;
+			if( is_flatmodal )
+			{
+				result_in_me = true;
+			}
+
 			if( is_json )
 			{
 				if( data && data.redirect )
 				{
-					if( resultDiv.closest(".hc-flatmodal-container").length )
+					/* reload me with another url */
+					if( result_in_me )
 					{
-						hc_close_flatmodal( resultDiv );
-					}
+						var src = resultDiv.data('targetUrl');
+						if( ! src )
+							src = data.redirect;
 
-					var returnDiv = resultDiv.data('return-target');
-					if( returnDiv )
-					{
-						var src = returnDiv.data('src');
-						returnDiv.addClass( 'hc-loading' );
-						returnDiv.load( src, function()
+						resultDiv.addClass( 'hc-loading' );
+						resultDiv.load( src, function()
 						{
-							returnDiv.removeClass( 'hc-loading' );
+							resultDiv.removeClass( 'hc-loading' );
 						});
-
-						/* also if we have hc-page-status divs */
-						jQuery('.hc-page-status').each( 
-							function(index)
+					}
+				/* reload target div in main screen */
+					else
+					{
+	/*
+						if( is_flatmodal )
+						{
+							hc_close_flatmodal( resultDiv );
+						}
+	*/
+						var returnDiv = resultDiv.data('return-target');
+						if( returnDiv )
+						{
+							var src = returnDiv.data('src');
+							returnDiv.addClass( 'hc-loading' );
+							returnDiv.load( src, function()
 							{
-								var thisDiv = jQuery(this);
-								var src = thisDiv.data('src');
-								thisDiv.addClass( 'hc-loading' );
-								thisDiv.load( src, function()
-								{
-									thisDiv.removeClass( 'hc-loading' );
-								});
+								returnDiv.removeClass( 'hc-loading' );
 							});
-					}
-					else
-					{
-						// reload window
-						location.reload();
-					}
 
-				// close the parent modal
-					if( resultDiv.closest("#hc-modal").length )
-					{
-						resultDiv.closest("#hc-modal").modal('hide');
-					}
-				// or itself
-					else
-					{
-//					if( resultDiv.data('return-target') )
-//						resultDiv.hide();
+							/* also if we have hc-page-status divs */
+							jQuery('.hc-page-status').each( 
+								function(index)
+								{
+									var thisDiv = jQuery(this);
+									var src = thisDiv.data('src');
+									thisDiv.addClass( 'hc-loading' );
+									thisDiv.load( src, function()
+									{
+										thisDiv.removeClass( 'hc-loading' );
+									});
+								});
+						}
+						else
+						{
+							// reload window
+							location.reload();
+						}
+
+					// close the parent modal
+						if( resultDiv.closest("#hc-modal").length )
+						{
+							resultDiv.closest("#hc-modal").modal('hide');
+						}
+					// or itself
+						else
+						{
+	//					if( resultDiv.data('return-target') )
+	//						resultDiv.hide();
+						}
 					}
 				}
 				else if( data && data.html )
@@ -482,7 +507,12 @@ jQuery(document).on( 'click', '.hc-target a:not(.hc-collapse-next,.hc-ajax-loade
 	var resultDiv = jQuery(this).closest('.hc-target');
 	resultDiv.data( 'return-target', resultDiv );
 
-	hc_submit_ajax( "GET", targetUrl, resultDiv, null );
+	hc_submit_ajax( 
+		"GET", 
+		targetUrl,
+		resultDiv,
+		null
+		);
 
 	return false;
 });
@@ -513,6 +543,12 @@ jQuery(document).on( 'click', '.hc-ajax-container a:not(.hc-ajax-loader,.hc-flat
 	event.preventDefault();
 
 	var resultDiv = thisLink.closest('.hc-ajax-container');
+
+	if( ! thisLink.hasClass('hc-confirm') )
+	{
+		resultDiv.data( 'targetUrl', targetUrl );
+	}
+
 	hc_submit_ajax(
 		"GET",
 		targetUrl,
@@ -546,7 +582,12 @@ jQuery(document).on( 'submit', '.hc-target form:not(.hc-form-external)', functio
 	resultDiv.data( 'return-target', resultDiv );
 
 	/* Send the data using post and put the results in a div */
-	hc_submit_ajax( "POST", targetUrl, resultDiv, thisFormData );
+	hc_submit_ajax(
+		"POST",
+		targetUrl,
+		resultDiv,
+		thisFormData
+		);
 	return false;
 });
 
@@ -610,7 +651,15 @@ jQuery(document).ready( function()
 	jQuery('#nts a[target="_blank"]').append( '<i class="fa fa-fw fa-external-link"></i>' );
 
 	/* scroll into view */
-	document.getElementById("nts").scrollIntoView();
+	if ( typeof nts_no_scroll !== 'undefined' )
+	{
+		// no scroll
+	}
+	else
+	{
+		document.getElementById("nts").scrollIntoView();	
+	}
+
 /*
 	jQuery('html, body').animate(
 	{

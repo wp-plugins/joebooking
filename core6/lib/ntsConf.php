@@ -445,6 +445,13 @@ class ntsConf {
 					$return = $rawValue;
 				break;
 
+			case 'showBooked':
+				if( ! $rawValue )
+					$return = 0;
+				else
+					$return = $rawValue;
+				break;
+
 			case 'limitTimeMeasure':
 				if( ! $rawValue )
 					$return = 'day';

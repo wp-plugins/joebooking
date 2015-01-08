@@ -54,11 +54,19 @@ $t->setDateDb( $requested_cal );
 		?>
 
 		<li style="padding: 0 0;">
-			<a class="nts-row-spaced nts-time-link nts-no-ajax" href="<?php echo ntsLink::makeLink('-current-', '', $link); ?>">
-				<span class="btn btn-default btn-sm">
-					<?php echo $t->formatTime(); ?>
-				</span>
-			</a>
+			<?php if( $slots ) : ?>
+				<a class="nts-row-spaced nts-time-link nts-no-ajax" href="<?php echo ntsLink::makeLink('-current-', '', $link); ?>">
+					<span class="btn btn-default btn-success-o btn-sm">
+						<?php echo $t->formatTime(); ?>
+					</span>
+				</a>
+			<?php else : ?>
+				<a class="nts-row-spaced nts-time-link nts-ajax-loader hc-no-link" href="#">
+					<span class="btn btn-archive btn-sm">
+						<?php echo $t->formatTime(); ?>
+					</span>
+				</a>
+			<?php endif; ?>
 		</li>
 	<?php endforeach; ?>
 	</ul>

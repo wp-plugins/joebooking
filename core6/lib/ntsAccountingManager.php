@@ -2021,7 +2021,7 @@ class ntsAccountingAssetManager
 			}
 		}
 
-		if( isset($asset['location']) )
+		if( isset($asset['location']) && (! NTS_SINGLE_LOCATION) )
 		{
 			$value = $asset['location'];
 			$ids = is_array($value) ? $value : array($value);
@@ -2039,7 +2039,7 @@ class ntsAccountingAssetManager
 			$return['location'] = $view;
 		}
 
-		if( isset($asset['resource']) )
+		if( isset($asset['resource']) && (! NTS_SINGLE_RESOURCE) )
 		{
 			$value = $asset['resource'];
 			$ids = is_array($value) ? $value : array($value);

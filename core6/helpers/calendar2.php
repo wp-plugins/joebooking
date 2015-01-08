@@ -159,13 +159,15 @@ $prevMoLink = isset($linkDates[$previousMo]) ? $linkDates[$previousMo] : ntsLink
 			$class = isset($cssDates[$thisDate]) ?  $cssDates[$thisDate] : array();
 //			$class[] = 'alert alert-tight';
 			$class[] = 'btn btn-sm btn-tight display-block';
+
 			$label = isset($labelDates[$thisDate]) ? $labelDates[$thisDate] : '';
-			$class = join( ' ', $class );
 			$myParams = $params;
 			$myParams['cal'] = $thisDate;
 			$day_class = array('col-sm-1');
+
 			if( in_array($thisDate, $highlightDays) )
 				$day_class[] = 'today';
+
 			$day_class = join( ' ', $day_class );
 			?>
 			<div class="<?php echo $day_class; ?>">
@@ -180,13 +182,27 @@ $prevMoLink = isset($linkDates[$previousMo]) ? $linkDates[$previousMo] : ntsLink
 						$targetPanel = isset($calendarReturnTo) ? $calendarReturnTo : '-current-';
 						$targetLink = ntsLink::makeLink($targetPanel, '', $myParams);
 					}
+					if( in_array($thisDate, $highlightDays) )
+					{
+						$class[] = 'btn-success';
+					}
+					else
+					{
+						if( $ok ) 
+							$class[] = ' btn-success-o';
+					}
+
+					$class = join( ' ', $class );
 					?>
 					<a class="nts-cal-link" title="<?php echo $label; ?>" href="<?php echo $targetLink; ?>">
-						<span class="<?php echo $class; ?>" >
+						<span class="<?php echo $class; ?>">
 							<?php echo $day; ?>
 						</span>
 					</a>
 				<?php else : ?>
+					<?php
+					$class = join( ' ', $class );
+					?>
 					<span class="<?php echo $class; ?>" title="<?php echo $label; ?>">
 						<?php echo $day; ?>
 					</span>

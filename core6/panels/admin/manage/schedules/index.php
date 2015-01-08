@@ -90,7 +90,9 @@ reset( $dis );
 		$showWeekNo = TRUE;
 		require( dirname(__FILE__) . '/../prepare-calendar.php' );
 		?>
-		<?php require( NTS_APP_DIR . '/helpers/calendar2.php' ); ?>
+		<?php
+		require( NTS_APP_DIR . '/helpers/calendar2.php' );
+		?>
 	</div>
 
 	<div class="col-md-9">

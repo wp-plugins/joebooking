@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.2.5 =
+* An option to display in the front end if a timeslot was available, but now it's booked. First configure if you need this option in Settings > Date & Time.
+* Slightly restyled the calendar and time view to show available times more distinctively.
+* An option for the admin/staff to set appointment approved or pending when creating it in the back end.
+
 = 6.2.4 =
 * BUG: customer accounts related notifications (such as new customer should be approved) were sent to all backend users uncluding staff, while only admins should receive them. This applies to Salon Pro version only.
 
