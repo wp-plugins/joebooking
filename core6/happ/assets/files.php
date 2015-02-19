@@ -20,4 +20,13 @@ $js_files = array(
 //	array('core6/assets/js/html5shiv.js', 'lt IE 9'),
 //	array('core6/assets/js/respond.min.js', 'lt IE 9'),
 	);
+
+if( 
+	file_exists(dirname(__FILE__) . '/tinymce')
+	&& 
+	( ! (isset($nts_is_wordpress) && $nts_is_wordpress) )
+	)
+{
+	$js_files[] = 'happ/assets/tinymce/tinymce.min.js';
+}
 ?>

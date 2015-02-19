@@ -9,6 +9,9 @@ $current_user = ntsLib::getCurrentUser();
 $t = $NTS_VIEW['t'];
 $grand_total_amount = 0;
 $grand_base_total_amount = 0;
+
+$ntsConf =& ntsConf::getInstance();
+$appsInCart = $ntsConf->get('appsInCart');
 ?>
 
 <?php if( NTS_ENABLE_TIMEZONES >= 0 ) : ?>
@@ -139,11 +142,13 @@ $add_more_link = ntsLink::makeLink(
 		)
 	);
 ?>
-<p>
-<a class="btn btn-default btn-xs btn-archive" href="<?php echo $add_more_link; ?>">
-	<i class="fa fa-fw fa-plus"></i> <?php echo M('Add Another Appointment'); ?>
-</a>
-</p>
+<?php if( $appsInCart > count($apps) ) : ?>
+	<p>
+	<a class="btn btn-default btn-xs btn-archive" href="<?php echo $add_more_link; ?>">
+		<i class="fa fa-fw fa-plus"></i> <?php echo M('Add Another Appointment'); ?>
+	</a>
+	</p>
+<?php endif; ?>
 
 <?php if( $grand_total_amount OR $show_coupon ) : ?>
 <hr>

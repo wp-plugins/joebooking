@@ -426,27 +426,53 @@ class HC_Html
 			$label ='&nbsp;';
 
 		$return = HC_Html_Factory::element('span')
-			->add_attr('class', array('label', 'label-' . $class))
+			->add_attr('class', 'label')
 			->add_child($label)
 			;
+		if( ! is_array($class) ){
+			$class = array($class);
+		}
+		foreach( $class as $cla ){
+			$return->add_attr('class', 'label-' . $cla);
+		}
 		return $return;
 	}
 
 	static function icon( $icon, $fw = TRUE )
 	{
-		if( substr($icon, 0, 2) == '<i' )
-			return $icon;
+		if( is_array($icon) ){
+			/* stacked */
+			$icon1 = array_shift($icon);
+			$icon2 = array_shift($icon);
 
-		$return = HC_Html_Factory::element('i');
-		if( strlen($icon) )
-		{
-			$return
-				->add_attr('class', array('fa', 'fa-' . $icon))
+			$return = HC_Html_Factory::element('span')
+				->add_attr('class', 'fa-stack')
+//				->add_attr('class', 'fa-lg')
 				;
-
 			if( $fw )
 				$return->add_attr('class', 'fa-fw');
-//			$return = $out->render();
+
+			$return->add_child(
+				HC_Html::icon( $icon1, FALSE )
+					->add_attr('class', 'fa-stack-1x' )
+				);
+			$return->add_child(
+				HC_Html::icon( $icon2, FALSE )
+					->add_attr('class', 'fa-stack-2x' )
+				);
+		}
+		else {
+			if( substr($icon, 0, 2) == '<i' )
+				return $icon;
+
+			$return = HC_Html_Factory::element('i');
+			if( strlen($icon) ){
+				$return
+					->add_attr('class', array('fa', 'fa-' . $icon))
+					;
+				if( $fw )
+					$return->add_attr('class', 'fa-fw');
+			}
 		}
 		return $return;
 	}

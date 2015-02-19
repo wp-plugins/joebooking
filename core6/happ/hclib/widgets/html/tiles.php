@@ -1,4 +1,5 @@
 <?php
+include_once( dirname(__FILE__) . '/container.php' );
 class HC_Html_Widget_Tiles extends HC_Html_Widget_Container
 {
 	protected $per_row = 3;

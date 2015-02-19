@@ -68,8 +68,8 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'service',	'blocks_location', true, 0, 0 );
 		$this->registerProp( 'service',	'blocks_resource', true, 0, 0 );
 		$this->registerProp( 'service',	'duration' );
-		$this->registerProp( 'service',	'duration_increment' );
-		$this->registerProp( 'service',	'duration_max' );
+		$this->registerProp( 'service',	'duration_increment', true, 0, 1800 );
+		$this->registerProp( 'service',	'duration_max', true, 0, 1800 );
 		$this->registerProp( 'service',	'lead_in' );
 		$this->registerProp( 'service',	'lead_out' );
 		$this->registerProp( 'service',	'price' );
@@ -271,6 +271,20 @@ class objectMapper extends ntsObjectMapper {
 		$tags[1][] = $priceView;
 //		$tags[0][] = '{APPOINTMENT.DUE_AMOUNT}';
 //		$tags[1][] = $dueView;
+
+		$paymentBalance = - $object->getDue();
+		if( $paymentBalance > 0 ){
+			$paymentBalanceView = '+' . ntsCurrency::formatPrice( $paymentBalance );
+		}
+		elseif( $paymentBalance < 0 ){
+			$paymentBalanceView = '-' . ntsCurrency::formatPrice( -$paymentBalance );
+		}
+		else {
+			$paymentBalanceView = ntsCurrency::formatPrice( $paymentBalance );
+		}
+
+		$tags[0][] = '{APPOINTMENT.PAYMENT_BALANCE}';
+		$tags[1][] = $paymentBalanceView;
 
 	/* status */
 		if( $completed = $object->getProp('completed') ){

@@ -139,3 +139,14 @@
 	box-shadow: none;
 	text-shadow: none;
 }
+
+#nts div.radio,
+#nts div.radio span,
+#nts div.radio input {
+	width: inherit;
+	height: inherit;
+}
+
+#nts div.radio input {
+    opacity: inherit;
+}

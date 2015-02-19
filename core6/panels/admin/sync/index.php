@@ -22,3 +22,20 @@ Paste the above address then click <b>Add Calendar</b>. This will automatically 
 
 <p>
 Please note that Google Calendar can take up to a day to update after an appointment is made here.
+</p>
+
+<?php
+$ntsConf =& ntsConf::getInstance();
+$params = array(
+	'icalSummary',
+	);
+$default = array();
+reset( $params );
+foreach( $params as $p ){
+	$default[ $p ] = $ntsConf->get( $p );
+	}
+$ff =& ntsFormFactory::getInstance();
+$formFile = dirname( __FILE__ ) . '/form';
+$form =& $ff->makeForm( $formFile, $default );
+$form->display();
+?>

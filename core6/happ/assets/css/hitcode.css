@@ -99,6 +99,11 @@
 	vertical-align: middle;
 }
 
+#nts .list-indented>li>ol,
+#nts .list-indented>li>ul {
+	padding-left: 1em;
+}
+
 #nts .btn input {
 	margin: 2px 1px;
 	}
@@ -216,24 +221,26 @@
 #nts .panel-body,
 #nts .panel-footer,
 #nts .panel .panel-body,
-#nts .panel-success-o .panel-heading>a,
-#nts .panel-danger-o .panel-heading>a,
-#nts .panel-archive-o .panel-heading>a,
-#nts .alert-danger-o a,
-#nts .alert-danger>a,
-#nts .alert-default-o a,
-#nts .alert-archive-o a,
-#nts .alert-archive a,
-#nts .label-archive>a,
-#nts .btn-archive>a,
-#nts .alert-available a,
-#nts .label-available>a,
-#nts .btn-available>a,
-#nts .alert-warning-o a,
-#nts .alert-warning>a,
-#nts .alert-success-o a,
-#nts .alert-success>a,
-#nts .label-success>a {
+#nts .panel-success-o .panel-heading>a:not(.btn),
+#nts .panel-danger-o .panel-heading>a:not(.btn),
+#nts .panel-danger-m .panel-heading>a:not(.btn),
+#nts .panel-archive-o .panel-heading>a:not(.btn),
+#nts .alert-danger-o a:not(.btn),
+#nts .alert-danger-m a:not(.btn),
+#nts .alert-danger>a:not(.btn),
+#nts .alert-default-o a:not(.btn),
+#nts .alert-archive-o a:not(.btn),
+#nts .alert-archive a:not(.btn),
+#nts .label-archive>a:not(.btn),
+#nts .btn-archive>a:not(.btn),
+#nts .alert-available a:not(.btn),
+#nts .label-available>a:not(.btn),
+#nts .btn-available>a:not(.btn),
+#nts .alert-warning-o a:not(.btn),
+#nts .alert-warning>a:not(.btn),
+#nts .alert-success-o a:not(.btn),
+#nts .alert-success>a:not(.btn),
+#nts .label-success>a:not(.btn) {
 	color: inherit;
 	background-color: inherit;
 }
@@ -258,6 +265,10 @@
 #nts .btn-warning-o {
 	border-color: #eea236;
 	color: #be7206;
+}
+#nts .btn-info-o {
+	border-color: #5bc0de;
+	color: #31708f;
 }
 
 #nts .btn-success-o:hover,
@@ -323,21 +334,55 @@
 #nts .panel-danger2,
 #nts .alert-danger-o,
 #nts .alert-danger2 {
-	border-color: #d9534f;
-	color: #a94442;
 	border-color: #900;
 	color: #a40f0a;
 	border-width: 1px;
 	border-style: solid;
+
+	border-color: #d9534f;
+}
+
+#nts .btn-danger-m,
+#nts .panel-danger-m .panel-heading,
+#nts .alert-danger-m {
+	border-color: #900;
+	color: inherit;
+	border-width: 1px;
+	border-style: solid;
+
+	border-color: #d9534f;
 }
 
 #nts .panel-danger-o .panel-heading {
 	border-style: solid;
 	border-width: 1px;
+	border-width: 0px 0px 1px 0px;
+	border-width: 0px;
 	border-radius: 4px;
 	}
 #nts .panel-danger-o .panel-heading+.panel-collapse .panel-body {
-	border-width: 0px;
+/*	border-width: 0px; */
+	}
+#nts .panel-danger-o>.panel-heading+.panel-collapse .panel-body {
+	border-top-color: #900;
+	border-top-width: 1px;
+	border-top-style: solid;
+}
+#nts .panel-danger-o>.panel-footer+.panel-collapse .panel-body {
+	border-bottom-color: #ebccd1;
+}
+#nts .panel-danger-o {
+	border-color: #900;
+}
+
+
+#nts .panel>.panel-heading {
+	border-bottom-width: 0px;
+}
+#nts .panel .panel-body {
+	border-top-color: inherit;
+	border-top-width: 1px;
+	border-top-style: solid;
 	}
 
 #nts .alert-warning-o {
@@ -405,7 +450,7 @@
 
 #nts .alert-condensed2 {
 	padding: 2px 4px 2px 4px;
-	margin-bottom: 2px;
+	margin: 0px 0px 0px 0px;
 }
 
 #nts .hc-nowrap {
@@ -684,12 +729,6 @@
 	}
 
 /* extend some bootstrap colors for tabs */
-#nts .nav>li.tab-error>a,
-#nts .nav>li.tab-error>a:hover,
-#nts .nav>li.tab-error>a:focus {
-	background-color: #f2dede;
-	color: inherit;
-}
 #nts .nav>li.tab-info>a,
 #nts .nav>li.tab-info>a:hover,
 #nts .nav>li.tab-info>a:focus {
@@ -713,6 +752,15 @@
 #nts .nav>li.tab-archive>a:focus {
 	background-color: #ddd;
 	background-color: #f8f8f8;
+	color: inherit;
+}
+#nts .nav>li.tab-danger>a,
+#nts .nav>li.tab-danger>a:hover,
+#nts .nav>li.tab-danger>a:focus
+#nts .nav>li.tab-error>a,
+#nts .nav>li.tab-error>a:hover,
+#nts .nav>li.tab-error>a:focus {
+	background-color: #f2dede;
 	color: inherit;
 }
 
@@ -932,6 +980,19 @@
 #nts .thumbnail {
 	margin-bottom: inherit;
 	}
+
+#nts .hc-icon-ul {
+	margin-left: 2em;
+}
+#nts .hc-icon-ul>li{
+	position: relative
+}
+#nts .hc-icon-li {
+	position: absolute;
+	left: -2em;
+	top: .15em;
+}
+
 
 /* conficts in wordpress with some themes */
 #nts .dropdown {

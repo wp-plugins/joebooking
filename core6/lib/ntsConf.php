@@ -259,6 +259,12 @@ class ntsConf {
 					}
 				break;
 
+			case 'icalSummary':
+				if( ! $rawValue ){
+					$return = 'service';
+					}
+				break;
+
 			case 'userEmailConfirmation':
 				if( strlen($rawValue) == 0 )
 					$return = 1;

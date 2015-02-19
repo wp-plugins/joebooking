@@ -1059,6 +1059,12 @@ EOT;
 		$builtinFields = array_keys( $coreProps );
 		$builtinFields[] = 'id';
 
+		$ri = ntsLib::remoteIntegration();
+		if( $ri == 'wordpress' ){
+			$builtinFields[] = 'user_nicename';
+			$builtinFields[] = 'display_name';
+		}
+
 	/* split where in builtin and custom part */
 		$whereB = array();
 		$whereC = array();
@@ -1080,6 +1086,12 @@ EOT;
 		$om =& objectMapper::getInstance();
 		list( $coreProps, $metaProps ) = $om->getPropsForClass( 'user' );
 		$builtinFields = array_keys( $coreProps );
+
+		$ri = ntsLib::remoteIntegration();
+		if( $ri == 'wordpress' ){
+			$builtinFields[] = 'user_nicename';
+			$builtinFields[] = 'display_name';
+		}
 
 	/* split where in builtin and custom part */
 		$orderB = array();

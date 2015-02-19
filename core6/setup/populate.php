@@ -1,4 +1,6 @@
 <?php
+$ntsdb =& dbWrapper::getInstance();
+
 $cm =& ntsCommandManager::getInstance();
 
 global $NTS_SETUP_ADMINS;

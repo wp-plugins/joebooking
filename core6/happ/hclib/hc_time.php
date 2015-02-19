@@ -39,20 +39,22 @@ class Hc_time extends DateTime {
 		parent::__construct();
 		$this->setTimestamp( $time );
 
-		$CI =& ci_get_instance();
+		$app_conf = HC_App::app_conf();
 
-		if( ! $tz ){
-			$tz = $CI->app_conf->get('timezone');
-			}
-		if( $tz ){
+		if( ! $tz )
+		{
+			$tz = $app_conf ? $app_conf->get('timezone') : '';
+		}
+		if( $tz )
+		{
 			$this->setTimezone( $tz );
-			}
-		$this->weekStartsOn = $CI->app_conf->get('week_starts');
+		}
+		$this->weekStartsOn = $app_conf ? $app_conf->get('week_starts') : 0;
 
-		$time_format = $CI->app_conf->get('time_format');
+		$time_format = $app_conf ? $app_conf->get('time_format') : '';
 		if( $time_format )
 			$this->timeFormat = $time_format;
-		$date_format = $CI->app_conf->get('date_format');
+		$date_format = $app_conf ? $app_conf->get('date_format') : '';
 		if( $date_format )
 			$this->dateFormat = $date_format;
 		}
@@ -132,6 +134,12 @@ class Hc_time extends DateTime {
 	{
 		$return = array();
 		$skip = array();
+
+		if( $date1 == $date2 ){
+			$this->setDateDb( $date1 );
+			$return = $this->formatDate();
+			return $return;
+			}
 
 		$this->setDateDb( $date1 );
 		$year1 = $this->getYear();
@@ -850,6 +858,36 @@ class Hc_time extends DateTime {
 			5	=> lang('common_5th'),
 			);
 		return $text[$week];
+	}
+
+	function getWeekOfMonthFromEnd()
+	{
+		$return = 0;
+		$keepDate = $this->formatDate_Db();
+		$thisMonth = $this->getMonth();
+		$testMonth = $thisMonth;
+		while( $testMonth == $thisMonth )
+		{
+			$return++;
+			$this->modify( '+1 week' );
+			$testMonth = $this->getMonth();
+		}
+		$this->setDateDb( $keepDate );
+		return $return;
+	}
+
+	function formatWeekOfMonthFromEnd()
+	{
+		$week = $this->getWeekOfMonthFromEnd();
+		$text = array(
+			1	=> lang('common_1st'),
+			2	=> lang('common_2nd'),
+			3	=> lang('common_3rd'),
+			4	=> lang('common_4th'),
+			5	=> lang('common_5th'),
+			);
+		$add = lang('common_from_end');
+		return $text[$week] . ' ' . $add;
 	}
 
 	function getMonthMatrix( $endDate = '' ){

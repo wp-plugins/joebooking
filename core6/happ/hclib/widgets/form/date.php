@@ -28,7 +28,7 @@ class HC_Form_Input_Date extends HC_Form_Input_Text
 		$hidden = HC_Html_Factory::input('hidden')
 			->set_name( $name )
 			->set_value( $value )
-			->add_attr('id', $id)
+			->set_id($id)
 			;
 		$out->add_item( $hidden );
 
@@ -41,7 +41,7 @@ class HC_Form_Input_Date extends HC_Form_Input_Text
 		$text = HC_Html_Factory::input('text')
 			->set_name( $display_name )
 			->set_value( $display_value )
-			->add_attr('id', $display_id)
+			->set_id($display_id)
 			->add_attr('data-date-format', $datepicker_format)
 			->add_attr('data-date-week-start', $t->weekStartsOn)
 			->add_attr( 'style', 'width: 8em' )
@@ -97,40 +97,5 @@ EOT;
 
 		$return = $this->decorate( $out->render() );
 		return $return;
-	}
-
-	function __construct2( $name, $value = NULL, $more = array() )
-	{
-
-
-		$js_options = array();
-		if( isset($more['options']) )
-		{
-			reset( $more['options'] );
-			foreach( $more['options'] as $k => $v )
-			{
-				switch( $k )
-				{
-					case 'startDate':
-						if( $v > $value )
-						{
-							$value = $v;
-						}
-						$t->setDateDb( $v );
-						$v = $t->formatDate();
-						break;
-				}
-				$js_options[] = "$k: \"$v\"";
-			}
-		}
-		$js_options[] = "weekStart: " . $t->weekStartsOn;
-		$js_options = join( ",\n", $js_options );
-		unset( $more['options'] );
-
-
-		parent::__construct( $display_name, $display_value, $more );
-
-
-
 	}
 }

@@ -27,9 +27,13 @@ switch( $action ){
 			$formValues = $form->getValues();
 
 			reset( $params );
-			foreach( $params as $p ){
-				$conf->set( $p, $formValues[$p] );
+			foreach( $params as $p )
+			{
+				if( array_key_exists($p, $formValues) )
+				{
+					$conf->set( $p, $formValues[$p] );
 				}
+			}
 
 		/* if customers not allowed to set timezone, delete _timezone from objectmeta */
 			if( ($formValues['enableTimezones'] < 1) )

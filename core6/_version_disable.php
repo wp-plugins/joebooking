@@ -1,6 +1,12 @@
 <?php
 $disable = array();
 
+$disable['rich_editor'] = array(
+	'panels'	=> array(
+		),
+	'files'		=> array('core6/happ/assets/tinymce'),
+	);
+
 $disable['appointment_flow'] = array(
 	'panels'	=> array(
 		'admin/conf/flow',
@@ -43,6 +49,8 @@ $disable['common'] = array(
 		'admin/promo',
 		),
 	'files'	=> array(
+		'core6/happ/assets/tinymce',
+
 //		'theme',
 		'core6/version_hitappoint_demo.php',
 
@@ -55,6 +63,8 @@ $disable['common'] = array(
 		'core6/happ/assets/bootstrap/css/compile3.php',
 		'core6/happ/assets/bootstrap/css/hc3.less',
 		'core6/happ/assets/bootstrap/css/lessc.inc.php',
+
+
 		)
 	);
 

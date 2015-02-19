@@ -7,6 +7,7 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 	private $date_param = 'date';
 	private $range_param = 'range';
 	private $date = '';
+	private $params = array();
 
 	function __construct( $start = '' )
 	{
@@ -15,9 +16,24 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 		$this->set_date( $t->formatDate_Db() );
 	}
 
+	function set_param( $key, $value )
+	{
+		$this->params[ $key ] = $value;
+		return $this;
+	}
+	function params()
+	{
+		return $this->params;
+	}
+	function param( $key )
+	{
+		return isset($this->params[$key]) ? $this->params[$key] : NULL;
+	}
+
 	function set_date( $date )
 	{
 		$this->date = $date;
+		$this->set_param( $this->date_param(), $date );
 	}
 	function date()
 	{
@@ -27,6 +43,7 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 	function set_range( $range )
 	{
 		$this->range = $range;
+		$this->set_param( $this->range_param(), $range );
 	}
 	function range()
 	{
@@ -62,11 +79,12 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 
 	function render()
 	{
-		if( ! $this->link() )
+		if( ! $link = $this->link() )
 		{
 			return 'HC_Html_Widget_Date_Nav: link is not set!';
 		}
 
+		$link_params = $this->params();
 		$t = HC_Lib::time();
 		switch( $this->range() )
 		{
@@ -117,7 +135,11 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 			HC_Html_Factory::element('a')
 				->add_attr(
 					'href',
-					$this->link()->url('', array($this->date_param() => $before_date))
+					$link->set_params($link_params)->url(
+						array(
+							$this->date_param() => $before_date
+							)
+						)
 					)
 				->add_attr('class', array('btn', 'btn-default'))
 				->add_child('&lt;&lt;')
@@ -135,7 +157,11 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 						->add_child( lang('time_month') )
 						->add_attr(
 							'href',
-							$this->link()->url('', array($this->range_param() => 'month'))
+							$link->set_params($link_params)->url(
+								array(
+									$this->range_param() => 'month'
+									)
+								)
 							)
 					);
 				break;
@@ -146,23 +172,16 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 						->add_child( lang('time_week') )
 						->add_attr(
 							'href',
-							$this->link()->url('', array($this->range_param() => 'week'))
+							$link->set_params($link_params)->url(
+								array(
+									$this->range_param() => 'week'
+									)
+								)
 							)
 					);
 				break;
 		}
 
-	/*
-		$this->add_item( 
-			'current',
-			HC_Html_Factory::element('a')
-				->add_attr(
-					'href',
-					$this->link()->url()
-					)
-				->add_child( $nav_title )
-			);
-	*/
 		$this->add_item( 
 			'current',
 			$current_nav
@@ -173,7 +192,11 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 			HC_Html_Factory::element('a')
 				->add_attr(
 					'href',
-					$this->link()->url('', array($this->date_param() => $after_date))
+					$link->set_params($link_params)->url(
+						array(
+							$this->date_param() => $after_date
+							)
+						)
 					)
 				->add_attr('class', array('btn', 'btn-default'))
 				->add_child('&gt;&gt;')

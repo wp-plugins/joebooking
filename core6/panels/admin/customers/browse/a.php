@@ -199,6 +199,12 @@ if( $NTS_VIEW['search'] ){
 		$searchIn[] = $f[0];
 		}
 
+	$ri = ntsLib::remoteIntegration();
+	if( $ri == 'wordpress' ){
+		$searchIn[] = 'user_nicename';
+		$searchIn[] = 'display_name';
+	}
+
 	reset( $searchIn );
 	foreach( $searchIn as $sin ){
 		$thisWhere = $mainWhere;
@@ -209,7 +215,6 @@ if( $NTS_VIEW['search'] ){
 else {
 	$where = $mainWhere;
 	}
-
 
 if( in_array($display, $showAllDisplays) ){
 	$limit = '';

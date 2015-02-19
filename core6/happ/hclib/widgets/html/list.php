@@ -3,6 +3,23 @@ include_once( dirname(__FILE__) . '/container.php' );
 class HC_Html_Widget_List extends HC_Html_Widget_Container
 {
 	private $active = NULL;
+	private $item_attr = array();
+
+	function add_item_attr( $item, $key, $value )
+	{
+		if( ! isset($this->item_attr[$item]) ){
+			$this->item_attr[$item] = HC_Html_Factory::element('a');
+		}
+		$this->item_attr[$item]->add_attr( $key, $value );
+		return $this;
+	}
+	function item_attr( $item, $key = '' )
+	{
+		if( ! isset($this->item_attr[$item]) ){
+			$this->item_attr[$item] = HC_Html_Factory::element('a');
+		}
+		return $this->item_attr[$item]->attr( $key );
+	}
 
 	function set_active( $active )
 	{
@@ -26,8 +43,7 @@ class HC_Html_Widget_List extends HC_Html_Widget_Container
 	{
 		$out = HC_Html_Factory::element( 'ul' );
 		$attr = $this->attr();
-		foreach( $attr as $k => $v )
-		{
+		foreach( $attr as $k => $v ){
 			$out->add_attr( $k, $v );
 		}
 
@@ -35,6 +51,10 @@ class HC_Html_Widget_List extends HC_Html_Widget_Container
 		foreach( $items as $key => $item )
 		{
 			$li = HC_Html_Factory::element('li');
+			$item_attr = $this->item_attr($key);
+			foreach( $item_attr as $k => $v ){
+				$li->add_attr( $k, $v );
+			}
 
 			if( is_string($item) && ($item == '-divider-') )
 			{

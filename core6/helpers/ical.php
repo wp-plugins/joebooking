@@ -46,8 +46,26 @@ class ntsIcal {
 			$this->description = $templateConf['description'];
 			}
 		else {
+			$summary = '{APPOINTMENT.SERVICE}';
+			$ntsConf =& ntsConf::getInstance();
+			$summarySetting = $ntsConf->get('icalSummary');
+			switch( $summarySetting ){
+				case 'customer':
+					$summary = '{CUSTOMER_SHORT}';
+					break;
+				case 'service':
+					$summary = '{APPOINTMENT.SERVICE}';
+					break;
+				case 'resource':
+					$summary = '{BOOKABLE_RESOURCE_SHORT}';
+					break;
+			}
+			if( NTS_SINGLE_RESOURCE ){
+				$summary = '{APPOINTMENT.SERVICE}';
+			}
+
 			$this->summary =<<<EOT
-{APPOINTMENT.SERVICE}
+$summary
 EOT;
 
 			$this->description =<<<EOT
@@ -129,9 +147,20 @@ EOT;
 				}
 			$tags[1][] = $bookableResource;
 
+			$tags[0][] = '{BOOKABLE_RESOURCE_SHORT}';
+			$bookableResourceShort = '';
+			if( ! NTS_SINGLE_RESOURCE ){
+				$bookableResourceShort = $resource->getProp('title');
+				}
+			$tags[1][] = $bookableResourceShort;
+
 			$customerInfo = M('Customer') . ': ' . $customer->getProp('first_name') . ' ' . $customer->getProp('last_name');
 			$tags[0][] = '{CUSTOMER}';
 			$tags[1][] = $customerInfo;
+
+			$customerInfoShort = $customer->getProp('first_name') . ' ' . $customer->getProp('last_name');
+			$tags[0][] = '{CUSTOMER_SHORT}';
+			$tags[1][] = $customerInfoShort;
 
 			$summary = str_replace( $tags[0], $tags[1], $this->summary );
 			$description = str_replace( $tags[0], $tags[1], $this->description );

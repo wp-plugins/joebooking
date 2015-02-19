@@ -117,6 +117,7 @@ class hcWpBase4
 		$this->_admin_styles = array();
 		$this->_admin_scripts = array();
 
+		$nts_is_wordpress = TRUE;
 		require( $this->happ_path . '/assets/files.php' );
 		reset( $css_files );
 		foreach( $css_files as $f )
@@ -355,6 +356,12 @@ class hcWpBase4
 		if( $full )
 		{
 			$full_file = $file;
+			/* check if jquery should be required */
+			if(
+				preg_match('/\/jquery\-\d/', $file)
+			){
+				$id = $file_id = 'jquery';
+			}
 		}
 		else
 		{
@@ -629,13 +636,24 @@ class hcWpBase4
 				}
 				else
 				{
-					wp_enqueue_script(
-						$sa[0],
-						$sa[1],
-						array(),
-						''
-						// TRUE // in footer
-						);
+					if( ($sa[0] == 'jquery') && ($sa[1]) ){
+						// deregister jquery
+						wp_deregister_script($sa[0]);
+						wp_register_script(
+							$sa[0],
+							$sa[1]
+							);
+						wp_enqueue_script($sa[0]);
+					}
+					else {
+						wp_enqueue_script(
+							$sa[0],
+							$sa[1],
+							array(),
+							''
+							// TRUE // in footer
+							);
+					}
 				}
 			}
 			else

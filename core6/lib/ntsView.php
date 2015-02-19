@@ -597,14 +597,24 @@ class ntsView {
 			
 				if( $return )
 					$return = join( ' ', $return );
-				else
-					$return = M('Customer') . ' #' . $object->getId();
+				else {
+					if( $object->getId() == 0 ){
+						$return = M('Not Registered');
+					}
+					else {
+						$return = M('Customer') . ' #' . $object->getId();
+					}
+				}
 
 				if( $html )
 				{
 					if( $userId == -1 )
 					{
 						$return = '<i class="fa fa-gears fa-border"></i> ' . $return;
+					}
+					elseif( $userId == 0 )
+					{
+						$return = '<i class="fa fa-globe"></i> ' . $return;
 					}
 					else
 					{

@@ -91,6 +91,7 @@ $status_class = $a->statusClass();
 $status_text = $a->statusText();
 
 $collapse_in = $group_ref ? ' in' : '';
+$collapse_in = ' in';
 ?>
 <li class="collapse-panel panel panel-default panel-<?php echo $status_class; ?>">
 	<div class="panel-heading" title="<?php echo $status_text; ?>">

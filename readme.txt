@@ -48,6 +48,16 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.2.7 =
+* An option to configure the summary for iCal output (for export to Google Calendar etc)
+
+= 6.2.6 =
+* The admin can now remove a coupon from an appointment.
+* Added Stripe payment gateway.
+* A slight JavaScript modification to avoid an issue with collapse items under some themes.
+* There was an error after searching customers in the admin panel.
+* Modified the search customers algorith in the admin panel to look up in more fields.
+
 = 6.2.5 =
 * An option to display in the front end if a timeslot was available, but now it's booked. First configure if you need this option in Settings > Date & Time.
 * Slightly restyled the calendar and time view to show available times more distinctively.

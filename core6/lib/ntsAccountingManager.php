@@ -1048,6 +1048,36 @@ class ntsAccountingManager
 		}
 	}
 
+	function delete_journal( $where = array() )
+	{
+	/*
+		$where = array(
+			'obj_class'	=> array('=', 'coupon'),
+			'obj_id'	=> array('=', 1),
+			'action'	=> array('=', 'apply'),
+			);
+	*/
+
+		$ntsdb =& dbWrapper::getInstance();
+		$journal_ids = $ntsdb->get_select( 'id', 'accounting_journal', $where );
+		
+		foreach( $journal_ids as $jid )
+		{
+			$ntsdb->delete(
+				'accounting_posting',
+				array(
+					'journal_id'	=> array('=', $jid)
+					)
+				);
+			$ntsdb->delete(
+				'accounting_journal',
+				array(
+					'id'	=> array('=', $jid)
+					)
+				);
+		}
+	}
+
 	function add_journal( $journal = array() )
 	{
 /*

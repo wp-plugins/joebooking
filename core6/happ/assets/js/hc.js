@@ -37,7 +37,7 @@ jQuery(document).on( 'click', '.hc-target ul.dropdown-menu', function(e)
 //	e.preventDefault();
 });
 
-jQuery(document).on( 'click', 'a.hc-confirm', function(event)
+jQuery(document).on( 'click', '.hc-confirm', function(event)
 {
 	if( window.confirm("Are you sure?") )
 	{
@@ -179,6 +179,15 @@ function hc_close_flatmodal( obj )
 function hc_submit_ajax( method, targetUrl, resultDiv, thisFormData )
 {
 	resultDiv.addClass( 'hc-loading' );
+
+	if( targetUrl == '-referrer-' )	{
+		targetUrl = resultDiv.data('targetUrl');
+		if( ! targetUrl ){
+			resultDiv.removeClass( 'hc-loading' );
+			return false;
+		}
+	}
+
 	jQuery.ajax({
 		type: method,
 		url: targetUrl,
@@ -189,73 +198,67 @@ function hc_submit_ajax( method, targetUrl, resultDiv, thisFormData )
 			resultDiv.removeClass( 'hc-loading' );
 
 			var is_json = true;
-			try
-			{
+			try {
 				data = jQuery.parseJSON( data );
 			}
-			catch( err )
-			{
+			catch( err ){
 				is_json = false;
 			}
 
 			var is_flatmodal = resultDiv.closest(".hc-flatmodal-container").length;
 			var result_in_me = false;
-			if( is_flatmodal )
-			{
+			if( is_flatmodal ){
 				result_in_me = true;
 			}
 
-			if( is_json )
-			{
-				if( data && data.redirect )
-				{
-					/* reload me with another url */
-					if( result_in_me )
-					{
-						var src = resultDiv.data('targetUrl');
-						if( ! src )
-							src = data.redirect;
+			if( is_json ){
+				if( data && data.redirect ){
+					var parent_redirect = ( (data.parent !== undefined) && data.parent ) ? 1 : 0;
+					var full_parent_redirect = ( (data.parent !== undefined) && (data.parent == 2) ) ? 1 : 0;
 
-						resultDiv.addClass( 'hc-loading' );
-						resultDiv.load( src, function()
-						{
-							resultDiv.removeClass( 'hc-loading' );
-						});
+					if( full_parent_redirect ){
+						location.reload();
+					}
+					/* reload me with another url */
+					else if( result_in_me && (! parent_redirect) ){
+						var src = resultDiv.data('targetUrl');
+						if( ! src )	{
+							src = data.redirect;
+						}
+						src = data.redirect;
+
+						if( data.redirect != '-referrer-'){
+							resultDiv.data('targetUrl', data.redirect);	
+						}
+						hc_submit_ajax( "GET", src, resultDiv, null )
 					}
 				/* reload target div in main screen */
-					else
-					{
-	/*
-						if( is_flatmodal )
-						{
+					else {
+						if( is_flatmodal ){
 							hc_close_flatmodal( resultDiv );
 						}
-	*/
+
 						var returnDiv = resultDiv.data('return-target');
-						if( returnDiv )
-						{
+						if( returnDiv )	{
 							var src = returnDiv.data('src');
 							returnDiv.addClass( 'hc-loading' );
-							returnDiv.load( src, function()
-							{
+							returnDiv.load( src, function(){
 								returnDiv.removeClass( 'hc-loading' );
 							});
 
 							/* also if we have hc-page-status divs */
-							jQuery('.hc-page-status').each( 
+							jQuery('.hc-page-status').each(
 								function(index)
 								{
 									var thisDiv = jQuery(this);
 									var src = thisDiv.data('src');
 									thisDiv.addClass( 'hc-loading' );
-									thisDiv.load( src, function()
-									{
+									thisDiv.load( src, function(){
 										thisDiv.removeClass( 'hc-loading' );
 									});
 								});
 						}
-						else
-						{
+						else {
 							// reload window
 							location.reload();
 						}
@@ -478,7 +481,7 @@ jQuery(document).on( 'click', 'a.hc-form-submit', function(event)
 click ajaxified links within hc-target
 the hc-target is being reloaded with its data-src url after success
 */
-jQuery(document).on( 'click', '.hc-target a:not(.hc-collapse-next,.hc-ajax-loader,.hc-flatmodal-loader,.hc-modal,.hc-parent-loader)', function(event)
+jQuery(document).on( 'click', '.hc-target a:not(.hc-toggler,.hc-toggle,.hc-collapse-next,.hc-ajax-loader,.hc-flatmodal-loader,.hc-modal,.hc-parent-loader)', function(event)
 {
 	if( jQuery(this).closest('.hc-ajax-container').length )
 	{
@@ -544,7 +547,10 @@ jQuery(document).on( 'click', '.hc-ajax-container a:not(.hc-ajax-loader,.hc-flat
 
 	var resultDiv = thisLink.closest('.hc-ajax-container');
 
-	if( ! thisLink.hasClass('hc-confirm') )
+	if(
+		( ! thisLink.hasClass('hc-confirm') ) && 
+		( ! thisLink.hasClass('hc-action') )
+		)
 	{
 		resultDiv.data( 'targetUrl', targetUrl );
 	}
@@ -591,10 +597,17 @@ jQuery(document).on( 'submit', '.hc-target form:not(.hc-form-external)', functio
 	return false;
 });
 
-/*
-post ajaxified forms within hc-ajax-container
-the hc-ajax-container is being posted and displays the response of the submitted form
-*/
+jQuery(document).on( 'click', '.hc-action-setter', function(event)
+{
+	var thisForm = jQuery(this).closest('form');
+	var actionFieldName = 'action';
+	var actionValue = jQuery(this).attr('name');
+
+	thisForm.find("input[name='" + actionFieldName + "']").each( function(){
+		jQuery(this).val( actionValue );
+	});
+});
+
 jQuery(document).on( 'submit', '.hc-ajax-container form:not(.hc-form-external)', function(event)
 {
 	/* stop form from submitting normally */
@@ -603,7 +616,7 @@ jQuery(document).on( 'submit', '.hc-ajax-container form:not(.hc-form-external)',
 	var thisForm = jQuery( this );
 	var thisFormData = thisForm.serialize();
 
-	var targetUrl = thisForm.attr( 'action' );
+	var targetUrl = thisForm.attr('action');
 	var resultDiv = thisForm.closest('.hc-ajax-container');
 
 	/* Send the data using post and put the results in a div */
@@ -638,43 +651,58 @@ jQuery(document).on( 'change', '.hc-radio-more-info', function(event)
 	my_info.show();
 });
 
-jQuery(document).ready( function()
+/* toggle */
+jQuery(document).on('click', '.hc-toggle', function(e)
 {
-	jQuery('.hc-radio-more-info:checked').each( function()
-	{
-		var my_container = jQuery( this ).closest('label');
-		var my_info = my_container.find('.hc-radio-info');
-		my_info.show();
-	});
+	var this_target_id = jQuery(this).data('target');
+	if( this_target_id.length > 0 ){
+		this_target = jQuery(this_target_id);
+		if( this_target.is(':visible') ){
+			this_target.hide();
+		}
+		else {
+			this_target.show();
+		}
+	}
+	return false;
+});
 
-	/* add icon for external links */
-	jQuery('#nts a[target="_blank"]').append( '<i class="fa fa-fw fa-external-link"></i>' );
+/* collapse next */
+jQuery(document).on('click', '.hc-collapse-next,[data-toggle=collapse-next]', function(e)
+{
+	// var this_target = jQuery(this).parents('.collapse-panel').find('.collapse');
+	var this_target = jQuery(this).closest('.collapse-panel').children('.collapse');
 
-	/* scroll into view */
-	if ( typeof nts_no_scroll !== 'undefined' )
+	if( this_target.is(':visible') ){
+		this_target.hide();
+	}
+	else {
+		this_target.show();
+	}
+//	this_target.collapse('toggle');
+
+	if( jQuery(this).attr('type') != 'checkbox' )
 	{
-		// no scroll
+		/* scroll into view */
+//		var this_parent = jQuery(this).parents('.collapse-panel');
+//		this_parent[0].scrollIntoView();
+		return false;
 	}
 	else
 	{
-		document.getElementById("nts").scrollIntoView();	
+		return true;
 	}
+});
 
-/*
-	jQuery('html, body').animate(
-	{
-		scrollTop: jQuery("#nts").offset().top - 20,
-	}, 0 );
-*/
+jQuery(document).on('click', '.dropdown-menu select', function()
+{
+	return false;
+});
 
-	/* multiselect */
-	jQuery('.hc-multiselect').multiselect();
-
-	/* auto dismiss alerts */
-	jQuery('#nts .hc-auto-dismiss').delay(4000).slideUp(200, function()
-	{
-		jQuery('#nts .hc-auto-dismiss .alert').alert('close');
-	});
+jQuery(document).on( 'click', 'a.hc-toggler', function(event)
+{
+	jQuery('.hc-toggled').toggle();
+	return false;
 });
 
 jQuery(document).on( 'click', '.hc-all-checker', function(event)
@@ -721,32 +749,49 @@ jQuery(document).on( 'click', '.hc-all-checker', function(event)
 	}
 });
 
-/* collapse next */
-jQuery(document).on('click', '.hc-collapse-next,[data-toggle=collapse-next]', function(e)
+jQuery(document).ready( function()
 {
-	var this_target = jQuery(this).parents('.collapse-panel').find('.collapse');
-	this_target.collapse('toggle');
-
-	if( jQuery(this).attr('type') != 'checkbox' )
+	jQuery('.hc-radio-more-info:checked').each( function()
 	{
-		/* scroll into view */
-//		var this_parent = jQuery(this).parents('.collapse-panel');
-//		this_parent[0].scrollIntoView();
-		return false;
+		var my_container = jQuery( this ).closest('label');
+		var my_info = my_container.find('.hc-radio-info');
+		my_info.show();
+	});
+
+	/* add icon for external links */
+	jQuery('#nts a[target="_blank"]').append( '<i class="fa fa-fw fa-external-link"></i>' );
+
+	/* scroll into view */
+	if ( typeof nts_no_scroll !== 'undefined' )
+	{
+		// no scroll
 	}
 	else
 	{
-		return true;
+		document.getElementById("nts").scrollIntoView();	
+	}
+
+/*
+	jQuery('html, body').animate(
+	{
+		scrollTop: jQuery("#nts").offset().top - 20,
+	}, 0 );
+*/
+
+	/* auto dismiss alerts */
+	jQuery('#nts .hc-auto-dismiss').delay(4000).slideUp(200, function()
+	{
+		jQuery('#nts .hc-auto-dismiss .alert').alert('close');
+	});
+
+	/* multiselect */
+	try
+	{
+		jQuery('.hc-multiselect').multiselect();
+	}
+	catch(err)
+	{
+		//
 	}
 });
 
-jQuery(document).on('click', '.dropdown-menu select', function()
-{
-	return false;
-});
-
-jQuery(document).on( 'click', 'a.hc-toggler', function(event)
-{
-	jQuery('.hc-toggled').toggle();
-	return false;
-});

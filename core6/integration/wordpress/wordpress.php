@@ -30,7 +30,7 @@ class wordpressIntegrator extends ntsUserIntegrator {
 			echo "wordpress database error: $dbError";
 			return;
 			}
-		$this->db->_debug = false;
+		$this->db->_debug = FALSE;
 	}
 
 // this function adapts user information to common form.
@@ -101,6 +101,13 @@ class wordpressIntegrator extends ntsUserIntegrator {
 		if( isset($userInfo['new_password']) ){
 			$return['user_pass'] = wp_hash_password( $userInfo['new_password'] );
 			}
+
+		if( isset($userInfo['user_nicename']) ){
+			$return['user_nicename'] = $userInfo['user_nicename'];
+		}
+		if( isset($userInfo['display_name']) ){
+			$return['display_name'] = $userInfo['display_name'];
+		}
 		return $return;
 		}
 
@@ -120,13 +127,14 @@ class wordpressIntegrator extends ntsUserIntegrator {
 		$ntsdb =& dbWrapper::getInstance();
 		$myPrefix = substr( $ntsdb->_prefix, strlen($this->db->_prefix) );
 		$theidIdIndex = $this->idIndex;
+		$tbl_users = $this->tbl_users;
 
 		$sql =<<<EOT
 DELETE FROM 
 	{PRFX}${myPrefix}objectmeta 
 WHERE
 	{PRFX}${myPrefix}objectmeta.obj_class = "user" AND
-	obj_id NOT IN ( SELECT $theidIdIndex FROM $this->tbl_users )
+	obj_id NOT IN ( SELECT $theidIdIndex FROM $tbl_users )
 EOT;
 
 		$this->db->runQuery($sql);
@@ -214,13 +222,15 @@ EOT;
 			unset( $where[$idKey] );
 			}
 
+		$tbl_usermeta = $this->tbl_usermeta;
+		$tbl_users = $this->tbl_users;
 		if( isset($where['first_name']) ){
-			$where['(SELECT meta_value FROM $this->tbl_usermeta WHERE meta_key="first_name" AND user_id=$this->tbl_users.ID)'] = array( $where['first_name'][0], $where['first_name'][1] );
+			$where["(SELECT meta_value FROM $tbl_usermeta WHERE meta_key=\"first_name\" AND user_id=$tbl_users.ID)"] = array( $where['first_name'][0], $where['first_name'][1] );
 			unset( $where['first_name'] );
 			}
 
 		if( isset($where['last_name']) ){
-			$where['(SELECT meta_value FROM $this->tbl_usermeta WHERE meta_key="last_name" AND user_id=$this->tbl_users.ID)'] = array( $where['last_name'][0], $where['last_name'][1] );
+			$where["(SELECT meta_value FROM $tbl_usermeta WHERE meta_key=\"last_name\" AND user_id=$tbl_users.ID)"] = array( $where['last_name'][0], $where['last_name'][1] );
 			unset( $where['last_name'] );
 			}
 
@@ -230,10 +240,10 @@ EOT;
 			for( $i = 0; $i < $ordCount; $i++ ){
 				switch( $order[$i][0] ){
 					case 'first_name':
-						$order[$i][0] = '(SELECT meta_value FROM $this->tbl_usermeta WHERE meta_key="first_name" AND user_id=$this->tbl_users.ID)';
+						$order[$i][0] = "(SELECT meta_value FROM $tbl_usermeta WHERE meta_key=\"first_name\" AND user_id=$tbl_users.ID)";
 						break;
 					case 'last_name':
-						$order[$i][0] = '(SELECT meta_value FROM $this->tbl_usermeta WHERE meta_key="last_name" AND user_id=$this->tbl_users.ID)';
+						$order[$i][0] = "(SELECT meta_value FROM $tbl_usermeta WHERE meta_key=\"last_name\" AND user_id=$tbl_users.ID)";
 						break;
 					default :
 						$temp = array();
@@ -246,7 +256,6 @@ EOT;
 				}
 			}
 		$orderString = ( $order ) ? 'ORDER BY ' . $this->buildOrder($order) : '';
-
 		$result = $this->db->select(
 			'ID',
 			'(' . $this->tbl_users . ')',
@@ -271,14 +280,17 @@ EOT;
 
 	function loadUser( $userId ){
 		$return = array();
+		$tbl_usermeta = $this->tbl_usermeta;
+		$tbl_users = $this->tbl_users;
+
 		if( ! is_array($userId) ){
 			$sql =<<<EOT
 SELECT 
 	* 
 FROM 
-	$this->tbl_users
+	$tbl_users
 WHERE
-	$this->tbl_users.ID = $userId
+	$tbl_users.ID = $userId
 LIMIT 1
 EOT;
 
@@ -290,7 +302,7 @@ EOT;
 SELECT 
 	meta_key, meta_value
 FROM 
-	$this->tbl_usermeta
+	$tbl_usermeta
 WHERE
 	user_id = $uid
 EOT;
@@ -313,9 +325,9 @@ EOT;
 SELECT 
 	* 
 FROM 
-	$this->tbl_users
+	$tbl_users
 WHERE
-	$this->tbl_users.ID IN $searchUserId
+	$tbl_users.ID IN $searchUserId
 LIMIT 1
 EOT;
 				$result = $this->db->runQuery( $sql );
@@ -327,7 +339,7 @@ EOT;
 SELECT 
 	user_id, meta_key, meta_value
 FROM 
-	$this->tbl_usermeta
+	$tbl_usermeta
 WHERE
 	user_id IN $searchUserId
 EOT;

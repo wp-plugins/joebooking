@@ -4,30 +4,17 @@ class HC_Html_Widget_Alert extends HC_Html_Widget_Container
 {
 	private $type = array(); // may be success, success-o, danger, danger-o, info, archive, archive-o
 
-	function add_type( $type )
+	function __construct()
 	{
-		$this->type[] = $type;
-		return $this;
-	}
-	function type()
-	{
-		return $this->type;
+		parent::__construct('div');
 	}
 
 	function render()
 	{
-		$out = HC_Html_Factory::element( $this->tag() )
+		$out = HC_Html_Factory::element('div')
 			->add_attr('class', 'alert')
 			->add_attr('class', 'display-block')
 			;
-
-		$type = $this->type();
-		if( ! is_array($type) )
-			$type = array($type);
-		foreach( $type as $t )
-		{
-			$out->add_attr('class', 'alert-' . $t);
-		}
 
 		$attr = $this->attr();
 		foreach( $attr as $k => $v )

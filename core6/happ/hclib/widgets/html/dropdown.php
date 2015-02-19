@@ -44,8 +44,7 @@ class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
 		$title = $this->title();
 		if( 
 			( $active = $this->active() ) && $this->item($active)
-			)
-		{
+			){
 			$title = $this->item($active);
 			$this->remove_item( $active );
 		}
@@ -53,12 +52,10 @@ class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
 		if( 
 			is_object($title) &&
 			( $title->tag() == 'a' )
-			)
-		{
+			){
 			$trigger = $title;
 		}
-		else
-		{
+		else {
 			$full_title = $title;
 			$title = strip_tags($title);
 			$title = trim($title);
@@ -77,8 +74,7 @@ class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
 			->add_attr('data-toggle', 'dropdown')
 			;
 
-		if( ! $this->no_caret() )
-		{
+		if( ! $this->no_caret() ){
 			$trigger
 				->add_child( ' ' )
 				->add_child(
@@ -94,13 +90,11 @@ class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
 		$out[] = parent::render();
 
 		$return = '';
-		foreach( $out as $o )
-		{
+		foreach( $out as $o ){
 			$return .= $o;
 		}
 
-		if( $this->wrap() )
-		{
+		if( $this->wrap() ){
 			$wrap = HC_Html_Factory::element('div')
 				->add_attr('class', 'dropdown')
 				->add_child( $return )

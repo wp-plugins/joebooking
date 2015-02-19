@@ -3,8 +3,7 @@ class Hc_renderer
 {
 	function render( $view_file, $view_params = array() )
 	{
-		if( $view_params )
-		{
+		if( $view_params ){
 			extract($view_params);
 		}
 

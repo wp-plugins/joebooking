@@ -8,19 +8,19 @@
 
 <div class="col-sm-10">
 <?php
-	$conf =& ntsConf::getInstance();
-	$params = array(
-		'remindOfBackup',
-		);
-	$default = array();
-	reset( $params );
-	foreach( $params as $p ){
-		$default[ $p ] = $conf->get( $p );
-		}
-	$ff =& ntsFormFactory::getInstance();
-	$formFile = dirname( __FILE__ ) . '/form';
-	$form =& $ff->makeForm( $formFile, $default );
-	$form->display();
+$conf =& ntsConf::getInstance();
+$params = array(
+	'remindOfBackup',
+	);
+$default = array();
+reset( $params );
+foreach( $params as $p ){
+	$default[ $p ] = $conf->get( $p );
+	}
+$ff =& ntsFormFactory::getInstance();
+$formFile = dirname( __FILE__ ) . '/form';
+$form =& $ff->makeForm( $formFile, $default );
+$form->display();
 ?>
 </div>
 

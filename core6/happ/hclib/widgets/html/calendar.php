@@ -24,6 +24,7 @@ class HC_Html_Widget_Calendar
 	function set_date_content( $date, $content )
 	{
 		$this->content[$date] = $content;
+		return $this;
 	}
 	function date_content( $date )
 	{
@@ -33,6 +34,7 @@ class HC_Html_Widget_Calendar
 	function set_date( $date )
 	{
 		$this->date = $date;
+		return $this;
 	}
 	function date()
 	{
@@ -42,6 +44,7 @@ class HC_Html_Widget_Calendar
 	function set_wide_slot( $wide_slot )
 	{
 		$this->wide_slot = $wide_slot;
+		return $this;
 	}
 	function wide_slot()
 	{
@@ -51,6 +54,7 @@ class HC_Html_Widget_Calendar
 	function set_range( $range )
 	{
 		$this->range = $range;
+		return $this;
 	}
 	function range()
 	{
@@ -114,7 +118,7 @@ class HC_Html_Widget_Calendar
 
 				$day = HC_Html_Factory::element('div')
 					->add_attr('class', 'thumbnail')
-					->add_attr('class', 'squeeze-in')
+//					->add_attr('class', 'squeeze-in')
 					;
 
 /*

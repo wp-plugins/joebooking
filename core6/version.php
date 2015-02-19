@@ -69,6 +69,11 @@ $NTS_APP_INFO = array(
 	'disabled_features'	=> $disabled_features,
 	);
 
+if( ! isset($GLOBALS['NTS_APP']))
+{
+	$GLOBALS['NTS_APP'] = $app;
+}
+
 if( isset($order_link) )
 {
 	$NTS_APP_INFO['order_link'] = $order_link;

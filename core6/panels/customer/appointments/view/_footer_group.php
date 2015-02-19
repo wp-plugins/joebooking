@@ -82,7 +82,7 @@
 			</li>
 		<?php endif; ?>
 
-	<?php elseif( $has_offline ) : ?>
+	<?php elseif( $has_offline && ($grand_total_amount > $grand_paid_amount) ) : ?>
 
 		<li>
 			<a class="btn btn-success btn-lg" href="<?php echo ntsLink::makeLink('-current-', 'payoffline'); ?>">
