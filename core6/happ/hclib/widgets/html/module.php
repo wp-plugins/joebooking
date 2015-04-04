@@ -66,25 +66,28 @@ class HC_Html_Widget_Module extends HC_Html_Element
 	function render()
 	{
 		$module_params = array();
-		$module_params[] = $this->url();
+		$link_params = array();
 
-		$link = HC_Lib::link( $this->url() );
+		$module_params[] = $this->url();
 
 		foreach( $this->args() as $k ){
 			$module_params[] = $k;
-			$link->pass_arg($k);
+			// $link_params[$k] = $v;
 		}
 
 		foreach( $this->params() as $k => $v ){
 			$module_params[] = $k;
 			$module_params[] = $v;
-			$link->set_param($k, $v);
+			$link_params[$k] = $v;
 		}
 
 		foreach( $this->more_params() as $k => $v ){
 			$module_params[] = $k;
 			$module_params[] = $v;
+			$link_params[$k] = $v;
 		}
+
+		$link = HC_Lib::link( $this->url(), $link_params );
 
 		$return = call_user_func_array( 'Modules::run', $module_params );
 		if( strlen($return) && $this->self_target() ){

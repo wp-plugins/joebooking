@@ -211,12 +211,10 @@ class HC_Html_Element
 	function attr( $key = '' )
 	{
 		$return = array();
-		if( $key === '' )
-		{
+		if( $key === '' ){
 			$return = $this->attr;
 		}
-		elseif( isset($this->attr[$key]) )
-		{
+		elseif( isset($this->attr[$key]) ){
 			$return = $this->attr[$key];
 		}
 		return $return;
@@ -224,11 +222,9 @@ class HC_Html_Element
 
 	protected function prep_attr( $key, $value )
 	{
-		switch( $key )
-		{
+		switch( $key ){
 			case 'title':
-				if( is_string($value) )
-				{
+				if( is_string($value) ){
 					$value = strip_tags($value);
 					$value = trim($value);
 				}
@@ -239,32 +235,24 @@ class HC_Html_Element
 
 	function add_attr( $key, $value = NULL )
 	{
-		if( count(func_get_args()) == 1 )
-		{
+		if( count(func_get_args()) == 1 ){
 			// supplied as array
-			foreach( $key as $key => $value )
-			{
+			foreach( $key as $key => $value ){
 				$this->add_attr( $key, $value );
 			}
 		}
-		else
-		{
-			if( is_array($value) )
-			{
-				foreach( $value as $v )
-				{
+		else {
+			if( is_array($value) ){
+				foreach( $value as $v ){
 					$this->add_attr( $key, $v );
 				}
 			}
-			else
-			{
+			else {
 				$value = $this->prep_attr( $key, $value );
-				if( isset($this->attr[$key]) )
-				{
+				if( isset($this->attr[$key]) ){
 					$this->attr[$key][] = $value;
 				}
-				else
-				{
+				else {
 					if( ! is_array($value) )
 						$value = array( $value ); 
 					$this->attr[$key] = $value;
@@ -314,19 +302,46 @@ class HC_Html_Element
 		return $this->addon;
 	}
 
+	protected function _prepare_children()
+	{
+		$return = '';
+
+		$children = $this->children();
+		if( $children ){
+			reset( $children );
+			foreach( $children as $child ){
+//				$return .= "\n";
+				if( is_array($child) ){
+					foreach( $child as $subchild ){
+						if( is_object($subchild) ){
+							$return .= $subchild->render();
+						}
+						else {
+							$return .= $subchild;
+						}
+					}
+				}
+				elseif( is_object($child) ){
+					$return .= $child->render();
+				}
+				else {
+					$return .= $child;
+				}
+			}
+		}
+		return $return;
+	}
+
 	function render()
 	{
 		$return = '';
 		$return .= '<' . $this->tag();
 
 		$attr = $this->attr();
-		foreach( $attr as $key => $val )
-		{
-			switch( $key )
-			{
+		foreach( $attr as $key => $val ){
+			switch( $key ){
 				case 'value':
-					for( $ii = 0; $ii < count($val); $ii++ )
-					{
+					for( $ii = 0; $ii < count($val); $ii++ ){
 						$val[$ii] = htmlspecialchars( $val[$ii] );
 						$val[$ii] = str_replace( array("'", '"'), array("&#39;", "&quot;"), $val[$ii] );
 					}
@@ -334,81 +349,42 @@ class HC_Html_Element
 			}
 
 			$val = join(' ', $val);
-			if( strlen($val) )
-			{
+			if( strlen($val) ){
 				$return .= ' ' . $key . '="' . $val . '"';
 			}
 		}
 
-		$children = $this->children();
-		if( $children )
-		{
+		$children_return = $this->_prepare_children();
+		if( strlen($children_return) ){
 			$return .= '>';
-
-			reset( $children );
-			foreach( $children as $child )
-			{
-//				$return .= "\n";
-				if( is_array($child) )
-				{
-					foreach( $child as $subchild )
-					{
-						if( is_object($subchild) )
-						{
-							$return .= $subchild->render();
-						}
-						else
-						{
-							$return .= $subchild;
-						}
-					}
-				}
-				elseif( is_object($child) )
-				{
-					$return .= $child->render();
-				}
-				else
-				{
-					$return .= $child;
-				}
-			}
-
+			$return .= $children_return;
 //			$return .= "\n";
 			$return .= '</' . $this->tag() . '>';
 		}
-		else
-		{
-			if( in_array($this->tag(), array('br', 'input')) )
-			{
+		else {
+			if( in_array($this->tag(), array('br', 'input')) ){
 				$return .= '/>';
 			}
-			else
-			{
+			else {
 				$return .= '></' . $this->tag() . '>';
 			}
 		}
 
 		$addon = $this->addon();
-		if( $addon )
-		{
+		if( $addon ){
 			reset( $addon );
-			foreach( $addon as $ao )
-			{
-				if( is_object($ao) )
-				{
+			foreach( $addon as $ao ){
+				if( is_object($ao) ){
 					$return .= $ao->render();
 				}
-				else
-				{
+				else {
 					$return .= $ao;
 				}
 			}
 		}
 
-		if( $wrap = $this->wrap() )
-		{
-			foreach( $wrap as $wr )
-			{
+		if( $wrap = $this->wrap() ){
+			foreach( $wrap as $wr ){
 				$return = $wr->add_child($return)->render();
 			}
 		}
@@ -438,41 +414,67 @@ class HC_Html
 		return $return;
 	}
 
-	static function icon( $icon, $fw = TRUE )
+	static function icon_stack( $icons )
 	{
-		if( is_array($icon) ){
-			/* stacked */
-			$icon1 = array_shift($icon);
-			$icon2 = array_shift($icon);
+		$icon1 = array_shift($icons);
+		$icon2 = array_shift($icons);
 
-			$return = HC_Html_Factory::element('span')
-				->add_attr('class', 'fa-stack')
-//				->add_attr('class', 'fa-lg')
-				;
-			if( $fw )
-				$return->add_attr('class', 'fa-fw');
+		$return = HC_Html_Factory::element('span')
+			->add_attr('class', 'fa-stack')
+			->add_attr('class', 'fa-fw')
+//			->add_attr('class', 'fa-lg')
+			// ->add_attr('style', 'border: red 1px solid;')
+			;
 
-			$return->add_child(
-				HC_Html::icon( $icon1, FALSE )
-					->add_attr('class', 'fa-stack-1x' )
-				);
-			$return->add_child(
-				HC_Html::icon( $icon2, FALSE )
-					->add_attr('class', 'fa-stack-2x' )
-				);
+
+		if( ! is_array($icon1) ){
+			$icon1 = array($icon1);
 		}
-		else {
-			if( substr($icon, 0, 2) == '<i' )
-				return $icon;
+		if( ! is_array($icon2) ){
+			$icon2 = array($icon2);
+		}
 
-			$return = HC_Html_Factory::element('i');
-			if( strlen($icon) ){
-				$return
-					->add_attr('class', array('fa', 'fa-' . $icon))
-					;
-				if( $fw )
-					$return->add_attr('class', 'fa-fw');
-			}
+		$step1 = HC_Html::icon( array_shift($icon1), FALSE );
+		foreach( $icon1 as $ic1 ){
+			$step1->add_attr('class', $ic1);
+		}
+		$step2 = HC_Html::icon( array_shift($icon2), FALSE );
+		foreach( $icon2 as $ic2 ){
+			$step2->add_attr('class', $ic2);
+		}
+
+		$step1->add_attr('class', 'fa-stack-1x');
+		// $step1->add_attr('class', 'align-right');
+
+		$step2->add_attr('class', 'fa-stack-15x');
+		// $step2->add_attr('class', 'align-right');
+
+		$return->add_child($step1);
+		$return->add_child($step2);
+
+		return $return;
+	}
+
+	static function icon( $icon, $fw = TRUE, $inside = '' )
+	{
+		if( substr($icon, 0, 2) == '<i' )
+			return $icon;
+
+		$return = HC_Html_Factory::element('i');
+		if( strlen($icon) ){
+			$return
+				->add_attr('class', array('fa', 'fa-' . $icon))
+				;
+		}
+		elseif( strlen($inside) ){
+			$return
+				->add_attr('class', array('fa'))
+				;
+			$return->add_child( $inside );
+		}
+
+		if( $fw ){
+			$return->add_attr('class', 'fa-fw');
 		}
 		return $return;
 	}

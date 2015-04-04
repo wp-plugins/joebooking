@@ -28,13 +28,20 @@ $filter_options = array(
 	'recent'	=>	M('Recent'),
 	);
 
-if( $restricted_count )
-{
-	foreach( $restricted_count as $rk => $rv )
-	{
+if( $restricted_count ){
+	foreach( $restricted_count as $rk => $rv ){
 		$filter_options[$rk] = ntsUser::_statusLabel( array($rk) ) . ' ' . '[' . $rv . ']';
 	}
 }
+
+$sort_options = array();
+$sort_options['email'] = M('Email');
+if( ! NTS_EMAIL_AS_USERNAME ){
+	$sort_options['username'] = M('Username');
+}
+$sort_options['last_name'] = M('Last Name');
+$sort_options['first_name'] = M('First Name');
+$current_sort_title = isset($sort_options[$current_sort]) ? $sort_options[$current_sort] : $current_sort;
 ?>
 
 <div class="row">
@@ -73,6 +80,28 @@ if( $restricted_count )
 
 			<?php if( $grandTotalCount > 1 ) : ?>
 				<li class="divider hidden-xs">&nbsp;</li>
+				<li>
+					<?php
+					$drp = HC_Html_Factory::widget('dropdown')
+						->set_title( 
+							HC_Html_Factory::widget('a')
+								->add_attr('class', array('btn', 'btn-default'))
+								->add_child( HC_Html::icon('sort-amount-asc') . $current_sort_title )
+							)
+						->set_no_caret()
+						;
+					foreach( $sort_options as $so => $stitle ){
+						if( $so != $current_sort ){
+							$drp->add_item(
+								HC_Html_Factory::widget('a')
+									->add_attr('href', ntsLink::makeLink('-current-', '', array('sort' => $so)))
+									->add_child( $stitle )
+								);
+						}
+					}
+					echo $drp->render();
+					?>
+				</li>
 				<li>
 					<div class="btn-group">
 						<?php if( $filter == 'all' ) : ?>

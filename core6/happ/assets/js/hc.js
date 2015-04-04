@@ -394,8 +394,6 @@ jQuery(document).on( 'click', 'a.hc-flatmodal-closer', function(e)
 	}
 });
 
-
-
 jQuery(document).on( 'click', 'a.hc-modal', function(e)
 {
 	// find my container
@@ -477,15 +475,29 @@ jQuery(document).on( 'click', 'a.hc-form-submit', function(event)
 	return false;
 });
 
+jQuery(document).on( 'click', 'a.hc-target-reloader', function(event)
+{
+	var resultDiv = jQuery(this).closest('.hc-target');
+	if( resultDiv.length > 0 ){
+		var src = resultDiv.data('src');
+		resultDiv.addClass( 'hc-loading' );
+		resultDiv.load( src, function(){
+			resultDiv.removeClass( 'hc-loading' );
+		});
+	}
+});
+
+
 /*
 click ajaxified links within hc-target
 the hc-target is being reloaded with its data-src url after success
 */
 jQuery(document).on( 'click', '.hc-target a:not(.hc-toggler,.hc-toggle,.hc-collapse-next,.hc-ajax-loader,.hc-flatmodal-loader,.hc-modal,.hc-parent-loader)', function(event)
 {
-	if( jQuery(this).closest('.hc-ajax-container').length )
-	{
-		return false;
+	if( ! jQuery(this).hasClass('hc-target-reloader2') ){
+		if( jQuery(this).closest('.hc-ajax-container').length ){
+			return false;
+		}
 	}
 
 	if( event.isPropagationStopped() )

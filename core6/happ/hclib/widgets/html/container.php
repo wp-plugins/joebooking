@@ -42,14 +42,11 @@ class HC_Html_Widget_Container extends HC_Html_Element
 		$out = '';
 
 		$items = $this->items();
-		foreach( $items as $item )
-		{
-			if( is_object($item) )
-			{
+		foreach( $items as $item ){
+			if( is_object($item) ){
 				$out .= $item->render();
 			}
-			else
-			{
+			else {
 				$out .= $item;
 			}
 		}

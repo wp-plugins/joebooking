@@ -2,7 +2,7 @@
 <file>
 <language>English Built-In</language>
 <author>HitCode</author>
-<lastUpdate>17 November, 2014</lastUpdate>
+<lastUpdate>4 April, 2015</lastUpdate>
 <charset>utf-8</charset>
 
 <string>
@@ -262,6 +262,14 @@
 	<translate>Available Balance</translate>
 </string>
 <string>
+	<original>Available In Package Only</original>
+	<translate>Available In Package Only</translate>
+</string>
+<string>
+	<original>Back</original>
+	<translate>Back</translate>
+</string>
+<string>
 	<original>Backup</original>
 	<translate>Backup</translate>
 </string>
@@ -304,6 +312,10 @@
 <string>
 	<original>CSV File</original>
 	<translate>CSV File</translate>
+</string>
+<string>
+	<original>Can Be Paid By Balance</original>
+	<translate>Can Be Paid By Balance</translate>
 </string>
 <string>
 	<original>Cancel</original>
@@ -758,6 +770,14 @@
 	<translate>Finance Settings</translate>
 </string>
 <string>
+	<original>First Invoice</original>
+	<translate>First Invoice</translate>
+</string>
+<string>
+	<original>First Name</original>
+	<translate>First Name</translate>
+</string>
+<string>
 	<original>First Purchase</original>
 	<translate>First Purchase</translate>
 </string>
@@ -1016,6 +1036,10 @@
 <string>
 	<original>Languages</original>
 	<translate>Languages</translate>
+</string>
+<string>
+	<original>Last Name</original>
+	<translate>Last Name</translate>
 </string>
 <string>
 	<original>Leave these blank to autogenerate a random password</original>
@@ -1574,8 +1598,16 @@
 	<translate>Please confirm the password</translate>
 </string>
 <string>
+	<original>Please enter your details to proceed</original>
+	<translate>Please enter your details to proceed</translate>
+</string>
+<string>
 	<original>Please give a reason</original>
 	<translate>Please give a reason</translate>
+</string>
+<string>
+	<original>Please login or register to proceed</original>
+	<translate>Please login or register to proceed</translate>
 </string>
 <string>
 	<original>Please note that this operation can not be reverted!</original>
@@ -1610,8 +1642,16 @@
 	<translate>Price Format</translate>
 </string>
 <string>
+	<original>Print</original>
+	<translate>Print</translate>
+</string>
+<string>
 	<original>Print View</original>
 	<translate>Print View</translate>
+</string>
+<string>
+	<original>Proceed</original>
+	<translate>Proceed</translate>
 </string>
 <string>
 	<original>Proceed Anyway</original>
@@ -1884,6 +1924,10 @@
 <string>
 	<original>Settings</original>
 	<translate>Settings</translate>
+</string>
+<string>
+	<original>Show Booked Timeslots In Front End</original>
+	<translate>Show Booked Timeslots In Front End</translate>
 </string>
 <string>
 	<original>Show Order</original>
@@ -2376,6 +2420,10 @@
 <string>
 	<original>Your new password has been sent to your email</original>
 	<translate>Your new password has been sent to your email</translate>
+</string>
+<string>
+	<original>iCal Summary</original>
+	<translate>iCal Summary</translate>
 </string>
 
 </file>

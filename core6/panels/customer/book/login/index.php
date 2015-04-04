@@ -21,6 +21,8 @@ $enableRegistration = $conf->get('enableRegistration');
 
 <?php if( $enableRegistration ) : ?>
 
+	<h3><?php echo M('Please login or register to proceed'); ?></h3>
+
 	<div class="panel-group">
 		<div class="collapse-panel panel panel-default">
 			<div class="panel-heading">
@@ -70,6 +72,7 @@ $enableRegistration = $conf->get('enableRegistration');
 
 <?php else : ?>
 
+	<h3><?php echo M('Please enter your details to proceed'); ?></h3>
 	<?php echo $NTS_VIEW['form_register']->display(); ?>
 
 <?php endif; ?>

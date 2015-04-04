@@ -4,6 +4,9 @@ $useCaptcha = $conf->get( 'useCaptcha' );
 $strongPassword = $conf->get( 'strongPassword' );
 $enableRegistration = $conf->get('enableRegistration');
 
+$session = new ntsSession;
+$apps = $session->userdata( 'apps' );
+
 $om =& objectMapper::getInstance();
 $fields = $om->getFields( 'customer', 'external' );
 reset( $fields );
@@ -208,6 +211,7 @@ reset( $fields );
 
 <?php
 $btnTitle = M('Confirm');
+$btnTitle = (count($apps) > 1) ? M('Confirm Appointments') : M('Confirm Appointment');
 echo ntsForm::wrapInput(
 	'',
 	'<INPUT NAME="nts-register" class="btn btn-default" TYPE="submit" VALUE="' . $btnTitle . '">'

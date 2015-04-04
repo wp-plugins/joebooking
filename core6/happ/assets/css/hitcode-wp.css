@@ -148,5 +148,9 @@
 }
 
 #nts div.radio input {
-    opacity: inherit;
+	opacity: inherit;
+}
+
+#nts .collapse {
+	height: auto;
 }

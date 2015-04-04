@@ -33,9 +33,19 @@ class HC_Html_Widget_Table extends HC_Html_Widget_Container
 		}
 		// $out->add_attr('border', 1);
 
+		$header = $this->header();
+		if( $header ){
+			$tr = HC_Html_Factory::element('tr');
+			foreach( $header as $r ){
+				$td = HC_Html_Factory::element('th');
+				$td->add_child( $r );
+				$tr->add_child( $td );
+				}
+			$out->add_child( $tr );
+		}
+
 		$rows = $this->rows();
-		foreach( $rows as $row )
-		{
+		foreach( $rows as $row ){
 			$tr = HC_Html_Factory::element('tr');
 			foreach( $row as $r ){
 				$td = HC_Html_Factory::element('td');

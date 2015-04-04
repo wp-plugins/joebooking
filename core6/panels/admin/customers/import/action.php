@@ -13,6 +13,7 @@ $formParams = array();
 $NTS_VIEW['form'] =& $ff->makeForm( $formFile, $formParams );
 
 $customer_fields = array();
+
 $className = 'customer';
 $om =& objectMapper::getInstance();
 
@@ -39,6 +40,7 @@ foreach( $customer_fields as $fn )
 	}
 }
 
+$customer_fields[] = 'id';
 $customer_fields[] = 'password';
 $customer_fields[] = '_notes';
 $customer_fields[] = '_restriction';
@@ -174,8 +176,18 @@ switch( $action )
 					else
 					{
 						$object = new ntsUser();
-						$e['_notes'] = explode( ';', $e['_notes'] );
-						$e['_restriction'] = explode( ';', $e['_restriction'] );
+						if( isset($e['_notes']) ){
+							$e['_notes'] = explode( ';', $e['_notes'] );
+						}
+						else {
+							$e['_notes'] = array();
+						}
+						if( isset($e['_restriction']) ){
+							$e['_restriction'] = explode( ';', $e['_restriction'] );
+						}
+						else {
+							$e['_restriction'] = array();
+						}
 
 						$object->setByArray( $e );
 						$object->setProp('_role', array($className) );

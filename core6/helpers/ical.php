@@ -49,6 +49,7 @@ class ntsIcal {
 			$summary = '{APPOINTMENT.SERVICE}';
 			$ntsConf =& ntsConf::getInstance();
 			$summarySetting = $ntsConf->get('icalSummary');
+
 			switch( $summarySetting ){
 				case 'customer':
 					$summary = '{CUSTOMER_SHORT}';
@@ -58,10 +59,10 @@ class ntsIcal {
 					break;
 				case 'resource':
 					$summary = '{BOOKABLE_RESOURCE_SHORT}';
+					if( NTS_SINGLE_RESOURCE ){
+						$summary = '{APPOINTMENT.SERVICE}';
+					}
 					break;
-			}
-			if( NTS_SINGLE_RESOURCE ){
-				$summary = '{APPOINTMENT.SERVICE}';
 			}
 
 			$this->summary =<<<EOT

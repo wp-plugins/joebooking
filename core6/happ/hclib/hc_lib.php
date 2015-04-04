@@ -62,8 +62,7 @@ class HC_Page_Params
 	public function get( $key )
 	{
 		$return = NULL;
-		if( isset($this->params[$key]) )
-		{
+		if( isset($this->params[$key]) ){
 			$return = $this->params[$key];
 		}
 		return $return;
@@ -90,6 +89,27 @@ class HC_Page_Params
 
 class HC_App
 {
+	static function app()
+	{
+		$return = '';
+		if( isset($GLOBALS['NTS_APP'])){
+			$return = $GLOBALS['NTS_APP'];
+		}
+		return $return;
+	}
+
+	static function extensions()
+	{
+		$return = HC_Extensions::get_instance();
+		return $return;
+	}
+
+	static function notifier()
+	{
+		$return = HC_Notifier::get_instance();
+		return $return;
+	}
+
 	static function app_conf()
 	{
 		$CI =& ci_get_instance();
@@ -143,7 +163,13 @@ class HC_App
 	static function model( $model )
 	{
 		$model = HC_App::full_model( $model );
-		$return = new $model;
+		if( method_exists($model, 'get_instance')){
+			$return = call_user_func(array($model, 'get_instance'));
+			// $return = $model::get_instance();
+		}
+		else {
+			$return = new $model;
+		}
 		return $return;
 	}
 
@@ -154,6 +180,7 @@ class HC_App
 			'date'		=> 'calendar',
 			'time'		=> 'clock-o',
 			'shift'		=> 'clock-o',
+			'shift'		=> 'gavel',
 			'timeoff'	=> 'coffee',
 			'user'		=> 'user',
 			'location'	=> 'home',
@@ -169,8 +196,7 @@ class HC_App
 	{
 		$return = array();
 		$return['HC'] = dirname(__FILE__) . '/widgets';
-		if( defined('APPPATH') )
-		{
+		if( defined('APPPATH') ){
 			$return['SFT'] = APPPATH . 'widgets';
 		}
 		return $return;
@@ -179,24 +205,86 @@ class HC_App
 
 class HC_Link
 {
+	private $controller = '';
+	private $params = array();
+
+	function __construct( $controller = '', $params = array() )
+	{
+		$this->controller = $controller;
+		$this->params = $params;
+	}
+
+	function url( $change_params = array() )
+	{
+		if( $this->controller ){
+			$slug[] = $this->controller;
+		}
+
+		$params = array_merge( $this->params, $change_params );
+		$params = $this->params;
+		foreach( $change_params as $k => $v ){
+			if( (substr($k, -1) == '+') OR (substr($k, -1) == '-') ){
+				$operation = substr($k, -1);
+				$k = substr($k, 0, -1);
+				if( isset($params[$k]) ){
+					if( ! is_array($params[$k]) ){
+						$params[$k] = array( $params[$k] );
+					}
+				}
+				else {
+					$params[$k] = array();
+				}
+				if( $operation == '+' ){
+					$params[$k][] = $v;
+				}
+				else {
+					$params[$k] = HC_Lib::remove_from_array( $params[$k], $v );
+				}
+			}
+			else {
+				$params[$k] = $v;
+			}
+		}
+
+		foreach( $params as $k => $v ){
+			if( is_array($v) ){
+				if( ! $v ){
+					continue;
+				}
+				$v = join('.', $v);
+			}
+			if( $v !== NULL ){
+				$slug[] = $k;
+				$slug[] = $v;
+			}
+		}
+		$return = ci_site_url( $slug );
+		return $return;
+	}
+
+	public function __toString()
+	{
+		return $this->url();
+    }
+}
+
+class HC_Link2
+{
 	private $args = array();
 	private $params = array();
 	private $controller = '';
 
 	function __construct( $init = '' )
 	{
-		if( is_array($init) )
-		{
+		if( is_array($init) ){
 			$controller = array_shift( $init );
 			$this->set_controller( $controller );
 			$params = hc_parse_args( $init );
-			foreach( $params as $k => $v )
-			{
+			foreach( $params as $k => $v ){
 				$this->set_param($k, $v);
 			}
 		}
-		else
-		{
+		else {
 			$this->set_controller( $init );
 		}
 	}
@@ -223,8 +311,7 @@ class HC_Link
 
 	function append_param( $key, $value )
 	{
-		if( array_key_exists($key, $this->params) )
-		{
+		if( array_key_exists($key, $this->params) ){
 			$current_value = $this->params[$key];
 			if( ! is_array($current_value) )
 				$current_value = array( $current_value );
@@ -246,8 +333,7 @@ class HC_Link
 
 	function set_params( $params )
 	{
-		foreach( $params as $k => $v )
-		{
+		foreach( $params as $k => $v ){
 			$this->set_param( $k, $v );
 		}
 		return $this;
@@ -378,14 +464,11 @@ class Hc_lib {
 		return $return;
 	}
 
-
 	static function array_intersect_by_key( $src, $keys )
 	{
 		$out = array();
-		foreach( $keys as $k )
-		{
-			if( array_key_exists($k, $src) )
-			{
+		foreach( $keys as $k ){
+			if( array_key_exists($k, $src) ){
 				$out[ $k ] = $src[ $k ];
 			}
 		}
@@ -427,8 +510,7 @@ class Hc_lib {
 	static function is_ajax()
 	{
 		$return = FALSE;
-		if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') )
-		{
+		if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') ){
 			$return = TRUE;
 		}
 		return $return;
@@ -437,8 +519,7 @@ class Hc_lib {
 	static function app()
 	{
 		$return = '';
-		if( isset($GLOBALS['NTS_APP']))
-		{
+		if( isset($GLOBALS['NTS_APP'])){
 			$return = $GLOBALS['NTS_APP'];
 		}
 		return $return;
@@ -448,8 +529,7 @@ class Hc_lib {
 	{
 		$return = array();
 		$app = HC_Lib::app();
-		if( isset($GLOBALS['NTS_CONFIG'][$app]) )
-		{
+		if( isset($GLOBALS['NTS_CONFIG'][$app]) ){
 			$return = $GLOBALS['NTS_CONFIG'][$app];
 		}
 		return $return;
@@ -459,8 +539,7 @@ class Hc_lib {
 	{
 		$return = '';
 		$nts_config = HC_Lib::nts_config();
-		if( isset($nts_config['REMOTE_INTEGRATION']) )
-		{
+		if( isset($nts_config['REMOTE_INTEGRATION']) ){
 			$return = $nts_config['REMOTE_INTEGRATION'];
 		}
 		return $return;
@@ -493,9 +572,9 @@ class Hc_lib {
 		return $return;
 	}
 
-	static function link( $start = '' )
+	static function link( $start = '', $params = array() )
 	{
-		$return = new HC_Link( $start );
+		$return = new HC_Link( $start, $params );
 		return $return;
 	}
 
@@ -648,12 +727,16 @@ class Hc_lib {
 			'#c28551',
 			);
    
-		if( $i > count($out) )
-		{
+		if( $i > count($out) ){
 			$i = $i % count($out);
 		}
 
-		$return = $out[$i - 1];
+		if( $i > 0 ){
+			$return = $out[$i - 1];
+		}
+		else {
+			$return = '#000';
+		}
 		return $return;
 	}
 

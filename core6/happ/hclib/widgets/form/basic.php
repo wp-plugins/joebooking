@@ -164,7 +164,7 @@ class HC_Form_Input extends HC_Html_Element
 
 class HC_Form_Input_Textarea extends HC_Form_Input
 {
-	private $rich = TRUE;
+	private $rich = FALSE;
 
 	function set_rich( $rich = TRUE )
 	{
@@ -197,14 +197,11 @@ class HC_Form_Input_Textarea extends HC_Form_Input
 	{
 		$ri = HC_Lib::ri();
 
-		if( ($ri == 'wordpress') && $this->rich() )
-		{
+		if( ($ri == 'wordpress') && $this->rich() ){
 			$wp_editor_settings = array();
 			$attr = $this->attr();
-			foreach( $attr as $k => $v )
-			{
-				switch( $k )
-				{
+			foreach( $attr as $k => $v ){
+				switch( $k ){
 					case 'rows':
 						$wp_editor_settings['textarea_rows'] = is_array($v) ? $v[0] : $v;
 						break;
@@ -241,8 +238,7 @@ EOT;
 
 			$return = ob_get_clean();
 		}
-		else
-		{
+		else {
 			$el = HC_Html_Factory::element( 'textarea' )
 				->add_attr( 'name', $this->name() )
 				->add_attr( 'id', $this->id() )
@@ -251,15 +247,13 @@ EOT;
 				;
 
 			$attr = $this->attr();
-			foreach( $attr as $k => $v )
-			{
+			foreach( $attr as $k => $v ){
 				$el->add_attr($k, $v);
 			}
 
 			$return = $this->decorate( $el->render() );
 
-			if( $this->rich() )
-			{
+			if( $this->rich() ){
 				$js = array();
 				$js[] = '<script language="JavaScript">';
 				$js[] = 'tinyMCE.execCommand("mceAddEditor", false, "' . $this->id() . '")';
@@ -439,8 +433,7 @@ class HC_Form_Input_Text extends HC_Form_Input
 			;
 
 		$attr = $this->attr();
-		foreach( $attr as $k => $v )
-		{
+		foreach( $attr as $k => $v ){
 			$el->add_attr($k, $v);
 		}
 
@@ -472,8 +465,7 @@ class HC_Form_Input_Password extends HC_Form_Input
 			;
 
 		$attr = $this->attr();
-		foreach( $attr as $k => $v )
-		{
+		foreach( $attr as $k => $v ){
 			$el->add_attr($k, $v);
 		}
 

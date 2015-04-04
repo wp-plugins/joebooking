@@ -113,6 +113,14 @@ class ntsWpBase2 extends hcWpBase4
 		{
 			if( parent::front_init() )
 			{
+				// if language param supplied
+				if( isset($GLOBALS['NTS_CONFIG'][$this->app]['DEFAULT_PARAMS']) ){
+					$params = $GLOBALS['NTS_CONFIG'][$this->app]['DEFAULT_PARAMS'];
+					if( isset($params['lang']) && (! defined('NTS_DEFAULT_LANGUAGE')) ){
+						define( 'NTS_DEFAULT_LANGUAGE', $params['lang'] );
+					}
+				}
+
 			// action
 				$file = $this->dir . '/../controller.php';
 				require( $file );

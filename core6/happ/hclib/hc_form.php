@@ -34,7 +34,10 @@ class HC_Form
 
 		// Add CSRF field if enabled, but leave it out for GET requests and requests to external websites	
 		$hidden = array();
-		if ($CI->config->item('csrf_protection') === TRUE AND ! (strpos($action, $CI->config->base_url()) === FALSE OR strpos($form, 'method="get"')))	
+		if( 
+			($CI->config->item('csrf_protection') === TRUE) AND 
+			! (strpos($action, $CI->config->base_url()) === FALSE OR strpos($form, 'method="get"'))
+			)
 		{
 			$hidden[$CI->security->get_csrf_token_name()] = $CI->security->get_csrf_hash();
 		}
@@ -149,15 +152,13 @@ class HC_Form
 	}
 
 	function input( $field, $add_class = TRUE )
-	{		
-		if( $add_class )
-		{
+	{
+		if( $add_class ){
 			if( ! isset($field['extra']['class']) )
 				$field['extra']['class'] = '';
 			if( $field['extra']['class'] )
 				$field['extra']['class'] .= ' ';
-			if( ! (isset($field['type']) && ( in_array($field['type'], array('checkbox', 'radio', 'hidden')) ) ) )
-			{
+			if( ! (isset($field['type']) && ( in_array($field['type'], array('checkbox', 'radio', 'hidden')) ) )){
 				$field['extra']['class'] .= 'form-control';
 			}
 		}
@@ -176,13 +177,11 @@ class HC_Form
 			$field['extra']['class'] = '';
 		if( $field['extra']['class'] )
 			$field['extra']['class'] .= ' ';
-		if( ! (isset($field['type']) && ( in_array($field['type'], array('checkbox', 'radio', 'hidden')) ) ) )
-		{
+		if( ! (isset($field['type']) && ( in_array($field['type'], array('checkbox', 'radio', 'hidden')) ) )){
 			$field['extra']['class'] .= 'form-control';
 		}
 
-		if( $show_error )
-		{
+		if( $show_error ){
 			$view = hc_form_input(
 				$field,
 				$this->defaults,

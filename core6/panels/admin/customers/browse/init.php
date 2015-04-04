@@ -4,6 +4,9 @@ $persist = array(
 	'search'	=> '',
 	'skip'		=> array(),
 	);
+// $persist['sort'] = NTS_EMAIL_AS_USERNAME ? 'email' : 'username';
+$persist['sort'] = 'last_name';
+
 reset( $persist );
 foreach( $persist as $p => $default )
 {

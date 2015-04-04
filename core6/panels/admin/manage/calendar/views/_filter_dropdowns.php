@@ -1,3 +1,10 @@
+<?php
+$ress_archive = ntsLib::getVar( 'admin::ress_archive' );
+if( $ress_archive ){
+	$ress2 = array_diff( $ress2, $ress_archive );
+	$ress2 = array_values( $ress2 );
+}
+?>
 <?php if( count($locs_all) > 1 ) : ?>
 	<?php
 	$thisFilter_NoLocation = array();
@@ -103,7 +110,6 @@
 	?>
 	<div class="dropdown" id="ntsFilterResource">
 		<ul class="dropdown-menu dropdown-menu-hori">
-
 			<?php if( isset($current_filter['l']) && $current_filter['l'] ) : ?>
 				<?php if( (count($ress2) > 1) && (count($ress2) < count($ress_all)) ) : ?>
 					<li class="dropdown-header">

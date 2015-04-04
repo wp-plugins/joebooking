@@ -21,7 +21,15 @@ $where = array(
 	'starts_at'							=> array('<', $periodEnd)
 	);
 
-$where['completed'] = array( '<>', HA_STATUS_CANCELLED );
+// $where['completed'] = array( '<>', HA_STATUS_CANCELLED );
+if( $display == 'calendar' ){
+	$where['completed'] = array( '<>', HA_STATUS_CANCELLED );
+//	$where['completed '] = array( '<>', HA_STATUS_NOSHOW );
+}
+else {
+	$where['completed'] = array('>=', 0);
+}
+
 
 $tm2 = ntsLib::getVar( 'admin::tm2' );
 $tm2->processCompleted = TRUE;

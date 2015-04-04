@@ -3,6 +3,7 @@ class HC_Html_Widget_Calendar
 {
 	private $range = 'week'; // may be week or month
 	private $date = '';
+	private $end_date = '';
 	private $content = array();
 	private $wide_slot = TRUE;
 
@@ -16,8 +17,25 @@ class HC_Html_Widget_Calendar
 	function dates()
 	{
 		$t = HC_Lib::time();
-		$t->setDateDb( $this->date() );
-		$return = $t->getDates( $this->range() );
+
+		$start_date = $this->date();
+		$end_date = $this->end_date();
+
+		if( $end_date ){
+			$return = array();
+			$t->setDateDb( $start_date );
+			$rex_date = $t->formatDate_Db();
+			while( $rex_date <= $end_date ){
+				$return[] = $rex_date;
+				$t->modify('+1 day');
+				$rex_date = $t->formatDate_Db();
+			}
+		}
+		else {
+			$t->setDateDb( $start_date );
+			$return = $t->getDates( $this->range() );
+		}
+
 		return $return;
 	}
 
@@ -39,6 +57,16 @@ class HC_Html_Widget_Calendar
 	function date()
 	{
 		return $this->date;
+	}
+
+	function set_end_date( $end_date )
+	{
+		$this->end_date = $end_date;
+		return $this;
+	}
+	function end_date()
+	{
+		return $this->end_date;
 	}
 
 	function set_wide_slot( $wide_slot )
@@ -64,28 +92,31 @@ class HC_Html_Widget_Calendar
 	function render()
 	{
 		$t = HC_Lib::time();
-
 		$t->setDateDb( $this->date() );
 
-		switch( $this->range() )
-		{
-			case 'week':
-				$t->setDateDb( $this->date() );
+		$start_date = $this->date();
+		$end_date = $this->end_date();
 
-				$t->setStartWeek();
-				$start_date = $t->formatDate_Db();
-				$t->setEndWeek();
-				$end_date = $t->formatDate_Db();
-				break;
+		if( ! $end_date ){
+			switch( $this->range() ){
+				case 'week':
+					$t->setDateDb( $this->date() );
 
-			case 'month':
-				$t->setDateDb( $this->date() );
+					$t->setStartWeek();
+					$start_date = $t->formatDate_Db();
+					$t->setEndWeek();
+					$end_date = $t->formatDate_Db();
+					break;
 
-				$t->setStartMonth();
-				$start_date = $t->formatDate_Db();
-				$t->setEndMonth();
-				$end_date = $t->formatDate_Db();
-				break;
+				case 'month':
+					$t->setDateDb( $this->date() );
+
+					$t->setStartMonth();
+					$start_date = $t->formatDate_Db();
+					$t->setEndMonth();
+					$end_date = $t->formatDate_Db();
+					break;
+			}
 		}
 
 		$t->setDateDb( $start_date );
@@ -97,8 +128,7 @@ class HC_Html_Widget_Calendar
 
 		$slot_width = 1;
 	/* wide slot */
-		if( ($this->range() == 'week') && ($this->wide_slot()) )
-		{
+		if( ($this->range() == 'week') && ($this->wide_slot()) ){
 			$slot_width = 3;
 			$month_matrix = array( 
 				array_slice($month_matrix[0], 0, 4),
@@ -106,8 +136,7 @@ class HC_Html_Widget_Calendar
 				);
 		}
 
-		foreach( $month_matrix as $week => $days )
-		{
+		foreach( $month_matrix as $week => $days ){
 			$grid = HC_Html_Factory::widget('grid')
 				->add_attr('class', 'hc-cal-row')
 				;
@@ -121,30 +150,11 @@ class HC_Html_Widget_Calendar
 //					->add_attr('class', 'squeeze-in')
 					;
 
-/*
-				$label = HC_Html_Factory::widget('list')
-					->add_attr('class', array('nav', 'nav-stacked'))
-					->add_item(
-						HC_Html_Factory::element('h4')
-							->add_child( $t->formatWeekdayShort() )
-							->add_child(' ')
-							->add_child(
-								HC_Html_Factory::element('small')
-									->add_child( $t->formatDate() )
-								)
-							)
-					->add_divider()
-					;
-				$day->add_child( $label );
-*/
-
 				$date_content = $this->date_content($rex_date);
-				if( $date_content )
-				{
+				if( $date_content ){
 					$day->add_child( $date_content );
 				}
-				else
-				{
+				else {
 					$day = '';
 				}
 				$grid->add_item( 
@@ -156,7 +166,6 @@ class HC_Html_Widget_Calendar
 					);
 			}
 			$out->add_child( $grid );
-
 		}
 		return $out->render();
 	}

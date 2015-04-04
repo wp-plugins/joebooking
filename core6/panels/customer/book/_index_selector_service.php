@@ -1,6 +1,10 @@
 <?php
 $this_per_row = 2;
 $this_col_class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12';
+
+$am =& ntsAccountingManager::getInstance();
+$customer_id = ntsLib::getCurrentUserId();
+$customer_balance = $am->get_balance( 'customer', $customer_id );
 ?>
 
 <?php if( $requested['service'] OR (count($services) <= 1) ) : ?>
@@ -43,14 +47,51 @@ $this_col_class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12';
 					<?php foreach( $services as $id => $obj ) : ?>
 						<?php
 						$count++;
+
+						$balance_cover = array();
+						$can_book_this = 1;
+						$package_only = $obj->getProp('package_only');
+						if( $customer_balance ){
+							$test_app = ntsObjectFactory::get('appointment');
+							$test_app->setByArray( $this_a );
+							$test_app->setProp('service_id', $id);
+							$balance_cover = $am->balance_cover( $customer_balance, $test_app );
+						}
+
+						if( $package_only ){
+							$can_book_this = 0;
+							if( $balance_cover ){
+								$can_book_this = 1;
+							}
+						}
 						?>
 						<li class="<?php echo $this_col_class; ?>"<?php echo $col_style; ?>>
 							<div class="alert alert-default-o">
 								<ul class="list-unstyled">
 									<li>
-										<a title="<?php echo ntsView::objectTitle($obj); ?>" href="<?php echo ntsLink::makeLink('-current-', '', array('service' => $id)); ?>">
-											<?php echo ntsView::objectTitle( $obj, TRUE ); ?>
-										</a>
+										<ul class="list-unstyled">
+											<li>
+											<?php if( $can_book_this ) : ?>
+												<a title="<?php echo ntsView::objectTitle($obj); ?>" href="<?php echo ntsLink::makeLink('-current-', '', array('service' => $id)); ?>">
+													<?php echo ntsView::objectTitle( $obj, TRUE ); ?>
+												</a>
+											<?php else : ?>
+												<?php echo ntsView::objectTitle( $obj, TRUE ); ?>
+											<?php endif; ?>
+											</li>
+
+											<?php if( $balance_cover ) : ?>
+												<li>
+													<span class="label label-success"><?php echo M('Can Be Paid By Balance'); ?></span>
+												</li>
+											<?php elseif( $package_only ) : ?>
+												<li>
+													<a title="<?php echo M('Purchase'); ?>" href="<?php echo ntsLink::makeLink('customer/packs'); ?>">
+														<span class="label label-warning"><?php echo M('Available In Package Only'); ?></span>
+													</a>
+												</li>
+											<?php endif; ?>
+										</ul>
 									</li>
 									<li>
 										<?php require( dirname(__FILE__) . '/_index_service_details.php' ); ?>

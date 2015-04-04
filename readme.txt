@@ -48,8 +48,14 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.2.8 =
+* Added an option to make a service available in package only, i.e. a customer should purchase a package first to be able to book a service.
+* Redesigned the appointment actions in the calendar view - removed the dropdown that might be not convenient on some screens.
+* Added an option to sort the customer list by last name, first name, email or username.
+* Added some more descriptive labels in the appointment confirmation forms on the customer side.
+
 = 6.2.7 =
-* An option to configure the summary for iCal output (for export to Google Calendar etc)
+* An option to configure the summary for iCal output (for export to Google Calendar etc).
 
 = 6.2.6 =
 * The admin can now remove a coupon from an appointment.

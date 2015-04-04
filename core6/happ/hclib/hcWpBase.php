@@ -360,7 +360,7 @@ class hcWpBase4
 			if(
 				preg_match('/\/jquery\-\d/', $file)
 			){
-				$id = $file_id = 'jquery';
+//				$id = $file_id = 'jquery';
 			}
 		}
 		else

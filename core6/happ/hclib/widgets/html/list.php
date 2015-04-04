@@ -48,23 +48,20 @@ class HC_Html_Widget_List extends HC_Html_Widget_Container
 		}
 
 		$items = $this->items();
-		foreach( $items as $key => $item )
-		{
+		foreach( $items as $key => $item ){
 			$li = HC_Html_Factory::element('li');
 			$item_attr = $this->item_attr($key);
 			foreach( $item_attr as $k => $v ){
 				$li->add_attr( $k, $v );
 			}
 
-			if( is_string($item) && ($item == '-divider-') )
-			{
+			if( is_string($item) && ($item == '-divider-') ){
 				$item = '&nbsp;';
 				$li->add_attr('class', 'divider');
+				$li->add_attr('class', 'hidden-xs');
 			}
-			else
-			{
-				if( $key === $this->active() )
-				{
+			else {
+				if( $key === $this->active() ){
 					$li->add_attr('class', 'active');
 				}
 				if(

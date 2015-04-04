@@ -3,18 +3,20 @@ $ri = ntsLib::remoteIntegration();
 $ntsdb =& dbWrapper::getInstance();
 ?>
 <div class="row">
+	<div class="col-md-8 col-xs-12">
+		<span class="nav-item smaller text-muted">
+			<?php echo $t->formatDateFull(); ?> <strong><?php echo $t->formatTime(); ?></strong>
+		</span>
+	</div>
 	<div class="col-md-4 col-xs-12 pull-right">
 		<ul class="nav nav-pills pull-right" style="margin: 0 0;">
 			<?php require( dirname(__FILE__) . '/user-info-lang.php' ); ?>
-			<li>
-				<span class="nav-item smaller text-muted">
-					<?php echo $t->formatDateFull(); ?> <strong><?php echo $t->formatTime(); ?></strong>
-				</span>
-			</li>
 		</ul>
 	</div>
+</div>
 
-	<div class="col-md-8 col-xs-12">
+<div class="row">
+	<div class="col-xs-12">
 		<ul class="nav nav-pills" style="margin: 0 0;">
 			<?php if( ntsLib::getCurrentUserId() ) : ?>
 				<?php if( $NTS_CURRENT_USER->hasRole('admin') ) : ?>

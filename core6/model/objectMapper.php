@@ -366,8 +366,8 @@ class objectMapper extends ntsObjectMapper {
 		list( $appsAdmins, $scheduleAdmins ) = $resource->getAdmins();
 		$providers = array();
 		reset( $appsAdmins );
-		foreach( $appsAdmins as $admId => $access ){
-			if( $access['notified'] ){
+		foreach( $appsAdmins as $admId => $accessUser ){
+			if( $accessUser['notified'] ){
 				$provider = new ntsUser;
 				$provider->setId( $admId );
 				$adminEmail = $provider->getProp('email');

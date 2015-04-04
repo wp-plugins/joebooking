@@ -62,7 +62,8 @@ foreach( $all_fields as $f )
 
 <?php echo $this->makePostParams('-current-', 'submit' ); ?>
 <?php
-$btn_label = (count($apps) > 1) ? M('Confirm Appointments') : M('Confirm Appointment');
+// $btn_label = (count($apps) > 1) ? M('Confirm Appointments') : M('Confirm Appointment');
+$btn_label = (count($apps) > 1) ? M('Proceed') : M('Proceed');
 $btn = '<INPUT class="btn btn-default btn-lg" TYPE="submit" VALUE="' . $btn_label . '">'
 ?>
 

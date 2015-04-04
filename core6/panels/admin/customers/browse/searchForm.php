@@ -15,5 +15,12 @@ echo $this->makeInput (
 $params = array();
 $params[NTS_PARAM_VIEW_MODE] = $NTS_VIEW[NTS_PARAM_VIEW_MODE];
 echo $this->makePostParams('-current-', 'search', $params);
+
+$btn = HC_Html_Factory::element('button')
+	->add_attr('type', 'submit')
+	->add_attr('class', array('btn', 'btn-default'))
+	->add_attr('title', M('Search'))
+	->add_child(HC_Html::icon('search'))
+	;
+echo $btn->render();
 ?>
-<INPUT TYPE="submit" class="btn btn-default" VALUE="<?php echo M('Search'); ?>">

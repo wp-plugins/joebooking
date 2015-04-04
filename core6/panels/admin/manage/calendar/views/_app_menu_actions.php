@@ -54,7 +54,7 @@ if( $canDelete )
 				)
 			),
 		'title'	=> '<i class="fa fa-times text-danger"></i> ' . M('Delete'),
-		'class'	=> 'hc-confirm',
+		'class'	=> 'hc-confirm hc-target-reloader2',
 		);
 }
 ?>

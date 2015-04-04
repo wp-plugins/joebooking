@@ -58,8 +58,7 @@ class HC_Html_Widget_Label_Row extends HC_Html_Element
 		$div = HC_Html_Factory::element( 'div' )
 			->add_attr('class', 'form-group')
 			;
-		if( $error )
-		{
+		if( $error ){
 			$div->add_attr('class', 'has-error');
 		}
 
@@ -73,13 +72,11 @@ class HC_Html_Widget_Label_Row extends HC_Html_Element
 		$content_holder = HC_Html_Factory::element( 'div' )
 			->add_attr('class', 'control-holder')
 			;
-		if( $this->content_static() )
-		{
+		if( $this->content_static() ){
 			$content_holder->add_attr('class', 'form-control-static');
 		}
 
-		foreach( $content as $cont )
-		{
+		foreach( $content as $cont ){
 			$content_holder->add_child( $cont );
 		}
 

@@ -66,6 +66,13 @@ foreach( $all_apps as $a )
 
 	$t->setTimestamp( $a['starts_at'] + $a['duration'] );
 	$app_end_date = $t->formatDate_Db();
+	if( $app_end_date > $app_start_date ){
+		$tod = $t->getTimeOfDay();
+		if( $tod == 0 ){
+			$t->modify('-1 day');
+			$app_end_date = $t->formatDate_Db();
+		}
+	}
 	if( isset($end_date) )
 	{
 		if( $app_end_date > $end_date )

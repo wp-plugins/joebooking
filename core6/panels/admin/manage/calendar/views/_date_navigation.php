@@ -85,22 +85,22 @@ switch( $range )
 }
 ?>
 
-<ul class="pagination">
+<ul class="list-inline">
 	<?php if( $prev_date ) : ?>
 		<li>
-			<a href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $prev_date)); ?>" title="<?php echo $prev_date_view; ?>">
+			<a class="btn btn-default" href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $prev_date)); ?>" title="<?php echo $prev_date_view; ?>">
 				&lt;&lt;
 			</a>
 		</li>
 	<?php endif; ?>
 	<li class="active">
-		<a class="text-center" style="width: 10em; display: block; white-space: nowrap; overflow: hidden;" href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $start_date)); ?>" title="<?php echo $nav_title; ?>">
+		<a class="btn btn-success text-center" style="width: 10em; display: block; white-space: nowrap; overflow: hidden;" href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $start_date)); ?>" title="<?php echo $nav_title; ?>">
 			<?php echo $nav_title; ?>
 		</a>
 	</li>
 	<?php if( $next_date ) : ?>
 		<li>
-			<a href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $next_date)); ?>" title="<?php echo $next_date_view; ?>">
+			<a class="btn btn-default" href="<?php echo ntsLink::makeLink('-current-', '', array('start' => $next_date)); ?>" title="<?php echo $next_date_view; ?>">
 				&gt;&gt;
 			</a>
 		</li>

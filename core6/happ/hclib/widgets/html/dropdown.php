@@ -4,7 +4,7 @@ class HC_Html_Widget_Dropdown extends HC_Html_Widget_List
 {
 	protected $title = NULL;
 	protected $no_caret = FALSE;
-	protected $wrap = FALSE;
+	protected $wrap = TRUE;
 
 	function set_title( $title )
 	{

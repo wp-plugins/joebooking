@@ -28,8 +28,7 @@ class HC_Form2
 	function set_inputs( $inputs )
 	{
 		reset( $inputs );
-		foreach( $inputs as $name => $type )
-		{
+		foreach( $inputs as $name => $type ){
 			$this->set_input( $name, $type );
 		}
 		return $this;
@@ -42,8 +41,7 @@ class HC_Form2
 
 	function grab( $post )
 	{
-		foreach( array_keys($this->inputs) as $k )
-		{
+		foreach( array_keys($this->inputs) as $k ){
 			$this->inputs[$k]->grab( $post );
 		}
 	}
@@ -51,10 +49,8 @@ class HC_Form2
 	function set_values( $values )
 	{
 		$values = $this->_values_model_to_form( $values, $this->convert() );
-		foreach( array_keys($this->inputs) as $k )
-		{
-			if( isset($values[$k]) )
-			{
+		foreach( array_keys($this->inputs) as $k ){
+			if( isset($values[$k]) ){
 				$this->inputs[$k]->set_value( $values[$k] );
 			}
 		}
@@ -62,8 +58,7 @@ class HC_Form2
 	function values()
 	{
 		$return = array();
-		foreach( array_keys($this->inputs) as $k )
-		{
+		foreach( array_keys($this->inputs) as $k ){
 			$return[$k] = $this->inputs[$k]->value();
 		}
 		$return = $this->_values_form_to_model( $return, $this->convert() );
@@ -78,15 +73,12 @@ class HC_Form2
 		$errors = $this->_errors_model_to_form( $errors, $this->convert() );
 
 		$input_names = array_keys($this->inputs);
-		foreach( $errors as $k => $e )
-		{
-			if( in_array($k, $input_names) )
-			{
+		foreach( $errors as $k => $e ){
+			if( in_array($k, $input_names) ){
 				$this->inputs[$k]->set_error( $e );
 				$this->errors[$k] = $e;
 			}
-			else
-			{
+			else {
 				$this->orphan_errors[$k] = $e;
 			}
 		}

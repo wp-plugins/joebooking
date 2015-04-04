@@ -25,6 +25,12 @@ $status_class = $app->statusClass();
 
 $title = array();
 
+$appEdit = ntsLib::getVar( 'admin/manage:appEdit' );
+$rid = $app->getProp( 'resource_id' );
+$can_edit = in_array($rid, $appEdit) ? 1 : 0;
+
+$edit_link = ntsLink::makeLink('admin/manage/appointments/edit/overview', '', array('_id' => $app->getId()) );
+
 /* prefill titles */
 $title['location'] = ntsView::objectTitle( $location, TRUE );
 $title['resource'] = ntsView::objectTitle( $resource, TRUE );
@@ -157,8 +163,8 @@ if( (count($labels['main']) > 0) OR (is_array($labels['main'][0]) ) )
 			}
 			$final_title[] = $this_title;
 
-			if( $collapse_in )
-				$final_title[] = ' <span class="caret"></span>';
+			// if( $collapse_in )
+				// $final_title[] = ' <span class="caret"></span>';
 			$final_title[] = '</li>';
 		}
 		$label_count++;
@@ -264,7 +270,7 @@ if( $checkbox )
 $cost = $app->getCost();
 ?>
 
-<div class="collapse-panel panel<?php echo $condensed; ?> panel-<?php echo $status_class; ?><?php echo $parent_class; ?>">
+<div class="hc-ajax-parent collapse-panel panel<?php echo $condensed; ?> panel-<?php echo $status_class; ?><?php echo $parent_class; ?>">
 
 <?php if( $collapse_in && $menu ) : ?>
 	<div class="panel-heading">
@@ -278,13 +284,15 @@ $cost = $app->getCost();
 		</div>
 	<?php endif; ?>
 
-	<?php if( $collapse_in && $menu ) : ?>
+	<?php if( 0 ) : ?>
 		<span class="dropdown">
 			<a href="#" data-toggle="dropdown" class="dropdown-toggle">
 				<?php echo $show_title; ?>
 			</a>
 			<?php echo Hc_html::dropdown_menu($menu); ?>
 		</span>
+	<?php elseif( $collapse_in && $menu ) : ?>
+		<?php echo $show_title; ?>
 	<?php else : ?>
 		<a href="#" data-toggle="collapse-next" class="alert-<?php echo $status_class; ?>">
 			<?php echo $show_title; ?>
@@ -292,7 +300,7 @@ $cost = $app->getCost();
 	<?php endif; ?>
 </div>
 
-<div class="panel-collapse collapse<?php echo $collapse_in; ?>">
+<div class="hc-ajax-container panel-collapse collapse<?php echo $collapse_in; ?>">
 	<?php if( $more ) : ?>
 		<div class="panel-body squeeze-in">
 			<?php if( $checkbox ) : ?>
@@ -348,14 +356,37 @@ $cost = $app->getCost();
 		<?php endif; ?>
 	</div>
 
-	<?php if( $menu && (! $collapse_in) ) : ?>
+	<?php //if( $menu && (! $collapse_in) ) : ?>
+	<?php if( $menu ) : ?>
 		<div class="panel-footer">
-			<div class="btn-group">
-				<a class="dropdown-toggle btn btn-default" href="#" data-toggle="dropdown">
-					<?php echo $app->statusLabel('', 'i'); ?> <?php echo $app->statusText(); ?> <span class="caret"></span>
-				</a>
-				<?php echo Hc_html::dropdown_menu($menu); ?>
-			</div>
+			<?php
+			$this_menu = HC_Html_Factory::widget('list')
+				->add_attr('class', 'list-inline')
+				->add_attr('class', 'list-separated')
+				;
+			foreach( $menu as $mi ){
+				$menu_link = HC_Html_Factory::widget('a')
+					->add_attr('href', $mi['href'])
+					->add_attr('class', array('btn', 'btn-default'))
+					->add_attr('class', array('btn-sm'))
+					// ->add_child($mi['title'])
+					;
+
+				list( $link_title, $link_icon ) = Hc_lib::parse_icon( $mi['title'] );
+				$menu_link
+					->add_child( $link_icon )
+					->add_attr('title', $link_title)
+					;
+
+				if( isset($mi['class']) ){
+					// if( $mi['class'] != 'hc-ajax-loader'){
+						$menu_link->add_attr('class', $mi['class']);
+					// }
+				}
+				$this_menu->add_item( $menu_link );
+			}
+			echo $this_menu->render();
+			?>
 		</div>
 	<?php endif; ?>
 </div>

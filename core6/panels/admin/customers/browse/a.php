@@ -84,18 +84,21 @@ if( $skip )
 	$mainWhere['id'] = array( 'NOT IN', $skip );
 }
 
-if( NTS_EMAIL_AS_USERNAME )
-{
-	$order = array(
-		array( 'email', 'ASC' )
-		);
+$ci = ntsLib::getCurrentUser();
+$sort = $ci->getPreference( 'customer_sort' );
+if( ! $sort ){
+	$sort = NTS_EMAIL_AS_USERNAME ? 'email' : 'username';
 }
-else
-{
-	$order = array(
-		array( 'username', 'ASC' ),
-		);
+
+$supplied_sort = $_NTS['REQ']->getParam( 'sort' );
+if( $supplied_sort ){
+	$sort = $supplied_sort;
 }
+$order = array(
+	array( $sort, 'ASC' ),
+	);
+$this->data['current_sort'] = $sort;
+$ci->setPreference( 'customer_sort', $sort );
 
 $display = $_NTS['REQ']->getParam( 'display' );
 if( ntsLib::isAjax() )

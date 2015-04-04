@@ -37,16 +37,19 @@ class Hc_time extends DateTime {
 			$time = $time[0];
 
 		parent::__construct();
-		$this->setTimestamp( $time );
+		if( $time > 0 ){
+			$this->setTimestamp( $time );
+		}
+		else {
+			$this->setNow();
+		}
 
 		$app_conf = HC_App::app_conf();
 
-		if( ! $tz )
-		{
+		if( ! $tz ){
 			$tz = $app_conf ? $app_conf->get('timezone') : '';
 		}
-		if( $tz )
-		{
+		if( $tz ){
 			$this->setTimezone( $tz );
 		}
 		$this->weekStartsOn = $app_conf ? $app_conf->get('week_starts') : 0;
@@ -65,6 +68,10 @@ class Hc_time extends DateTime {
 
 		switch( $range )
 		{
+			case 'day':
+				$start_date = $end_date = $this->formatDate_Db();
+				break;
+
 			case 'week':
 				$this->setStartWeek();
 				$start_date = $this->formatDate_Db();
@@ -577,6 +584,7 @@ class Hc_time extends DateTime {
 			$this->modify( '-1 day' );
 			$weekDay = $this->getWeekday();
 			}
+		return $this;
 		}
 
 	function setEndWeek(){
@@ -589,23 +597,27 @@ class Hc_time extends DateTime {
 			$weekDay = $this->getWeekday();
 			}
 		$this->modify( '-1 day' );
+		return $this;
 		}
 
 	function setStartMonth(){
 		$thisYear = $this->getYear(); 
 		$thisMonth = $this->getMonth();
 		$this->setDateTime( $thisYear, $thisMonth, 1, 0, 0, 0 );
+		return $this;
 		}
 
 	function setEndMonth(){
 		$thisYear = $this->getYear(); 
 		$thisMonth = $this->getMonth();
 		$this->setDateTime( $thisYear, ($thisMonth + 1), 1, 0, 0, -1 );
+		return $this;
 		}
 
 	function setStartYear(){
 		$thisYear = $this->getYear(); 
 		$this->setDateTime( $thisYear, 1, 1, 0, 0, 0 );
+		return $this;
 		}
 
 	function timezoneShift(){
