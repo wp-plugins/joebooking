@@ -4,8 +4,18 @@ class HC_Form2
 	private $inputs = array();
 	private $errors = array();
 	private $orphan_errors = array();
-
+	private $readonly = FALSE;
 	private $convert = array();
+
+	function set_readonly( $ro = TRUE )
+	{
+		$this->readonly = $ro;
+		return $this;
+	}
+	function readonly()
+	{
+		return $this->readonly;
+	}
 
 	function set_input( $name, $type, $convert = array() )
 	{
@@ -22,7 +32,11 @@ class HC_Form2
 	}
 	function input( $name )
 	{
-		return isset($this->inputs[$name]) ? $this->inputs[$name] : NULL;
+		$return = isset($this->inputs[$name]) ? $this->inputs[$name] : NULL;
+		if( $return && $this->readonly() ){
+			$return->set_readonly();
+			}
+		return $return;
  	}
 
 	function set_inputs( $inputs )

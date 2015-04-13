@@ -84,7 +84,7 @@ $current_sort_title = isset($sort_options[$current_sort]) ? $sort_options[$curre
 					<?php
 					$drp = HC_Html_Factory::widget('dropdown')
 						->set_title( 
-							HC_Html_Factory::widget('a')
+							HC_Html_Factory::widget('titled', 'a')
 								->add_attr('class', array('btn', 'btn-default'))
 								->add_child( HC_Html::icon('sort-amount-asc') . $current_sort_title )
 							)
@@ -93,7 +93,7 @@ $current_sort_title = isset($sort_options[$current_sort]) ? $sort_options[$curre
 					foreach( $sort_options as $so => $stitle ){
 						if( $so != $current_sort ){
 							$drp->add_item(
-								HC_Html_Factory::widget('a')
+								HC_Html_Factory::widget('titled', 'a')
 									->add_attr('href', ntsLink::makeLink('-current-', '', array('sort' => $so)))
 									->add_child( $stitle )
 								);

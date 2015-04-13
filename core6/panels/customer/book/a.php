@@ -43,6 +43,7 @@ $requested = array(
 	'resource'	=> 0,
 	'service'	=> 0,
 	'time'	=> 0,
+	'seats'	=> 0,
 	);
 reset( $requested );
 foreach( array_keys($requested) as $k )

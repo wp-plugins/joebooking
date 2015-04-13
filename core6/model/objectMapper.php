@@ -70,6 +70,8 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'service',	'duration' );
 		$this->registerProp( 'service',	'duration_increment', true, 0, 1800 );
 		$this->registerProp( 'service',	'duration_max', true, 0, 1800 );
+		$this->registerProp( 'service',	'duration_break', true, 0, 0 );
+		$this->registerProp( 'service',	'duration2', true, 0, 0 );
 		$this->registerProp( 'service',	'lead_in' );
 		$this->registerProp( 'service',	'lead_out' );
 		$this->registerProp( 'service',	'price' );
@@ -120,6 +122,8 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'appointment',	'created_at' );
 		$this->registerProp( 'appointment',	'starts_at' );
 		$this->registerProp( 'appointment',	'duration' );
+		$this->registerProp( 'appointment',	'duration_break', true, 0, 0 );
+		$this->registerProp( 'appointment',	'duration2', true, 0, 0 );
 		$this->registerProp( 'appointment',	'lead_in' );
 		$this->registerProp( 'appointment',	'lead_out' );
 		$this->registerProp( 'appointment',	'approved', true, 0, 0 );
@@ -230,7 +234,7 @@ class objectMapper extends ntsObjectMapper {
 		if( isset($changes['service_id']) ){
 			$oldService = ntsObjectFactory::get('service');
 			$oldService->setId( $changes['service_id'] );
-			$oldServiceView = ntsView::objectTItle( $oldService );
+			$oldServiceView = ntsView::objectTitle( $oldService );
 			$serviceView .= ' (' . M('Old') . ': ' . $oldServiceView . ')';
 			}
 

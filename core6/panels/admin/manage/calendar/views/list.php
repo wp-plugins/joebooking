@@ -37,9 +37,7 @@ if( ! isset($show_control) )
 	<?php endif; ?>
 	<?php return; ?>
 <?php endif; ?>
-
 <?php require( dirname(__FILE__) . '/_bulk_actions.php' ); ?>
-
 <?php foreach( $apps as $date => $day_apps ) : ?>
 	<?php 
 	if( ! $day_apps )
@@ -61,7 +59,6 @@ if( ! isset($show_control) )
 		</h4>
 		<hr>
 	<?php endif; ?>
-
 	<div class="hc-target" data-src="<?php echo ntsLink::makeLink('-current-', 'period', array('period' => $date)); ?>">
 		<?php
 		$view = array(

@@ -188,6 +188,7 @@ class HC_Validator
 			// No validation rules?  We're done...
 			if (count($this->_config_rules) == 0)
 			{
+				return TRUE;
 				return FALSE;
 			}
 
@@ -203,6 +204,7 @@ class HC_Validator
 
 		// Cycle through the rules for each field, match the
 		// corresponding $_POST item and test for errors
+
 		foreach ($this->_field_data as $field => $row)
 		{
 			// Fetch the data from the corresponding $_POST array and cache it in the _field_data array.

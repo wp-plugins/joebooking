@@ -54,6 +54,9 @@ usort( $apps, create_function(
 	'$a, $b',
 	'
 	$return = ($a["starts_at"] - $b["starts_at"]);
+	if( ($return == 0) && isset($a["_id"]) ){
+		$return = ($b["_id"] - $a["_id"]);
+	}
 	return $return;
 	'
 	)
@@ -61,6 +64,7 @@ usort( $apps, create_function(
 
 /* save */
 require( dirname(__FILE__) . '/../_parse_apps.php' );
+
 $session->set_userdata( 'apps', $apps );
 
 /* set virtual appointments */

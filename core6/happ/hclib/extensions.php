@@ -50,8 +50,13 @@ class HC_Extensions
 			if( substr($hk, 0, strlen($start)) == $start ){
 				$remain = substr($hk, strlen($start) + 1);
 				if( strlen($remain) ){
-					$this_params = array_merge( array($hk), $params );
-					$return[ $remain ] = call_user_func_array( array($this, 'run'), $this_params );
+					if( $ha === NULL ){
+						$return[ $remain ] = $ha;
+					}
+					else {
+						$this_params = array_merge( array($hk), $params );
+						$return[ $remain ] = call_user_func_array( array($this, 'run'), $this_params );
+					}
 				}
 			}
 		}
@@ -79,6 +84,9 @@ class HC_Extensions
 		}
 
 		$this_extensions = $this->extensions[$which];
+		if( ! is_array($this_extensions) ){
+			$this_extensions = array( $this_extensions );
+		}
 		foreach( $this_extensions as $hinfo ){
 			/* hinfo is a path to module */
 			// Modules::run( $hinfo, $model)

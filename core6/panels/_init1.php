@@ -175,6 +175,7 @@ if( isset($_GET['nts-sos']) )
 $_NTS['REQ'] = new ntsRequest;
 
 /* sanitize */
+// $_NTS['REQ']->addSanitizer( 'seats', '/^[\d]*$/' );
 $_NTS['REQ']->addSanitizer( 'service', '/^[\d-]*$/' );
 $_NTS['REQ']->addSanitizer( 'resource', '/^[\d-a]*$/' );
 $_NTS['REQ']->addSanitizer( 'time', '/^[\d-]*$/' );

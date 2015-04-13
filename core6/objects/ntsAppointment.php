@@ -16,12 +16,10 @@ class ntsAppointment extends ntsObject {
 			return $return;
 		}
 
-		if( ntsLib::hasVar( 'admin::tm2' ) )
-		{
+		if( ntsLib::hasVar( 'admin::tm2' ) ){
 			$tm2 = ntsLib::getVar( 'admin::tm2' );
 		}
-		else
-		{
+		else {
 			$tm2 = new haTimeManager2();
 		}
 
@@ -203,6 +201,7 @@ class ntsAppointment extends ntsObject {
 			'location'	=> M('Location'),
 			'resource'	=> M('Bookable Resource'),
 			'service'	=> M('Service'),
+			'seats'		=> M('Seats'),
 			'customer'	=> M('Customer'),
 			'notes'		=> M('Notes'),
 			'status'	=> M('Status'),
@@ -250,6 +249,16 @@ class ntsAppointment extends ntsObject {
 				$object = ntsObjectFactory::get('location');
 				$object->setId( $value );
 				$return = ntsView::objectTitle($object, $html);
+				break;
+
+			case 'seats':
+				$object = ntsObjectFactory::get('location');
+				$object->setId( $value );
+				$return = '';
+				if( $html ){
+					$return .= HC_Html::icon('users') . ' ';
+				}
+				$return .= $value;
 				break;
 
 			case 'resource_id':
@@ -324,15 +333,23 @@ class ntsAppointment extends ntsObject {
 		return $return;
 	}
 
-	public function dump( $html = FALSE, $show_fields = array() )
+	public function dump( $html = FALSE, $show_fields = array(), $part_id = 1 )
 	{
 		global $NTS_VIEW;
 		$return = array();
+
+		if( ! $this->getProp('duration2') ){
+			$part_id = 0;
+		}
 
 		$t = isset($NTS_VIEW['t']) ? $NTS_VIEW['t'] : new ntsTime;
 		$t->setTimestamp( $this->getProp('starts_at') );
 
 		$return['id'] = $this->getId();
+		if( $part_id ){
+			$return['id'] = $this->getId() . '_' . $part_id;
+		}
+
 		$return['date'] = $t->formatDate();
 		$return['time'] = $t->formatTime();
 		$duration = $this->getProp('duration');
@@ -344,18 +361,42 @@ class ntsAppointment extends ntsObject {
 		$return['clean_up'] = $t->formatPeriod( $lead_out );
 		$return['clean_up_short'] = $t->formatPeriodShort( $lead_out );
 
+		if( $part_id == 1 ){
+			$return['clean_up'] = '';
+			$return['clean_up_short'] = '';
+		}
+
+		if( $part_id == 2 ){
+			$t->setTimestamp( $this->getProp('starts_at') );
+			$t->modify( '+' . $duration . ' seconds' );
+			$t->modify( '+' . $this->getProp('duration_break') . ' seconds' );
+			$return['time'] = $t->formatTime();
+
+			$duration2 = $this->getProp('duration2');
+			$t->modify( '+' . $duration2 . ' seconds' );
+			$return['time_end'] = $t->formatTime();
+			$return['duration'] = $t->formatPeriod( $duration2 );
+			$return['duration_short'] = $t->formatPeriodShort( $duration2 );
+			$return['clean_up'] = $t->formatPeriod( $lead_out );
+			$return['clean_up_short'] = $t->formatPeriodShort( $lead_out );
+		}
+
 		$t->setTimestamp( $this->getProp('created_at') );
 		$return['created'] = $t->formatDate() . ' ' . $t->formatTime();
 
-		if( (! $show_fields) OR in_array('location', $show_fields) )
-		{
+		if( (! $show_fields) OR in_array('location', $show_fields) ){
 			$return['location'] = $this->propView( 'location_id', FALSE, $html );
 		}
 
-		$return['service'] = $this->propView( 'service_id', FALSE, $html );
+		$service_view = $this->propView( 'service_id', FALSE, $html );
+		if( $part_id ){
+			$service_view .= ' (' . M('Part') . ' ' . '#' . $part_id . ')';
+		}
+		$return['service'] = $service_view;
 
-		if( (! $show_fields) OR in_array('resource', $show_fields) )
-		{
+		$return['seats'] = $this->propView( 'seats', FALSE, $html );
+
+		if( (! $show_fields) OR in_array('resource', $show_fields) ){
 			$return['resource'] = $this->propView( 'resource_id', FALSE, $html );
 		}
 
@@ -365,12 +406,10 @@ class ntsAppointment extends ntsObject {
 		$return['customer'] = $this->propView( 'customer_id', FALSE, $html );
 		$return['customer:id'] = $customer_id;
 
-		if( $html )
-		{
+		if( $html ){
 			$return['status'] = $this->statusLabel( '&nbsp;' );
 		}
-		else
-		{
+		else {
 			$return['status'] = $this->statusText();
 		}
 
@@ -393,12 +432,10 @@ class ntsAppointment extends ntsObject {
 
 		$fields = $om->getFields( 'appointment', $access, $otherDetails );
 		reset( $fields );
-		foreach( $fields as $f )
-		{
+		foreach( $fields as $f ){
 			$k = $f[0];
 			$v = $this->getProp($k);
-			if( $f[2] == 'checkbox' )
-			{
+			if( $f[2] == 'checkbox' ){
 				$v = $v ? M('Yes') : M('No');
 			}
 			$return[$k] = $v;
@@ -406,12 +443,10 @@ class ntsAppointment extends ntsObject {
 
 	/* customer */
 		$fields = $om->getFields( 'customer', $access );
-		foreach( $fields as $f )
-		{
+		foreach( $fields as $f ){
 			$k = $f[0];
 			$v = $customer->getProp($k);
-			if( $f[2] == 'checkbox' )
-			{
+			if( $f[2] == 'checkbox' ){
 				$v = $v ? M('Yes') : M('No');
 			}
 			$return['customer:' . $k] = $v;
@@ -419,66 +454,54 @@ class ntsAppointment extends ntsObject {
 
 	/* price */
 		$price = $this->getProp('price');
-		if( strlen($price) > 0 )
-		{
-			if( (! $show_fields) OR in_array('total_amount', $show_fields) )
-			{
+		if( (strlen($price) > 0) && ($part_id < 2) ){
+			if( (! $show_fields) OR in_array('total_amount', $show_fields) ){
 				$amount = $this->getCost();
 				$return['total_amount'] = ntsCurrency::formatPrice( $amount );
 			}
-			if( (! $show_fields) OR in_array('payment_balance', $show_fields) )
-			{
+			if( (! $show_fields) OR in_array('payment_balance', $show_fields) ){
 				$due_amount = $this->getDue();
 				$this_view = ntsCurrency::formatPrice( -$due_amount );
-				if( $html )
-				{
-					if( $due_amount > 0 )
-					{
+				if( $html ){
+					if( $due_amount > 0 ){
 						$this_view = '<span class="label label-danger">' . $this_view . '</span>';
 					}
-					elseif( $due_amount == 0 )
-					{
+					elseif( $due_amount == 0 ){
 						$this_view = '<span class="label label-success">' . M('Paid') . '</span>';
 					}
-					else
-					{
+					else {
 						$this_view = '<span class="label label-success">' . $this_view . '</span>';
 					}
 				}
 				$return['payment_balance'] = $this_view;
 			}
 		}
-		else
-		{
+		else {
 			$return['total_amount'] = '';
 			$return['payment_balance'] = '';
 		}
 
 	/* transactions */
-		if( in_array('invoice_ref', $show_fields) )
-		{
+		if( in_array('invoice_ref', $show_fields) && ($part_id < 2) ){
 			$invoices = array();
 			$invoices_transactions = array();
 			$invoices_info = $this->getInvoices();
 			reset( $invoices_info );
-			foreach( $invoices_info as $ia )
-			{
+			foreach( $invoices_info as $ia ){
 				list( $invoiceId, $myNeededAmount, $due ) = $ia;
 				$invoice = ntsObjectFactory::get( 'invoice' );
 				$invoice->setId( $invoiceId );
 				$invoices[] = $invoice;
 
 				$transactions = $invoice->getTransactions();
-				foreach( $transactions as $tra )
-				{
+				foreach( $transactions as $tra ){
 					$invoices_transactions[] = $tra;
 				}
 			}
 
 			$thisView = array();
 			reset( $invoices );
-			foreach( $invoices as $invoice )
-			{
+			foreach( $invoices as $invoice ){
 				$thisView[] = $invoice->getProp('refno');
 			}
 			$thisView = join( ', ', $thisView );
@@ -488,8 +511,7 @@ class ntsAppointment extends ntsObject {
 			$thisView1 = array();
 			$thisView2 = array();
 			reset( $invoices_transactions );
-			foreach( $invoices_transactions as $tr )
-			{
+			foreach( $invoices_transactions as $tr ){
 				$thisView1[] = $tr->getProp('pgateway');
 				$ref = $tr->getProp('pgateway_ref');
 				$response = $tr->getProp('pgateway_response');
@@ -574,7 +596,7 @@ class ntsAppointment extends ntsObject {
 			}
 		}
 
-	function getCost()
+	function getFullCost()
 	{
 		$return = '';
 		$price = $this->getProp('price');
@@ -583,10 +605,19 @@ class ntsAppointment extends ntsObject {
 			return $return;
 
 		$completed = $this->getProp('completed');
-		if( in_array($completed, array(HA_STATUS_CANCELLED)) )
-		{
+		if( in_array($completed, array(HA_STATUS_CANCELLED)) ){
 			return $return;
 		}
+
+		$return = $price;
+		return $return;
+	}
+
+	function getCost()
+	{
+		$price = $this->getFullCost();
+		if( ! strlen($price) )
+			return $price;
 
 		$return = $price;
 		if( $price )

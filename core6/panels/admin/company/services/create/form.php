@@ -1,5 +1,6 @@
 <?php
 $app_info = ntsLib::getAppInfo();
+$duration2 = $this->getValue('duration2');
 ?>
 <?php
 echo ntsForm::wrapInput(
@@ -81,6 +82,58 @@ echo ntsForm::wrapInput(
 	);
 ?>
 
+<div id="<?php echo $this->formId; ?>processing-time-hidden">
+<?php
+echo ntsForm::wrapInput(
+	'',
+	'<a class="btn btn-default btn-sm" href="#" id="' . $this->formId . 'processing-time-show">' . M('Processing Time') . ': ' . M('Add') . '</a>'
+	);
+?>
+</div>
+
+<div id="<?php echo $this->formId; ?>processing-time-shown">
+<?php
+echo ntsForm::wrapInput(
+	M('Processing Time'),
+	$this->buildInput (
+	/* type */
+		'period/HourMinute',
+	/* attributes */
+		array(
+			'id'	=> 'duration_break',
+			),
+	/* validators */
+		array(
+			)
+		)
+	);
+?>
+
+<?php
+echo ntsForm::wrapInput(
+	M('Finish Duration'),
+	$this->buildInput (
+	/* type */
+		'period/HourMinute',
+	/* attributes */
+		array(
+			'id'	=> 'duration2',
+			),
+	/* validators */
+		array(
+			)
+		)
+	);
+?>
+
+<?php
+echo ntsForm::wrapInput(
+	'',
+	'<a class="btn btn-default btn-sm" href="#" id="' . $this->formId . 'processing-time-hide">' . M('Processing Time') . ': ' . M('Remove') . '</a>'
+	);
+?>
+</div>
+
 <?php
 echo ntsForm::wrapInput(
 	M('Clean Up'),
@@ -141,3 +194,37 @@ echo ntsForm::wrapInput(
 	'<INPUT class="btn btn-default" TYPE="submit" VALUE="' . M('Create') . '">'
 	);
 ?>
+
+<script language="JavaScript">
+jQuery(document).on( 'click', '#<?php echo $this->formId; ?>processing-time-hide', function(event)
+{
+	jQuery("#<?php echo $this->formId; ?>processing-time-hidden").show();
+	jQuery("#<?php echo $this->formId; ?>processing-time-shown").hide();
+	jQuery("#<?php echo $this->formId; ?>nts-duration_break_qty_hour").val(0);
+	jQuery("#<?php echo $this->formId; ?>nts-duration_break_qty_min").val(0);
+	jQuery("#<?php echo $this->formId; ?>nts-duration2_qty_hour").val(0);
+	jQuery("#<?php echo $this->formId; ?>nts-duration2_qty_min").val(0);
+	return false;
+});
+jQuery(document).on( 'click', '#<?php echo $this->formId; ?>processing-time-show', function(event)
+{
+	jQuery("#<?php echo $this->formId; ?>processing-time-hidden").hide();
+	jQuery("#<?php echo $this->formId; ?>processing-time-shown").show();
+	return false;
+});
+
+jQuery(document).ready( function()
+{
+<?php if( $duration2 ) : ?>
+	jQuery("#<?php echo $this->formId; ?>processing-time-hidden").hide();
+	jQuery("#<?php echo $this->formId; ?>processing-time-shown").show();
+<?php else : ?>
+	jQuery("#<?php echo $this->formId; ?>processing-time-hidden").show();
+	jQuery("#<?php echo $this->formId; ?>processing-time-shown").hide();
+	jQuery("#<?php echo $this->formId; ?>nts-duration_break_qty_hour").val(0);
+	jQuery("#<?php echo $this->formId; ?>nts-duration_break_qty_min").val(0);
+	jQuery("#<?php echo $this->formId; ?>nts-duration2_qty_hour").val(0);
+	jQuery("#<?php echo $this->formId; ?>nts-duration2_qty_min").val(0);
+<?php endif; ?>
+});
+</script>

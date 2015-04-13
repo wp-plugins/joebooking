@@ -113,9 +113,11 @@ foreach( $all_apps as $a )
 	$completedStatus = $app->getProp('completed');
 	$approvedStatus = $app->getProp('approved');
 
-	if( ! in_array($completedStatus, array(HA_STATUS_NOSHOW,HA_STATUS_CANCELLED)) )
-	{
+	if( ! in_array($completedStatus, array(HA_STATUS_NOSHOW,HA_STATUS_CANCELLED)) ){
 		$stats['duration'] += $a['duration'];
+		if( isset($a['duration2']) ){
+			$stats['duration'] += $a['duration2'];
+		}
 	}
 
 	if( $completedStatus )

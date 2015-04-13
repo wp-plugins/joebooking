@@ -9,6 +9,10 @@ $condensed = $checkbox ? '' : ' panel-condensed';
 
 $half_column = 'col-md-6 col-sm-12';
 
+$app_seats = $app->getProp('seats');
+$duration_break = $app->getProp('duration_break');
+$duration2 = $app->getProp('duration2');
+
 $location = ntsObjectFactory::get('location');
 $location->setId( $app->getProp('location_id') );
 
@@ -35,7 +39,24 @@ $edit_link = ntsLink::makeLink('admin/manage/appointments/edit/overview', '', ar
 $title['location'] = ntsView::objectTitle( $location, TRUE );
 $title['resource'] = ntsView::objectTitle( $resource, TRUE );
 $title['service'] = ntsView::objectTitle( $service, TRUE );
-$title['customer'] = ntsView::objectTitle( $customer, TRUE );
+
+$seats = $app->getProp('seats');
+if( $seats > 1 ){
+	$title['seats'] = HC_Html_Factory::element('span')
+		->add_attr( 'title', M('Seats') . ': ' . $seats )
+		->add_child( HC_Html::icon('users') . ' ' . $seats )
+		->render()
+		;
+}
+
+if( $seats > 1 ){
+	$customer_title = HC_Html::icon('users') . ntsView::objectTitle( $customer, FALSE );
+}
+else {
+	$customer_title = HC_Html::icon('user') . ntsView::objectTitle( $customer, FALSE );
+}
+$title['customer'] = $customer_title;
+
 $title['customer_link'] = array(
 	'title'	=> ntsView::objectTitle( $customer, TRUE ),
 	'href'	=> ntsLink::makeLink(
@@ -116,6 +137,12 @@ elseif( // starts today, ends after
 }
 $title['time'] = $time_label;
 
+$time2_label = '';
+if( $duration2 ){
+	$t->setTimestamp( $app_starts_at + $duration + $duration_break );
+	$time2_label = $t->formatTime( $duration2, FALSE, TRUE );
+}
+
 $final_title = array();
 
 if( (count($labels['main']) > 0) OR (is_array($labels['main'][0]) ) )
@@ -129,20 +156,22 @@ if( (count($labels['main']) > 0) OR (is_array($labels['main'][0]) ) )
 			continue;
 
 		$more_class = (! $label_count) ? ' class=""' : '';
-		if( is_array($label) )
-		{
+		if( is_array($label) ){
 			$final_title[] = '<li' . $more_class . '>';
 			$final_title[]		= '<div class="row">';
-			foreach( $label as $l )
-			{
+			foreach( $label as $l ){
 				list( $this_title_title, $this_title_icon ) = Hc_lib::parse_icon( $title[$l] );
-				if( in_array($l, array('time')) && (! $collapse_in))
-				{
-					$final_title[]	= '<div class="' . $half_column . ' squeeze-in" title="' . $this_title_title . '" >';
+				if( in_array($l, array('time')) && (! $collapse_in)){
+					$this_title_title_title = $this_title_title;
+					if( $time2_label ){
+						list( $this_title_title2, $this_title_icon2 ) = Hc_lib::parse_icon( $time2_label );
+						$this_title_title .= '<br>' . $this_title_title2;
+						$this_title_title_title .= ' + ' . $this_title_title2;
+					}
+					$final_title[]	= '<div class="' . $half_column . ' squeeze-in" title="' . $this_title_title_title . '" >';
 					$final_title[]		= $this_title_title;
 				}
-				else
-				{
+				else {
 					$final_title[]	= '<div class="' . $half_column . '" title="' . $this_title_title . '">';
 					$final_title[]		= $this_title_icon . $this_title_title;
 				}
@@ -152,19 +181,34 @@ if( (count($labels['main']) > 0) OR (is_array($labels['main'][0]) ) )
 			$final_title[]		= '</div>';
 			$final_title[] = '</li>';
 		}
-		else
-		{
+		else {
 			list( $this_title, $this_icon ) = Hc_lib::parse_icon( $title[$label] );
-			$final_title[] = '<li title="' . $this_title . '"' . $more_class . '>';
 
-			if( $collapse_in )
-			{
-				$final_title[] = $app->statusLabel('&nbsp;') . ' ';
+			$this_title_view = HC_Html_Factory::widget('list')
+				->add_attr('class', 'list-inline')
+				// ->add_attr('class', 'list-separated')
+				;
+
+			if( $collapse_in ){
+				// $final_title[] = $app->statusLabel('&nbsp;') . ' ';
+				$this_title_view->add_item( $app->statusLabel('&nbsp;') . '&nbsp;' );
 			}
-			$final_title[] = $this_title;
 
+			$this_title_title = $this_title;
+			if( ($label == 'time') && $time2_label ){
+				list( $this_title2, $this_icon2 ) = Hc_lib::parse_icon( $time2_label );
+				$this_title .= '<br>' . $this_title2;
+				$this_title_title .= ' + ' . $this_title2;
+			}
+
+			// $final_title[] = $this_title;
+			$this_title_view->add_item( $this_title );
+
+			$final_title[] = '<li title="' . $this_title_title . '"' . $more_class . '>';
 			// if( $collapse_in )
 				// $final_title[] = ' <span class="caret"></span>';
+
+			$final_title[] = $this_title_view->render();
 			$final_title[] = '</li>';
 		}
 		$label_count++;
@@ -177,15 +221,14 @@ else
 	{
 		list( $this_title, $this_icon ) = Hc_lib::parse_icon( $title[$label] );
 		$final_title[] = '<span title="' . $this_title . '" class="squeeze-in alert-' . $status_class . '">';
-		if( $collapse_in )
-		{
+
+		if( $collapse_in ){
 //			$this_icon = $app->statusLabel('&nbsp;', 'i');
 //			$this_icon = $app->statusLabel('&nbsp;');
 			$this_icon = '';
 			$final_title[] = $this_icon . $this_title;
 		}
-		else
-		{
+		else {
 			$final_title[] = $this_title;
 		}
 		if( $collapse_in )
@@ -201,8 +244,7 @@ $show_title = join( '', $final_title );
 $parent_class = '';
 $conflicts = array();
 $conflicts = $app->get_conflicts( TRUE );
-if( $conflicts )
-{
+if( $conflicts ){
 	$parent_class = ' panel-danger-o';
 	foreach( $conflicts as $c )
 	{
@@ -211,8 +253,7 @@ if( $conflicts )
 	$more[] = '-divider-';
 }
 
-if( $add_more )
-{
+if( $add_more ){
 	$more = array_merge( $more, $add_more );
 }
 
@@ -224,8 +265,7 @@ if( $lead_out )
 	$t->setTimestamp( $app->getProp('starts_at') );
 	$t->modify( '+ ' . ($duration + $lead_out) . ' seconds' );
 	$lead_out_view = '<i class="fa fa-angle-right"></i>' . $t->formatTime() . ' [' . M('Clean Up') . ']';
-	if( ! in_array('time', $labels['dropdown']) )
-	{
+	if( ! in_array('time', $labels['dropdown']) ){
 		$more[] = $lead_out_view;
 	}
 }
@@ -233,12 +273,19 @@ if( $lead_out )
 /* MORE INFO */
 if( isset($labels['dropdown']) && $labels['dropdown'] )
 {
-	foreach( $labels['dropdown'] as $label )
-	{
-		$more[] = $title[$label];
-		if( ($label == 'time') && $lead_out_view )
-		{
-			$more[] = $lead_out_view;
+	foreach( $labels['dropdown'] as $label ){
+		if( ($label == 'seats') && ($app_seats <= 1) ){
+			continue;
+		}
+		if( isset($title[$label]) ){
+			$more[] = $title[$label];
+
+			if( ($label == 'time') && $time2_label ){
+				$more[] = $time2_label;
+			}
+			if( ($label == 'time') && $lead_out_view ){
+				$more[] = $lead_out_view;
+			}
 		}
 	}
 }
@@ -365,7 +412,7 @@ $cost = $app->getCost();
 				->add_attr('class', 'list-separated')
 				;
 			foreach( $menu as $mi ){
-				$menu_link = HC_Html_Factory::widget('a')
+				$menu_link = HC_Html_Factory::widget('titled', 'a')
 					->add_attr('href', $mi['href'])
 					->add_attr('class', array('btn', 'btn-default'))
 					->add_attr('class', array('btn-sm'))

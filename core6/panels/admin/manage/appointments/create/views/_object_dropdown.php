@@ -1,11 +1,8 @@
 <?php
-if( $link )
-{
+if( $link ){
 	$dropdown = array();
-	if( $errors )
-	{
-		foreach( $errors as $e )
-		{
+	if( $errors ){
+		foreach( $errors as $e ){
 			$dropdown[] = '<i class="fa-fw fa fa-exclamation-circle text-danger"></i>' . $e;
 		}
 		$dropdown[] = '-divider-';

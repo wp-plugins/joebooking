@@ -3,6 +3,7 @@ $tm2 = $NTS_VIEW['tm2'];
 
 $error_msg = array();
 $delete_apps = array();
+$update_apps = array();
 
 /* final check */
 for( $ii = 0; $ii < count($apps); $ii++ )
@@ -22,6 +23,20 @@ for( $ii = 0; $ii < count($apps); $ii++ )
 		$error_msg[] = join( ': ', array('Not Available', $t->formatFull()) );
 		$delete_apps[] = $ii;
 		continue;
+	}
+
+	/* check seats */
+	$app_seats = isset($apps[$ii]['seats']) ? $apps[$ii]['seats'] : 1;
+	if( $app_seats > 1 ){
+		$this_available_seats = $tm2->getAvailableSeats( 
+			$times[$apps[$ii]['starts_at']],
+			($apps[$ii]['starts_at'] + $apps[$ii]['duration'])
+			);
+		if( $this_available_seats < $app_seats ){
+			$apps[$ii]['seats'] = $this_available_seats;
+			$error_msg[] = join( ': ', array('Available Seats', $this_available_seats) );
+			$update_apps[] = $ii;
+		}
 	}
 
 	/* get slots and fill-in default location, resource, service if needed */
@@ -108,14 +123,25 @@ if( $delete_apps )
 			$final_apps[] = $apps[$ii];
 		}
 	}
-	$session->set_userdata( 'apps', $final_apps );
+	$apps = $final_apps;
+	$session->set_userdata( 'apps', $apps );
+}
+
+if( $update_apps ){
+	$session->set_userdata( 'apps', $apps );
 }
 
 if( $error_msg )
 {
 	$error_msg = join( '<br/>', $error_msg );
 	ntsView::addAnnounce( $error_msg, 'error' );
-	$forwardTo = ntsLink::makeLink('-current-/..');
+	
+	if( isset($redirectAfterCheck) && $redirectAfterCheck ){
+		$forwardTo = $redirectAfterCheck;
+	}
+	else {
+		$forwardTo = ntsLink::makeLink('-current-/..');
+	}
 	ntsView::redirect( $forwardTo );
 	exit;
 }

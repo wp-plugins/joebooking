@@ -225,52 +225,6 @@ if( $max < $min )
 $max = $maxEnd;
 ?>
 
-<?php if( ! isset($app_info['disabled_features']['capacity']) ) : ?>
-	<?php
-	echo ntsForm::wrapInput(
-		M('Capacity'),
-		array(
-			$this->buildInput(
-			/* type */
-				'text',
-			/* attributes */
-				array(
-					'id'		=> 'capacity',
-					'attr'		=> array(
-						'size'	=> 3,
-						),
-					'default'	=> 1,
-					),
-			/* validators */
-				array(
-					array(
-						'code'		=> 'notEmpty.php', 
-						'error'		=> M('Required'),
-						),
-					array(
-						'code'		=> 'integer.php', 
-						'error'		=> M('Numbers only'),
-						),
-					)
-				),
-				' ' . M('Seats')
-			)
-		); 
-	?>
-<?php else : ?>
-	<?php
-	echo $this->makeInput (
-	/* type */
-		'hidden',
-	/* attributes */
-		array(
-			'id'	=> 'capacity',
-			'value'	=> 1,
-			)
-		);
-	?>
-<?php endif; ?>
-
 <?php if( in_array('range', $when) ) : ?>
 	<div id="<?php echo $this->formId; ?>_when_range"<?php if($currentWhen != 'range'){echo ' style="display: none;"';}; ?>>
 		<?php
@@ -367,6 +321,90 @@ echo ntsForm::wrapInput(
 		)
 	);
 ?>
+
+<?php if( ! isset($app_info['disabled_features']['capacity']) ) : ?>
+	<?php
+	echo ntsForm::wrapInput(
+		M('Capacity'),
+		array(
+			$this->buildInput(
+			/* type */
+				'text',
+			/* attributes */
+				array(
+					'id'		=> 'capacity',
+					'attr'		=> array(
+						'size'	=> 3,
+						),
+					'default'	=> 1,
+					),
+			/* validators */
+				array(
+					array(
+						'code'		=> 'notEmpty.php', 
+						'error'		=> M('Required'),
+						),
+					array(
+						'code'		=> 'integer.php', 
+						'error'		=> M('Numbers only'),
+						),
+					)
+				),
+				' ' . M('Seats')
+			)
+		); 
+	?>
+	<?php
+	echo ntsForm::wrapInput(
+		M('Max Capacity Per Appointment'),
+		array(
+			$this->buildInput(
+			/* type */
+				'text',
+			/* attributes */
+				array(
+					'id'		=> 'max_capacity',
+					'attr'		=> array(
+						'size'	=> 3,
+						),
+					'default'	=> 1,
+					),
+			/* validators */
+				array(
+					array(
+						'code'		=> 'notEmpty.php', 
+						'error'		=> M('Required'),
+						),
+					array(
+						'code'		=> 'integer.php', 
+						'error'		=> M('Numbers only'),
+						),
+					array(
+						'code'		=> 'lessEqualThan.php', 
+						'error'		=> M('This should not be bigger than') . ': ' . M('Capacity'),
+						'params'	=> array(
+							'compareWithField' => 'capacity',
+							),
+						),
+					)
+				),
+				' ' . M('Seats')
+			)
+		); 
+	?>
+<?php else : ?>
+	<?php
+	echo $this->makeInput (
+	/* type */
+		'hidden',
+	/* attributes */
+		array(
+			'id'	=> 'capacity',
+			'value'	=> 1,
+			)
+		);
+	?>
+<?php endif; ?>
 
 <?php
 /* list weekdays */

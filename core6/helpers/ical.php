@@ -105,6 +105,9 @@ EOT;
 			$a = ntsObjectFactory::get( 'appointment' );
 			$a->setId( $appId );
 
+			$duration_break = $a->getProp('duration_break');
+			$duration2 = $a->getProp('duration2');
+
 			$serviceTitle = ntsView::appServiceView( $a );
 
 			$location = new ntsObject('location');
@@ -116,11 +119,12 @@ EOT;
 			$resource->setId( $a->getProp('resource_id') );
 
 			$event = new vevent(); // initiate a new EVENT
-			$event->setProperty( 'uid', 'app-' . $a->getId() . '-' . $web_dir );
-
-//			$t = new ntsTime( $a->getProp('starts_at'), $this->timezone );
-//			list( $year, $month, $day, $hour, $min ) = $t->getParts(); 
-//			$event->setProperty( 'dtstart', $year, $month, $day, $hour, $min, 00, $this->timezone );  // 24 dec 2006 19.30
+			if( $duration2 ){
+				$event->setProperty( 'uid', 'app-' . $a->getId() . '-1' . '-' . $web_dir );
+			}
+			else {
+				$event->setProperty( 'uid', 'app-' . $a->getId() . '-' . $web_dir );
+			}
 
 			$t = new ntsTime( $a->getProp('starts_at'), 'UTC' );
 			list( $year, $month, $day, $hour, $min ) = $t->getParts(); 
@@ -128,7 +132,6 @@ EOT;
 
 			$t->modify( '+' . $a->getProp('duration') . ' seconds' );
 			list( $year, $month, $day, $hour, $min ) = $t->getParts(); 
-//			$event->setProperty( 'dtend', $year, $month, $day, $hour, $min, 00, $this->timezone );  // 24 dec 2006 19.30
 			$event->setProperty( 'duration', 0,		0,		0,		0,		$a->getProp('duration') );
 
 		// parse tags
@@ -185,10 +188,17 @@ EOT;
 					}
 				}
 
-			$event->setProperty( 'summary', $summary );
-			$event->setProperty( 'description', $description );
-			if( ! NTS_SINGLE_LOCATION )
-			{
+			$this_summary = $summary;
+			$this_description = $description;
+		// second part
+			if( $duration2 ){
+				$this_summary = $summary . ' (' . M('Part') . ' #1)';
+				$this_description = $description . "\n" . M('Part') . ' #1';
+			}
+
+			$event->setProperty( 'summary', $this_summary );
+			$event->setProperty( 'description', $this_description );
+			if( ! NTS_SINGLE_LOCATION ){
 				$event->setProperty( 'location', ntsView::objectTitle($location) );
 			}
 
@@ -196,6 +206,30 @@ EOT;
 //			$event->setProperty( 'organizer', $resource->getProp('title') );
 
 			$cal->addComponent( $event );
+
+		// second part
+			if( $duration2 ){
+				$this_summary = $summary . ' (' . M('Part') . ' #2)';
+				$this_description = $description . "\n" . M('Part') . ' #2';
+
+				$event2 = clone $event;
+				$event2->setProperty( 'summary', $this_summary );
+				$event2->description = array(); // hack
+				$event2->setProperty( 'description', $this_description );
+
+				$event2->setProperty( 'uid', 'app-' . $a->getId() . '-2' . '-' . $web_dir );
+
+				$t = new ntsTime( $a->getProp('starts_at') + $a->getProp('duration') + $a->getProp('duration_break'), 'UTC' );
+				list( $year, $month, $day, $hour, $min ) = $t->getParts(); 
+				$event2->setProperty( 'dtstart', $year, $month, $day, $hour, $min, 00, 'Z' );  // 24 dec 2006 19.30
+
+				$t->modify( '+' . $a->getProp('duration2') . ' seconds' );
+				list( $year, $month, $day, $hour, $min ) = $t->getParts(); 
+				$event2->setProperty( 'duration', 0,		0,		0,		0,		$a->getProp('duration2') );
+
+				$cal->addComponent( $event2 );
+			}
+
 			ntsObjectFactory::clearCache( 'appointment', $appId );
 			}
 

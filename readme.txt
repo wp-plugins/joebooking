@@ -48,6 +48,10 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.3.0 =
+* Added an option for customers to book multiple seats if you have configured such capacity. In the availablity configuration you can set how many seats are available, as well as up to how many seats a customer can book for one appointment.
+* Added an option to specify a processing time for a service, than another finish duration. The break in between is available for other appointments. For example, in a hair salon 45 minutes can be booked for a color, then set aside 30 minutes for processing (these time is available for another booking), then again 30 minutes to rinsing and styling.
+
 = 6.2.8 =
 * Added an option to make a service available in package only, i.e. a customer should purchase a package first to be able to book a service.
 * Redesigned the appointment actions in the calendar view - removed the dropdown that might be not convenient on some screens.

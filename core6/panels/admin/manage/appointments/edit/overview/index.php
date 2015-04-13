@@ -44,6 +44,8 @@ $customerId = $object->getProp('customer_id');
 $customer = new ntsUser;
 $customer->setId( $customerId );
 $customerIds = array();
+
+$app_seats = $object->getProp('seats');
 ?>
 
 <div class="row">
@@ -115,6 +117,15 @@ $customerIds = array();
 			<dd>
 				<?php echo ntsView::objectTitle($service, TRUE); ?> 
 			</dd>
+
+			<?php if( $app_seats > 1 ) : ?>
+				<dt>
+					<?php echo M('Seats'); ?>
+				</dt>
+				<dd>
+					<?php echo $app_seats; ?> 
+				</dd>
+			<?php endif; ?>
 		</dl>
 
 		<?php

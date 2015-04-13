@@ -239,6 +239,7 @@
 #nts .alert-warning-o a:not(.btn),
 #nts .alert-warning>a:not(.btn),
 #nts .alert-success-o a:not(.btn),
+#nts .alert-success a:not(.btn),
 #nts .alert-success>a:not(.btn),
 #nts .label-success>a:not(.btn) {
 	color: inherit;
@@ -309,6 +310,11 @@
 	color: #666;
 	border-width: 1px;
 	border-style: solid;
+}
+
+#nts .text-archive {
+	color: #999;
+/*	color: #666; */
 }
 
 #nts .panel-default-o .panel-heading,

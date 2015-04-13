@@ -45,9 +45,12 @@ echo ntsLink::printLink(
 <?php
 $duration = $e->getProp('duration');
 $lead_out = $e->getProp('lead_out');
+$duration2 = $e->getProp('duration2');
 $duration_view = ntsTime::formatPeriodShort($duration);
-if( $lead_out )
-{
+if( $duration2 ){
+	$duration_view .= ' + ' . ntsTime::formatPeriodShort($duration2);
+}
+if( $lead_out ){
 	$duration_view .= ' + ' . ntsTime::formatPeriodShort($lead_out);
 }
 ?>

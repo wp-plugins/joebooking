@@ -3,8 +3,7 @@ $col_style = '';
 $row_class = '';
 $col_class = '';
 
-switch( $per_row )
-{
+switch( $per_row ){
 	case 0:
 		$row_class = 'list-inline';
 		$col_style = 'width: 6em;';
@@ -19,8 +18,7 @@ switch( $per_row )
 		$col_class = 'col-lg-3 col-md-4 col-sm-6';
 		break;
 }
-if( $col_style )
-{
+if( $col_style ){
 	$col_style = ' style="' . $col_style . '"';
 }
 

@@ -125,6 +125,13 @@ foreach( $cals as $cal ){
 
 	foreach( $this_apps as $app ){
 		$app = $app->getByArray();
+		if( ! isset($app['duration_break']) ){
+			$app['duration_break'] = 0;
+		}
+		if( ! isset($app['duration2']) ){
+			$app['duration2'] = 0;
+		}
+
 		if( ! in_array($app['location_id'], $locs) )
 			continue;
 		if( ! in_array($app['resource_id'], $ress) )
@@ -138,13 +145,18 @@ foreach( $cals as $cal ){
 			$thisSers = $list[$li][1][2];
 			if( ! (in_array($app['location_id'], $thisLocs) && in_array($app['resource_id'], $thisRess) && in_array($app['service_id'], $thisSers)) ){
 				continue;
-				}
+			}
 
 			$thisStart = ( $app['starts_at'] > $daySlotsStart ) ? $app['starts_at'] : $daySlotsStart;
 			$appEnd = $app['starts_at'] + $app['duration'];
 			$thisEnd = ( $appEnd < $daySlotsEnd ) ? $appEnd : $daySlotsEnd;
 
-			$appEndLeadout = $app['starts_at'] + $app['duration'] + $app['lead_out'];
+			if( $app['duration2'] ){
+				$appEndLeadout = $app['starts_at'] + $app['duration'];
+			}
+			else {
+				$appEndLeadout = $app['starts_at'] + $app['duration'] + $app['lead_out'];
+			}
 			$thisCheckEnd = ( $appEndLeadout < $daySlotsEnd ) ? $appEndLeadout : $daySlotsEnd;
 
 			$slotApps[$li][] = array(
@@ -153,8 +165,25 @@ foreach( $cals as $cal ){
 				HA_SLOT_TYPE_APP_BODY,
 				$app['id']
 				);
+
+			/* second part */
+			if( isset($app['duration2']) && $app['duration2'] ){
+				$thisStart = ( ($app['starts_at'] + $app['duration'] + $app['duration_break']) > $daySlotsStart ) ? ($app['starts_at'] + $app['duration'] + $app['duration_break']) : $daySlotsStart;
+				$appEnd = $app['starts_at'] + $app['duration'] + $app['duration_break'] + $app['duration2'];
+				$thisEnd = ( $appEnd < $daySlotsEnd ) ? $appEnd : $daySlotsEnd;
+
+				$appEndLeadout = $app['starts_at'] + $app['duration'] + $app['duration_break'] + $app['duration2'] + $app['lead_out'];
+				$thisCheckEnd = ( $appEndLeadout < $daySlotsEnd ) ? $appEndLeadout : $daySlotsEnd;
+
+				$slotApps[$li][] = array(
+					$thisStart, 
+					array( $thisEnd, $thisCheckEnd ),
+					HA_SLOT_TYPE_APP_BODY,
+					$app['id'] . '_'
+					);
 			}
 		}
+	}
 
 	$sortFunc = create_function('$a, $b', 'return ($a[0] - $b[0]);');
 

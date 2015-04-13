@@ -44,6 +44,7 @@ class haTimeManager2 {
 	var $filters = array();
 	var $internalResourceIds = array();
 	var $dryRun = FALSE;
+	var $appsOnly = FALSE;
 
 	var $apps = array();
 	var $timeoffs = array();
@@ -80,16 +81,25 @@ class haTimeManager2 {
 			'resource_id'	=> 1,
 			'service_id'	=> 2,
 			'duration'		=> 3,
+			'max_seats'		=> 4,
 			);
 
 		$this->chunkSize = 10;
+
+		$this->allServiceIds = array();
 		$services = ntsObjectFactory::getAll( 'service' );
 		reset( $services );
 		foreach( $services as $s ){
 			$serviceId = $s->getId();
 			$this->services[ $serviceId ] = $s->getByArray();
 
-			$thisDuration = $this->services[ $serviceId ]['duration'] + $this->services[ $serviceId ]['lead_out'];
+			$thisDuration = 
+				$this->services[ $serviceId ]['duration'] + 
+				$this->services[ $serviceId ]['lead_out'] +
+				$this->services[ $serviceId ]['duration_break'] + 
+				$this->services[ $serviceId ]['duration2']
+				;
+
 			if( $thisDuration > $this->maxDuration )
 				$this->maxDuration = $thisDuration;
 			if( (! $this->minDuration) OR ($thisDuration < $this->minDuration) )
@@ -102,10 +112,21 @@ class haTimeManager2 {
 			$thisLeadOut = $this->services[ $serviceId ]['lead_out'];
 			if( $thisLeadOut > $this->maxLeadOut )
 				$this->maxLeadOut = $thisLeadOut;
+
+		/* if second part exists */
+			if( $this->services[ $serviceId ]['duration2'] ){
+				$addon_serviceId = $serviceId . '_2';
+				$this->services[ $addon_serviceId ] = $this->services[ $serviceId ];
+
+				$this->services[ $serviceId ]['lead_out'] = 0;
+				$this->services[ $addon_serviceId ]['lead_in'] = 0;
+				$this->services[ $addon_serviceId ]['duration'] = $this->services[ $serviceId ]['duration2'];
 			}
 
-		if( $this->maxDuration > $this->max_duration )
-		{
+			$this->allServiceIds[] = $serviceId;
+		}
+
+		if( $this->maxDuration > $this->max_duration ){
 			$this->max_duration = $this->maxDuration;
 		}
 
@@ -120,13 +141,12 @@ class haTimeManager2 {
 			$thisMaxTravel = array_values($travel) ? max(array_values($travel)) : 0;
 			if( $thisMaxTravel > $maxTravel ){
 				$maxTravel = $thisMaxTravel;
-				}
 			}
+		}
 
 		$this->maxDuration = $this->maxDuration + $maxTravel;
 		$this->maxLeadin = $this->maxLeadin + $maxTravel;
 
-		$this->allServiceIds = array_keys( $this->services );
 		$this->allLocationIds = ntsObjectFactory::getAllIds( 'location' );
 		$this->allResourceIds = ntsObjectFactory::getAllIds( 'resource' );
 
@@ -140,8 +160,7 @@ class haTimeManager2 {
 			'meta_value'	=> array( '<>', 0 )
 			);
 		$result = $ntsdb->select( 'obj_id', 'objectmeta', $where );
-		while( $i = $result->fetch() )
-		{
+		while( $i = $result->fetch() ){
 			$this->internalResourceIds[] = $i['obj_id'];
 		}
 
@@ -158,8 +177,7 @@ class haTimeManager2 {
 			{PRFX}timeblocks
 EOT;
 		$result = $ntsdb->runQuery( $sql );
-		if( $result && ($minmax = $result->fetch()) )
-		{
+		if( $result && ($minmax = $result->fetch()) ){
 			if( $minmax['min'] )
 				$this->minBlockStart = $minmax['min'];
 			
@@ -176,13 +194,12 @@ EOT;
 		$activePlugins = $plm->getActivePlugins();
 		$this->plugins = array();
 		reset( $activePlugins );
-		foreach( $activePlugins as $plg )
-		{
+		foreach( $activePlugins as $plg ){
 			$checkFile = $plm->getPluginFolder( $plg ) . '/checkSlot.php';
 			if( file_exists($checkFile) )
 				$this->slot_plugins[] = $checkFile;
 		}
-		}
+	}
 
 	function getDatesWithSomething( $startDate, $howManyDates, $backward = 0 )
 	{
@@ -252,7 +269,7 @@ EOT;
 			}
 			else
 			{
-				$where['starts_at + duration + lead_out'] = array('>', $endTime);
+				$where['starts_at + duration + lead_out + duration_break + duration2'] = array('>', $endTime);
 				$nextApp = $this->getAppointments( 
 					$where,
 					'ORDER BY (starts_at-lead_in) ASC',
@@ -515,6 +532,7 @@ EOT;
 			'ends_at',
 			'selectable_every',
 			'capacity',
+			'max_capacity',
 			'min_from_now',
 			'max_from_now'
 			);
@@ -565,10 +583,8 @@ EOT;
 
 	function throwSlotError( $error_array )
 	{
-		if( is_array($error_array) )
-		{
-			foreach( $error_array as $k => $v )
-			{
+		if( is_array($error_array) ){
+			foreach( $error_array as $k => $v ){
 				if( ! isset($this->slot_errors[$k]) )
 					$this->slot_errors[$k] = $v;
 			}
@@ -578,6 +594,10 @@ EOT;
 	function getSlotErrors()
 	{
 		return $this->slot_errors;
+	}
+	function setSlotErrors( $slot_errors )
+	{
+		$this->slot_errors = $slot_errors;
 	}
 
 	function addVirtualAppointment( $a )
@@ -755,37 +775,30 @@ EOT;
 		global $NTS_SKIP_APPOINTMENTS;
 		if( $NTS_SKIP_APPOINTMENTS )
 			$where[' id '] = array('NOT IN', $NTS_SKIP_APPOINTMENTS);
-		if( ! isset($where['completed']) )
-		{
+		if( ! isset($where['completed']) ){
 			$where['completed'] = array( '=', 0 );
 		}
 
-		if( $limit )
-		{
+		if( $limit ){
 			$addon .= ' LIMIT ' . $limit[0] . ', ' . $limit[1];
 		}
 
 		$ntsdb =& dbWrapper::getInstance();
-		if( $fields && ! in_array('id', $fields) )
-		{
+		if( $fields && ! in_array('id', $fields) ){
 			$fields[] = 'id';
 		}
 
-		if( ! $fields )
-		{
-			$fields = 'id, starts_at, created_at, lead_in, duration, lead_out, location_id, resource_id, service_id, seats, approved, completed, customer_id, price';
+		if( ! $fields ){
+			$fields = 'id, starts_at, created_at, lead_in, duration, duration_break, duration2, lead_out, location_id, resource_id, service_id, seats, approved, completed, customer_id, price';
 		}
 
-		if( ! preg_match('/order by/i', $addon) )
-		{
+		if( ! preg_match('/order by/i', $addon) ){
 			$addon .= ' ORDER BY (starts_at-lead_in) ASC';
 		}
-		if( isset($where['resource_id']) && ($where['resource_id'][0] == 'IN') && (! $where['resource_id'][1]) )
-		{
+		if( isset($where['resource_id']) && ($where['resource_id'][0] == 'IN') && (! $where['resource_id'][1]) ){
 			$return = NULL;
 		}
-		else
-		{
+		else {
 			$return = $ntsdb->select(
 				$fields,
 				'appointments',
@@ -803,8 +816,7 @@ EOT;
 
 		$subReturn = array();
 		reset( $saveServices );
-		foreach( $saveServices as $sid )
-		{
+		foreach( $saveServices as $sid ){
 			$this->setService( $sid );
 			$subReturn[] = $this->getAllTime( $startTime, $endTime );
 		}
@@ -812,8 +824,7 @@ EOT;
 		$return = array();
 		$thisIndex = 0;
 		reset( $subReturn[$thisIndex] );
-		foreach( $subReturn[$thisIndex] as $ts => $arr )
-		{
+		foreach( $subReturn[$thisIndex] as $ts => $arr ){
 			$duration = $this->services[ $saveServices[$thisIndex] ]['duration'];
 
 			$finalTs = array();
@@ -839,8 +850,7 @@ EOT;
 				if( ! $thisFound )
 					break;
 				}
-			if( count($finalTs) == count($subReturn) )
-			{
+			if( count($finalTs) == count($subReturn) ){
 				$return[ $ts ] = $finalTs;
 			}
 		}
@@ -864,28 +874,23 @@ EOT;
 
 		$return = array();
 		$current_ii = 0;
-		foreach( $slots as $start_ts => $slots2 )
-		{
+		foreach( $slots as $start_ts => $slots2 ){
 			$current_ii = 1;
 			if( ($current_ii == $ii) && ($check != $start_ts) )
 				continue;
-			foreach( $slots2 as $end_ts => $slots3 )
-			{
+			foreach( $slots2 as $end_ts => $slots3 ){
 				$current_ii = 2;
 				if( ($current_ii == $ii) && ($check != $end_ts) )
 					continue;
-				foreach( $slots3 as $slot_lid => $slots4 )
-				{
+				foreach( $slots3 as $slot_lid => $slots4 ){
 					$current_ii = 3;
 					if( ($current_ii == $ii) && ($check != $slot_lid) )
 						continue;
-					foreach( $slots4 as $slot_rid => $slots5 )
-					{
+					foreach( $slots4 as $slot_rid => $slots5 ){
 						$current_ii = 4;
 						if( ($current_ii == $ii) && ($check != $slot_rid) )
 							continue;
-						foreach( $slots5 as $slot_sid => $seats )
-						{
+						foreach( $slots5 as $slot_sid => $seats ){
 							$return[] = array( $start_ts, $end_ts, $slot_lid, $slot_rid, $slot_sid, $seats );
 						}
 					}
@@ -897,19 +902,16 @@ EOT;
 
 	protected function addSlot( $in_slot )
 	{
-		list( $start, $end, $lid, $rid, $sid, $seats ) = $in_slot;
-		$slot = array( $lid, $rid, $sid, array($end => $seats) );
+		list( $start, $end, $lid, $rid, $sid, $seats, $max_seats ) = $in_slot;
+		$slot = array( $lid, $rid, $sid, array($end => $seats), $max_seats );
 
-		if( $this->blockMode )
-		{
+		if( $this->blockMode ){
 			$remain_seats = $seats;
 		}
-		else
-		{
+		else {
 			$remain_seats = $this->checkSlot( $start, $slot, FALSE );
 		}
-		if( $remain_seats )
-		{
+		if( $remain_seats ){
 			$slot[3] = $remain_seats;
 			if( ! isset($this->slots[$start]) )
 				$this->slots[$start] = array();
@@ -935,8 +937,7 @@ EOT;
 		$dates = array();
 		$firstWeekdays = array();
 		$di = 0;
-		while( $rexDate <= $toDate )
-		{
+		while( $rexDate <= $toDate ){
 			$rexWeekday = $this->companyT->getWeekday();
 			$rexWeekNo = $this->companyT->getWeekNo();
 			$startDay = $this->companyT->getStartDay(); 
@@ -957,12 +958,10 @@ EOT;
 		$where = array();
 
 		$limitWeekdays = NULL;
-		if( count($firstWeekdays) < 7 )
-		{
+		if( count($firstWeekdays) < 7 ){
 			$limitWeekdays = array_keys($firstWeekdays);
 		}
-		if( isset($this->filters['weekday']) )
-		{
+		if( isset($this->filters['weekday']) ){
 			$limitWeekdays = is_array($limitWeekdays) ? array_intersect($limitWeekdays, $this->filters['weekday']) : $this->filters['weekday'];
 		}
 
@@ -976,8 +975,7 @@ EOT;
 				$this->locationIds && 
 				($b1['location_id'] != 0) && 
 				(! in_array($b1['location_id'], $this->locationIds))
-			)
-			{
+			){
 				continue;
 			}
 
@@ -985,8 +983,7 @@ EOT;
 				$this->resourceIds && 
 				($b1['resource_id'] != 0) && 
 				(! in_array($b1['resource_id'], $this->resourceIds))
-			)
-			{
+			){
 				continue;
 			}
 
@@ -994,16 +991,14 @@ EOT;
 				$this->serviceIds && 
 				($b1['service_id'] != 0) && 
 				(! in_array($b1['service_id'], $this->serviceIds))
-			)
-			{
+			){
 				continue;
 			}
 
 			if( 
 				is_array($limitWeekdays) &&  
 				(! in_array($b1['applied_on'], $limitWeekdays))
-			)
-			{
+			){
 				continue;
 			}
 
@@ -1011,18 +1006,14 @@ EOT;
 			$block_ends_at = $b1['ends_at'];
 
 		/* check time filter */
-			if( isset($this->filters['time']) )
-			{
-				if( $this->filters['time'][0] > $block_starts_at )
-				{
+			if( isset($this->filters['time']) ){
+				if( $this->filters['time'][0] > $block_starts_at ){
 					$block_starts_at = $this->filters['time'][0];
 				}
-				if( $this->filters['time'][1] < $block_ends_at )
-				{
+				if( $this->filters['time'][1] < $block_ends_at ){
 					$block_ends_at = $this->filters['time'][1];
 				}
-				if( $block_ends_at <= $block_starts_at )
-				{
+				if( $block_ends_at <= $block_starts_at ){
 					continue;
 				}
 			}
@@ -1033,37 +1024,29 @@ EOT;
 
 			$bbs = array();
 			reset( $lids );
-			foreach( $lids as $lid )
-			{
-				if( $this->locationIds && (! in_array($lid, $this->locationIds)))
-				{
+			foreach( $lids as $lid ){
+				if( $this->locationIds && (! in_array($lid, $this->locationIds))){
 					continue;
 				}
 				reset( $rids );
-				foreach( $rids as $rid )
-				{
-					if( $this->resourceIds && (! in_array($rid, $this->resourceIds)))
-					{
+				foreach( $rids as $rid ){
+					if( $this->resourceIds && (! in_array($rid, $this->resourceIds))){
 						continue;
 					}
 					if( 
 						$this->customerSide && 
 						$this->internalResourceIds && 
 						in_array($rid, $this->internalResourceIds)
-					)
-					{
+					){
 						continue;
 					}
 
 					reset( $sids );
-					foreach( $sids as $sid )
-					{
-						if( ! isset($this->services[$sid]) )
-						{
+					foreach( $sids as $sid ){
+						if( ! isset($this->services[$sid]) ){
 							continue;
 						}
-						if( $this->serviceIds && (! in_array($sid, $this->serviceIds)))
-						{
+						if( $this->serviceIds && (! in_array($sid, $this->serviceIds))){
 							continue;
 						}
 						$b = array();
@@ -1078,24 +1061,19 @@ EOT;
 			$di = $firstWeekdays[ $b1['applied_on'] ];
 			while( $di < $daysCount ){
 				$thisDate = $datesIndex[$di];
-				if( isset($this->filters['date']) )
-				{
-					if( isset($this->filters['date']['from']) )
-					{
+				if( isset($this->filters['date']) ){
+					if( isset($this->filters['date']['from']) ){
 						if( $thisDate > $this->filters['date']['to'] )
 							break;
-						if( $thisDate < $this->filters['date']['from'] )
-						{
+						if( $thisDate < $this->filters['date']['from'] ){
 							$di += 7;
 							continue;
 						}
 					}
-					else
-					{
+					else {
 						if( $thisDate > max($this->filters['date']) )
 							break;
-						if( ! in_array($thisDate, $this->filters['date']) )
-						{
+						if( ! in_array($thisDate, $this->filters['date']) ){
 							$di += 7;
 							continue;
 						}
@@ -1104,8 +1082,7 @@ EOT;
 
 				if( $thisDate > $b1['valid_to'] )
 					break;
-				if( $thisDate < $b1['valid_from'] )
-				{
+				if( $thisDate < $b1['valid_from'] ){
 					$di += 7;
 					continue;
 				}
@@ -1121,8 +1098,7 @@ EOT;
 						OR
 						( ($b1['week_applied_on'] == 1) && (! ($weekNo % 2)) ) // want odd
 					)
-					)
-				{
+					){
 					$di += 7;
 					continue;
 				}
@@ -1132,18 +1108,24 @@ EOT;
 					$lid = $b2['location_id'];
 					$sid = $b2['service_id'];
 					$seats = $b1['capacity'];
+					$max_seats = $b1['max_capacity'];
 
 					$leadIn = $this->services[$sid]['lead_in']; 
 					$leadOut = $this->services[$sid]['lead_out'];
 					$service_min_duration = $this->services[$sid]['duration'];
+				/* second part */
+					if( $this->services[$sid]['duration2'] ){
+						$sid2 = $sid . '_2';
+						$service_min_duration = $service_min_duration + $this->services[$sid]['duration_break'] + $this->services[$sid2]['duration'];
+						$leadOut = $this->services[$sid2]['lead_out'];
+					}
 
 					$minFromNow = $b1['min_from_now'];
 					$maxFromNow = $b1['max_from_now']; 
 
 					$checkStart = $startTime;
 					$checkEnd = $endTime;
-					if( $this->customerSide )
-					{
+					if( $this->customerSide ){
 						/* 
 						measure minFromNow from the block start rather than now
 						applied on not fixed time blocks
@@ -1154,18 +1136,15 @@ EOT;
 							( $b1['selectable_every'] ) && 
 							( $now < ($startDay + $block_starts_at) ) && 
 							( ($now + 24*60*60) > ($startDay + $block_ends_at)  )
-							)
-						{
+							){
 							$serviceStartTime = ($startDay + $block_starts_at) + $minFromNow;
 						}
-						else
-						{
+						else {
 							$serviceStartTime = $now + $minFromNow;
 						}
 						$serviceEndTime = $now + $maxFromNow;
 
-						if( $serviceEndTime > $serviceStartTime)
-						{
+						if( $serviceEndTime > $serviceStartTime){
 							$checkStart = ($serviceStartTime > $startTime) ? $serviceStartTime : $startTime;
 							$checkEnd = ($serviceEndTime < $endTime) ? $serviceEndTime : $endTime;
 						}
@@ -1173,8 +1152,7 @@ EOT;
 
 					$ts = $block_starts_at;
 
-					if( $this->blockMode ) // just check if we have blocks, that's all
-					{
+					if( $this->blockMode ){ // just check if we have blocks, that's all
 						$this_block_start = $startDay + $block_starts_at;
 						$this_block_end = $startDay + $block_ends_at;
 
@@ -1182,10 +1160,9 @@ EOT;
 							( $this_block_start < $checkEnd )
 							&&
 							( $this_block_end > $checkStart )
-							)
-						{
+							){
 							$this->addSlot( 
-								array($this_block_start, $this_block_end, $lid, $rid, $sid, $seats)
+								array($this_block_start, $this_block_end, $lid, $rid, $sid, $seats, $max_seats)
 								);
 							return;
 						}
@@ -1195,8 +1172,7 @@ EOT;
 						$checkBlockEnd = $block_ends_at;
 						$rex_block_ends_at = $block_ends_at;
 
-						if( $rex_block_ends_at >= 24 * 60 * 60 )
-						{
+						if( $rex_block_ends_at >= 24 * 60 * 60 ){
 							$this->tempT->setDateDb( $datesIndex[$di] );
 						}
 
@@ -1236,51 +1212,39 @@ EOT;
 */
 							$tomorrowBlocks = array();
 							reset( $this->timeblocks );
-							foreach( $this->timeblocks as $tmb )
-							{
-								if( $tmb['location_id'] != $b1['location_id'] )
-								{
+							foreach( $this->timeblocks as $tmb ){
+								if( $tmb['location_id'] != $b1['location_id'] ){
 									continue;
 								}
-								if( $tmb['resource_id'] != $b1['resource_id'] )
-								{
+								if( $tmb['resource_id'] != $b1['resource_id'] ){
 									continue;
 								}
-								if( $tmb['service_id'] != $b1['service_id'] )
-								{
+								if( $tmb['service_id'] != $b1['service_id'] ){
 									continue;
 								}
-								if( $tmb['starts_at'] > $need_start )
-								{
+								if( $tmb['starts_at'] > $need_start ){
 									continue;
 								}
-								if( $tmb['valid_from'] > $tomorrow )
-								{
+								if( $tmb['valid_from'] > $tomorrow ){
 									continue;
 								}
-								if( $tmb['valid_to'] < $tomorrow )
-								{
+								if( $tmb['valid_to'] < $tomorrow ){
 									continue;
 								}
-								if( $tmb['applied_on'] != $tomorrowWeekday )
-								{
+								if( $tmb['applied_on'] != $tomorrowWeekday ){
 									continue;
 								}
-								if( ! in_array($tmb['week_applied_on'], array(0, $tomorrowWeekType)) )
-								{
+								if( ! in_array($tmb['week_applied_on'], array(0, $tomorrowWeekType)) ){
 									continue;
 								}
 								$tomorrowBlocks[] = $tmb;
 							}
 
 							$rex_block_ends_at = 0;
-							if( $tomorrowBlocks )
-							{
+							if( $tomorrowBlocks ){
 								$this_block_ends_at = 0;
-								foreach( $tomorrowBlocks as $tb )
-								{
-									if( $tb['ends_at'] > $this_block_ends_at )
-									{
+								foreach( $tomorrowBlocks as $tb ){
+									if( $tb['ends_at'] > $this_block_ends_at ){
 										$this_block_ends_at = $tb['ends_at'];
 									}
 								}
@@ -1289,36 +1253,30 @@ EOT;
 							}
 						}
 
-//						$checkBlockEnd = ($block_ends_at - $service_min_duration - $leadOut + $extendCheck);
-
 						$slot_ends_at = $checkBlockEnd;
 						$slot_full_ends_at = $startDay + $slot_ends_at;
 
 						$checkBlockEnd = $checkBlockEnd - $service_min_duration - $leadOut;
 
 						while( $ts <= $checkBlockEnd ){
-							if( ! isset($this->timesIndex[ ($startDay + $ts) ]) )
-							{
+							if( ! isset($this->timesIndex[ ($startDay + $ts) ]) ){
 								$this->companyT->setTimestamp( $startDay );
 								$this->companyT->modify( '+' . $ts . ' seconds' );
 								$this->timesIndex[ ($startDay + $ts) ] = $this->companyT->getTimestamp();
 							}
 							$addTs = $this->timesIndex[ ($startDay + $ts) ];
-							if( $addTs > $checkEnd )
-							{
+							if( $addTs > $checkEnd ){
 								break;
 							}
-							if( $addTs < $checkStart )
-							{
+							if( $addTs < $checkStart ){
 								$ts = $ts + $b1['selectable_every'];
 								continue;
 							}
 
 							$this->addSlot( 
-								array($addTs, $slot_full_ends_at, $lid, $rid, $sid, $seats)
+								array($addTs, $slot_full_ends_at, $lid, $rid, $sid, $seats, $max_seats)
 								);
-							if( $this->dayMode && $this->slots )
-							{
+							if( $this->dayMode && $this->slots ){
 								return;
 							}
 							$ts = $ts + $b1['selectable_every'];
@@ -1326,8 +1284,7 @@ EOT;
 						}
 				// fixed time
 					else {
-						if( ! isset($this->timesIndex[($startDay + $ts)]) )
-						{
+						if( ! isset($this->timesIndex[($startDay + $ts)]) ){
 							$this->companyT->setTimestamp( $startDay );
 							$this->companyT->modify( '+' . $ts . ' seconds' );
 							$this->timesIndex[ ($startDay + $ts) ] = $this->companyT->getTimestamp();
@@ -1342,8 +1299,7 @@ EOT;
 							if( ! isset($return[$addTs]) )
 								$return[$addTs] = array();
 
-							if( ! isset($this->timesIndex[($startDay + $slot_ends_at)]) )
-							{
+							if( ! isset($this->timesIndex[($startDay + $slot_ends_at)]) ){
 								$this->companyT->setTimestamp( $startDay );
 								$this->companyT->modify( '+' . $slot_ends_at . ' seconds' );
 								$this->timesIndex[ ($startDay + $slot_ends_at) ] = $this->companyT->getTimestamp();
@@ -1351,13 +1307,11 @@ EOT;
 							$addTsEnd = $this->timesIndex[ ($startDay + $slot_ends_at) ];
 
 							$slot_duration = ($addTsEnd - $addTs);
-							if( $slot_duration >= $service_min_duration )
-							{
+							if( $slot_duration >= $service_min_duration ){
 								$this->addSlot( 
-									array($addTs, $addTsEnd, $lid, $rid, $sid, $seats)
+									array($addTs, $addTsEnd, $lid, $rid, $sid, $seats, $max_seats)
 									);
-								if( $this->dayMode && $this->slots )
-								{
+								if( $this->dayMode && $this->slots ){
 									return;
 								}
 							}
@@ -1367,8 +1321,7 @@ EOT;
 				$di += 7;
 				}
 			}
-		if( ! array_keys($this->slots) )
-		{
+		if( ! array_keys($this->slots) ){
 			return;
 		}
 
@@ -1441,6 +1394,38 @@ EOT;
 		return $return;
 	}
 
+	function getAvailableSeats( $slots, $timestamp_to ){
+		$return = 0;
+		foreach( $slots as $slot ){
+			foreach( $slot[$this->SLT_INDX['duration']] as $available_to => $this_seats ){
+				if( $available_to >= $timestamp_to ){
+					if( $this->customerSide ){
+						$this_max_seats = $slot[$this->SLT_INDX['max_seats']];
+						$this_seats = min( $this_seats, $this_max_seats );
+					}
+
+					if( $this_seats > $return ){
+						$return = $this_seats;
+					}
+				}
+			}
+		}
+		return $return;
+	}
+
+	/*
+	returns array(
+		'timestamp'	=> array(
+			array(
+				lid,
+				rid,
+				sid,
+				array(
+					timestamp_to	=> seats
+					)
+				)
+			)
+	*/
 	function getAllTime( $startTime, $endTime ){
 		$this->slots = array();
 
@@ -1448,8 +1433,7 @@ EOT;
 		$now = time();
 		$timeUnit = NTS_TIME_UNIT * 60;
 
-		if( $this->isBundle )
-		{
+		if( $this->isBundle ){
 			$return = $this->getBundleTimes( $startTime, $endTime );
 			return $return;
 		}
@@ -1468,11 +1452,10 @@ EOT;
 	public function loadAppointments( $startTime, $endTime )
 	{
 		$where = array(
-			'(starts_at + duration + lead_out)'	=> array('>', ($startTime - $this->maxLeadin)),
+			'(starts_at + duration + lead_out + duration_break + duration2)'	=> array('>', ($startTime - $this->maxLeadin)),
 			'starts_at'							=> array('<', ($endTime + $this->maxDuration + $this->maxLeadOut))
 			);
-		if( $this->processCompleted )
-		{
+		if( $this->processCompleted ){
 			$where['completed'] = array( '<>', HA_STATUS_CANCELLED );
 			$where['completed '] = array( '<>', HA_STATUS_NOSHOW );
 		}
@@ -1482,8 +1465,7 @@ EOT;
 		global $NTS_VIRTUAL_APPOINTMENTS;
 		if( ! $NTS_VIRTUAL_APPOINTMENTS )
 			$NTS_VIRTUAL_APPOINTMENTS = array();
-		if( $NTS_VIRTUAL_APPOINTMENTS )
-		{
+		if( $NTS_VIRTUAL_APPOINTMENTS ){
 			$this->apps = array_merge( $this->apps, $NTS_VIRTUAL_APPOINTMENTS );
 			// resort by (starts_at-lead_in)
 //			$func = create_function('$a, $b', 'return ( ($a["starts_at"]-$a["lead_in"]) - ($b["starts_at"]-$b["lead_in"]) );');
@@ -1498,13 +1480,13 @@ EOT;
 		static $occupiedPerLocation_AppsProcessed;
 
 		list( $slot_lid, $slot_rid, $slot_sid, $slot_seats ) = $slot;
+		$original_slot_seats = $slot_seats;
 		$slot_ends_ats = array_keys( $slot_seats );
 
 		$return_seats = $slot_seats;
 		$this->slot_errors = array();
 
-		if( $this->dryRun )
-		{
+		if( $this->dryRun ){
 			return $return_seats;
 		}
 
@@ -1512,82 +1494,72 @@ EOT;
 		$slot_leadin = isset($this->services[$slot_sid]) ? $this->services[$slot_sid]['lead_in'] : 0;
 
 	/* check global limits */
-		foreach( $this->global_limit as $key => $limits )
-		{
-			foreach( $limits as $limit )
-			{
-				switch ( $key )
-				{
-					case 'time':
-						list( $limit_from, $limit_to ) = $limit[0];
-						if( ($ts >= $limit_from) && ($ts < $limit_to) )
-						{
-							$return_seats = array();
-							$this->throwSlotError( $limit[1] );
-						}
+		if( ! $this->appsOnly ){
+			foreach( $this->global_limit as $key => $limits ){
+				foreach( $limits as $limit ){
+					switch ( $key ){
+						case 'time':
+							list( $limit_from, $limit_to ) = $limit[0];
+							if( ($ts >= $limit_from) && ($ts < $limit_to) ){
+								$return_seats = array();
+								$this->throwSlotError( $limit[1] );
+							}
+							break;
+					}
+					if( ! $return_seats ){
 						break;
+					}
 				}
-				if( ! $return_seats )
-				{
+				if( ! $return_seats ){
 					break;
 				}
 			}
-			if( ! $return_seats )
-			{
-				break;
-			}
 		}
-		if( ! $return_seats )
-		{
+
+		if( ! $return_seats ){
 			return $return_seats;
 		}
 
 	/* check timeoffs */
-		if( isset($this->timeoffs[$slot_rid]) )
-		{
-			reset( $this->timeoffs[$slot_rid] );
-			foreach( $this->timeoffs[$slot_rid] as $to )
-			{
-				if( $to['ends_at'] <= ($ts - $slot_leadin) )
-					continue;
-
-				$slot_ends_ats = array_keys($return_seats);
-				foreach( $slot_ends_ats as $slot_ends_at )
-				{
-					if( $to['starts_at'] >= $slot_ends_at )
+		if( ! $this->appsOnly ){
+			if( isset($this->timeoffs[$slot_rid]) ){
+				reset( $this->timeoffs[$slot_rid] );
+				foreach( $this->timeoffs[$slot_rid] as $to ){
+					if( $to['ends_at'] <= ($ts - $slot_leadin) )
 						continue;
 
-					$new_ends_at = $to['starts_at'];
-					if( ($new_ends_at - $ts) >= $service_min_duration )
-					{
-						if( ! isset($return_seats[$new_ends_at]) )
-							$return_seats[$new_ends_at] = 0;
-						$return_seats[$new_ends_at] += $return_seats[$slot_ends_at];
-					}
-					unset( $return_seats[$slot_ends_at] );
+					$slot_ends_ats = array_keys($return_seats);
+					foreach( $slot_ends_ats as $slot_ends_at ){
+						if( $to['starts_at'] >= $slot_ends_at )
+							continue;
 
-					if( $all && (! $return_seats) )
-					{
-						$this->throwSlotError( array('resource' => M('Timeoff')) );
-					}
-				}
+						$new_ends_at = $to['starts_at'];
+						if( ($new_ends_at - $ts) >= $service_min_duration ){
+							if( ! isset($return_seats[$new_ends_at]) )
+								$return_seats[$new_ends_at] = 0;
+							$return_seats[$new_ends_at] += $return_seats[$slot_ends_at];
+						}
+						unset( $return_seats[$slot_ends_at] );
 
-				if( ! $return_seats )
-				{
-					break;
+						if( $all && (! $return_seats) ){
+							$this->throwSlotError( array('resource' => M('Timeoff')) );
+						}
+					}
+
+					if( ! $return_seats ){
+						break;
+					}
 				}
 			}
 		}
 
-		if( ! $return_seats )
-		{
+		if( ! $return_seats ){
 			return $return_seats;
 		}
 
 		$max_ends_at = 0;
 		$slot_seats = 0;
-		foreach( $return_seats as $this_ends_at => $this_seats )
-		{
+		foreach( $return_seats as $this_ends_at => $this_seats ){
 			if( $this_ends_at > $max_ends_at )
 				$max_ends_at = $this_ends_at;
 			$slot_seats += $this_seats;
@@ -1597,16 +1569,25 @@ EOT;
 		$timeUnit = NTS_TIME_UNIT * 60;
 
 	/* release occupied per location */
-		if( $this->skip_id )
-		{
-			foreach( $this->skip_id as $skip_id )
-			{
+		if( $this->skip_id ){
+			foreach( $this->skip_id as $skip_id ){
 				if( ! isset($this->apps[$skip_id]) )
 					continue;
 				$a = $this->apps[$skip_id];
 				$app_lid = $a['location_id'];
-				$app_start = $a['starts_at'] - $a['lead_in'];
-				$app_end = $a['starts_at'] + $a['duration'] + $a['lead_out'];
+
+				if( ! $a['duration2'] ){
+					$app_start = $a['starts_at'] - $a['lead_in'];
+					$app_end = $a['starts_at'] + $a['duration'] + $a['lead_out'];
+					$app_start2 = 0;
+					$app_end2 = 0;
+				}
+				else {
+					$app_start = $a['starts_at'] - $a['lead_in'];
+					$app_end = $a['starts_at'] + $a['duration'];
+					$app_start2 = $a['starts_at'] + $a['duration'] + $a['duration_break'];
+					$app_end2 = $a['starts_at'] + $a['duration'] + $a['duration_break'] + $a['duration2'] + $a['lead_out'];
+				}
 
 				/* release occupied per location */
 				if(
@@ -1614,13 +1595,16 @@ EOT;
 					($this->locations[$app_lid]['capacity'] > 0)
 					)
 				{
-					if( isset($occupiedPerLocation_AppsProcessed[$a['id']]) )
-					{
+					if( isset($occupiedPerLocation_AppsProcessed[$a['id']]) ){
 						unset($occupiedPerLocation_AppsProcessed[$a['id']]);
-						for( $tts = $app_start; $tts < $app_end; $tts += $timeUnit )
-						{
-							if( isset($occupiedPerLocation[$tts][$app_lid]) )
-							{
+
+						for( $tts = $app_start; $tts < $app_end; $tts += $timeUnit ){
+							if( isset($occupiedPerLocation[$tts][$app_lid]) ){
+								$occupiedPerLocation[$tts][$app_lid] -= $a['seats'];
+							}
+						}
+						for( $tts = $app_start2; $tts < $app_end2; $tts += $timeUnit ){
+							if( isset($occupiedPerLocation[$tts][$app_lid]) ){
 								$occupiedPerLocation[$tts][$app_lid] -= $a['seats'];
 							}
 						}
@@ -1631,19 +1615,42 @@ EOT;
 
 		foreach( $this->apps as $a )
 		{
-			if( $this->skip_id && (in_array($a['id'],$this->skip_id)) )
-			{
+			if( $this->skip_id && (in_array($a['id'],$this->skip_id)) ){
 				continue;
 			}
 
-			if( isset($a['completed']) && $a['completed'] )
-			{
+			if( isset($a['completed']) && $a['completed'] ){
 				continue;
 			}
+
+			if( ! isset($a['lead_in']) ){
+				$a['lead_in'] = 0;
+				}
+			if( ! isset($a['lead_out']) ){
+				$a['lead_out'] = 0;
+				}
+			if( ! isset($a['duration_break']) ){
+				$a['duration_break'] = 0;
+				}
+			if( ! isset($a['duration2']) ){
+				$a['duration2'] = 0;
+				}
 
 			$app_lid = $a['location_id'];
-			$app_start = isset($a['lead_in']) ? ($a['starts_at'] - $a['lead_in']) : $a['starts_at'];
-			$app_end = isset($a['lead_out']) ? ($a['starts_at'] + $a['duration'] + $a['lead_out']) : ($a['starts_at'] + $a['duration']);
+
+			if( ! $a['duration2'] ){
+				$app_start = $a['starts_at'] - $a['lead_in'];
+				$app_end = $a['starts_at'] + $a['duration'] + $a['lead_out'];
+				$app_start2 = 0;
+				$app_end2 = 0;
+			}
+			else {
+				$app_start = $a['starts_at'] - $a['lead_in'];
+				$app_end = $a['starts_at'] + $a['duration'];
+				$app_start2 = $a['starts_at'] + $a['duration'] + $a['duration_break'];
+				$app_end2 = $a['starts_at'] + $a['duration'] + $a['duration_break'] + $a['duration2'] + $a['lead_out'];
+			}
+
 			$app_rid = $a['resource_id'];
 			$app_sid = $a['service_id'];
 			$app_seats = isset($a['seats']) ? $a['seats'] : 1;
@@ -1653,11 +1660,14 @@ EOT;
 				($this->locations[$app_lid]['capacity'] > 0)
 				)
 			{
-				if( ! isset($occupiedPerLocation_AppsProcessed[$a['id']]) )
-				{
+				if( ! isset($occupiedPerLocation_AppsProcessed[$a['id']]) ){
 					$occupiedPerLocation_AppsProcessed[$a['id']] = 1;
-					for( $tts = $app_start; $tts < $app_end; $tts += $timeUnit )
-					{
+					for( $tts = $app_start; $tts < $app_end; $tts += $timeUnit ){
+						if( ! isset($occupiedPerLocation[$tts][$app_lid]) )
+							$occupiedPerLocation[$tts][$app_lid] = 0;
+						$occupiedPerLocation[$tts][$app_lid] += $app_seats;
+					}
+					for( $tts = $app_start2; $tts < $app_end2; $tts += $timeUnit ){
 						if( ! isset($occupiedPerLocation[$tts][$app_lid]) )
 							$occupiedPerLocation[$tts][$app_lid] = 0;
 						$occupiedPerLocation[$tts][$app_lid] += $app_seats;
@@ -1670,39 +1680,52 @@ EOT;
 			else
 				$travel_time = isset($this->locations[$slot_lid]['_travel'][$app_lid]) ? $this->locations[$slot_lid]['_travel'][$app_lid] : 0;
 
-			if( ($ts - $slot_leadin - $travel_time) >= $app_end )
-			{
-				continue;
+			$cut_from = $app_start;
+			if( $app_start2 && ($ts - $slot_leadin - $travel_time) >= $app_end ) {
+				// $cut_from = $app_start2;
 			}
-			if( $app_start >= ($max_ends_at + $travel_time) )
-			{
+
+			if( (! $app_start2) ){
+				if( ($ts - $slot_leadin - $travel_time) >= $app_end ){
+					continue;
+				}
+			}
+			/* double part appointment */
+			else {
+				if( ($ts - $slot_leadin - $travel_time) >= $app_end2 ){
+					continue;
+				}
+
+				if( 
+					( ($ts) >= $app_end ) &&
+					( ($ts + $service_min_duration) <= $app_start2 )
+					){
+					continue;
+				}
+			}
+
+			if( $app_start >= ($max_ends_at + $travel_time) ){
 				break;
 			}
 
 			$remove_seats = 0;
 
-			$cut_from = $app_start;
 			if(
 				( $this->locations[$slot_lid]['capacity'] > 0 )
-				)
-			{
+				){
 				// check out all occupied location for the whole duration of this slot
-				foreach( $return_seats as $this_ends_at => $this_seats )
-				{
-					for( $tts = $ts; $tts <= $this_ends_at; $tts += $timeUnit )
-					{
+				foreach( $return_seats as $this_ends_at => $this_seats ){
+					for( $tts = $ts; $tts <= $this_ends_at; $tts += $timeUnit ){
 						if(
 							isset($occupiedPerLocation[$tts][$slot_lid]) && 
 							($occupiedPerLocation[$tts][$slot_lid] >= $this->locations[$slot_lid]['capacity'])
 							)
 						{
 							$remove_seats = $this_seats;
-							if( $slot_rid != $app_rid )
-							{
+							if( $slot_rid != $app_rid ){
 								$cut_from = $tts;
 							}
-							if( $all )
-							{
+							if( $all ){
 								$this->throwSlotError( array('location' => M('Location Fully Booked')) );
 							}
 							break;
@@ -1720,81 +1743,66 @@ EOT;
 						( isset($this->services[ $app_sid ]) && $this->services[ $app_sid ]['blocks_resource'] ) OR
 						( isset($this->services[ $slot_sid ]) && $this->services[ $slot_sid ]['blocks_resource'] )
 					)
-					)
-					{
+					){
 						$remove_seats = $slot_seats;
 					}
 			/* this resource, this service - delete everything but the start at this location */
 				elseif( 
 					( $slot_rid == $app_rid ) &&
 					( $slot_sid == $app_sid )
-					)
-					{
-						if( ($slot_lid == $app_lid) )
-						{
+					){
+						if( ($slot_lid == $app_lid) ){
 						/* this slot */
 							if(
 								( isset($this->services[ $app_sid ]) ) OR
 								($a['starts_at'] == $ts ) 
-							)
-							{
+							){
 								$remove_seats = $app_seats;
 							}
 						/* other slot */
-							else
-							{
+							else {
 								$remove_seats = $slot_seats;
 							}
 						}
 						/* other location - remove everything */
-						else
-						{
+						else {
 							$remove_seats = $slot_seats;
 						}
 					}
 			/* this resource, other service - delete everything  - UPDATE DON'T DELETE */
 				elseif(
 					( $slot_rid == $app_rid )
-					)
-					{
+					){
 						$remove_seats = $app_seats;
 					}
 			/* this location */
 				elseif(
 					( $slot_lid == $app_lid )
-					)
-					{
+					){
 					/* delete everything - if locks location */
 						if (
 							( isset($this->services[ $app_sid ]) && $this->services[ $app_sid ]['blocks_location'] ) OR
 							( isset($this->services[ $slot_sid ]) && $this->services[ $slot_sid ]['blocks_location'] )
-							)
-						{
+							){
 							$remove_seats = $slot_seats;
 						}
 
 					/* if location has limited capacity */
 						elseif(
 							( $this->locations[$slot_lid]['capacity'] > 0 )
-							)
-						{
+							){
 							// check out all occupied location for the whole duration of this slot
-							foreach( $return_seats as $this_ends_at => $this_seats )
-							{
-								for( $tts = $ts; $tts <= $this_ends_at; $tts += $timeUnit )
-								{
+							foreach( $return_seats as $this_ends_at => $this_seats ){
+								for( $tts = $ts; $tts <= $this_ends_at; $tts += $timeUnit ){
 									if(
 										isset($occupiedPerLocation[$tts][$slot_lid]) && 
 										($occupiedPerLocation[$tts][$slot_lid] >= $this->locations[$slot_lid]['capacity'])
-										)
-									{
+										){
 										$remove_seats = $this_seats;
-										if( $slot_rid != $app_rid )
-										{
+										if( $slot_rid != $app_rid ){
 											$cut_from = $tts;
 										}
-										if( $all )
-										{
+										if( $all ){
 											$this->throwSlotError( array('location' => M('Location Fully Booked')) );
 										}
 										break;
@@ -1804,18 +1812,15 @@ EOT;
 						}
 					}
 			/* any resource, any service - continue */
-				else
-				{
+				else {
 					// nothing
 				}
 			}
 
-			if( $remove_seats )
-			{
+			if( $remove_seats ){
 				$new_ends_at = $cut_from;
 
-				foreach( $return_seats as $this_ends_at => $this_seats )
-				{
+				foreach( $return_seats as $this_ends_at => $this_seats ){
 					if( ! $remove_seats )
 						break;
 					if( $this_ends_at <= ($cut_from - $travel_time) )
@@ -1826,42 +1831,56 @@ EOT;
 						$take_seats = $remove_seats;
 
 					$new_ends_at = ($cut_from - $travel_time);
-					if( $new_ends_at >= ($ts + $service_min_duration) )
-					{
+					if( $new_ends_at >= ($ts + $service_min_duration) ){
 						if( ! isset($return_seats[$new_ends_at]) )
 							$return_seats[$new_ends_at] = 0;
 						$return_seats[$new_ends_at] += $take_seats;
 					}
 
 					$return_seats[$this_ends_at] = $return_seats[$this_ends_at] - $take_seats;
-					if( $return_seats[$this_ends_at] <= 0 )
-					{
+					if( $return_seats[$this_ends_at] <= 0 ){
 						unset( $return_seats[$this_ends_at] );
 					}
 					$remove_seats = $remove_seats - $take_seats;
 				}
 
-				if( $all && (! $return_seats) )
-				{
+				if( $all && (! $return_seats) ){
 					$this->throwSlotError( array('time' => M('Other Appointment')) );
 				}
 			}
-			if( ! $return_seats )
-			{
+			if( ! $return_seats ){
 				break;
 			}
 		}
 
 	/* check plugins */
-		reset( $this->slot_plugins );
-		foreach( $this->slot_plugins as $plg_file )
-		{
-			$remove_seats = 0;
-			require( $plg_file );
+		if( ! $this->appsOnly ){
+			reset( $this->slot_plugins );
+			foreach( $this->slot_plugins as $plg_file ){
+				$remove_seats = 0;
+				require( $plg_file );
 
-			if( ! $return_seats )
-			{
-				break;
+				if( ! $return_seats ){
+					break;
+				}
+			}
+		}
+
+	/* if has duration2 */
+		$slot_sid2 = $slot_sid . '_2';
+		if( $return_seats && isset($this->services[$slot_sid2]) ){
+			$slot2 = array();
+			$ts2 = $ts + $this->services[$slot_sid]['duration'] + $this->services[$slot_sid]['duration_break'];
+			$slot2 = array( $slot_lid, $slot_rid, $slot_sid2, $original_slot_seats );
+
+			$slot_errors = $this->getSlotErrors();
+			$return_seats2 = $this->checkSlot( $ts2, $slot2, $all );
+			$slot_errors2 = $this->getSlotErrors();
+			$slot_errors = array_merge( $slot_errors, $slot_errors2 );
+			$this->setSlotErrors( $slot_errors );
+
+			if( ! $return_seats2 ){
+				$return_seats = array();
 			}
 		}
 
@@ -2696,7 +2715,7 @@ EOT;
 		reset( $currentBlocks );
 
 		$checkExist = array('location_id', 'resource_id', 'service_id', 'applied_on');
-		$checkUpdate = array('week_applied_on', 'capacity', 'valid_from', 'valid_to', 'starts_at', 'ends_at', 'selectable_every', 'min_from_now', 'max_from_now');
+		$checkUpdate = array('week_applied_on', 'capacity', 'max_capacity', 'valid_from', 'valid_to', 'starts_at', 'ends_at', 'selectable_every', 'min_from_now', 'max_from_now');
 
 		$currentOptions = array();
 		foreach( $currentBlocks as $cb ){
@@ -2863,7 +2882,7 @@ EOT;
 		$where = array();
 		$where['group_id'] = array('=', $groupId);
 
-		$what = array('location_id', 'resource_id', 'service_id', 'starts_at', 'ends_at', 'selectable_every', 'capacity', 'group_id', 'min_from_now', 'max_from_now' );
+		$what = array('location_id', 'resource_id', 'service_id', 'starts_at', 'ends_at', 'selectable_every', 'capacity', 'max_capacity', 'group_id', 'min_from_now', 'max_from_now' );
 		if( $extendedKeys )
 			$what = array_merge($what, array('id', 'valid_from', 'valid_to', 'applied_on', 'week_applied_on'));
 

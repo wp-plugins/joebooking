@@ -15,24 +15,19 @@ $child_file = file_exists($my_child_file) ? $my_child_file : $generic_child_file
 	</div>
 <?php elseif( $this_id ) : ?>
 	<?php
-	if( ! isset($obj) )
-	{
-		if( $is_object )
-		{
+	if( ! isset($obj) ){
+		if( $is_object ){
 			$obj = ntsObjectFactory::get( $obj_class );
 			$obj->setId( $this_id );
 		}
-		else
-		{
+		else {
 			$obj = $this_id;
 		}
 	}
 	$my_errors = array();
 	$alert_class = 'archive';
-	if( isset($available[$this_id]) )
-	{
-		if( is_array($available[$this_id]) && $available[$this_id] )
-		{
+	if( isset($available[$this_id]) ){
+		if( is_array($available[$this_id]) && $available[$this_id] ){
 			$alert_class = 'danger';
 			$my_errors = $available[$this_id];
 		}
@@ -43,8 +38,7 @@ $child_file = file_exists($my_child_file) ? $my_child_file : $generic_child_file
 	<div class="alert alert-<?php echo $alert_class; ?> squeeze-in">
 		<?php
 		$info_link = '';
-		if( ($obj_class == 'customer') && ($this_id) )
-		{
+		if( ($obj_class == 'customer') && ($this_id) ){
 			$info_link = ntsLink::makeLink('admin/customers/edit/edit', '', array('_id' => $this_id));
 		}
 		$params = array(
@@ -68,10 +62,8 @@ $child_file = file_exists($my_child_file) ? $my_child_file : $generic_child_file
 
 	<?php
 	$objects = array();
-	if( $is_object )
-	{
-		foreach( $all_ids as $sub_id )
-		{
+	if( $is_object ){
+		foreach( $all_ids as $sub_id ){
 			$obj = ntsObjectFactory::get( $obj_class );
 			$obj->setId( $sub_id );
 			if( $obj->notFound )
@@ -79,8 +71,7 @@ $child_file = file_exists($my_child_file) ? $my_child_file : $generic_child_file
 			$objects[] = $obj;
 		}
 	}
-	else
-	{
+	else {
 		$objects = $all_ids;
 	}
 	?>

@@ -92,6 +92,8 @@ $status_text = $a->statusText();
 
 $collapse_in = $group_ref ? ' in' : '';
 $collapse_in = ' in';
+
+$app_seats = $a->getProp('seats');
 ?>
 <li class="collapse-panel panel panel-default panel-<?php echo $status_class; ?>">
 	<div class="panel-heading" title="<?php echo $status_text; ?>">
@@ -138,6 +140,16 @@ $collapse_in = ' in';
 				<li>
 					<?php echo ntsView::objectTitle( $service, TRUE ); ?>
 				</li>
+
+				<?php if( $app_seats > 1 ) : ?>
+					<?php
+					echo HC_Html_Factory::element('span')
+						->add_attr( 'title', M('Seats') . ': ' . $app_seats )
+						->add_child( HC_Html::icon('users') . ' ' . $app_seats )
+						->render()
+						;
+					?>
+				<?php endif; ?>
 			</ul>
 		</div>
 

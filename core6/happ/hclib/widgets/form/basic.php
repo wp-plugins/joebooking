@@ -379,35 +379,29 @@ class HC_Form_Input_Select extends HC_Form_Input
 		$options = $this->options();
 		$value = $this->value();
 
-		if( is_array($options) )
-		{
-			if( $readonly )
-			{
+		if( is_array($options) ){
+			if( $readonly ){
 				$return = isset($options[$value]) ? $options[$value] : lang('common_na');
 			}
-			else
-			{
+			else {
 				$el = HC_Html_Factory::element( 'select' );
 				$el->add_attr( 'class', 'form-control' );
 				$el->add_attr( 'id', $this->id() );
 				$el->add_attr( 'name', $this->name() );
 
 				reset( $options );
-				foreach( $options as $key => $label )
-				{
+				foreach( $options as $key => $label ){
 					$option = HC_Html_Factory::element('option');
 					$option->add_attr( 'value', $key );
 					$option->add_child( $label );
-					if( $this->value() == $key )
-					{
+					if( $this->value() == $key ){
 						$option->add_attr( 'selected', 'selected' );
 					}
 					$el->add_child( $option );
 				}
 
 				$attr = $this->attr();
-				foreach( $attr as $k => $v )
-				{
+				foreach( $attr as $k => $v ){
 					$el->add_attr($k, $v);
 				}
 
@@ -420,10 +414,15 @@ class HC_Form_Input_Select extends HC_Form_Input
 	}
 }
 
+class HC_Form_Input_Dropdown extends HC_Form_Input_Select
+{
+}
+
 class HC_Form_Input_Text extends HC_Form_Input
 {
 	function render()
 	{
+		$readonly = $this->readonly();
 		$el = HC_Html_Factory::element( 'input' )
 			->add_attr( 'type', 'text' )
 			->add_attr( 'name', $this->name() )
@@ -437,6 +436,9 @@ class HC_Form_Input_Text extends HC_Form_Input
 			$el->add_attr($k, $v);
 		}
 
+		if( $readonly ){
+			$el->add_attr('readonly', 'readonly');
+		}
 		$return = $this->decorate( $el->render() );
 		return $return;
 	}
@@ -479,6 +481,11 @@ class HC_Form_Input_Checkbox extends HC_Form_Input
 	protected $label = '';
 	protected $value = 0;
 	protected $my_value = '';
+
+	function value()
+	{
+		return $this->value ? 1 : 0;
+	}
 
 	function set_label( $label = '' )
 	{

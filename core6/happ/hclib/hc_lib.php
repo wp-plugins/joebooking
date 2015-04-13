@@ -16,7 +16,14 @@ class HC_Presenter
 
 	public function property_name( $model, $pname, $vlevel = HC_PRESENTER::VIEW_HTML )
 	{
-		return $pname;
+		switch( $pname ){
+			case 'status':
+				$return = lang('common_status');
+				break;
+			default:
+				$return = $pname;
+			}
+		return $return;
 	}
 
 	public function color( $model )
@@ -112,11 +119,7 @@ class HC_App
 
 	static function app_conf()
 	{
-		$CI =& ci_get_instance();
-		if( isset($CI->app_conf) )
-			return $CI->app_conf;
-		else
-			return NULL;
+		return HC_App::model('app_conf');
 	}
 
 	static function csrf()
@@ -216,6 +219,7 @@ class HC_Link
 
 	function url( $change_params = array() )
 	{
+		$slug = array();
 		if( $this->controller ){
 			$slug[] = $this->controller;
 		}
@@ -757,16 +761,30 @@ class Hc_lib {
 		return $return;
 	}
 
+	static function insert_after( $what, $array, $after )
+	{
+		$inserted = FALSE;
+		$return = array();
+		foreach( $array as $e ){
+			$return[] = $e;
+			if( $e == $after ){
+				$return[] = $what;
+				$inserted = TRUE;
+			}
+		}
+		if( ! $inserted ){
+			$return[] = $what;
+		}
+		return $return;
+	}
+
 	static function remove_from_array( $array, $what, $all = TRUE )
 	{
 		$return = $array;
-		for( $ii = count($return) - 1; $ii >= 0; $ii-- )
-		{
-			if( $return[$ii] == $what )
-			{
+		for( $ii = count($return) - 1; $ii >= 0; $ii-- ){
+			if( $return[$ii] == $what ){
 				array_splice( $return, $ii, 1 );
-				if( ! $all )
-				{
+				if( ! $all ){
 					break;
 				}
 			}
@@ -833,6 +851,17 @@ class Hc_lib {
 
 		$link_icon = trim( $link_icon );
 		$return = array( $link_title, $link_icon );
+		return $return;
+	}
+
+	static function replace_in_array( $array, $from, $to ){
+		$return = array();
+		foreach( $array as $item ){
+			if( $item == $from )
+				$return[] = $to;
+			else
+				$return[] = $item;
+		}
 		return $return;
 	}
 

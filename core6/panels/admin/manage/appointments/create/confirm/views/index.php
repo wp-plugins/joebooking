@@ -13,22 +13,18 @@ $common_errors[] = 'time';
 $om =& objectMapper::getInstance();
 $custom_forms = array();
 
-foreach( $apps as $a )
-{
+foreach( $apps as $a ){
 	$form_id = $om->isFormForService( $a['service_id'] );
-	if( $form_id )
-	{
+	if( $form_id ){
 		$custom_forms[ $form_id ] = $a['service_id'];
 	}
 }
 
 $custom_fields = array();
-if( $custom_forms )
-{
+if( $custom_forms ){
 	$class = 'appointment';
 	reset( $custom_forms );
-	foreach( $custom_forms as $form_id => $sid )
-	{
+	foreach( $custom_forms as $form_id => $sid ){
 		$other_details = array(
 			'service_id'	=> $sid,
 			);
@@ -49,24 +45,19 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 		$obj->setId( $cid );
 		$obj_class = $obj->getClassName();
 
-		for( $ii = 1; $ii <= count($apps); $ii++ )
-		{
-			if( $status[$ii] === 1 )
-			{
+		for( $ii = 1; $ii <= count($apps); $ii++ ){
+			if( $status[$ii] === 1 ){
 				$customer_available = 1;
 				break;
 			}
-			else
-			{
-				if( is_array($status[$ii]) && isset($status[$ii]['customer']) )
-				{
+			else {
+				if( is_array($status[$ii]) && isset($status[$ii]['customer']) ){
 					$customer_available = array(
 						'customer'	=> $status[$ii]['customer']
 						);
 					break;
 				}
-				else
-				{
+				else {
 					$customer_available = 0;
 				}
 			}
@@ -113,12 +104,10 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 
 			if( $status[$ii] === 1 )
 				$class = 'success';
-			else
-			{
+			else {
 				if( is_array($status[$ii]) )
 					$my_errors = $status[$ii];
-				if( $status[$ii] )
-				{
+				if( $status[$ii] ){
 					$class = 'danger';
 				}
 				else
@@ -131,23 +120,34 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 			$t->modify( '+ ' . $a['duration'] . ' seconds' );
 //			$time_view .= ' - ' . $t->formatTime();
 
-			if( $a['lead_out'] )
-			{
+			if( $a['lead_out'] ){
 				$t->modify( '+ ' . $a['lead_out'] . ' seconds' );
 				$time_view .= ' [' . $t->formatTime() . ']';
+			}
+			if( $a['duration2'] ){
+				$t->modify( '+ ' . $a['duration'] . ' seconds' );
+				$t->modify( '+ ' . $a['duration_break'] . ' seconds' );
+				$more_time_view = $t->formatTime( $a['duration2'] );
+				$time_view .= ' + ' . $more_time_view;
 			}
 
 			$display_common_errors = array();
 			reset( $common_errors );
-			foreach( $common_errors as $ce )
-			{
-				if( isset($my_errors[$ce]) )
-				{
+			foreach( $common_errors as $ce ){
+				if( isset($my_errors[$ce]) ){
 					$display_common_errors[] = $my_errors[$ce];
 				}
 			}
 
 			$collapsible = ( $display_common_errors OR (count($locs) > 1) OR (count($ress) > 1) OR (count($sers) > 1) ) ? TRUE : FALSE;
+
+			$expand_details = FALSE;
+			if( $my_errors ){
+				$expand_details = TRUE;
+			}
+			if( $total_seats[$ii] > 1 ){
+				$expand_details = TRUE;
+			}
 			?>
 			<li class="collapse-panel panel panel-group panel-<?php echo $class; ?>">
 				<div class="panel-heading">
@@ -166,7 +166,7 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 					</h4>
 				</div>
 
-				<div class="panel-collapse collapse<?php if( $my_errors ){echo ' in';}; ?>">
+				<div class="panel-collapse collapse<?php if( $expand_details ){echo ' in';}; ?>">
 					<div class="panel-body">
 						<ul class="list-unstyled">
 							<?php if( $display_common_errors ) : ?>
@@ -249,6 +249,37 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 								?>
 								</li>
 							<?php endif; ?>
+
+							<?php if( $total_seats[$ii] > 1 ) : ?>
+								<li>
+									<?php echo M('Seats'); ?>
+									<ul class="list-inline list-separated">
+									<?php for( $sss = 1; $sss <= $total_seats[$ii]; $sss++ ) : ?>
+										<?php
+										if( $sss <= $a['seats'] ){
+											$btn_class = 'btn-success';
+											if( $sss > $available_seats[$ii] ){
+												$btn_class = 'btn-danger';
+											}
+										}
+										else {
+											$btn_class = 'btn-success-o';
+											if( $sss > $available_seats[$ii] ){
+												$btn_class = 'btn-archive';
+											}
+										}
+										$seats_link = ntsLink::makeLink('-current-', 'seats', array('ai' => $ii, 'seats' => $sss));
+										?>
+										<li>
+											<a href="<?php echo $seats_link; ?>" class="btn btn-default btn-sm <?php echo $btn_class; ?>" title="<?php echo $sss; ?>">
+												<?php echo $sss; ?>
+											</a>
+										</li>
+									<?php endfor; ?>
+									</ul>
+								</li>
+							<?php endif;  ?>
+
 						</ul>
 					</div>
 				</div>
@@ -257,15 +288,12 @@ $dl_class = $custom_fields ? 'dl-horizontal' : '';
 
 		<?php
 		$default_params = array();
-		if( $apps )
-		{
+		if( $apps ){
 			$last_app = $apps[count($apps)-1];
-			if( count($locs) > 1 )
-			{
+			if( count($locs) > 1 ){
 				$default_params['location_id'] = $last_app['location_id'];
 			}
-			if( count($ress) > 1 )
-			{
+			if( count($ress) > 1 ){
 				$default_params['resource_id'] = $last_app['resource_id'];
 			}
 			$default_params['service_id'] = $last_app['service_id'];

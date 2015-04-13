@@ -548,19 +548,22 @@ class ntsView {
 				$service->setId( $object->getProp('service_id') );
 				$serviceView = ntsView::objectTitle( $service );
 
+				$app_seats = $object->getProp('seats');
+				if( $app_seats > 1 ){
+					$serviceView .= ' (' . M('Seats') . ': ' . $app_seats . ')';
+				}
+
 				$t = isset($NTS_VIEW['t']) ? $NTS_VIEW['t'] : new ntsTime;
 
 				$display_timezone = FALSE;
 				$current_user =& ntsLib::getCurrentUser();
-				if( ! ($current_user->hasRole('admin')) )
-				{
+				if( ! ($current_user->hasRole('admin')) ){
 					$customer = new ntsUser();
 					$customer->setId( $object->getProp('customer_id') );
 
 					$current_timezone = $t->timezone;
 					$customer_timezone = $customer->getTimezone();
-					if( $customer_timezone != $current_timezone )
-					{
+					if( $customer_timezone != $current_timezone ){
 						$t->setTimezone( $customer_timezone );
 						$display_timezone = TRUE;
 					}
@@ -569,20 +572,24 @@ class ntsView {
 				$startsAt = $object->getProp('starts_at');
 				$t->setTimestamp( $startsAt ); 
 				$dateView = $t->formatWeekdayShort() . ', ' . $t->formatDate();
-				$timeView = $t->formatTime( $object->getProp('duration'),$display_timezone );
+				$timeView = $t->formatTime( $object->getProp('duration'), $display_timezone );
+				if( $object->getProp('duration2') ){
+					$t->setTimestamp( $startsAt + $object->getProp('duration') + $object->getProp('duration_break')); 
+					$moreTimeView = $t->formatTime( $object->getProp('duration2') );
+					$timeView .= ' + ' . $moreTimeView;
 
-				if( isset($params['skip']) && in_array('date',$params['skip']) )
-				{
+					$t->setTimestamp( $startsAt ); 
+					}
+
+				if( isset($params['skip']) && in_array('date',$params['skip']) ){
 					$return = $timeView . ' ' . $serviceView;
 				}
-				else
-				{
+				else {
 					$return = $dateView . ' ' . $timeView . ' ' . $serviceView;
 				}
 
 				$id = $object->getId();
-				if( $id < 0 )
-				{
+				if( $id < 0 ){
 					$return = '[' . M('New') . '] ' . $return;
 				}
 				break;
@@ -684,6 +691,11 @@ class ntsView {
 	static function serviceView( $service, $seats, $duration ){
 		$return = '';
 		$return .= $service->getProp('title');
+
+		if( $seats > 1 ){
+			$return .= ' (' . M('Seats') . ': ' . $seats . ')';
+		}
+
 		return $return;
 		}
 

@@ -24,16 +24,13 @@ class HC_Html_Widget_Form extends HC_Html_Widget_Container
 			;
 
 		$attr = $this->attr();
-		foreach( $attr as $k => $v )
-		{
+		foreach( $attr as $k => $v ){
 			$out->add_attr( $k, $v );
 		}
 
 		/* add csrf */
-		if( $this->method() != 'get' )
-		{
-			if( strlen($csrf_name) && strlen($csrf_value) )
-			{
+		if( $this->method() != 'get' ){
+			if( strlen($csrf_name) && strlen($csrf_value) ){
 				$hidden = HC_Html_Factory::input( 'hidden', $csrf_name )
 					->set_value($csrf_value)
 					;

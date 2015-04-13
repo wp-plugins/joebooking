@@ -27,9 +27,17 @@ $dateView = $t->formatWeekdayShort() . ', ' . $t->formatDate();
 
 $duration = $object->getProp('duration');
 $timeView = $t->formatTime( $duration );
+
+if( $object->getProp('duration2') ){
+	$t->setTimestamp( $startsAt + $object->getProp('duration') + $object->getProp('duration_break')); 
+	$moreTimeView = $t->formatTime( $object->getProp('duration2') );
+	$timeView .= ' + ' . $moreTimeView;
+
+	$t->setTimestamp( $object->getProp('starts_at') ); 
+	}
+
 $lead_out = $object->getProp('lead_out');
-if( $lead_out )
-{
+if( $lead_out ){
 	$timeView .= '<span title="' . M('Clean Up') . '">';
 	$timeView .= ' [' . '<i class="fa fa-angle-right"></i> ';
 	$t->setTimestamp( $object->getProp('starts_at') );
@@ -39,6 +47,8 @@ if( $lead_out )
 	$timeView .= '</span>';
 }
 
+
+
 $t->setTimestamp( $object->getProp('starts_at') );
 
 $objectView = ntsView::objectTitle( $object );
@@ -47,8 +57,7 @@ $noheader = $_NTS['REQ']->getParam( 'noheader' );
 $showHeader = ( (! $noheader) );
 
 $isAjax = ntsLib::isAjax();
-if( $isAjax )
-{
+if( $isAjax ){
 	$showHeader = FALSE;
 }
 ?>

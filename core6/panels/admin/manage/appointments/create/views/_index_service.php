@@ -13,14 +13,12 @@
 	?>
 <?php else : ?>
 	<?php
-	if( isset($current_service) )
-	{
+	if( isset($current_service) ){
 		$current_id = $current_service->getId();
 		$selector_label = ntsView::objectTitle( $current_service, TRUE );
 		$selector_class = $current_selector_class;
 	}
-	else
-	{
+	else {
 		$selector_label = M('Service');
 		$selector_class = 'danger-o';
 	}

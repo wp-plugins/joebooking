@@ -12,6 +12,25 @@ $grand_base_total_amount = 0;
 
 $ntsConf =& ntsConf::getInstance();
 $appsInCart = $ntsConf->get('appsInCart');
+
+$tm2 = $NTS_VIEW['tm2'];
+$available_seats = array();
+for( $ai = 1; $ai <= count($apps); $ai++ ){
+	if( ! isset($apps[ $ai-1 ]) )
+		continue;
+	$app = $apps[ $ai-1 ];
+	$times = $tm2->getAllTime( $app['starts_at'], $app['starts_at'] + 1 );
+
+	$this_available_seats = 0;
+	if( isset($times[$app['starts_at']]) ){
+		$this_available_seats = $tm2->getAvailableSeats(
+			$times[$app['starts_at']],
+			($app['starts_at'] + $app['duration'])
+			);
+	}
+	$available_seats[$ai] = $this_available_seats;
+}
+
 ?>
 
 <?php if( NTS_ENABLE_TIMEZONES >= 0 ) : ?>
@@ -52,6 +71,9 @@ $appsInCart = $ntsConf->get('appsInCart');
 	if( ! isset($apps[ $ai-1 ]) )
 		continue;
 	$app = $apps[ $ai-1 ];
+	if( ! isset($app['seats']) ){
+		$app['seats'] = 1;
+	}
 	$t->setTimestamp( $app['starts_at'] );
 
 	$base_amount = $pm->getBasePrice( $app );
@@ -126,6 +148,34 @@ $appsInCart = $ntsConf->get('appsInCart');
 					<li>
 						<?php echo ntsView::objectTitle( $service, TRUE ); ?>
 					</li>
+
+					<?php
+					$this_available_seats = $available_seats[$ai];
+					?>
+					<?php if( $this_available_seats > 1 ) : ?>
+						<li>
+							<?php echo M('Seats'); ?>
+							<ul class="list-inline list-separated">
+							<?php for( $sss = 1; $sss <= $this_available_seats; $sss++ ) : ?>
+								<?php
+								if( $sss <= $app['seats'] ){
+									$btn_class = 'btn-success';
+								}
+								else {
+									$btn_class = 'btn-success-o';
+									$btn_class = 'btn-archive-o';
+								}
+								$seats_link = ntsLink::makeLink('-current-', 'seats', array('ai' => $ai, 'seats' => $sss));
+								?>
+								<li>
+									<a href="<?php echo $seats_link; ?>" class="btn btn-default btn-sm <?php echo $btn_class; ?>" title="<?php echo $sss; ?>">
+										<?php echo $sss; ?>
+									</a>
+								</li>
+							<?php endfor; ?>
+							</ul>
+						</li>
+					<?php endif; ?>
 				</ul>
 			</div>
 		</div>

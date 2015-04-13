@@ -128,29 +128,24 @@ class HC_Html_Factory
 		static $classes = array();
 		$class_key = 'widget_' . $element;
 
-		if( isset($classes[$class_key]) )
-		{
+		if( isset($classes[$class_key]) ){
 			$class = $classes[$class_key];
 		}
 		else
 		{
 			$widget_locations = HC_App::widget_locations();
-			foreach( $widget_locations as $prfx => $location )
-			{
+			foreach( $widget_locations as $prfx => $location ){
 				$class = strtoupper($prfx) . '_Html_Widget_' . ucfirst($element);
-				if( ! class_exists($class) )
-				{
+				if( ! class_exists($class) ){
 					/* attempt to load the file */
 //echo "ATTEMPT TO LOAD '$class'<br>";
 //				$file = dirname(__FILE__) . '/widgets/' . $element . '.php';
 					$file = $location . '/html/' . $element . '.php';
-					if( file_exists($file) )
-					{
+					if( file_exists($file) ){
 						include_once( $file );
 					}
 				}
-				if( class_exists($class) )
-				{
+				if( class_exists($class) ){
 					$classes[$class_key] = $class;
 					break;
 				}
@@ -158,18 +153,15 @@ class HC_Html_Factory
 		}
 
 		$args = func_get_args();
-		if( class_exists($class) )
-		{
+		if( class_exists($class) ){
 			$return = new $class();
 			array_shift( $args );
-			if( $args )
-			{
+			if( $args ){
 				call_user_func_array( array($return, "init"), $args );
 			}
 			return $return;
 		}
-		else
-		{
+		else {
 			throw new Exception( "No class defined: '$class'" );
 		}
 	}
@@ -194,7 +186,7 @@ class HC_Html_Element
 		return $this->render();
     }
 
-	function init()
+	function init( $smth = NULL )
 	{
 	}
 

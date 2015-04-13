@@ -5,6 +5,10 @@ $location_id = NTS_SINGLE_LOCATION ? NTS_SINGLE_LOCATION : $_NTS['REQ']->getPara
 $resource_id = NTS_SINGLE_RESOURCE ? NTS_SINGLE_RESOURCE : $_NTS['REQ']->getParam('resource');
 $service_id = $_NTS['REQ']->getParam('service');
 $starts_at = $_NTS['REQ']->getParam('time');
+$seats = $_NTS['REQ']->getParam('seats');
+if( ! $seats ){
+	$seats = 1;
+}
 
 $duration = 0;
 if( $service_id )
@@ -18,6 +22,7 @@ $app = array(
 	'location_id'	=> $location_id,
 	'resource_id'	=> $resource_id,
 	'service_id'	=> $service_id,
+	'seats'			=> $seats,
 	'starts_at'		=> $starts_at,
 	'duration'		=> $duration,
 	);

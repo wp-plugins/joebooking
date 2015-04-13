@@ -40,7 +40,6 @@ $bulk_actions[] = '-divider-';
 $bulk_actions[] = array( 'delete',		'<i class="fa fa-fw fa-times text-danger"></i> ' . M('Delete') );
 ?>
 <?php echo $form->start(TRUE); ?>
-
 <ul class="list-inline">
 	<?php if( isset($customer_id) ) : ?>
 		<?php if( $can_add ) : ?>

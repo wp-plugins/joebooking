@@ -2,16 +2,26 @@
 class HC_Html_Widget_Grid extends HC_Html_Element
 {
 	protected $items = array();
+	protected $scale = 'sm'; // can be sm, lg, xs, md
 
 	function add_item( $item, $width, $more_attr = array() )
 	{
 		$this->items[] = array( $item, $width, $more_attr );
 		return $this;
 	}
-
 	function items()
 	{
 		return $this->items;
+	}
+
+	function scale()
+	{
+		return $this->scale;
+	}
+	function set_scale( $scale )
+	{
+		$this->scale = $scale;
+		return $this;
 	}
 
 	function render()
@@ -23,12 +33,13 @@ class HC_Html_Widget_Grid extends HC_Html_Element
 			$out->add_attr( $k, $v );
 		}
 
+		$scale = $this->scale();
 		$items = $this->items();
 		foreach( $items as $item ){
 			list( $item, $width, $more_attr ) = $item;
 
 			$slot = HC_Html_Factory::element('div')
-				->add_attr( 'class', 'col-sm-' . $width )
+				->add_attr( 'class', 'col-' . $scale . '-' . $width )
 				;
 
 			if( $more_attr ){

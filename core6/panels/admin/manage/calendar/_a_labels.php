@@ -4,7 +4,7 @@ $locs2 = ntsLib::getVar( 'admin::locs2' );
 $ress2 = ntsLib::getVar( 'admin::ress2' );
 $sers2 = ntsLib::getVar( 'admin::sers2' );
 
-$all_labels = array( 'date', 'time', 'customer', 'location', 'resource', 'service' );
+$all_labels = array( 'date', 'time', 'customer', 'location', 'resource', 'service', 'seats' );
 $labels = array();
 
 switch( $display )

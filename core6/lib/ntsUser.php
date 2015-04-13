@@ -1513,6 +1513,7 @@ class ntsAdminPermissionsManager
 				array( 'admin/company/services/cats',	M('Categories') ),
 				array( 'admin/company/services/packs',	M('Packages') ),
 				array( 'admin/company/services/promotions', M('Promotions') ),
+				array( 'admin/company/services/addons', M('Add-ons') ),
 
 			array( 'admin/company/locations', M('Locations'), 1 ),
 				array( 'admin/company/locations/browse',	M('View') ),

@@ -326,7 +326,10 @@ jQuery(document).on( 'click', 'a.hc-flatmodal-loader', function(e)
 		var targetDiv = myParent.find('.hc-flatmodal-container');
 		var currentUrl = targetDiv.data( 'targetUrl' );
 
-		var markParent = obj.closest('div,li');
+		var markParent = obj.closest('.hc-target');
+		if( myParent.length <= 0 ){
+			var markParent = obj.closest('div,li');
+		}
 
 		markParent.addClass( 'hc-loading' );
 		targetDiv.data( 'targetUrl', targetUrl );

@@ -1358,10 +1358,11 @@ EOT;
 					)
 				{
 					$carrier_options = array();
-					reset( $sms_settings['carriers'] );
-					foreach( $sms_settings['carriers'] as $carrier )
-					{
-						$carrier_options[] = array( $carrier, $carrier );
+					if( isset($sms_settings['carriers']) && is_array($sms_settings['carriers']) ){
+						reset( $sms_settings['carriers'] );
+						foreach( $sms_settings['carriers'] as $carrier ){
+							$carrier_options[] = array( $carrier, $carrier );
+						}
 					}
 					if( $carrier_options ) 
 					{

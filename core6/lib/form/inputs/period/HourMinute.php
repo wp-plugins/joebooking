@@ -37,22 +37,24 @@ switch( $inputAction ){
 			$minutesOptions[] = array( $i, sprintf('%02d', $i) );
 
 		$input .= '<ul class="list-inline list-separated" style="margin: 0 0; padding: 0 0;">';
-			$input .= '<li>';
-				$input .= $this->makeInput(
-					'select',
-					array(
-						'id'		=> $id_Qty_Hours,
-						'options'	=> $hoursOptions,
-						'default'	=> $qty_Hours,
-						'attr'		=> array(
-							'style'		=> 'width: 4em;',
-							)
-						)
-					);
-				$input .= '<br>';
-				$input .= '<span class="text-muted">' . M('Hours') . '</span>';
-			$input .= '</li>';
 
+		$input .= '<li>';
+			$input .= $this->makeInput(
+				'select',
+				array(
+					'id'		=> $id_Qty_Hours,
+					'options'	=> $hoursOptions,
+					'default'	=> $qty_Hours,
+					'attr'		=> array(
+						'style'		=> 'width: 4em;',
+						)
+					)
+				);
+			$input .= '<br>';
+			$input .= '<span class="text-muted">' . M('Hours') . '</span>';
+		$input .= '</li>';
+
+		if( count($minutesOptions) > 1 ){
 			$input .= '<li>';
 				$input .= $this->makeInput(
 					'select',
@@ -68,7 +70,20 @@ switch( $inputAction ){
 				$input .= '<br>';
 				$input .= '<span class="text-muted">' . M('Minutes') . '</span>';
 			$input .= '</li>';
+		}
+
 		$input .= '</ul>';
+
+		if( count($minutesOptions) <= 1 ){
+			$input .= $this->makeInput(
+				'hidden',
+				array(
+					'id'		=> $id_Qty_Minutes,
+					'default'	=> $qty_Minutes,
+					)
+				);
+		}
+
 		break;
 
 	case 'submit':

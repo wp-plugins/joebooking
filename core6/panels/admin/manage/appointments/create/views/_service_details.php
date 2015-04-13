@@ -5,10 +5,15 @@ $coupon = $session->userdata('coupon');
 $pm =& ntsPaymentManager::getInstance();
 
 $duration = $obj->getProp('duration');
+$duration2 = $obj->getProp('duration2');
 $lead_out = $obj->getProp('lead_out');
 $duration_view = ntsTime::formatPeriodShort($duration);
-if( $lead_out )
-{
+
+if( $duration2 ){
+	$duration_view .= ' + ' . ntsTime::formatPeriodShort($duration2);
+}
+
+if( $lead_out ){
 	$duration_view .= ' + ' . ntsTime::formatPeriodShort($lead_out);
 }
 
@@ -19,14 +24,11 @@ $a['service_id'] = $obj->getId();
 $base_amount = $pm->getBasePrice( $a );
 $total_amount = $pm->getPrice( $a, $coupon );
 
-if( $base_amount )
-{
-	if( $base_amount != $total_amount )
-	{
+if( $base_amount ){
+	if( $base_amount != $total_amount ){
 		$price_view = '<span class="text-muted" style="text-decoration: line-through;">' . ntsCurrency::formatPrice($base_amount) . '</span>' . ' ' . ntsCurrency::formatPrice($total_amount);
 	}
-	else
-	{
+	else {
 		$price_view = ntsCurrency::formatPrice($total_amount);
 	}
 }

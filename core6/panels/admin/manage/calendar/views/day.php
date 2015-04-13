@@ -52,22 +52,17 @@ if( $locs_archive )
 	$locs = array_values( $locs );
 }
 
-if( $range == 'dayloc')
-{
+if( $range == 'dayloc'){
 	$list_by = 'location';
 }
-else
-{
-	if( (count($ress) <= 1) && (count($locs) <= 1) )
-	{
+else {
+	if( (count($ress) <= 1) && (count($locs) <= 1) ){
 		$list_by = 'resource';
 	}
-	elseif( count($ress) > 1 )
-	{
+	elseif( count($ress) > 1 ){
 		$list_by = 'resource';
 	}
-	else
-	{
+	else{
 		$list_by = 'location';
 	}
 }
@@ -77,8 +72,7 @@ switch( $list_by )
 {
 	case 'resource':
 		$list_ress = isset($current_filter['r']) ? array($current_filter['r']) : $ress;
-		foreach( $list_ress as $obj_id )
-		{
+		foreach( $list_ress as $obj_id ){
 			$obj = ntsObjectFactory::get('resource');
 			$obj->setId( $obj_id );
 			$list[] = array(
@@ -94,8 +88,7 @@ switch( $list_by )
 
 	case 'location':
 		$list_locs = isset($current_filter['l']) ? array($current_filter['l']) : $locs;
-		foreach( $list_locs as $obj_id )
-		{
+		foreach( $list_locs as $obj_id ){
 			$obj = ntsObjectFactory::get('location');
 			$obj->setId( $obj_id );
 			$list[] = array(
@@ -184,12 +177,10 @@ $dii = -1;
 							$t->setTimestamp( $slot[0] );
 							$timeViewStart = $t->formatTime();
 
-							if( is_array($slot[1]) )
-							{
+							if( is_array($slot[1]) ){
 								$t->setTimestamp( $slot[1][0] );
 							}
-							else
-							{
+							else {
 								$t->setTimestamp( $slot[1] );
 							}
 							$timeViewEnd = $t->formatTime();
@@ -234,6 +225,7 @@ $dii = -1;
 								case HA_SLOT_TYPE_APP_LEAD:
 //									$time_view_needed = 0;
 									$conflicts = array();
+									$this_skip = array();
 									if( isset($slot[3]) )
 									{
 										$cssClasses = array();
@@ -278,7 +270,15 @@ $dii = -1;
 										}
 										else
 										{
-											$app->setId( $slot[3] );
+											$is_2nd_part = FALSE;
+											if( strpos($slot[3], '_') === FALSE ){
+												$app->setId( $slot[3] );
+											}
+											else { // is second part
+												$is_2nd_part = TRUE;
+												$app_id = substr($slot[3], 0, -1);
+												$app->setId( $app_id );
+											}
 
 											$conflicts = $app->get_conflicts();
 
@@ -290,27 +290,35 @@ $dii = -1;
 											$cssClasses[ $cssClass ] = 1;
 											$slotId = 'nts-app-' . $slot[3];
 
-											if( $conflicts )
-											{
+											if( $conflicts ){
 												$cssClasses[ 'alert-danger-o' ] = 1;
 											}
 
 											if( $slot[2] == HA_SLOT_TYPE_APP_BODY )
 											{
+												$check_app_start = $app->getProp('starts_at');
+												$check_app_end = $app->getProp('starts_at') + $app->getProp('duration');
+
+												if( $is_2nd_part ){
+													$check_app_start = $app->getProp('starts_at') + $app->getProp('duration') + $app->getProp('duration_break');
+													$check_app_end = $check_app_start + $app->getProp('duration2');
+												}
+
 											/* earlier than today */
-												if( $app->getProp('starts_at') < $slot[0] )
-												{
+												if( $check_app_start < $slot[0] ){
 													$timeViewStart = '<-';
 												}
 												$slot_ends = is_array($slot[1]) ? $slot[1][0] : $slot[1];
-												if( $app->getProp('starts_at') + $app->getProp('duration') > $slot_ends )
-												{
+												if( $check_app_end > $slot_ends ){
 													$timeViewEnd = '- >';
 												}
 
-												$lead_out = $app->getProp('lead_out');
-												if( $lead_out )
-												{
+												$lead_out = 0;
+												if( (! $app->getProp('duration2')) OR $is_2nd_part ){
+													$lead_out = $app->getProp('lead_out');
+												}
+
+												if( $lead_out ){
 													$cssClasses[ 'alert-left-part' ] = 1;
 												}
 
@@ -321,18 +329,14 @@ $dii = -1;
 														)
 													);
 
-												if( $conflicts )
-												{
-													foreach( $conflicts as $c )
-													{
+												if( $conflicts ){
+													foreach( $conflicts as $c ){
 														$menu[] = '<i class="fa fa-exclamation-circle text-danger"></i> ' . $c;
 													}
 													$menu[] = '-divider-';
 												}
 
-												$lead_out = $app->getProp('lead_out');
-												if( $lead_out )
-												{
+												if( $lead_out ){
 													$duration = $app->getProp('duration');
 													$t->setTimestamp( $app->getProp('starts_at') );
 													$t->modify( '+ ' . ($duration + $lead_out) . ' seconds' );
@@ -340,9 +344,11 @@ $dii = -1;
 												}
 
 											/* MORE INFO */
-												if( isset($labels['dropdown']) && $labels['dropdown'] )
-												{
-													$this_skip = array('time');
+												if( isset($labels['dropdown']) && $labels['dropdown'] ){
+													$app_seats = $app->getProp('seats');
+
+													if( $app_seats <= 1 )
+														$this_skip[] = 'seats';
 													if( $calendarField )
 														$this_skip[] = $calendarField;
 													if( isset($create_params['location_id']) )
@@ -368,48 +374,70 @@ $dii = -1;
 														'target'	=> '_blank',
 														);
 
-													foreach( $labels['dropdown'] as $label )
-													{
+													$this_labels_dropdown = $labels['dropdown'];
+													$app_duration2 = $app->getProp('duration2');
+
+													if( $is_2nd_part ){
+														$service = ntsObjectFactory::get('service');
+														$service->setId( $app->getProp('service_id') );
+														$title['service'] = ntsView::objectTitle( $service, TRUE ) . ' (' . M('Part') . ' #2)';
+														$this_skip = HC_Lib::remove_from_array( $this_skip, 'service' );
+													}
+
+													if( 0 && $app_duration2 ){
+														$t->setTimestamp( $app->getProp('starts_at') );
+														$title['time'] = $t->formatTime( $duration, FALSE, TRUE );
+
+														$t->setTimestamp( $app->getProp('starts_at') );
+														$t->modify( '+' . $duration . ' seconds' );
+														$t->modify( '+' . $app->getProp('duration_break') . ' seconds' );
+														$title['time2'] = $t->formatTime( $app_duration2, FALSE, TRUE );
+
+														$this_labels_dropdown = HC_Lib::insert_after( 'time2', $this_labels_dropdown, 'time' );
+														// $this_labels_dropdown[] = 'time2';
+													}
+													else {
+														$this_skip[] = 'time';
+														$this_skip[] = 'time2';
+													}
+
+													foreach( $this_labels_dropdown as $label ){
 														if( in_array($label, $this_skip) )
 															continue;
-														$menu[] = $title[$label];
+														if( isset($title[$label]) ){
+															$menu[] = $title[$label];
+														}
 													}
+
 												}
 											}
-
-											if( $slot[2] == HA_SLOT_TYPE_APP_BODY )
-											{
+											if( $slot[2] == HA_SLOT_TYPE_APP_BODY ){
 												require( dirname(__FILE__) . '/_app_menu_actions.php' );
 											}
 										}
 									}
 
-									if( $slot[2] == HA_SLOT_TYPE_APP_LEAD )
-									{
+									if( $slot[2] == HA_SLOT_TYPE_APP_LEAD ){
 										$cssClasses[ 'alert-right-part' ] = 1;
 										$cssClasses[ 'text-muted' ] = 1;
 									}
 
 									$slotClass = array_keys( $cssClasses );
 
-									if( $slot[2] == HA_SLOT_TYPE_APP_LEAD )
-									{
+									if( $slot[2] == HA_SLOT_TYPE_APP_LEAD ){
 										$slotInfo = M('Clean Up');
 									}
-									else
-									{
-										switch ( $calendarField )
-										{
+									else {
+										switch ( $calendarField ){
 											case 'customer':
-												if( is_array($slot[3]) )
-												{
+												if( is_array($slot[3]) ){
 													$slotInfo = '<i class="fa fa-user"></i> ' . count($slot[3]);
 												}
-												else
-												{
+												else {
 													$customer = new ntsUser;
 													$customer->setId( $app->getProp('customer_id') );
 													$slotInfo = ntsView::objectTitle( $customer, TRUE );
+													$slotInfo = ntsView::objectTitle( $customer, FALSE );
 												}
 												break;
 											case 'service':
@@ -420,15 +448,23 @@ $dii = -1;
 										}
 									}
 
-									if( $slot[2] == HA_SLOT_TYPE_APP_BODY )
-									{
-										if( ! is_array($slot[3]) )
-										{
+									if( $slot[2] == HA_SLOT_TYPE_APP_BODY ){
+										if( ! is_array($slot[3]) ){
 											$cost = $app->getCost();
-											if( $cost )
-											{
+											if( $cost ){
 												$slotPullRight = $app->paymentStatus(TRUE);
 											}
+										}
+
+										$app_seats = $app->getProp('seats');
+										if( $app_seats > 1 ){
+											// $slotInfo .= '<br>' . $app->getProp('seats') . ' ' . M('Seats');
+											$slotInfo .= '<br>' .
+											HC_Html_Factory::element('span')
+												->add_attr( 'title', M('Seats') . ': ' . $app_seats )
+												->add_child( HC_Html::icon('users') . ' ' . $app_seats )
+												->render()
+												;
 										}
 									}
 
@@ -448,8 +484,7 @@ $dii = -1;
 									$slotInfo = '<i class="fa fa-coffee"></i> ' . $toff->getProp('description');
 									$conflicts = $toff->get_conflicts();
 
-									if( $conflicts )
-									{
+									if( $conflicts ){
 										$slotClass[] = 'alert-danger-o';
 										$menu[] = '<i class="fa fa-exclamation-circle text-danger"></i> ' . M('Appointments');
 										$menu[] = '-divider-';
@@ -485,8 +520,7 @@ $dii = -1;
 							}
 						$slotClass = join( ' ', $slotClass );
 
-						if( $visibleMe )
-						{
+						if( $visibleMe ){
 							$slotInfo = trim( $slotInfo );
 							$linkLabel = '';
 							if( $startLabel )
@@ -500,8 +534,7 @@ $dii = -1;
 
 							$moreAttr = '';
 							$aClass = array();
-							if( $menu )
-							{
+							if( $menu ){
 								$aClass[] = 'dropdown-toggle';
 								$targetLink = '#';
 								$moreAttr = ' data-toggle="dropdown"';
@@ -513,8 +546,7 @@ $dii = -1;
 							ob_end_clean();
 							$slot_view = trim( $slot_view );
 						}
-						else
-						{
+						else {
 							$slot_view = '&nbsp;';
 						}
 

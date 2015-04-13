@@ -15,12 +15,10 @@ $where = array(
 	);
 
 $where['completed'] = array('>=', 0);
-if( $locs )
-{
+if( $locs ){
 	$where['location_id'] = array( 'IN', $locs );
 }
-if( $ress )
-{
+if( $ress ){
 	$where['resource_id'] = array( 'IN', $ress );
 }
 
@@ -28,8 +26,7 @@ if( $ress )
 $ntsdb =& dbWrapper::getInstance();
 $all_apps = $tm2->getAppointments( $where, 'ORDER BY starts_at ASC, id DESC' );
 
-if( ! $all_apps )
-{
+if( ! $all_apps ){
 	echo M('None');
 	exit;
 }
@@ -40,15 +37,12 @@ $ff =& ntsFormFactory::getInstance();
 $form_file = dirname(__FILE__) . '/views/_export_form';
 $form =& $ff->makeForm( $form_file );
 
-if( $form->validate() )
-{
+if( $form->validate() ){
 	$formValues = $form->getValues();
 	reset( $formValues );
-	foreach( $formValues as $k => $v )
-	{
+	foreach( $formValues as $k => $v ){
 		$k = substr( $k, strlen('field_') );
-		if( ! $v )
-		{
+		if( ! $v ){
 			$unset[] = $k;
 		}
 	}
@@ -65,37 +59,43 @@ reset( $all_apps );
 $out = array();
 $header = array();
 
-foreach( $all_apps as $a )
-{
+foreach( $all_apps as $a ){
 	$app = ntsObjectFactory::get('appointment');
 	$app->setId( $a['id'] );
 //	$app->setByArray( $a );
 	$v = $app->dump();
 
 	reset( $unset );
-	foreach( $unset as $u )
-	{
+	foreach( $unset as $u ){
 		unset( $v[$u] );
 	}
 
-	if( ! $header )
-	{
+	if( ! $header ){
 		$header = array_keys( $v );
-		for( $ii = 0; $ii < count($header); $ii++ )
-		{
+		for( $ii = 0; $ii < count($header); $ii++ ){
 			if( isset($labels[$header[$ii]]) )
 				$header[$ii] = $labels[$header[$ii]];
 		}
 		$out[] = $header;
 	}
 	$out[] = $v;
+
+	/* with second part */
+	if( $app->getProp('duration2') ){
+		$v2 = $app->dump(FALSE, array(), 2);
+
+		reset( $unset );
+		foreach( $unset as $u ){
+			unset( $v2[$u] );
+		}
+		$out[] = $v2;
+	}
 }
 
 $fileName = 'appointments-' . $t->formatDate_Db() . '.csv';
 ntsLib::startPushDownloadContent( $fileName );
 
-foreach( $out as $o )
-{
+foreach( $out as $o ){
 	echo ntsLib::buildCsv( $o );
 	echo "\n";
 }

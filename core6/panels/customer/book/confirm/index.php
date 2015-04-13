@@ -4,10 +4,8 @@ $apps = $session->userdata( 'apps' );
 ?>
 <div class="page-header">
 	<h2>
-	<?php if( $apps && (count($apps) > 1) ) : ?>
-		<?php echo M('Confirm Appointments'); ?>
-	<?php else : ?>
-		<?php echo M('Confirm Appointment'); ?>
+	<?php if( $apps ) : ?>
+		<?php echo M('Click Proceed Below To Confirm Appointment'); ?>
 	<?php endif; ?>
 	</h2>
 </div>

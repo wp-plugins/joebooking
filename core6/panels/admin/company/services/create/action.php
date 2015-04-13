@@ -1,7 +1,10 @@
 <?php
 $ff =& ntsFormFactory::getInstance();
+
+$object = ntsObjectFactory::get( 'service' );
+
 $formFile = dirname( __FILE__ ) . '/form';
-$NTS_VIEW['form'] =& $ff->makeForm( $formFile );
+$NTS_VIEW['form'] =& $ff->makeForm( $formFile, $object->getByArray() );
 
 switch( $action ){
 	case 'create':

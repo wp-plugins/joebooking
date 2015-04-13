@@ -90,6 +90,11 @@ if( $slot_type == 'fixed' )
 
 if( $NTS_VIEW['form']->validate($removeValidation) ){
 	$formValues = $NTS_VIEW['form']->getValues();
+
+	if( ! isset($formValues['max_capacity']) ){
+		$formValues['max_capacity'] = 1;
+	}
+
 	$resId = $formValues['resource_id'];
 	$iCanEdit = in_array($resId, $schEdit);
 
@@ -101,6 +106,10 @@ if( $NTS_VIEW['form']->validate($removeValidation) ){
 		$newBlock['location_id'] = $formValues['location_id'];
 		$newBlock['service_id'] = $formValues['service_id'];
 		$newBlock['capacity'] = $formValues['capacity'];
+		$newBlock['max_capacity'] = $formValues['max_capacity'];
+		if( $newBlock['max_capacity'] > $newBlock['capacity'] ){
+			$newBlock['max_capacity'] = $newBlock['capacity'];
+		}
 
 		$newBlock['min_from_now'] = $formValues['min_from_now'];
 		$newBlock['max_from_now'] = $formValues['max_from_now'];

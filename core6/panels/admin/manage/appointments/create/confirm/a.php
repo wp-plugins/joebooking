@@ -14,6 +14,9 @@ $tm2 = ntsLib::getVar('admin::tm2');
 $tm2->customerId = $cid;
 
 $status = array();
+$total_seats = array();
+$available_seats = array();
+
 reset( $apps );
 for( $ii = 1; $ii <= count($apps); $ii++ )
 {
@@ -23,16 +26,31 @@ for( $ii = 1; $ii <= count($apps); $ii++ )
 	$tm2->setResource( $a['resource_id'] );
 	$tm2->setService( $a['service_id'] );
 
-	$skip = array(-$ii);
+	// $skip = array(-$ii);
+	/* skip this and next apps */
+	$skip = array();
+	for( $jj = $ii; $jj <= count($apps); $jj++){
+		$skip[] = -$jj;
+	}
+
 	$tm2->setSkip( $skip );
 	$times = $tm2->getAllTime( $a['starts_at'], $a['starts_at'] );
 
-	if( isset($times[$a['starts_at']]) )
-	{
+/* check total seats */
+	$this_total_seats = 0;
+	$tm2->dryRun = TRUE;
+	$defined_times = $tm2->getAllTime( $a['starts_at'], $a['starts_at'] );
+	if( isset($defined_times[$a['starts_at']]) ){
+		$this_total_seats = $tm2->getAvailableSeats( $defined_times[$a['starts_at']], ($a['starts_at'] + $a['duration'] + $a['lead_out']) );
+		}
+	$total_seats[$ii] = $this_total_seats;
+	$tm2->dryRun = FALSE;
+
+	if( isset($times[$a['starts_at']]) ){
 		$status[$ii] = 1;
+		$this_available_seats = $tm2->getAvailableSeats( $times[$a['starts_at']], ($a['starts_at'] + $a['duration'] + $a['lead_out']) );
 	}
-	else
-	{
+	else {
 		$slot = $tm2->makeSlotFromAppointment( $a );
 		$remain_seats = $tm2->checkSlot( $a['starts_at'], $slot, TRUE );
 		$slot_errors = $tm2->getSlotErrors();
@@ -41,6 +59,17 @@ for( $ii = 1; $ii <= count($apps); $ii++ )
 		else
 			$status[$ii] = 0;
 	}
+
+	$this_available_seats = $this_total_seats;
+	if( $this_total_seats > 1 ){
+		$tm2->appsOnly = TRUE;
+		$available_times = $tm2->getAllTime( $a['starts_at'], $a['starts_at'] );
+		if( isset($available_times[$a['starts_at']]) ){
+			$this_available_seats = $tm2->getAvailableSeats( $available_times[$a['starts_at']], ($a['starts_at'] + $a['duration'] + $a['lead_out']) );
+			}
+		$tm2->appsOnly = FALSE;
+	}
+	$available_seats[$ii] = $this_available_seats;
 
 	$tm2->setSkip( array() );
 }
@@ -51,6 +80,8 @@ $view = array(
 	'cid'		=> $cid,
 	'apps'		=> $apps,
 	'status'	=> $status,
+	'total_seats'		=> $total_seats,
+	'available_seats'	=> $available_seats,
 	'locs'	=> $locs,
 	'ress'	=> $ress,
 	'sers'	=> $sers,

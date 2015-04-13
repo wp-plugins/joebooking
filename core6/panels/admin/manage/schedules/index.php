@@ -229,7 +229,7 @@ reset( $dis );
 								<div class="col-md-2">
 									<?php if( $capacity > 1 ) : ?>
 										<span title="<?php echo M('Capacity'); ?>: <?php echo $capacity; ?>">
-											<i class="fa fa-user fa-fw"></i> <?php echo $capacity; ?>
+											<i class="fa fa-users fa-fw"></i> <?php echo $capacity; ?>
 										</span>
 									<?php endif; ?>
 								</div>

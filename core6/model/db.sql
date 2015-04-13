@@ -88,6 +88,9 @@ CREATE TABLE IF NOT EXISTS `{PRFX}services` (
 	`duration_increment` int(11) DEFAULT 1800,
 	`duration_max` int(11) DEFAULT 1800,
 
+	`duration_break` int(11) DEFAULT 0,
+	`duration2` int(11) DEFAULT 0,
+
 	`lead_in` int(11) DEFAULT 0,
 	`lead_out` int(11) DEFAULT 0,
 	`price` VARCHAR(16) DEFAULT '',
@@ -158,6 +161,7 @@ CREATE TABLE IF NOT EXISTS `{PRFX}timeblocks` (
 	`max_from_now` int(11) NOT NULL DEFAULT 4838400,
 
 	`capacity` int(11) DEFAULT 1,
+	`max_capacity` int(11) DEFAULT 1,
 
 	`applied_on` int(11) NOT NULL,
 	`week_applied_on` TINYINT DEFAULT 0,
@@ -195,6 +199,8 @@ CREATE TABLE IF NOT EXISTS `{PRFX}appointments` (
 	`duration` int(11) NOT NULL,
 	`lead_in` int(11) NOT NULL,
 	`lead_out` int(11) NOT NULL,
+	`duration_break` int(11) NOT NULL DEFAULT 0,
+	`duration2` int(11) NOT NULL DEFAULT 0,
 
 	`approved` tinyint NOT NULL DEFAULT 0,
 	`completed` tinyint NOT NULL DEFAULT 0,

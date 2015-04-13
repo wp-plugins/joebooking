@@ -106,10 +106,10 @@ class ntsValidator
 		if( isset($this->validationParams['compareWithField']) ){
 			$compareWithField = $this->validationParams['compareWithField'];
 			$compareWith = $this->formValues[ $compareWithField ];
-			}
+		}
 		else {
 			$compareWith = $this->validationParams['compareWith'];
-			}
+		}
 
 		$this->checkValue = trim( $this->checkValue );
 		$return = ( $this->checkValue < $compareWith ) ? FALSE : TRUE;
@@ -173,10 +173,10 @@ class ntsValidator
 		if( isset($this->validationParams['compareWithField']) ){
 			$compareWithField = $this->validationParams['compareWithField'];
 			$compareWith = $this->formValues[ $compareWithField ];
-			}
+		}
 		else {
 			$compareWith = $this->validationParams['compareWith'];
-			}
+		}
 
 		$this->checkValue = trim( $this->checkValue );
 		$return = ( $this->checkValue > $compareWith ) ? FALSE : TRUE;

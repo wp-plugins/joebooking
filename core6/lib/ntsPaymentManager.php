@@ -230,18 +230,20 @@ class ntsPaymentManager {
 	{
 		$r = $this->_parseReady( $r );
 		$return = '';
-		if( ! isset($r['service_id']) )
-		{
+		if( ! isset($r['service_id']) ){
 			return $return;
 		}
 
 		$service = ntsObjectFactory::get( 'service' );
 		$service->setId( $r['service_id'] );
 		$return = $service->getProp('price');
-		if( ! strlen($return) )
-		{
+		if( ! strlen($return) ){
 			return $return;
 		}
+
+		$seats = isset($r['seats']) ? $r['seats'] : 1;
+		$return = $return * $seats;
+
 		return $return;
 	}
 
@@ -435,8 +437,7 @@ class ntsPaymentManager {
 
 	function getInvoiceItems( $invoice_id )
 	{
-		if( ! isset($this->invoice_items[$invoice_id]) )
-		{
+		if( ! isset($this->invoice_items[$invoice_id]) ){
 			$this->preloadInvoiceItems( array($invoice_id) );
 		}
 		$return = $this->invoice_items[$invoice_id];
@@ -445,8 +446,7 @@ class ntsPaymentManager {
 
 	function getInvoiceTransactions( $invoice_id )
 	{
-		if( ! isset($this->invoice_transactions[$invoice_id]) )
-		{
+		if( ! isset($this->invoice_transactions[$invoice_id]) ){
 			$this->preloadInvoiceItems( array($invoice_id) );
 		}
 		$return = $this->invoice_transactions[$invoice_id];
@@ -455,8 +455,7 @@ class ntsPaymentManager {
 	
 	function preloadInvoiceItems( $invoice_ids )
 	{
-		foreach( $invoice_ids as $iid )
-		{
+		foreach( $invoice_ids as $iid ){
 			$this->invoice_items[ $iid ] = array();
 			$this->invoice_transactions[ $iid ] = array();
 		}

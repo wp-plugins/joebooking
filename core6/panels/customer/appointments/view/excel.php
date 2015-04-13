@@ -4,6 +4,7 @@ $fields = array(
 	array( 'date',		M('Date') ),
 	array( 'time',		M('Time') ),
 	array( 'service',	M('Service') ),
+	array( 'seats',		M('Seats') ),
 	array( 'location',	M('Location') ),
 	array( 'resource',	M('Bookable Resource') ),
 	);
