@@ -2,7 +2,7 @@
 <file>
 <language>English Built-In</language>
 <author>HitCode</author>
-<lastUpdate>4 April, 2015</lastUpdate>
+<lastUpdate>21 April, 2015</lastUpdate>
 <charset>utf-8</charset>
 
 <string>
@@ -72,6 +72,10 @@
 <string>
 	<original>Add online payment options to enable this</original>
 	<translate>Add online payment options to enable this</translate>
+</string>
+<string>
+	<original>Add-ons</original>
+	<translate>Add-ons</translate>
 </string>
 <string>
 	<original>Additional Information</original>
@@ -376,6 +380,10 @@
 <string>
 	<original>Click Here To</original>
 	<translate>Click Here To</translate>
+</string>
+<string>
+	<original>Click Proceed Below To Confirm Appointment</original>
+	<translate>Click Proceed Below To Confirm Appointment</translate>
 </string>
 <string>
 	<original>Click here to confirm your email</original>
@@ -770,6 +778,10 @@
 	<translate>Finance Settings</translate>
 </string>
 <string>
+	<original>Finish Duration</original>
+	<translate>Finish Duration</translate>
+</string>
+<string>
 	<original>First Invoice</original>
 	<translate>First Invoice</translate>
 </string>
@@ -1112,6 +1124,10 @@
 <string>
 	<original>Max Appointments In Cart</original>
 	<translate>Max Appointments In Cart</translate>
+</string>
+<string>
+	<original>Max Capacity Per Appointment</original>
+	<translate>Max Capacity Per Appointment</translate>
 </string>
 <string>
 	<original>Max Gap</original>
@@ -1474,6 +1490,10 @@
 	<translate>Paid Through</translate>
 </string>
 <string>
+	<original>Part</original>
+	<translate>Part</translate>
+</string>
+<string>
 	<original>Partially Paid</original>
 	<translate>Partially Paid</translate>
 </string>
@@ -1656,6 +1676,10 @@
 <string>
 	<original>Proceed Anyway</original>
 	<translate>Proceed Anyway</translate>
+</string>
+<string>
+	<original>Processing Time</original>
+	<translate>Processing Time</translate>
 </string>
 <string>
 	<original>Profile</original>
@@ -2064,6 +2088,10 @@
 <string>
 	<original>This may depend on your Excel regional settings</original>
 	<translate>This may depend on your Excel regional settings</translate>
+</string>
+<string>
+	<original>This should not be bigger than</original>
+	<translate>This should not be bigger than</translate>
 </string>
 <string>
 	<original>This should not be smaller than the min advance booking</original>
