@@ -145,7 +145,7 @@ if( $orders_count ){
 	$NTS_MENU['admin/payments/orders'] = array(
 		'title'		=> M('Package Orders'),
 		'icon'		=> 'list',
-		'panel'		=> 'admin/payments/orders',
+		'panel'		=> 'admin/payments/orders/browse',
 		);
 }
 
