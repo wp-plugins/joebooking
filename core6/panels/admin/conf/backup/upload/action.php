@@ -63,8 +63,11 @@ switch( $action ){
 					}
 
 				$drop_users = TRUE;
-				if( substr($oldPrefix, 0, strlen('wp_')) == 'wp_' )
-				{
+				if( substr($oldPrefix, 0, strlen('wp_')) == 'wp_' ){
+					$drop_users = FALSE;
+				}
+
+				if( defined('NTS_DEVELOPMENT') ){
 					$drop_users = FALSE;
 				}
 

@@ -59,6 +59,7 @@ class ntsEmailTemplateManager {
 		$appointmentFields[] = 'payment_balance';
 		$appointmentFields[] = 'seats';
 		$appointmentFields[] = 'link_to_ical';
+		// $appointmentFields[] = 'CUSTOMER_LINK_TO';
 
 	// resource
 		$fields = $om->getFields( 'provider' );
@@ -84,9 +85,11 @@ class ntsEmailTemplateManager {
 		$this->addTags( 'appointment-reschedule-*', array('old_appointment' => array('STARTS_AT') ) );
 
 	/* appointment related fields sent to customer */
+		$this->addTags( 'appointment-*-customer', array('appointment' => array('CUSTOMER_LINK_TO')) );
 		$this->addTags( 'appointment-*-customer', array('appointment.customer' => $customerFields_External_NoPass ) );
 
 	/* appointment related fields sent to provider */
+		$this->addTags( 'appointment-*-provider', array('appointment' => array('PROVIDER_LINK_TO') ) );
 		$this->addTags( 'appointment-*-provider', array('appointment.customer' => $customerFields_External_NoPass ) );
 		$this->addTags( 'appointment-cancel-provider', array('appointment' => array('CANCEL_REASON') ) );
 
@@ -97,9 +100,13 @@ class ntsEmailTemplateManager {
 		$this->addTags( 'order-*-admin', array('order.customer' => $customerFields_Internal_NoPass ) );
 		}
 
-	function addTags( $tpl, $tags ){
-		$this->tags[ $tpl ] = $tags;
+	function addTags( $tpl, $tags )
+	{
+		if( isset($this->tags[$tpl]) ){
+			$tags = array_merge( $this->tags[$tpl], $tags );
 		}
+		$this->tags[$tpl] = $tags;
+	}
 
 	function getTags( $tpl ){
 		$return = array();

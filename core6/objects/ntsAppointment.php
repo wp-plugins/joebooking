@@ -207,7 +207,6 @@ class ntsAppointment extends ntsObject {
 			'status'	=> M('Status'),
 			'total_amount'	=> M('Total Amount'),
 			'paid_amount'	=> M('Paid Amount'),
-			'paid_amount'	=> M('Payment Balance'),
 			'invoice_ref'	=> M('Invoice'),
 			'paid_through'	=> M('Paid Through'),
 			'payment_notes'	=> M('Payment Notes'),
@@ -527,6 +526,16 @@ class ntsAppointment extends ntsObject {
 			$thisView2 = join( ', ', $thisView2 );
 			$return['payment_notes'] = $thisView2;
 		}
+
+	/* get notes */
+		$return_notes = array();
+		$notes = $this->getProp('_note');
+		if( $notes ){
+			foreach( $notes as $n ){
+				$return_notes[] = $n[0];
+			}
+		}
+		$return['notes'] = join('|', $return_notes);
 
 		return $return;
 	}

@@ -10,8 +10,7 @@ require( dirname(__FILE__) . '/_check.php' );
 
 $ready = array();
 $group_ref = '';
-if( count($apps) > 1 )
-{
+if( count($apps) > 1 ){
 	$group_ref = ntsLib::generateRand( 
 		16,
 		array(
@@ -21,8 +20,7 @@ if( count($apps) > 1 )
 		);
 }
 
-for( $ii = 0; $ii < count($apps); $ii++ )
-{
+for( $ii = 0; $ii < count($apps); $ii++ ){
 	$apps[$ii]['group_ref'] = $group_ref;
 	$customer_id = $apps[$ii]['customer_id'];
 	$cm->act_as = $customer_id;
@@ -35,26 +33,21 @@ for( $ii = 0; $ii < count($apps); $ii++ )
 		);
 	$cm->runCommand( $object, 'init', $params );
 
-	if( $cm->isOk() )
-	{
+	if( $cm->isOk() ){
 		$cm->runCommand( $object, '_request' );
 		$ready[] = $object;
 	}
-	else
-	{
+	else {
 		$errorText = $cm->printActionErrors();
 		ntsView::addAnnounce( $errorText, 'error' );
 	}
 }
 
-if( count($ready) )
-{
-	if( count($ready) > 1 )
-	{
+if( count($ready) ){
+	if( count($ready) > 1 ){
 		$add_msg = join( ': ', array( count($ready), M('Appointments'), M('Created') ) );
 	}
-	else
-	{
+	else {
 		$add_msg = join( ': ', array( M('Appointment'), M('Created') ) );
 	}
 	ntsView::addAnnounce( $add_msg, 'ok' );
@@ -62,8 +55,7 @@ if( count($ready) )
 	$ref = $ready[0]->getProp( 'group_ref' );
 	$forwardTo = ntsLink::makeLink('customer/appointments/view', '', array('ref' => $ref));
 }
-else
-{
+else {
 	$forwardTo = ntsLink::makeLink('-current-/..');
 }
 

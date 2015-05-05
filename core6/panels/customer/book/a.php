@@ -15,13 +15,10 @@ $coupon = $session->userdata( 'coupon' );
 
 $tm2 = $NTS_VIEW['tm2'];
 
-if( $apps )
-{
+if( $apps ){
 	reset( $apps );
-	foreach( $apps as $a )
-	{
-		if( $a['service_id'] )
-		{
+	foreach( $apps as $a ){
+		if( $a['service_id'] ){
 			$service = ntsObjectFactory::get( 'service' );
 			$service->setId( $a['service_id'] );
 			if( ! isset($a['duration']) )
@@ -46,42 +43,34 @@ $requested = array(
 	'seats'	=> 0,
 	);
 reset( $requested );
-foreach( array_keys($requested) as $k )
-{
+foreach( array_keys($requested) as $k ){
 	$requested[$k] = $_NTS['REQ']->getParam($k);
 }
 
 /* find out the cal date */
 $cal = $_NTS['REQ']->getParam('cal');
 $requested_time = $_NTS['REQ']->getParam('time');
-if( $requested_time )
-{
+if( $requested_time ){
 	$t->setTimestamp( $requested_time );
 	$cal = $t->formatDate_Db();
 }
-else
-{
-	if( $cal )
-	{
+else {
+	if( $cal ){
 		// already requested
 	}
-	else
-	{
+	else {
 		$next = $tm2->getNextTimes( $now, 1 );
-		if( $next )
-		{
+		if( $next ){
 			$t->setTimestamp( $next[0] );
 			$cal = $t->formatDate_Db();
 		}
-		else
-		{
+		else{
 		}
 	}
 }
 
 $view = array();
-if( ! $cal )
-{
+if( ! $cal ){
 	$is_ajax = ntsLib::isAjax();
 	$view_file = $is_ajax ? 'ajax.php' : 'index.php';
 	$this->render(
@@ -95,14 +84,11 @@ $locations = array();
 $resources = array();
 $services = array();
 
-if( $requested_time )
-{
+if( $requested_time ){
 	$lrs = array();
 	$times = $tm2->getAllTime( $requested['time'], $requested['time'] );
-	foreach( $times as $ts => $slots )
-	{
-		foreach( $slots as $slot )
-		{
+	foreach( $times as $ts => $slots ){
+		foreach( $slots as $slot ){
 			$lrs[] = array(
 				$slot[0],
 				$slot[1],
@@ -111,13 +97,11 @@ if( $requested_time )
 		}
 	}
 }
-else
-{
+else {
 	$lrs = $tm2->getLrs( TRUE, $cal );
 }
 
-if( ! $lrs )
-{
+if( ! $lrs ){
 	$is_ajax = ntsLib::isAjax();
 	$view_file = $is_ajax ? 'ajax.php' : 'index.php';
 
@@ -152,8 +136,7 @@ reset( $lrs );
 $all_lids = array();
 $all_rids = array();
 $all_sids = array();
-foreach( $lrs as $lrsa )
-{
+foreach( $lrs as $lrsa ){
 	$all_lids[ $lrsa[0] ] = 1;
 	$all_rids[ $lrsa[1] ] = 1;
 	$all_sids[ $lrsa[2] ] = 1;
@@ -164,24 +147,20 @@ ntsObjectFactory::preload( 'resource', array_keys($all_rids) );
 ntsObjectFactory::preload( 'service', array_keys($all_sids) );
 
 reset( $lrs );
-foreach( $lrs as $lrsa )
-{
-	if( ! isset($locations[$lrsa[0]]) )
-	{
+foreach( $lrs as $lrsa ){
+	if( ! isset($locations[$lrsa[0]]) ){
 		$obj = ntsObjectFactory::get( 'location' );
 		$obj->setId( $lrsa[0] );
 		$locations[ $lrsa[0] ] = $obj;
 	}
 
-	if( ! isset($resources[$lrsa[1]]) )
-	{
+	if( ! isset($resources[$lrsa[1]]) ){
 		$obj = ntsObjectFactory::get( 'resource' );
 		$obj->setId( $lrsa[1] );
 		$resources[ $lrsa[1] ] = $obj;
 	}
 
-	if( ! isset($services[$lrsa[2]]) )
-	{
+	if( ! isset($services[$lrsa[2]]) ){
 		$obj = ntsObjectFactory::get( 'service' );
 		$obj->setId( $lrsa[2] );
 		$services[ $lrsa[2] ] = $obj;
@@ -205,18 +184,15 @@ $tm2->dayMode = TRUE;
 $day_start = $dates_time_from;
 $t->setTimestamp( $day_start );
 
-while( $day_start <= $dates_time_to )
-{
+while( $day_start <= $dates_time_to ){
 	$this_date = $t->formatDate_Db();
 	$t->modify( '+1 day' );
 	$day_end = $t->getTimestamp();
 
-	if( $tm2->customerSide && ($this_date < $today) )
-	{
+	if( $tm2->customerSide && ($this_date < $today) ){
 		$times = array();
 	}
-	else
-	{
+	else {
 		$times = $tm2->getAllTime( $day_start, $day_end );
 	}
 	if( $times )
@@ -235,16 +211,13 @@ $time_end = $t->getEndDay();
 $times = $tm2->getAllTime( $time_start, $time_end );
 
 /* include dry run */
-if( $show_booked )
-{
+if( $show_booked ){
 	$tm2->dryRun = TRUE;
 	$defined_times = $tm2->getAllTime( $time_start, $time_end );
 	$tm2->dryRun = FALSE;
 
-	foreach( array_keys($defined_times) as $tts )
-	{
-		if( ! isset($times[$tts]) )
-		{
+	foreach( array_keys($defined_times) as $tts ){
+		if( ! isset($times[$tts]) ){
 			$times[$tts] = array();
 		}
 	}
@@ -260,24 +233,20 @@ $this_a = array(
 	'starts_at'		=> 0, 
 	'customer_id'	=> 0,
 	);
-if( count($locations) == 1 )
-{
+if( count($locations) == 1 ){
 	$ids = array_keys($locations);
 	$this_a['location_id'] = $ids[0];
 }
-if( count($resources) == 1 )
-{
+if( count($resources) == 1 ){
 	$ids = array_keys($resources);
 	$this_a['resource_id'] = $ids[0];
 }
-if( count($services) == 1 )
-{
+if( count($services) == 1 ){
 	$ids = array_keys($services);
 	$this_a['service_id'] = $ids[0];
 }
 $this_a['customer_id'] = ntsLib::getCurrentUserId();
-if( $requested['time'] )
-{
+if( $requested['time'] ){
 	$this_a['starts_at'] = $requested['time'];
 }
 /* END OF THIS APPOINTMENT */
@@ -309,18 +278,15 @@ if(
 /* END OF READY */
 
 /* resort locations, resources and services */
-if( count($locations) > 1 )
-{
+if( count($locations) > 1 ){
 	$sort_locs = ntsObjectFactory::getAllIds( 'location' );
 	$locations = ntsLib::ksortArrayByArray( $locations, $sort_locs );
 }
-if( count($resources) > 1 )
-{
+if( count($resources) > 1 ){
 	$sort_ress = ntsObjectFactory::getAllIds( 'resource' );
 	$resources = ntsLib::ksortArrayByArray( $resources, $sort_ress );
 }
-if( count($services) > 1 )
-{
+if( count($services) > 1 ){
 	$sort_sers = ntsObjectFactory::getAllIds( 'service' );
 	$services = ntsLib::ksortArrayByArray( $services, $sort_sers );
 }

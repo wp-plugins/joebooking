@@ -120,17 +120,14 @@ $NTS_MENU = array(
 $has_price = FALSE;
 $all_services = ntsObjectFactory::getAll( 'service' );
 reset( $all_services );
-foreach( $all_services as $s )
-{
+foreach( $all_services as $s ){
 	$service_price = $s->getProp('price');
-	if( strlen($service_price) && ($service_price > 0) )
-	{
+	if( strlen($service_price) && ($service_price > 0) ){
 		$has_price = TRUE;
 		break;
 	}
 }
-if( $has_price )
-{
+if( $has_price ){
 	$NTS_MENU['admin/company/packs'] = array(
 		'title'	=> M('Packages'),
 		'icon'	=> 'suitcase',
@@ -143,8 +140,16 @@ if( $has_price )
 		);
 }
 
-if( defined('NTS_APP_LEVEL') && (NTS_APP_LEVEL == 'lite') )
-{
+$orders_count = ntsObjectFactory::count('order');
+if( $orders_count ){
+	$NTS_MENU['admin/payments/orders'] = array(
+		'title'		=> M('Package Orders'),
+		'icon'		=> 'list',
+		'panel'		=> 'admin/payments/orders',
+		);
+}
+
+if( defined('NTS_APP_LEVEL') && (NTS_APP_LEVEL == 'lite') ){
 	$appInfo = ntsLib::getAppInfo();
 	$order_link = isset($appInfo['order_link']) ? $appInfo['order_link'] : 'http://www.hitappoint.com/order/';
 	$promo_title = 'Pro Version';
@@ -156,8 +161,7 @@ if( defined('NTS_APP_LEVEL') && (NTS_APP_LEVEL == 'lite') )
 		'order'	=> 200
 		);
 }
-elseif( isset($appInfo['order_link_title']) )
-{
+elseif( isset($appInfo['order_link_title']) ){
 	$NTS_MENU['admin/promo'] = array(
 		'title'	=> $appInfo['order_link_title'],
 		'link'	=> $appInfo['order_link'],

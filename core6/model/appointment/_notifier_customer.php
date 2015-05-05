@@ -79,14 +79,12 @@ if( in_array($key, $currentlyDisabled) )
 $tailoredKey = $key . '_' . $object->getProp('service_id');
 
 $templateInfo = $etm->getTemplate( $userLang, $tailoredKey );
-if( ! $templateInfo )
-{
+if( ! $templateInfo ){
 	$templateInfo = $etm->getTemplate( $userLang, $key );
 }
 
 /* --- SKIP IF NO TEMPLATE --- */
-if( ! $templateInfo )
-{
+if( ! $templateInfo ){
 	return;
 }
 
@@ -110,7 +108,7 @@ if( $mainActionName == 'reschedule' ){
 	$timeFormatted = $t->formatWeekdayShort() . ', ' . $t->formatDate() . ' ' . $t->formatTime();
 	$tags[0][] = '{OLD_APPOINTMENT.STARTS_AT}';
 	$tags[1][] = $timeFormatted;
-	}
+}
 
 /* add .ics attachement */
 $attachements = array();
@@ -137,18 +135,29 @@ if( in_array($key, $attachTo) ){
 		foreach( $files as $f ){
 			if( preg_match('/\-(\d+)\./', $f, $ma) ){
 				$loc2attach[$ma[1]] = $f;
-				}
 			}
+		}
 		$locId = $object->getProp( 'location_id' );
 		if( isset($loc2attach[$locId]) ){
 			$fileAttachements[] = array( $loc2attach[$locId], $attachDir . '/' . $loc2attach[$locId] );
-			}
 		}
 	}
+}
 else {
 	$tags[0][] = '{APPOINTMENT.LINK_TO_ICAL}';
 	$tags[1][] = '';
-	}
+}
+
+$group_ref = $object->getProp( 'group_ref' );
+if( $group_ref ){
+	$customer_link = ntsLink::makeLink('customer/appointments/view', '', array('ref' => $group_ref));
+	$customer_link = '<a href="' . $customer_link . '">' . M('View') . '</a>';
+}
+else {
+	$customer_link = '';
+}
+$tags[0][] = '{APPOINTMENT.CUSTOMER_LINK_TO}';
+$tags[1][] = $customer_link;
 
 /* replace tags */
 $subject = str_replace( $tags[0], $tags[1], $templateInfo['subject'] );

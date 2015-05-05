@@ -17,8 +17,6 @@ $enableRegistration = $conf->get('enableRegistration');
 	</h2>
 </div>
 
-<?php require( dirname(__FILE__) . '/../_index_confirm.php' ); ?>
-
 <?php if( $enableRegistration ) : ?>
 
 	<h3><?php echo M('Please login or register to proceed'); ?></h3>
@@ -76,3 +74,5 @@ $enableRegistration = $conf->get('enableRegistration');
 	<?php echo $NTS_VIEW['form_register']->display(); ?>
 
 <?php endif; ?>
+
+<?php require( dirname(__FILE__) . '/../_index_confirm.php' ); ?>

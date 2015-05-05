@@ -139,6 +139,22 @@ foreach( $runActions as $ra ){
 		$tags[1][] = '';
 		}
 
+	$group_ref = $object->getProp( 'group_ref' );
+	if( $group_ref ){
+		$customer_link = ntsLink::makeLink('customer/appointments/view', '', array('ref' => $group_ref));
+		$customer_link = '<a href="' . $customer_link . '">' . M('View') . '</a>';
+	}
+	else {
+		$customer_link = '';
+	}
+	$tags[0][] = '{APPOINTMENT.CUSTOMER_LINK_TO}';
+	$tags[1][] = $customer_link;
+
+	$provider_link = ntsLink::makeLink('admin/manage/appointments/edit/overview', '', array('_id' => $object->getId()));
+	$provider_link = '<a href="' . $provider_link . '">' . M('View') . '</a>';
+	$tags[0][] = '{APPOINTMENT.PROVIDER_LINK_TO}';
+	$tags[1][] = $provider_link;
+
 	/* replace tags */
 	$subject = str_replace( $tags[0], $tags[1], $templateInfo['subject'] );
 	$body = str_replace( $tags[0], $tags[1], $templateInfo['body'] );
@@ -147,18 +163,15 @@ foreach( $runActions as $ra ){
 	reset( $providers );
 	foreach( $providers as $provider ){
 		$this->runCommand( $provider, 'email', array('body' => $body, 'subject' => $subject, 'attachements' => $attachements) );
-		}
+	}
 
 	/* --- CC IF ANY --- */
 	$cc = $object->getProp('_cc');
-	if( $cc )
-	{
+	if( $cc ){
 		reset( $cc );
-		foreach( $cc as $cc_to )
-		{
+		foreach( $cc as $cc_to ){
 			$cc_to = trim( $cc_to );
-			if( $cc_to )
-			{
+			if( $cc_to ){
 				$tempUser = new ntsUser;
 				$tempUser->setProp('email', $cc_to);
 				$tempUser->setProp('first_name', $cc_to);
