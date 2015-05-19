@@ -2,17 +2,36 @@
 class HC_Form_Input_Checkbox_Set extends HC_Form_Input
 {
 	protected $options = array();
+	protected $more = array();
 	protected $readonly = array();
 	protected $value = array();
+	protected $inline = TRUE;
 
-	function add_option( $value, $label = '' )
+	function add_option( $value, $label = NULL, $more = '' )
 	{
 		$this->options[$value] = $label;
+		if( $more ){
+			$this->more[$value] = $more;
+		}
 		return $this;
 	}
 	function options()
 	{
 		return $this->options;
+	}
+	function more()
+	{
+		return $this->more;
+	}
+
+	function set_inline( $inline = TRUE )
+	{
+		$this->inline = $inline;
+		return $this;
+	}
+	function inline()
+	{
+		return $this->inline;
 	}
 
 	function set_readonly( $value, $ro = TRUE )
@@ -74,15 +93,31 @@ class HC_Form_Input_Checkbox_Set extends HC_Form_Input
 	{
 		$options = $this->options();
 		$full_value = $this->value();
+		$inline = $this->inline();
 
 		$el = HC_Html_Factory::widget('list')
-			->add_attr('class', array('list-inline', 'list-separated'))
 			;
+
+		if( $inline ){
+			$el->add_attr('class', array('list-inline'));
+			$el->add_attr('class', array('list-separated'));
+		}
+		else {
+			$el->add_attr('class', array('list-unstyled'));
+			$el->add_attr('class', array('list-separated'));
+			// $el->add_attr('class', array('list-padded'));
+		}
+
+		$attr = $this->attr();
+		foreach( $attr as $key => $val ){
+			$el->add_attr($key, $val);
+		}
+
 		foreach( $options as $value => $label ){
 			$el->add_item( $this->render_one($value) );
 		}
 
-		$return = $this->decorate( $el->render() );
+		$return = $this->decorate( $el->render(), FALSE );
 		return $return;
 	}
 }

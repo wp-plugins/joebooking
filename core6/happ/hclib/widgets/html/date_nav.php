@@ -8,7 +8,7 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 	private $range_param = 'range';
 	private $date = '';
 	private $submit_to = '';
-	private $enabled = array('day', 'week', 'month', 'custom', 'all');
+	private $enabled = array('day', 'week', 'month', 'custom', 'upcoming', 'all');
 
 	function __construct( $start = '' )
 	{
@@ -80,26 +80,84 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 		return $this->range_param;
 	}
 
-	function render()
+	private function _nav_title( $readonly = FALSE )
 	{
-		if( ! $link = $this->link() ){
-			return 'HC_Html_Widget_Date_Nav: link is not set!';
-		}
-
 		$t = HC_Lib::time();
+		$nav_title = '';
 
 		switch( $this->range() ){
 			case 'all':
 				$nav_title = lang('common_all');
-				$t->setNow();
-				$start_date = $end_date = 0;
-				$start_date = $end_date = $t->formatDate_Db();
+				break;
+
+			case 'upcoming':
+				$nav_title = lang('time_upcoming');
 				break;
 
 			case 'custom':
 				list( $start_date, $end_date ) = explode('_', $this->date());
+				if( $readonly ){
+					$nav_title = $t->formatDateRange( $start_date, $end_date );
+				}
+				else {
+					$nav_title = lang('time_custom_range');
+				}
+				break;
+
+			case 'day':
+				$t->setDateDb( $this->date() );
+				$start_date = $end_date = $t->formatDate_Db();
 				$nav_title = $t->formatDateRange( $start_date, $end_date );
-				$nav_title = lang('time_custom_range');
+				break;
+
+			case 'week':
+				$t->setDateDb( $this->date() );
+				$start_date = $t->setStartWeek()->formatDate_Db();
+				$end_date = $t->setEndWeek()->formatDate_Db();
+				$nav_title = $t->formatDateRange( $start_date, $end_date );
+				break;
+
+			case 'month':
+				$t->setDateDb( $this->date() );
+				$nav_title = $t->getMonthName() . ' ' . $t->getYear();
+				break;
+		}
+
+		return $nav_title;
+	}
+
+	function render( $readonly = FALSE )
+	{
+		if( (! $readonly) && (! $link = $this->link()) ){
+			return 'HC_Html_Widget_Date_Nav: link is not set!';
+		}
+
+		$t = HC_Lib::time();
+		$nav_title = $this->_nav_title( $readonly );
+
+		if( $readonly ){
+			$return = HC_Html_Factory::element('span')
+				->add_attr('class', array('btn', 'btn-default'))
+				->add_child( $nav_title )
+				;
+			return $return;
+		}
+
+
+		switch( $this->range() ){
+			case 'all':
+				$t->setNow();
+				$start_date = $end_date = 0;
+				// $start_date = $end_date = $t->formatDate_Db();
+				break;
+
+			case 'upcoming':
+				$t->setNow();
+				$start_date = $end_date = 0;
+				break;
+
+			case 'custom':
+				list( $start_date, $end_date ) = explode('_', $this->date());
 
 				$t->setDateDb($start_date)->modify('-1 day');
 				$before_date =  $t->formatDate_Db();
@@ -111,8 +169,6 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 			case 'day':
 				$t->setDateDb( $this->date() );
 				$start_date = $end_date = $t->formatDate_Db();
-
-				$nav_title = $t->formatDateRange( $start_date, $end_date );
 
 				$t->modify( '-1 day' );
 				$before_date =  $t->formatDate_Db();
@@ -127,8 +183,6 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 
 				$start_date = $t->setStartWeek()->formatDate_Db();
 				$end_date = $t->setEndWeek()->formatDate_Db();
-
-				$nav_title = $t->formatDateRange( $start_date, $end_date );
 
 				$t->setDateDb( $this->date() );
 				$t->modify( '-1 week' );
@@ -158,8 +212,6 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 				$t->setEndMonth();
 				$t->modify( '+1 day' );
 				$after_date =  $t->formatDate_Db();
-
-				$nav_title = $month_view;
 				break;
 		}
 
@@ -175,28 +227,74 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 			->set_title( $wrap_nav_title )
 			;
 
-		$range_options = array(
-			'week'	=>
-				HC_Html_Factory::element('a')
-					->add_child( lang('time_week') )
-					->add_attr('href', $link->url( array($this->range_param() => 'week', $this->date_param() => $start_date) )),
-			'month'	=>
-				HC_Html_Factory::element('a')
-					->add_child( lang('time_month') )
-					->add_attr('href', $link->url( array($this->range_param() => 'month', $this->date_param() => $start_date) )),
-			'day'	=>
-				HC_Html_Factory::element('a')
-					->add_child( lang('time_day') )
-					->add_attr('href', $link->url( array($this->range_param() => 'day', $this->date_param() => $start_date) )),
-			'custom'	=>
-				HC_Html_Factory::element('a')
-					->add_child( lang('time_custom_range') )
-					->add_attr('href', $link->url( array($this->range_param() => 'custom', $this->date_param() => $start_date . '_' . $end_date) )),
-			'all'	=>
-				HC_Html_Factory::element('a')
-					->add_child( lang('common_all') )
-					->add_attr('href', $link->url( array($this->range_param() => 'all', $this->date_param() => NULL) )),
+		$range_options = array();
+
+	/* week */
+		$this_params = array(
+			$this->range_param()	=> 'week',
+			$this->date_param()		=> $start_date ? $start_date : NULL,
 			);
+		$range_options['week'] = HC_Html_Factory::element('a')
+			->add_child( lang('time_week') )
+			->add_attr('href', $link->url($this_params))
+			;
+
+	/* month */
+		$this_params = array(
+			$this->range_param()	=> 'month',
+			$this->date_param()		=> $start_date ? $start_date : NULL,
+			);
+		$range_options['month'] = HC_Html_Factory::element('a')
+			->add_child( lang('time_month') )
+			->add_attr('href', $link->url($this_params))
+			;
+
+	/* day */
+		$this_params = array(
+			$this->range_param()	=> 'day',
+			$this->date_param()		=> $start_date ? $start_date : NULL,
+			);
+		$range_options['day'] = HC_Html_Factory::element('a')
+			->add_child( lang('time_day') )
+			->add_attr('href', $link->url($this_params))
+			;
+
+	/* custom */
+		$date_param = '';
+		if( $start_date && $end_date ){
+			$date_param = $start_date . '_' . $end_date;
+			}
+		elseif( $start_date ){
+			$date_param = $start_date;
+			}
+		$this_params = array(
+			$this->range_param()	=> 'custom',
+			$this->date_param()		=> $date_param ? $date_param : NULL,
+			);
+		$range_options['custom'] = HC_Html_Factory::element('a')
+			->add_child( lang('time_custom_range') )
+			->add_attr('href', $link->url($this_params))
+			;
+
+	/* upcoming */
+		$this_params = array(
+			$this->range_param()	=> 'upcoming',
+			$this->date_param()		=> NULL,
+			);
+		$range_options['upcoming'] = HC_Html_Factory::element('a')
+			->add_child( lang('time_upcoming') )
+			->add_attr('href', $link->url($this_params))
+			;
+
+	/* all */
+		$this_params = array(
+			$this->range_param()	=> 'all',
+			$this->date_param()		=> NULL,
+			);
+		$range_options['all'] = HC_Html_Factory::element('a')
+			->add_child( lang('common_all') )
+			->add_attr('href', $link->url($this_params))
+			;
 
 		$enabled = $this->enabled();
 		foreach( $range_options as $k => $v ){
@@ -259,6 +357,7 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 				break;
 
 			case 'all':
+			case 'upcoming':
 				$this->add_item(
 					'current',
 					$current_nav

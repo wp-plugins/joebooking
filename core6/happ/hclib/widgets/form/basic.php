@@ -36,22 +36,18 @@ class HC_Form_Input extends HC_Html_Element
 	/* this will add error messages and help text if needed*/
 	function decorate( $return )
 	{
-		if( $wrap = $this->wrap() )
-		{
-			foreach( $wrap as $wr )
-			{
+		if( $wrap = $this->wrap() ){
+			foreach( $wrap as $wr ){
 				$return = $wr->add_child($return)->render();
 			}
 		}
 
 		$error = $this->error();
-		if( $error )
-		{
+		if( $error ){
 			$return = HC_Html_Factory::widget('container')
 				->add_item( $return )
 				;
-			if( is_array($error) )
-			{
+			if( is_array($error) ){
 				$error = join( ' ', $error );
 			}
 			$return->add_item(
@@ -103,8 +99,7 @@ class HC_Form_Input extends HC_Html_Element
 	function set_value( $value )
 	{
 		$this->value = $value;
-		if( $error = $this->_validate() )
-		{
+		if( $error = $this->_validate() ){
 			$this->set_error( $error );
 		}
 		return $this;
@@ -117,8 +112,7 @@ class HC_Form_Input extends HC_Html_Element
 	function set_name( $name )
 	{
 		$this->name = $name;
-		if( ! strlen($this->id()))
-		{
+		if( ! strlen($this->id())){
 			$id = 'nts_form_' . $name;
 			$this->set_id( $id );
 		}
@@ -143,8 +137,7 @@ class HC_Form_Input extends HC_Html_Element
 	{
 		$name = $this->name();
 		$value = NULL;
-		if( isset($post[$name]) )
-		{
+		if( isset($post[$name]) ){
 			$value = $post[$name];
 		}
 		$this->set_value( $value );
@@ -270,8 +263,9 @@ class HC_Form_Input_Radio extends HC_Form_Input
 	protected $options = array();
 	protected $more = array();
 	protected $holder = NULL;
+	protected $inline = FALSE;
 
-	function add_option( $value, $label, $more = '' )
+	function add_option( $value, $label = NULL, $more = '' )
 	{
 		$this->options[$value] = $label;
 		if( $more ){
@@ -286,6 +280,16 @@ class HC_Form_Input_Radio extends HC_Form_Input
 	function more()
 	{
 		return $this->more;
+	}
+
+	function set_inline( $inline = TRUE )
+	{
+		$this->inline = $inline;
+		return $this;
+	}
+	function inline()
+	{
+		return $this->inline;
 	}
 
 	public function set_holder( $holder )
@@ -303,12 +307,20 @@ class HC_Form_Input_Radio extends HC_Form_Input
 		$options = $this->options();
 		$more = $this->more();
 		$value = $this->value();
+		$inline = $this->inline();
 
 		$el = $this->holder();
 		if( ! ($el && is_object($el) && method_exists($el, 'add_item')) ){
-			$el = HC_Html_Factory::widget('list')
-				->add_attr('class', array('list-unstyled', 'list-separated'))
-				;
+			$el = HC_Html_Factory::widget('list');
+			if( $inline ){
+				$el->add_attr('class', array('list-inline'));
+				$el->add_attr('class', array('list-separated'));
+			}
+			else {
+				$el->add_attr('class', array('list-unstyled'));
+				$el->add_attr('class', array('list-separated'));
+				// $el->add_attr('class', array('list-padded'));
+			}
 		}
 
 		foreach( $options as $value => $label ){
@@ -335,7 +347,9 @@ class HC_Form_Input_Radio extends HC_Form_Input
 			}
 
 			$wrap_el->add_child( $sub_el );
-			$wrap_el->add_child( $label );
+			if( $label !== NULL ){
+				$wrap_el->add_child( $label );
+			}
 
 			if( isset($more[$value]) ){
 				$this_more = HC_Html_Factory::element('div')
@@ -347,8 +361,14 @@ class HC_Form_Input_Radio extends HC_Form_Input
 
 			$wrap_el = HC_Html_Factory::element('div')
 				->add_attr('class', 'radio')
+				->add_attr('style', 'margin: 0 0;')
 				->add_child( $wrap_el )
 				;
+			if( ! $inline ){
+				$wrap_el
+					->add_attr('style', 'display: block;')
+					;
+			}
 
 			$el->add_item( $wrap_el );
 		}
@@ -553,6 +573,8 @@ class HC_Form_Input_Checkbox extends HC_Form_Input
 		if( $decorate ){
 			$out = HC_Html_Factory::element('div')
 				->add_attr('class', 'checkbox')
+				->add_attr('style', 'margin: 0 0;')
+				->add_attr('style', 'display: block;')
 				->add_child(
 					HC_Html_Factory::element('label')
 						->add_child( $el )

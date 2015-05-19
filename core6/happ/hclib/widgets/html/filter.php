@@ -117,6 +117,7 @@ class HC_Html_Widget_Filter extends HC_Html_Widget_Collapse
 			;
 
 	/* remaining possible options */
+		$remain_options = FALSE;
 		if( (! $this->selected()) OR $allow_multiple ){
 			foreach( $this->options() as $id => $label ){
 				if( ! in_array($id, $this->selected()) ){
@@ -134,6 +135,7 @@ class HC_Html_Widget_Filter extends HC_Html_Widget_Collapse
 					$option_wrap->add_child( $label );
 
 					$content->add_item( $id, $option_wrap );
+					$remain_options = TRUE;
 				}
 			}
 		}
@@ -189,7 +191,7 @@ class HC_Html_Widget_Filter extends HC_Html_Widget_Collapse
 			}
 		}
 
-		if( (! $this->selected()) OR $allow_multiple ){
+		if( $remain_options ){
 			$trigger = HC_Html_Factory::element('a')
 				->add_child( HC_Html::icon('plus') . lang('common_filter') . ': ' . $add_title )
 				->add_attr('href', '#')

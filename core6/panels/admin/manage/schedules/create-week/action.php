@@ -9,11 +9,23 @@ $ntsdb =& dbWrapper::getInstance();
 
 $ff =& ntsFormFactory::getInstance();
 $formFile = dirname( __FILE__ ) . '/form';
-$fParams = array();
 
+/* check if we have defaults */
+global $_NTS;
+$defaults = isset( $_NTS['defaults']['schedules/create'] ) ? $_NTS['defaults']['schedules/create'] : array();
+
+//$fParams = array();
+$fParams = $defaults;
 $fParams['cal'] = $cal;
-$fParams['location_id'] = 0;
-$fParams['service_id'] = 0;
+
+if( ! array_key_exists('location_id', $fParams) ){
+	//$fParams['location_id'] = 0;
+	$fParams['location_id'] = $locs;
+}
+if( ! array_key_exists('service_id', $fParams) ){
+	//$fParams['service_id'] = 0;
+	$fParams['service_id'] = $sers;
+}
 
 $when = array();
 
@@ -23,6 +35,11 @@ variants:
 2) no cal, applied on given: a) range this weekday
 3) nothing given: a) range choose weekday(s) 
 */
+
+$valid_to_modify = '+1 year';
+if( array_key_exists('valid_to', $fParams) ){
+	$valid_to_modify = $fParams['valid_to'];
+}
 
 if( $cal ){
 	$when[] = 'range';
@@ -34,7 +51,7 @@ if( $cal ){
 	$fParams['applied_on'] = array( $appliedOn );
 
 	$fParams['valid_from'] = $t->formatDate_Db();
-	$t->modify( '+1 year' );
+	$t->modify( $valid_to_modify );
 	$fParams['valid_to'] = $t->formatDate_Db();
 	}
 else {
@@ -56,7 +73,7 @@ else {
 
 	$t->setNow();
 	$fParams['valid_from'] = $t->formatDate_Db();
-	$t->modify( '+1 year' );
+	$t->modify( $valid_to_modify );
 	$fParams['valid_to'] = $t->formatDate_Db();
 	}
 

@@ -6,6 +6,10 @@ if( substr(str_replace('.', '', PHP_VERSION), 0, 2) < 52 ){
 
 ini_set( 'track_errors', 'On' );
 
+if( ! defined('HC_SKIP_CSS_PREFIX') ){
+	define( 'HC_SKIP_CSS_PREFIX', 1 );
+}
+
 define( 'NTS_APP_DIR', realpath(dirname(__FILE__) . '/../')  );
 if( ! defined('NTS_RUN_DIR') )
 	define( 'NTS_RUN_DIR', realpath(dirname(__FILE__) . '/../../')  );

@@ -1,4 +1,21 @@
 <?php
+class Hc_Renderer
+{
+	function render( $view_file, $view_params = array() )
+	{
+		if( $view_params ){
+			extract($view_params);
+		}
+
+		ob_start();
+		require( $view_file );
+		$output = ob_get_contents();
+		ob_end_clean();
+		$output = trim( $output );
+		return $output;
+	}
+}
+
 class HC_View_Layout
 {
 	protected $partials = array();
@@ -12,14 +29,11 @@ class HC_View_Layout
 	function partial( $key )
 	{
 		$return = '';
-		if( isset($this->partials[$key]) )
-		{
-			if( is_array($this->partials[$key]) )
-			{
+		if( isset($this->partials[$key]) ){
+			if( is_array($this->partials[$key]) ){
 				$return = join( '', $this->partials[$key] );
 			}
-			else
-			{
+			else {
 				$return = $this->partials[$key];
 			}
 		}
@@ -80,45 +94,37 @@ class HC_Html_Factory
 		static $classes = array();
 		$class_key = 'input_' . $element;
 
-		if( isset($classes[$class_key]) )
-		{
+		if( isset($classes[$class_key]) ){
 			$class = $classes[$class_key];
 		}
-		else
-		{
+		else {
 			$widget_locations = HC_App::widget_locations();
-			foreach( $widget_locations as $prfx => $location )
-			{
+			foreach( $widget_locations as $prfx => $location ){
 				$class = strtoupper($prfx) . '_Form_Input_' . ucfirst($element);
-				if( ! class_exists($class) )
-				{
+				if( ! class_exists($class) ){
 					/* attempt to load the file */
 //echo "ATTEMPT TO LOAD '$class'<br>";
 //				$file = dirname(__FILE__) . '/widgets/' . $element . '.php';
 					$file = $location . '/form/' . $element . '.php';
-					if( file_exists($file) )
-					{
+					if( file_exists($file) ){
 						include_once( $file );
 					}
 				}
-				if( class_exists($class) )
-				{
+				if( class_exists($class) ){
 					$classes[$class_key] = $class;
 					break;
 				}
 			}
 		}
 
-		if( class_exists($class) )
-		{
+		if( class_exists($class) ){
 			if( $name )
 				$return = new $class( $name );
 			else
 				$return = new $class;
 			return $return;
 		}
-		else
-		{
+		else {
 			throw new Exception( "No class defined: '$class'" );
 		}
 	}
@@ -332,6 +338,30 @@ class HC_Html_Element
 		$attr = $this->attr();
 		foreach( $attr as $key => $val ){
 			switch( $key ){
+				case 'class':
+					if( defined('HC_SKIP_CSS_PREFIX') && HC_SKIP_CSS_PREFIX ){
+						continue;
+					}
+					$skip = array('fa', 'hc-');
+					$append = 'hc-';
+
+					for( $ii = 0; $ii < count($val); $ii++ ){
+						if( substr($val[$ii], 0, strlen($append)) != $append ){
+							$append_this = TRUE;
+							reset( $skip );
+							foreach( $skip as $sk ){
+								if( substr($val[$ii], 0, strlen($sk)) == $sk ){
+									$append_this = FALSE;
+									break;
+								}
+							}
+							if( $append_this ){
+								$val[$ii] = $append . $val[$ii];
+							}
+						}
+					}
+					break;
+
 				case 'value':
 					for( $ii = 0; $ii < count($val); $ii++ ){
 						$val[$ii] = htmlspecialchars( $val[$ii] );

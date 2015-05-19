@@ -41,7 +41,7 @@ class HC_Html_Widget_Ajax_Loader extends HC_Html_Element
 
 	/* build trigger */
 		$title = $this->title();
-		if( 
+		if(
 			is_object($title) &&
 			( $title->tag() == 'a' )
 			)
@@ -56,9 +56,9 @@ class HC_Html_Widget_Ajax_Loader extends HC_Html_Element
 
 			$trigger = HC_Html_Factory::element('a')
 				->add_attr('title', $title)
-					->add_child( 
-						$full_title
-						)
+				->add_child(
+					$full_title
+					)
 				;
 		}
 

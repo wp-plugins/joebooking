@@ -62,12 +62,13 @@ class HC_Html_Widget_Label_Row extends HC_Html_Element
 			$div->add_attr('class', 'has-error');
 		}
 
-		$label_c = HC_Html_Factory::element( 'label' )
-			->add_attr('class', 'control-label')
-			->add_child( $label )
-			;
-
-		$div->add_child( $label_c );
+		if( $label ){
+			$label_c = HC_Html_Factory::element( 'label' )
+				->add_attr('class', 'control-label')
+				->add_child( $label )
+				;
+			$div->add_child( $label_c );
+		}
 
 		$content_holder = HC_Html_Factory::element( 'div' )
 			->add_attr('class', 'control-holder')

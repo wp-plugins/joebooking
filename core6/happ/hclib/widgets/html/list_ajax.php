@@ -15,7 +15,7 @@ class HC_Html_Widget_List_Ajax extends HC_Html_Widget_List
 
 		$wrap->add_child( $list );
 		$wrap->add_child( $container );
-		
+
 		return $wrap->render();
 	}
 }

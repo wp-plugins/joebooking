@@ -8,7 +8,7 @@ Plugin Name: JoeBooking
 Plugin URI: http://www.joebooking.com/
 Description: Appointment scheduling plugin designed specifically for service professionals like massage therapists, consultants, tutors, instructors, photographers, stylists, dog groomers and others who need to book their time with clients online. 
 Author: HitCode
-Version: 6.3.1
+Version: 6.3.4
 Author URI: http://www.hitcode.com/
 */
 
@@ -26,10 +26,11 @@ class joeBooking extends ntsWpBase2
 			);
 	}
 
-	static function uninstall( $prefix = 'ha_v6' )
+	static function uninstall( $prefix = 'ha_v6', $watch_other = array() )
 	{
 		$prefix = 'ha_v6';
-		hcWpBase4::uninstall( $prefix );
+		$watch_other = array('joebooking-pro.php', 'joebooking-salon-pro.php');
+		hcWpBase4::uninstall( $prefix, $watch_other );
 	}
 }
 

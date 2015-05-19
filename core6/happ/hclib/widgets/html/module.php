@@ -88,7 +88,6 @@ class HC_Html_Widget_Module extends HC_Html_Element
 		}
 
 		$link = HC_Lib::link( $this->url(), $link_params );
-
 		$return = call_user_func_array( 'Modules::run', $module_params );
 		if( strlen($return) && $this->self_target() ){
 			$out = HC_Html_Factory::element('div')

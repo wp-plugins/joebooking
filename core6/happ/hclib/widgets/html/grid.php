@@ -3,6 +3,7 @@ class HC_Html_Widget_Grid extends HC_Html_Element
 {
 	protected $items = array();
 	protected $scale = 'sm'; // can be sm, lg, xs, md
+	protected $slim = FALSE;
 
 	function add_item( $item, $width, $more_attr = array() )
 	{
@@ -12,6 +13,16 @@ class HC_Html_Widget_Grid extends HC_Html_Element
 	function items()
 	{
 		return $this->items;
+	}
+
+	function slim()
+	{
+		return $this->slim;
+	}
+	function set_slim( $slim = TRUE )
+	{
+		$this->slim = $slim;
+		return $this;
 	}
 
 	function scale()
@@ -26,8 +37,17 @@ class HC_Html_Widget_Grid extends HC_Html_Element
 
 	function render()
 	{
+		$slim = $this->slim();
 		$out = HC_Html_Factory::element('div');
-		$out->add_attr( 'class', 'row' );
+		$out
+			->add_attr( 'class', 'row' )
+			;
+		if( $slim ){
+			$out
+				->add_attr( 'class', 'row-slim' )
+				;
+		}
+
 		$attr = $this->attr();
 		foreach( $attr as $k => $v ){
 			$out->add_attr( $k, $v );
@@ -51,6 +71,7 @@ class HC_Html_Widget_Grid extends HC_Html_Element
 
 			$out->add_child( $slot );
 		}
+
 		return $out->render();
 	}
 }

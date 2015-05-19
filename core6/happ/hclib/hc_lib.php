@@ -1,12 +1,250 @@
 <?php
 include_once( dirname(__FILE__) . '/hc_object_cache.php' );
 
+// --------------------------------------------------------------------
+
+/**
+ * Plural
+ *
+ * Takes a singular word and makes it plural
+ *
+ * @access	public
+ * @param	string
+ * @param	bool
+ * @return	str
+ */
+if ( ! function_exists('hc_plural'))
+{
+	function hc_plural($str, $force = FALSE)
+	{
+		$result = strval($str);
+
+		$plural_rules = array(
+			'/^(ox)$/'                 => '\1\2en',     // ox
+			'/([m|l])ouse$/'           => '\1ice',      // mouse, louse
+			'/(matr|vert|ind)ix|ex$/'  => '\1ices',     // matrix, vertex, index
+			'/(x|ch|ss|sh)$/'          => '\1es',       // search, switch, fix, box, process, address
+			'/([^aeiouy]|qu)y$/'       => '\1ies',      // query, ability, agency
+			'/(hive)$/'                => '\1s',        // archive, hive
+			'/(?:([^f])fe|([lr])f)$/'  => '\1\2ves',    // half, safe, wife
+			'/sis$/'                   => 'ses',        // basis, diagnosis
+			'/([ti])um$/'              => '\1a',        // datum, medium
+			'/(p)erson$/'              => '\1eople',    // person, salesperson
+			'/(m)an$/'                 => '\1en',       // man, woman, spokesman
+			'/(c)hild$/'               => '\1hildren',  // child
+			'/(buffal|tomat)o$/'       => '\1\2oes',    // buffalo, tomato
+			'/(bu|campu)s$/'           => '\1\2ses',    // bus, campus
+			'/(alias|status|virus)/'   => '\1es',       // alias
+			'/(octop)us$/'             => '\1i',        // octopus
+			'/(ax|cris|test)is$/'      => '\1es',       // axis, crisis
+			'/s$/'                     => 's',          // no change (compatibility)
+			'/$/'                      => 's',
+		);
+
+		foreach ($plural_rules as $rule => $replacement){
+			if (preg_match($rule, $result)){
+				$result = preg_replace($rule, $replacement, $result);
+				break;
+			}
+		}
+		return $result;
+	}
+}
+
+// --------------------------------------------------------------------
+
+/**
+ * Singular
+ *
+ * Takes a plural word and makes it singular
+ *
+ * @access	public
+ * @param	string
+ * @return	str
+ */
+if ( ! function_exists('hc_singular'))
+{
+	function hc_singular($str)
+	{
+		$result = strval($str);
+
+		$singular_rules = array(
+			'/(matr)ices$/'         => '\1ix',
+			'/(vert|ind)ices$/'     => '\1ex',
+			'/^(ox)en/'             => '\1',
+			'/(alias)es$/'          => '\1',
+			'/([octop|vir])i$/'     => '\1us',
+			'/(cris|ax|test)es$/'   => '\1is',
+			'/(shoe)s$/'            => '\1',
+			'/(o)es$/'              => '\1',
+			'/(bus|campus)es$/'     => '\1',
+			'/([m|l])ice$/'         => '\1ouse',
+			'/(x|ch|ss|sh)es$/'     => '\1',
+			'/(m)ovies$/'           => '\1\2ovie',
+			'/(s)eries$/'           => '\1\2eries',
+			'/([^aeiouy]|qu)ies$/'  => '\1y',
+			'/([lr])ves$/'          => '\1f',
+			'/(tive)s$/'            => '\1',
+			'/(hive)s$/'            => '\1',
+			'/([^f])ves$/'          => '\1fe',
+			'/(^analy)ses$/'        => '\1sis',
+			'/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/' => '\1\2sis',
+			'/([ti])a$/'            => '\1um',
+			'/(p)eople$/'           => '\1\2erson',
+			'/(m)en$/'              => '\1an',
+			'/(s)tatuses$/'         => '\1\2tatus',
+			'/(c)hildren$/'         => '\1\2hild',
+			'/(n)ews$/'             => '\1\2ews',
+			'/([^u])s$/'            => '\1',
+		);
+
+		foreach ($singular_rules as $rule => $replacement){
+			if (preg_match($rule, $result)){
+				$result = preg_replace($rule, $replacement, $result);
+				break;
+			}
+		}
+		return $result;
+	}
+}
+
+if ( ! function_exists('hc_ci_before_exit'))
+{
+	function hc_ci_before_exit()
+	{
+	/* this is a hack to ensure that post controller and post system hooks are triggered */
+		$GLOBALS['EXT']->_call_hook('post_controller');
+		$GLOBALS['EXT']->_call_hook('post_system');
+	}
+}
+
+if ( ! function_exists('hc_run_notifier'))
+{
+	function hc_run_notifier()
+	{
+		$notifier = HC_App::notifier();
+		if( isset($notifier) ){
+			$notifier->run();
+		}
+	}
+}
+
+if ( ! function_exists('hc_parse_args'))
+{
+	function hc_parse_args( $args, $multiple_values = FALSE )
+	{
+		$return = array();
+		for( $ii = 0; $ii < count($args); $ii = $ii + 2 ){
+			if( isset($args[$ii + 1]) ){
+				$k = $args[$ii];
+				$v = $args[$ii + 1];
+				if( $multiple_values && (strpos($v, '.') !== FALSE) ){
+					$v = explode('.', $v);
+				}
+				$return[ $k ] = $v;
+			}
+		}
+		return $return;
+	}
+}
+
+if ( ! function_exists('_print_r'))
+{
+	function _print_r( $thing )
+	{
+		echo '<pre>';
+		print_r( $thing );
+		echo '</pre>';
+	}
+}
+
+if ( ! function_exists('hc_random'))
+{
+	function hc_random( $len = 8 )
+	{
+		$salt1 = '0123456789';
+		$salt2 = 'abcdef';
+
+//		$salt .= 'abcdefghijklmnopqrstuvxyz';
+//		$salt .= 'ABCDEFGHIJKLMNOPQRSTUVXYZ';
+
+		srand( (double) microtime() * 1000000 );
+		$return = '';
+		$i = 1;
+		$array = array();
+
+		while ( $i <= ($len - 1) ){
+			$num = rand() % strlen($salt1 . $salt2);
+			$tmp = substr($salt1 . $salt2, $num, 1);
+			$array[] = $tmp;
+			$i++;
+			}
+		shuffle( $array );
+
+	// first is letter
+		$num = rand() % strlen($salt2);
+		$tmp = substr($salt2, $num, 1);
+		array_unshift($array, $tmp);
+
+		$return = join( '', $array );
+		return $return;
+	}
+}
+
 class HC_Presenter
 {
 	const VIEW_HTML = 2;
 	const VIEW_HTML_ICON = 3;
 	const VIEW_TEXT = 1;
 	const VIEW_RAW = 0;
+
+	public function errors( $model, $vlevel = HC_PRESENTER::VIEW_HTML )
+	{
+		$errors = $model->errors();
+
+		switch( $vlevel ){
+			case HC_PRESENTER::VIEW_HTML:
+				$out = HC_Html_Factory::widget('list')
+					->add_attr('class', 'list-unstyled')
+					;
+				break;
+			default:
+				$out = array();
+				break;
+		}
+
+
+		foreach( $errors as $pname => $text ){
+			switch( $vlevel ){
+				case HC_PRESENTER::VIEW_HTML:
+					$this_out = HC_Html_Factory::widget('list')
+						->add_attr('class', 'list-inline')
+						->add_attr('class', 'list-separated-hori')
+						;
+					$this_out->add_item( $model->present_property_name($pname) . ':' );
+					$this_out->add_item( $text );
+					$out->add_item( $this_out );
+					break;
+				default:
+					$this_out = array();
+					$this_out[] = $model->present_property_name($pname) . ': ';
+					$this_out[] = $text;
+					$out[] = join('', $this_out);
+					break;
+			}
+		}
+
+		switch( $vlevel ){
+			case HC_PRESENTER::VIEW_HTML:
+				$out = $out->render();
+				break;
+			default:
+				$out[] = join("\n", $this_out);
+				break;
+		}
+
+		return $out;
+	}
 
 	public function label( $model, $vlevel = HC_PRESENTER::VIEW_HTML )
 	{
@@ -37,6 +275,7 @@ class HC_Page_Params
 {
 	private $params = array();
 	private $skip = array();
+	private $options = array();
 
 	public function slug()
 	{
@@ -59,6 +298,17 @@ class HC_Page_Params
 	public function set( $key, $value )
 	{
 		$this->params[$key] = $value;
+	}
+
+	public function set_options( $key, $options ){
+		$this->options[$key] = $options;
+	}
+	public function get_options( $key ){
+		$return = NULL;
+		if( isset($this->options[$key]) ){
+			$return = $this->options[$key];
+		}
+		return $return;
 	}
 
 	public function reset( $key )
@@ -102,6 +352,12 @@ class HC_App
 		if( isset($GLOBALS['NTS_APP'])){
 			$return = $GLOBALS['NTS_APP'];
 		}
+		return $return;
+	}
+
+	static function acl()
+	{
+		$return = HC_Acl::get_instance();
 		return $return;
 	}
 
@@ -189,6 +445,7 @@ class HC_App
 			'location'	=> 'home',
 			'trade'		=> 'exchange',
 			'trade'		=> 'refresh',
+			'conflict'	=> 'exclamation-circle',
 			);
 		if( isset($conf[$class]) )
 			$return = $conf[$class];
@@ -217,11 +474,42 @@ class HC_Link
 		$this->params = $params;
 	}
 
-	function url( $change_params = array() )
+	function url()
 	{
+		$return = NULL;
+
+		$append_controller = '';
+		$change_params = array();
+
+		$args = func_get_args();
+		$ri = HC_Lib::ri();
+		if( $ri && (count($args) == 0) && (count($this->params) == 0) ){
+			switch( $this->controller ){
+				case 'auth/login':
+					$return = Modules::run( $ri . '/auth/login_url' );
+					break;
+				case 'auth/logout':
+					$return = Modules::run( $ri . '/auth/logout_url' );
+					break;
+			}
+		}
+		if( $return ){
+			return $return;
+		}
+
+		if( count($args) == 1 ){
+			list( $change_params ) = $args;
+		}
+		elseif( count($args) == 2 ){
+			list( $append_controller, $change_params ) = $args;
+		}
+
 		$slug = array();
 		if( $this->controller ){
 			$slug[] = $this->controller;
+		}
+		if( $append_controller ){
+			$slug[] = $append_controller;
 		}
 
 		$params = array_merge( $this->params, $change_params );
@@ -262,7 +550,10 @@ class HC_Link
 				$slug[] = $v;
 			}
 		}
-		$return = ci_site_url( $slug );
+
+		$CI =& ci_get_instance();
+		$return = $CI->config->site_url( $slug );
+
 		return $return;
 	}
 
@@ -272,175 +563,48 @@ class HC_Link
     }
 }
 
-class HC_Link2
-{
-	private $args = array();
-	private $params = array();
-	private $controller = '';
-
-	function __construct( $init = '' )
+class HC_lib {
+	static function redirect( $uri = '', $method = 'location', $http_response_code = 302 )
 	{
-		if( is_array($init) ){
-			$controller = array_shift( $init );
-			$this->set_controller( $controller );
-			$params = hc_parse_args( $init );
-			foreach( $params as $k => $v ){
-				$this->set_param($k, $v);
-			}
-		}
-		else {
-			$this->set_controller( $init );
-		}
-	}
-
-	function set_controller( $controller )
-	{
-		$this->controller = $controller;
-		return $this;
-	}
-	function controller()
-	{
-		return $this->controller;
-	}
-
-	function pass_arg( $arg )
-	{
-		$this->args[] = $arg;
-		return $this;
-	}
-	function args()
-	{
-		return $this->args;
-	}
-
-	function append_param( $key, $value )
-	{
-		if( array_key_exists($key, $this->params) ){
-			$current_value = $this->params[$key];
-			if( ! is_array($current_value) )
-				$current_value = array( $current_value );
-			$current_value[] = $value;
-			$value = $current_value;
+		if( ! ( (! is_array($uri)) && preg_match('#^https?://#i', $uri) ) ){
+			$uri = HC_Lib::link($uri)->url($uri);
 		}
 
-		if( ! is_array($value) )
-			$value = array( $value );
+	/* this is a hack to ensure that post controller and post system hooks are triggered */
+		hc_ci_before_exit();
 
-		$this->params[$key] = $value;
-		return $this;
+		switch($method){
+			case 'refresh'	: header("Refresh:0;url=".$uri);
+				break;
+			default			: header("Location: ".$uri, TRUE, $http_response_code);
+				break;
+		}
+		return;
 	}
 
-	function reset_params()
+	static function build_csv( $array, $separator = ',' )
 	{
-		$this->params = array();
-	}
-
-	function set_params( $params )
-	{
-		foreach( $params as $k => $v ){
-			$this->set_param( $k, $v );
-		}
-		return $this;
-	}
-	function set_param( $key, $value )
-	{
-		$this->params[ $key ] = $value;
-		return $this;
-	}
-	function params()
-	{
-		return $this->params;
-	}
-	function param( $key )
-	{
-		return isset($this->params[$key]) ? $this->params[$key] : NULL;
-	}
-
-	function slug()
-	{
-		$args = func_get_args();
-
-		$method = '';
-		$change_params = array();
-
-		if( count($args) == 2 ){
-			$method = $args[0];
-			$change_params = $args[1];
-		}
-		elseif( count($args) == 1 ){
-			if( is_array($args[0]) ){
-				$method = '';
-				$change_params = $args[0];
-			}
-			else {
-				$method = $args[0];
-				$change_params = array();
-			}
-		}
-
-		$return = array();
-
-		$params = $this->params();
-		foreach( $change_params as $k => $v ){
-			$params[$k] = $v;
-		}
-
-		$controller = array();
-		$controller[] = $this->controller();
-		if( $method ){
-			$controller[] = $method;
-		}
-		$controller = join( '/', $controller );
-
-		$return[] = $controller;
-
-		foreach( $this->args() as $a ){
-			$return[] = $a;
-		}
-
-		if( $params ){
-			foreach( $params as $k => $v ){
-				$return[] = $k;
-				if( is_array($v) ){
-					$v = join('.', $v);
+		$processed = array();
+		reset( $array );
+		foreach( $array as $a ){
+			if( strpos($a, '"') !== false ){
+				$a = str_replace( '"', '""', $a );
 				}
-				$return[] = $v;
+			if( strpos($a, $separator) !== false ){
+				$a = '"' . $a . '"';
+				}
+			$processed[] = $a;
 			}
-		}
 
-		$this->reset_params();
+		$return = join( $separator, $processed );
 		return $return;
 	}
 
-	function url()
-	{
-		$args = func_get_args();
-		$slug = call_user_func_array( array($this, 'slug'), $args );
-		$return = ci_site_url( $slug );
-		return $return;
-	}
-
-	function url_short()
-	{
-		$slug = $this->slug();
-		$return = join('/', $slug );
-		return $return;
-	}
-
-	public function __toString()
-	{
-		return $this->url();
-    }
-}
-
-class Hc_lib {
 	static function array_skip_after( $src, $after, $include = TRUE )
 	{
 		$return = array();
-		foreach( $src as $k )
-		{
-			if( $k == $after )
-			{
+		foreach( $src as $k ){
+			if( $k == $after ){
 				if( $include )
 					$return[] = $k;
 				break;
@@ -454,10 +618,8 @@ class Hc_lib {
 	{
 		$return = array();
 		$ok = FALSE;
-		foreach( $src as $k )
-		{
-			if( $k == $after )
-			{
+		foreach( $src as $k ){
+			if( $k == $after ){
 				$ok = TRUE;
 				if( ! $include )
 					continue;
@@ -552,17 +714,14 @@ class Hc_lib {
 	static function is_full_url( $url )
 	{
 		$full = FALSE;
-		if( is_array($url))
-		{
+		if( is_array($url)){
 			return $full;
 		}
 
-		$prfx = array('http://', 'https://', '//');
+		$prfx = array('http://', 'https://', '//', '/');
 		reset( $prfx );
-		foreach( $prfx as $prf )
-		{
-			if( substr($url, 0, strlen($prf)) == $prf )
-			{
+		foreach( $prfx as $prf ){
+			if( substr($url, 0, strlen($prf)) == $prf ){
 				$full = TRUE;
 				break;
 			}
@@ -609,16 +768,13 @@ class Hc_lib {
 	{
 		$return = array();
 		reset( $orderArray );
-		foreach( $orderArray as $o )
-		{
-			if( in_array($o, $array) )
-			{
+		foreach( $orderArray as $o ){
+			if( in_array($o, $array) ){
 				$return[] = $o;
 			}
 		}
 		reset( $array );
-		foreach( $array as $a )
-		{
+		foreach( $array as $a ){
 			if( ! in_array($a, $return) )
 				$return[] = $a;
 		}
@@ -629,16 +785,13 @@ class Hc_lib {
 	{
 		$return = array();
 		reset( $orderArray );
-		foreach( $orderArray as $o )
-		{
-			if( array_key_exists($o, $array) )
-			{
+		foreach( $orderArray as $o ){
+			if( array_key_exists($o, $array) ){
 				$return[$o] = $array[$o];
 			}
 		}
 		reset( $array );
-		foreach( $array as $k => $k )
-		{
+		foreach( $array as $k => $k ){
 			if( ! array_key_exists($k, $return) )
 				$return[$k] = $v;
 		}
@@ -746,17 +899,83 @@ class Hc_lib {
 
 	static function pick_random( $array, $many = 1 )
 	{
-		if( $many > 1 )
-		{
+		if( $many > 1 ){
 			$return = array();
 			$ids = array_rand($array, $many );
 			foreach( $ids as $id )
 				$return[] = $array[$id];
 		}
-		else
-		{
+		else {
 			$id = array_rand($array);
 			$return = $array[$id];
+		}
+		return $return;
+	}
+
+	static function list_files( $dirName, $extension = '' )
+	{
+		if( ! is_array($dirName) )
+			$dirName = array( $dirName );
+
+		$files = array();
+		foreach( $dirName as $thisDirName ){
+			if ( file_exists($thisDirName) && ($handle = opendir($thisDirName)) ){
+				while ( false !== ($f = readdir($handle)) ){
+					if( substr($f, 0, 1) == '.' )
+						continue;
+
+					if( is_file( $thisDirName . '/' . $f ) ){
+						if( (! $extension ) || ( substr($f, - strlen($extension)) == $extension ) )
+							$files[] = $f;
+					}
+				}
+				closedir($handle);
+			}
+		}
+		sort( $files );
+		return $files;
+	}
+
+	static function list_subfolders( $dirName )
+	{
+		if( ! is_array($dirName) )
+			$dirName = array( $dirName );
+
+		$return = array();
+		reset( $dirName );
+		foreach( $dirName as $thisDirName ){
+			if ( file_exists($thisDirName) && ($handle = opendir($thisDirName)) ){
+				while ( false !== ($f = readdir($handle)) ){
+					if( substr($f, 0, 1) == '.' )
+						continue;
+					if( is_dir( $thisDirName . '/' . $f ) ){
+						if( ! in_array($f, $return) )
+							$return[] = $f;
+					}
+				}
+				closedir($handle);
+			}
+		}
+
+		sort( $return );
+		return $return;
+	}
+
+	static function format_price( $amount, $calculated_price = '' )
+	{
+		$app_conf = HC_App::app_conf();
+
+		$before_sign = $app_conf->get( 'currency_sign_before' );
+		$currency_format = $app_conf->get( 'currency_format' );
+		list( $dec_point, $thousand_sep ) = explode( '||', $currency_format );
+		$after_sign = $app_conf->get( 'currency_sign_after' );
+
+		$amount = number_format( $amount, 2, $dec_point, $thousand_sep );
+		$return = $before_sign . $amount . $after_sign;
+
+		if( strlen($calculated_price) && ($amount != $calculated_price) ){
+			$calc_format = $before_sign . number_format( $calculated_price, 2, $dec_point, $thousand_sep ) . $after_sign;
+			$return = $return . ' <span style="text-decoration: line-through;">' . $calc_format . '</span>';
 		}
 		return $return;
 	}

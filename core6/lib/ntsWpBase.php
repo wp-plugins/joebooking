@@ -32,28 +32,24 @@ class ntsWpBase2 extends hcWpBase4
 		$db_prefix = 'ha';
 
 		$dev_app_file = dirname(__FILE__) . '/../../_app.php';
-		if( file_exists($dev_app_file) )
-		{
+		if( file_exists($dev_app_file) ){
 			require( $dev_app_file ); /* $app defined there */
 		}
-		else
-		{
+		else {
 			$dev_app_file = dirname(__FILE__) . '/../version_' . $slug . '_salon_pro.php';
-			if( file_exists($dev_app_file) )
-			{
+			if( file_exists($dev_app_file) ){
 				$app = $slug . '_salon_pro';
 			}
-			else
-			{
+			else {
 				$dev_app_file = dirname(__FILE__) . '/../version_' . $slug . '_pro.php';
-				if( file_exists($dev_app_file) )
-				{
+				if( file_exists($dev_app_file) ){
 					$app = $slug . '_pro';
 				}
 			}
 		}
 
-		parent::__construct( 
+		$this->happ_files_file = dirname(__FILE__) . '/../assets/happ_files.php';
+		parent::__construct(
 			$app,
 			$real_class_file,
 			$hc_product,
@@ -69,14 +65,12 @@ class ntsWpBase2 extends hcWpBase4
 
 		require( dirname(__FILE__) . '/../assets/files.php' );
 		reset( $css_files );
-		foreach( $css_files as $f )
-		{
+		foreach( $css_files as $f ){
 			$this->register_admin_style($f);
 		}
 
 		reset( $js_files );
-		foreach( $js_files as $f )
-		{
+		foreach( $js_files as $f ){
 			$this->register_admin_script($f);
 		}
 

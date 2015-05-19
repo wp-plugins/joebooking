@@ -38,6 +38,10 @@ class HC_Html_Widget_Main_Menu
 
 	private function _prepare_menu()
 	{
+		if( ! ($this->menu && is_array($this->menu)) ){
+			return;
+		}
+
 		$order = 1;
 		$menu_keys = array_keys($this->menu);
 		reset( $menu_keys );
@@ -45,18 +49,15 @@ class HC_Html_Widget_Main_Menu
  
 		foreach( $menu_keys as $k )
 		{
-			if( ! is_array($this->menu[$k]) )
-			{
+			if( ! is_array($this->menu[$k]) ){
 				$this->menu[$k] = array(
 					'title'	=> $this->menu[$k]
 					);
 			}
-			if( ! isset($this->menu[$k]['order']) )
-			{
+			if( ! isset($this->menu[$k]['order']) ){
 				$this->menu[$k]['order'] = $order++;
 			}
-			if( ! isset($this->menu[$k]['icon']) )
-			{
+			if( ! isset($this->menu[$k]['icon']) ){
 				$this->menu[$k]['icon'] = '';
 			}
 
@@ -65,17 +66,14 @@ class HC_Html_Widget_Main_Menu
 					(isset($this->menu[$k]['external']) && $this->menu[$k]['external']) OR 
 					(isset($this->menu[$k]['href']) && $this->menu[$k]['href'])
 				)
-				)
-			{
-				switch( $this->engine() )
-				{
+				){
+				switch( $this->engine() ){
 					case 'ci':
 						$this->menu[$k]['slug'] = $this->menu[$k]['link'];
-						$this->menu[$k]['href'] = ci_site_url( $this->menu[$k]['link'] );
+						$this->menu[$k]['href'] = HC_Lib::link( $this->menu[$k]['link'] );
 						break;
 					case 'nts':
-						if( ! isset($this->menu[$k]['panel']) )
-						{
+						if( ! isset($this->menu[$k]['panel']) ){
 							$this->menu[$k]['panel'] = $k;
 						}
 
@@ -85,32 +83,25 @@ class HC_Html_Widget_Main_Menu
 				}
 			}
 
-			if( $this->disabled && ( ! ( isset($this->menu[$k]['external']) && $this->menu[$k]['external'] ) ) )
-			{
+			if( $this->disabled && ( ! ( isset($this->menu[$k]['external']) && $this->menu[$k]['external'] ) ) ){
 				$this_slug = $this->menu[$k]['slug'];
-				if( in_array($this_slug, $this->disabled) )
-				{
+				if( in_array($this_slug, $this->disabled) ){
 //					echo "DISABLE " . $this->menu[$k]['slug'] . '<br>';
 					unset( $this->menu[$k] );
 				}
-				else
-				{
+				else {
 					/* also check if a parent is disabled */
-					foreach( $this->disabled as $ds )
-					{
-						if( substr($this_slug, 0, strlen($ds)) == $ds )
-						{
+					foreach( $this->disabled as $ds ){
+						if( substr($this_slug, 0, strlen($ds)) == $ds ){
 							unset( $this->menu[$k] );
 							break;
 						}
 					}
 				}
-				
 			}
 
 			/* check if current */
-			if( $this->current && (! $active_k) )
-			{
+			if( $this->current && (! $active_k) ){
 				$slug = isset($this->menu[$k]['slug']) ? $this->menu[$k]['slug'] : '';
 				$current = $this->current;
 
@@ -123,19 +114,16 @@ class HC_Html_Widget_Main_Menu
 						( substr($current, 0, strlen($slug)) == $slug ) &&
 						( substr($current, strlen($slug), 1) == '/' )
 					)
-					)
-				{
+					){
 					$active_k = $k;
 				}
 			}
 		}
 
 	/* set current */
-		if( $active_k )
-		{
+		if( $active_k ){
 			reset( $menu_keys );
-			foreach( $menu_keys as $k )
-			{
+			foreach( $menu_keys as $k ){
 				if( 
 					( $k == $active_k )
 					OR
@@ -143,8 +131,7 @@ class HC_Html_Widget_Main_Menu
 						( substr($active_k, 0, strlen($k)) == $k ) &&
 						( substr($active_k, strlen($k), 1) == '/' )
 					)
-				)
-				{
+				){
 					$this->menu[$k]['active'] = TRUE;
 				}
 			}
@@ -155,12 +142,12 @@ class HC_Html_Widget_Main_Menu
 
 	private function _filter_menu( $root )
 	{
-		$menu_keys = array_keys($this->menu);
-		foreach( $menu_keys as $k )
-		{
-			if( substr($k, 0, strlen($root)) != $root )
-			{
-				unset( $this->menu[$k] );
+		if( $this->menu && is_array($this->menu) ){
+			$menu_keys = array_keys($this->menu);
+			foreach( $menu_keys as $k ){
+				if( substr($k, 0, strlen($root)) != $root ){
+					unset( $this->menu[$k] );
+				}
 			}
 		}
 	}
@@ -171,10 +158,13 @@ class HC_Html_Widget_Main_Menu
 		$this->_prepare_menu();
 		$return = array();
 
+		if( ! ($this->menu && is_array($this->menu)) ){
+			return $return;
+		}
+
 		$menu_keys = array_keys($this->menu);
 		reset( $menu_keys );
-		foreach( $menu_keys as $k )
-		{
+		foreach( $menu_keys as $k ){
 			$this_level = substr_count( $k, '/' );
 			if( $this_level > 1 )
 				continue;
@@ -186,15 +176,12 @@ class HC_Html_Widget_Main_Menu
 			$children = array();
 			$has_children = FALSE;
 			reset( $menu_keys );
-			foreach( $menu_keys as $k2 )
-			{
+			foreach( $menu_keys as $k2 ){
 				if( $k == $k2 )
 					continue;
-				if( substr($k2, 0, strlen($k)) == $k )
-				{
+				if( substr($k2, 0, strlen($k)) == $k ){
 					$their_level = substr_count( $k2, '/' );
-					if( $their_level == ($this_level + 1) )
-					{
+					if( $their_level == ($this_level + 1) ){
 						$has_children = TRUE;
 						$their_m = $this->menu[$k2];
 						$children[$k2] = $their_m;
@@ -202,15 +189,12 @@ class HC_Html_Widget_Main_Menu
 				}
 			}
 
-			if( $children )
-			{
-				if( count($children) == 1 )
-				{
+			if( $children ){
+				if( count($children) == 1 ){
 					$chkeys = array_keys($children);
 					$this_m = $children[ $chkeys[0] ];
 				}
-				else
-				{
+				else {
 					$this_m['children'] = $children;
 				}
 			}
@@ -223,8 +207,7 @@ class HC_Html_Widget_Main_Menu
 	{
 		$menu = $this->_get_menu( $root );
 		$return = '';
-		if( ! $menu )
-		{
+		if( ! $menu ){
 			return $return;
 		}
 
@@ -238,7 +221,7 @@ class HC_Html_Widget_Main_Menu
 							->add_attr('type', 'button')
 							->add_attr('class', 'navbar-toggle')
 							->add_attr('data-toggle', 'collapse')
-							->add_attr('data-target', '.nts-navbar-collapse')
+							->add_attr('data-target', '.hc-navbar-collapse')
 							->add_child(
 								HC_Html_Factory::element('span')->add_child( 'Toggle Navigation' )
 									->add_attr('class', 'sr-only')
@@ -251,7 +234,7 @@ class HC_Html_Widget_Main_Menu
 			;
 
 		$nav_container = HC_Html_Factory::element('div')
-			->add_attr('class', array('collapse', 'navbar-collapse', 'nts-navbar-collapse'))
+			->add_attr('class', array('collapse', 'navbar-collapse', 'hc-navbar-collapse'))
 			;
 
 		$nav = HC_Html_Factory::widget('list')

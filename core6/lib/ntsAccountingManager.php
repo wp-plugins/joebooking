@@ -617,7 +617,6 @@ class ntsAccountingManager
 							continue;
 
 						$use_amount = ($needed_amount < $remain_amount) ? $needed_amount : $remain_amount;
-
 						$this->add(
 							$action_name,
 							$item,
@@ -965,11 +964,19 @@ class ntsAccountingManager
 				break;
 
 			case 'order::pay':
-				$this->add(
-					'order::request',
-					$object,
-					$params
-					);
+			/* if already active then skip it */
+				if( ! $object->getProp('is_active') ){
+					$cm =& ntsCommandManager::getInstance();
+					$cm->runCommand( $object, 'request' );
+
+/*
+					$this->add(
+						'order::request',
+						$object,
+						$params
+						);
+*/
+				}
 				break;
 
 		/* PAY APPOINTMENT */

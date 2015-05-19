@@ -210,6 +210,7 @@ class ntsAppointment extends ntsObject {
 			'invoice_ref'	=> M('Invoice'),
 			'paid_through'	=> M('Paid Through'),
 			'payment_notes'	=> M('Payment Notes'),
+			'coupon'		=> M('Coupon Code'),
 			'payment_balance'	=> M('Payment Balance'),
 			'created'		=> M('Created'),
 			);
@@ -480,8 +481,26 @@ class ntsAppointment extends ntsObject {
 			$return['payment_balance'] = '';
 		}
 
+	/* coupon code */
+		$return['coupon'] = '';
+		if( ((! $show_fields) OR in_array('coupon', $show_fields)) && ($part_id < 2) ){
+			$postings = $this->get_accounting_postings();
+			if( $postings ){
+				reset( $postings );
+				foreach( $postings as $p ){
+					if( $p['obj_class'] != 'coupon' )
+						continue;
+
+					$coupon = ntsObjectFactory::get('coupon');
+					$coupon->setId( $p['obj_id'] );
+					$return['coupon'] = $coupon->getProp('code');
+					break;
+				}
+			}
+		}
+
 	/* transactions */
-		if( in_array('invoice_ref', $show_fields) && ($part_id < 2) ){
+		if( ((! $show_fields) OR in_array('invoice_ref', $show_fields)) && ($part_id < 2) ){
 			$invoices = array();
 			$invoices_transactions = array();
 			$invoices_info = $this->getInvoices();
@@ -519,7 +538,7 @@ class ntsAppointment extends ntsObject {
 				$calc->add( $tr->getProp('amount_net') );
 			}
 			$amount_received = $calc->result();
-			$return['amount_received'] = $amount_received;
+			$return['paid_amount'] = $amount_received;
 
 			$thisView1 = join( ', ', $thisView1 );
 			$return['paid_through'] = $thisView1;

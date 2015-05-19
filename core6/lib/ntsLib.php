@@ -512,10 +512,19 @@ class ntsLib {
 	// strip started http:// as apache seems to have troubles with it
 		$myUrl = preg_replace( '/https?\:\/\//', '', $myUrl );
 
+		if( ! isset($_NTS['CHECK_LICENSE_URL']) ){
+			if( defined('NTS_DEVELOPMENT') ){
+				$_NTS['CHECK_LICENSE_URL'] = 'http://localhost/hitcode/customers/lic.php';
+			}
+			else {
+				$_NTS['CHECK_LICENSE_URL'] = 'http://www.hitcode.com/customers/lic.php';
+			}
+		}
+
 		$return = 
-			$_NTS['CHECK_LICENSE_URL'] . 
+			$_NTS['CHECK_LICENSE_URL'] .
 			'?code=' . $currentLicense . 
-			'&iid=' . $installationId . 
+			'&iid=' . $installationId .
 			'&ver=' . $installedVersion . 
 			'&prd=' . urlencode($myProduct) . 
 			'&url=' . urlencode($myUrl)

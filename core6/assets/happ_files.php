@@ -2,12 +2,10 @@
 if( ! isset($css_files) )
 	$css_files = array();
 $css_files[] = 'happ/assets/bootstrap/css/_bootstrap3.css';
-if( isset($NTS_VIEW['called_remotely']) && $NTS_VIEW['called_remotely'] )
-{
+if( isset($NTS_VIEW['called_remotely']) && $NTS_VIEW['called_remotely'] ){
 	$css_files[] = '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css';
 }
-else
-{
+else {
 	$css_files[] = 'happ/assets/bootstrap/css/font-awesome.min.css';
 }
 //$css_files[] = 'happ/assets/bootstrap/css/font-awesome-ie7.min.css', 'lt IE 7';

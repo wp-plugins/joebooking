@@ -57,6 +57,8 @@ class hcWpBase4
 	var $premium = NULL;
 	var $wrap_output = array();
 
+	var $happ_files_file = NULL;
+
 	public function __construct( 
 		$app,
 		$full_path,
@@ -108,8 +110,7 @@ class hcWpBase4
 		$this->page_param = 'page_id';
 
 		reset( $types );
-		foreach( $types as $t )
-		{
+		foreach( $types as $t ){
 			$full_type = $this->app . '-' . $t;
 			$this->types[ $t ] = $full_type;
 		}
@@ -118,41 +119,44 @@ class hcWpBase4
 		$this->_admin_scripts = array();
 
 		$nts_is_wordpress = TRUE;
-		require( $this->happ_path . '/assets/files.php' );
+		
+		if( ! $this->happ_files_file ){
+			$this->happ_files_file = $this->happ_path . '/assets/files.php';
+		}
+		require( $this->happ_files_file );
+
 		reset( $css_files );
-		foreach( $css_files as $f )
-		{
+		foreach( $css_files as $f ){
 			$this->register_admin_style($f);
 
 		/* add wp overwriter */
-			if( substr($f, -strlen('/hitcode.css')) == '/hitcode.css' )
-			{
+			if( substr($f, -strlen('/hitcode.css')) == '/hitcode.css' ){
 				$f2 = str_replace( '/hitcode.css', '/hitcode-wp.css', $f );
+				$this->register_admin_style($f2);
+			}
+			if( substr($f, -strlen('/hc-hitcode.css')) == '/hc-hitcode.css' ){
+				$f2 = str_replace( '/hc-hitcode.css', '/hc-hitcode-wp.css', $f );
 				$this->register_admin_style($f2);
 			}
 		}
 
 		reset( $js_files );
-		foreach( $js_files as $f )
-		{
+		foreach( $js_files as $f ){
 			$this->register_admin_script($f);
 		}
 
 		$file = $this->dir . '/' . $app . '.php';
-		if( file_exists($file) )
-		{
+		if( file_exists($file) ){
 			register_activation_hook( $file, array($this, '_install') );
 		}
 
 		add_action(	'init',						array($this, '_init') );
-		if( $this->is_me_admin() )
-		{
+		if( $this->is_me_admin() ){
 			add_action( 'admin_enqueue_scripts',	array($this, 'admin_scripts') );
 			add_action( 'admin_head', 				array($this, 'admin_head') );
 		}
 
-		if( $this->is_me_front() )
-		{
+		if( $this->is_me_front() ){
 			add_action( 'wp_enqueue_scripts',	array($this, 'admin_scripts') );
 			add_action( 'wp_head', 				array($this, 'admin_head') );
 		}
@@ -170,22 +174,42 @@ class hcWpBase4
 		add_action( $submenu, array($this, 'admin_submenu') );
 	}
 
-	static function uninstall( $prefix )
+	static function uninstall( $prefix, $watch_other = array() )
 	{
 		global $wpdb, $table_prefix;
 
-		if( ! strlen($prefix) )
-		{
+		if( ! strlen($prefix) ){
+			return;
+		}
+
+		$stop = FALSE;
+		if( $watch_other ){
+			if( ! function_exists('get_plugins')){
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			$all_plugins = get_plugins();
+			foreach( $all_plugins as $pl => $pinfo ){
+				reset( $watch_other );
+				foreach( $watch_other as $w ){
+					if( strpos($pl, $w) !== FALSE ){
+						$stop = TRUE;
+						$stop = $pl;
+						break;
+					}
+				}
+			}
+		}
+
+		if( $stop ){
+//			echo "STOP AS I ENCOUNTERED '$stop'<br>";
 			return;
 		}
 
 		$mypref = $table_prefix . $prefix . '_';
 		$sql = "SHOW TABLES LIKE '$mypref%'";
 		$results = $wpdb->get_results( $sql );
-		foreach( $results as $index => $value )
-		{
-			foreach( $value as $tbl )
-			{
+		foreach( $results as $index => $value ){
+			foreach( $value as $tbl ){
 				$sql = "DROP TABLE IF EXISTS $tbl";
 				$e = $wpdb->query($sql);
 			}
@@ -198,8 +222,7 @@ class hcWpBase4
 
 	public function admin_submenu()
 	{
-		if( $this->premium )
-		{
+		if( $this->premium ){
 			$this->premium->admin_submenu();
 		}
 	}
@@ -215,16 +238,13 @@ class hcWpBase4
 		if( ! $this->deactivate_other )
 			return;
 
-		/* check if we have other  activated */
+		/* check if we have other activated */
 		$deactivate = array();
 		$plugins = get_option('active_plugins');
-		foreach( $plugins as $pl )
-		{
+		foreach( $plugins as $pl ){
 			reset( $this->deactivate_other );
-			foreach( $this->deactivate_other as $d )
-			{
-				if( strpos($pl, $d) !== FALSE )
-				{
+			foreach( $this->deactivate_other as $d ){
+				if( strpos($pl, $d) !== FALSE ){
 					$deactivate[] = $pl;
 				}
 			}
@@ -241,8 +261,7 @@ class hcWpBase4
 
 	public function admin_view()
 	{
-		switch( $this->system_type )
-		{
+		switch( $this->system_type ){
 			case 'ci':
 				$file = $this->happ_path . '/application/index_view.php';
 				require( $file );
@@ -254,11 +273,9 @@ class hcWpBase4
 	{
 		// strip only within our output
 		$start = stripos( $content, $this->wrap_output[0] );
-		if( $start !== FALSE )
-		{
+		if( $start !== FALSE ){
 			$end = stripos( $content, $this->wrap_output[1], $start );
-			if( $end !== FALSE )
-			{
+			if( $end !== FALSE ){
 				$my_content = substr( $content, $start, ($end - $start) );
 				$my_content = str_replace( '</p>', '', $my_content );
 				$my_content = str_replace( '<p>', '', $my_content );
@@ -291,27 +308,21 @@ class hcWpBase4
 		$full = FALSE;
 		$prfx = array('http://', 'https://', '//');
 		reset( $prfx );
-		foreach( $prfx as $prf )
-		{
-			if( substr($file, 0, strlen($prf)) == $prf )
-			{
+		foreach( $prfx as $prf ){
+			if( substr($file, 0, strlen($prf)) == $prf ){
 				$full = TRUE;
 				break;
 			}
 		}
 
-		if( $full )
-		{
+		if( $full ){
 			$full_file = $file;
 		}
-		else
-		{
-			if( substr($file, 0, strlen('happ/')) == 'happ/' )
-			{
+		else {
+			if( substr($file, 0, strlen('happ/')) == 'happ/' ){
 				$full_file = $this->happ_web_dir . '/' . $file;
 			}
-			else
-			{
+			else {
 				$full_file = plugins_url($file, $this->full_path);
 			}
 		}
@@ -331,8 +342,7 @@ class hcWpBase4
 
 	function register_admin_script( $f, $id = '' )
 	{
-		if( ! $id )
-		{
+		if( ! $id ){
 			$id = $this->app . '-script-admin-' . ( count($this->_admin_scripts) + 1);
 		}
 
@@ -344,17 +354,14 @@ class hcWpBase4
 		$full = FALSE;
 		$prfx = array('http://', 'https://', '//');
 		reset( $prfx );
-		foreach( $prfx as $prf )
-		{
-			if( substr($file, 0, strlen($prf)) == $prf )
-			{
+		foreach( $prfx as $prf ){
+			if( substr($file, 0, strlen($prf)) == $prf ){
 				$full = TRUE;
 				break;
 			}
 		}
 
-		if( $full )
-		{
+		if( $full ){
 			$full_file = $file;
 			/* check if jquery should be required */
 			if(
@@ -363,18 +370,15 @@ class hcWpBase4
 //				$id = $file_id = 'jquery';
 			}
 		}
-		else
-		{
+		else {
 			/* check jquery */
 			if(
 				preg_match('/\/jquery\-\d/', $file)
-			)
-			{
+			){
 				$file_id = 'jquery';
 				$full_file = '';
 			}
-			else
-			{
+			else {
 				$full_file = (substr($file, 0, strlen('happ/')) == 'happ/') ? $this->happ_web_dir . '/' . $file : plugins_url($file, $this->full_path);
 			}
 		}
@@ -393,8 +397,7 @@ class hcWpBase4
 
 	public function admin_total_init()
 	{
-		if( $this->premium )
-		{
+		if( $this->premium ){
 			$this->premium->admin_total_init();
 		}
 	}
@@ -403,8 +406,7 @@ class hcWpBase4
 	{
 		$this->admin_total_init();
 
-		if( $this->is_me_admin() )
-		{
+		if( $this->is_me_admin() ){
 			ini_set( 'memory_limit', '512M' );
 			$GLOBALS['NTS_APP'] = $this->app;
 
@@ -420,8 +422,7 @@ class hcWpBase4
 			session_name( $session_name );
 			@session_start();
 
-			switch( $this->system_type )
-			{
+			switch( $this->system_type ){
 				case 'ci':
 					require( $this->happ_path . '/application/index_action.php' );
 					break;
@@ -434,10 +435,8 @@ class hcWpBase4
 		global $post;
 		$return = FALSE;
 
-		if( ! is_admin() )
-		{
-			if( $this->is_me_front() )
-			{
+		if( ! is_admin() ){
+			if( $this->is_me_front() ){
 				$GLOBALS['NTS_APP'] = $this->app;
 
 				add_filter('the_content', array($this, 'strip_p'), 1000);
@@ -451,8 +450,7 @@ class hcWpBase4
 
 				$url = parse_url( get_permalink($post) );
 //				$base_url = $url['path'];
-				switch( $this->system_type )
-				{
+				switch( $this->system_type ){
 					case 'nts':
 						$base_url = $url['scheme'] . '://'. $url['host'] . $url['path'];
 						break;
@@ -471,9 +469,8 @@ class hcWpBase4
 				// might be shortcode with params
 				$pattern = '\[' . $this->slug . '\s+(.+)\]';
 				if(
-					preg_match('/'. $pattern .'/s', $post->post_content, $matches)
-					)
-				{
+					preg_match('/'. $pattern .'/sU', $post->post_content, $matches)
+					){
 					$GLOBALS['NTS_CONFIG'][$this->app]['DEFAULT_PARAMS'] = shortcode_parse_atts( $matches[1] );
 				}
 
@@ -481,8 +478,7 @@ class hcWpBase4
 				session_name( $session_name );
 				@session_start();
 
-				switch( $this->system_type )
-				{
+				switch( $this->system_type ){
 					case 'ci':
 						$GLOBALS['NTS_CONFIG'][$this->app]['FORCE_USER_LEVEL'] = 0;
 					// action
@@ -500,12 +496,10 @@ class hcWpBase4
 		if( 
 			isset($GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']) && 
 			$GLOBALS['NTS_CONFIG'][$this->app]['ACTION_STARTED']
-			)
-		{
+			){
 			ob_start();
 
-			switch( $this->system_type )
-			{
+			switch( $this->system_type ){
 				case 'ci':
 					$file = $this->happ_path . '/application/index_view.php';
 					require( $file );
@@ -541,18 +535,15 @@ class hcWpBase4
 		$pattern = '\[' . $this->slug . '\]';
 		if(
 			preg_match('/'. $pattern .'/s', $post->post_content, $matches)
-			)
-		{
+			){
 			$return = TRUE;
 		}
-		else
-		{
+		else {
 			// might be shortcode with params
 			$pattern = '\[' . $this->slug . '\s+(.+)\]';
 			if(
 				preg_match('/'. $pattern .'/s', $post->post_content, $matches)
-				)
-			{
+				){
 //				$atts = shortcode_parse_atts( $matches[1] );
 				$return = TRUE;
 			}
@@ -573,8 +564,7 @@ class hcWpBase4
 			preg_match_all('/'. $pattern .'/s', $post->post_content, $matches) &&
 			array_key_exists(2, $matches) &&
 			in_array($this->slug, $matches[2])
-			)
-		{
+			){
 			$return = TRUE;
 		}
 		return $return;
@@ -587,23 +577,18 @@ class hcWpBase4
 			( isset($post) && in_array($post->post_type, $this->types) )
 			OR
 			( isset($_REQUEST['post_type']) && in_array($_REQUEST['post_type'], $this->types) )
-			)
-		{
+			){
 			$return = TRUE;
 		}
-		else
-		{
+		else {
 			$page = isset($_GET['page']) ? $_GET['page'] : '';
-			if( isset($_REQUEST['page']) )
-			{
+			if( isset($_REQUEST['page']) ){
 				$page = $_REQUEST['page'];
 			}
-			if( $page && ($page == $this->slug) )
-			{
+			if( $page && ($page == $this->slug) ){
 				$return = TRUE;
 			}
-			else
-			{
+			else {
 				$return = FALSE;
 			}
 		}
@@ -613,29 +598,22 @@ class hcWpBase4
 	function admin_scripts()
 	{
 		reset( $this->_admin_styles );
-		foreach( $this->_admin_styles as $sa )
-		{
-			if( is_array($sa[1]) )
-			{
+		foreach( $this->_admin_styles as $sa ){
+			if( is_array($sa[1]) ){
 				// processed later in head
 			}
-			else
-			{
+			else {
 				wp_enqueue_style( $sa[0], $sa[1] );
 			}
 		}
 
 		reset( $this->_admin_scripts );
-		foreach( $this->_admin_scripts as $sa )
-		{
-			if( $sa[1] )
-			{
-				if( is_array($sa[1]) )
-				{
+		foreach( $this->_admin_scripts as $sa ){
+			if( $sa[1] ){
+				if( is_array($sa[1]) ){
 					// processed later in head
 				}
-				else
-				{
+				else {
 					if( ($sa[0] == 'jquery') && ($sa[1]) ){
 						// deregister jquery
 						wp_deregister_script($sa[0]);
@@ -656,8 +634,7 @@ class hcWpBase4
 					}
 				}
 			}
-			else
-			{
+			else {
 				wp_enqueue_script(
 					$sa[0],
 					'',
@@ -675,10 +652,8 @@ class hcWpBase4
 		$return = array();
 
 		reset( $this->_admin_styles );
-		foreach( $this->_admin_styles as $sa )
-		{
-			if( $sa[1] && is_array($sa[1]) )
-			{
+		foreach( $this->_admin_styles as $sa ){
+			if( $sa[1] && is_array($sa[1]) ){
 				$return[] = 
 					'<!--[if ' . $sa[1][1] . ']>' .
 					"\n" . 
@@ -690,10 +665,8 @@ class hcWpBase4
 		}
 
 		reset( $this->_admin_scripts );
-		foreach( $this->_admin_scripts as $sa )
-		{
-			if( $sa[1] && is_array($sa[1]) )
-			{
+		foreach( $this->_admin_scripts as $sa ){
+			if( $sa[1] && is_array($sa[1]) ){
 				$return[] = 
 					'<!--[if ' . $sa[1][1] . ']>' .
 					"\n" . 
@@ -719,8 +692,7 @@ class hcWpBase4
 	{
 	// custom types and taxonimies
 		$file = $this->dir . '/conf/cpt.php';
-		if( file_exists($file) )
-		{
+		if( file_exists($file) ){
 			require( $file );
 		}
 
@@ -747,23 +719,18 @@ class hcWpBase4
 				( post_status <> 'trash' )
 			"
 			);
-		foreach( $pages as $p )
-		{
+		foreach( $pages as $p ){
 			$this->pages[] = $p->ID;
 		}
 
-		if( $this->pages )
-		{
+		if( $this->pages ){
 			$web_page = get_permalink($this->pages[0]);
-			if( strlen($this->query_prefix) )
-			{
+			if( strlen($this->query_prefix) ){
 				$url = parse_url( $web_page );
-				if( isset($url['query']) && $url['query'] )
-				{
+				if( isset($url['query']) && $url['query'] ){
 					$web_page .= '&';
 				}
-				else
-				{
+				else {
 					$web_page .= $this->query_prefix;
 				}
 			}
@@ -802,12 +769,10 @@ class hcWpBase4
 	function render( $view, $vars )
 	{
 		$file = $this->dir . '/views/' . $view . '.php';
-		if( ! file_exists($file) )
-		{
+		if( ! file_exists($file) ){
 			$content = 'File "' . $view . '" does not exist<br>';
 		}
-		else
-		{
+		else {
 			extract( $vars );
 			ob_start();
 			require( $file );
@@ -828,8 +793,7 @@ class hcWpBase4
 	{
 		global $post;
 	/* Check if the current user has permission to edit the post. */
-		if( $post )
-		{
+		if( $post ){
 			$post_type = get_post_type_object( $post->post_type );
 			if ( ! current_user_can($post_type->cap->edit_post, $post_id) )
 				return FALSE;
@@ -848,8 +812,7 @@ class hcWpBase4
 		$display = array();
 		$display[] = $start;
 
-		if( ! isset($props['id']) )
-		{
+		if( ! isset($props['id']) ){
 			$id = $props['name'];
 			$id = str_replace( '[', '_', $id );
 			$id = str_replace( ']', '', $id );
@@ -857,9 +820,8 @@ class hcWpBase4
 		}
 
 		reset( $props );
-		foreach( $props as $k => $v )
-		{
-			$display[] = $k . '="' . $v . '"';			
+		foreach( $props as $k => $v ){
+			$display[] = $k . '="' . $v . '"';
 		}
 		$return = '<' . join( ' ', $display ) . '>';
 		return $return;
@@ -867,16 +829,18 @@ class hcWpBase4
 
 	public function logout()
 	{
-		if( isset($_SESSION['NTS_SESSION_REF']) )
-		{
+		$session_name = $GLOBALS['NTS_CONFIG'][$this->app]['SESSION_NAME'];
+		session_name( $session_name );
+		@session_start();
+
+		if( isset($_SESSION['NTS_SESSION_REF']) ){
 			unset( $_SESSION['NTS_SESSION_REF'] );
 		}
 	}
 
 	public function dev_options()
 	{
-		if( $this->premium )
-		{
+		if( $this->premium ){
 			$this->premium->dev_options();
 		}
 	}

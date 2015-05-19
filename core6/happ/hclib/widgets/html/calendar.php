@@ -123,7 +123,7 @@ class HC_Html_Widget_Calendar
 		$month_matrix = $t->getMonthMatrix( $end_date );
 
 		$out = HC_Html_Factory::element('div')
-			->add_attr('class', 'hc_cal')
+			->add_attr('class', 'cal')
 			;
 
 		$slot_width = 1;
@@ -138,7 +138,7 @@ class HC_Html_Widget_Calendar
 
 		foreach( $month_matrix as $week => $days ){
 			$grid = HC_Html_Factory::widget('grid')
-				->add_attr('class', 'hc-cal-row')
+				->add_attr('class', 'cal-row')
 				;
  
 			foreach( $days as $rex_date )

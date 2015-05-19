@@ -6,7 +6,7 @@ License: GPLv2 or later
 
 Stable tag: trunk
 Requires at least: 3.3
-Tested up to: 4.1
+Tested up to: 4.2
 
 Switch to accept appointments for your services right from your WordPress powered website. 
 
@@ -47,6 +47,15 @@ Author URI: http://www.joebooking.com
 The upgrade is simply - upload everything up again to your `/wp-content/plugins/` directory, then go to the JoeBooking menu item in the admin panel. It will automatically start the upgrade process if any needed.
 
 == Changelog ==
+
+= 6.3.4 =
+* BUG: additional invoice item could not be deleted.
+* BUG: bug when a package was double assigned to the customer balance if the admin/provider added a payment for them.
+* BUG: Paid Through field was not being exported to the CSV download.
+* added the Coupon Code field to the appointment CSV export.
+
+= 6.3.2 =
+* BUG: some essential files were missing in the Pro versions.
 
 = 6.3.1 =
 * Added an option to add a link to appointment overview page in notification messages.

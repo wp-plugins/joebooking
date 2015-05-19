@@ -65,9 +65,9 @@ class Hc_time extends DateTime {
 	function getDates( $range, $start_end = FALSE )
 	{
 		$save_ts = $this->getTimestamp();
+		$start_date = $end_date = 0;
 
-		switch( $range )
-		{
+		switch( $range ){
 			case 'day':
 				$start_date = $end_date = $this->formatDate_Db();
 				break;
@@ -90,21 +90,20 @@ class Hc_time extends DateTime {
 		$return = array();
 
 	// start and end only
-		if( $start_end )
-		{
+		if( $start_end ){
 			$return[] = $start_date;
 			$return[] = $end_date;
 		}
 	// all 
-		else
-		{
-			$this->setDateDb( $start_date );
-			$rex_date = $start_date;
-			while( $rex_date <= $end_date )
-			{
-				$return[] = $rex_date;
-				$this->modify('+1 day');
-				$rex_date = $this->formatDate_Db();
+		else {
+			if( $start_date && $end_date ){
+				$this->setDateDb( $start_date );
+				$rex_date = $start_date;
+				while( $rex_date <= $end_date ){
+					$return[] = $rex_date;
+					$this->modify('+1 day');
+					$rex_date = $this->formatDate_Db();
+				}
 			}
 		}
 

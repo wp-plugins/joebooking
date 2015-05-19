@@ -198,6 +198,7 @@ class HC_Validator
 			if (count($this->_field_data) == 0)
 			{
 				log_message('debug', "Unable to find validation rules");
+				return TRUE;
 				return FALSE;
 			}
 		}
@@ -340,7 +341,7 @@ class HC_Validator
 
 				// Build the error message
 				$message = $line;
-				$message = hc_lang( $line );
+				$message = lang( $line );
 
 				// Save the error message
 				$this->_field_data[$row['field']]['error'] = $message;
@@ -487,7 +488,7 @@ class HC_Validator
 				// Build the error message
 //				$message = sprintf($line, $this->_translate_fieldname($row['label']), $param);
 				$message = $line;
-				$message = hc_lang( $line );
+				$message = lang( $line );
 				$message = sprintf($message, $param);
 
 				// Save the error message
