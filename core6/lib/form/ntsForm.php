@@ -190,7 +190,7 @@ class ntsFormFactory {
 	function &makeForm( $formFile, $defaults = array(), $key = '', $idPrefix = '' )
 	{
 		$formFile = str_replace( '\\', '/', $formFile );
-		$index = ( strlen($key) ) ? $formFile . $key : $formFile;	
+		$index = ( strlen($key) ) ? $formFile . $key : $formFile;
 		if( ! isset($this->forms[$index]) )
 		{
 			$form = new ntsForm( $formFile, $defaults, $idPrefix );

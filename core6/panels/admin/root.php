@@ -65,6 +65,8 @@ foreach( $fields as $f ){
 $NTS_VIEW['CUSTOMER_FIELDS'] = $customerFields;
 
 $t = new ntsTime();
+global $NTS_CURRENT_USER;
+$t->setTimezone( $NTS_CURRENT_USER->getTimezone() );
 $NTS_VIEW['t'] = $t;
 
 /* CURRENT USER PERMISSIONS */

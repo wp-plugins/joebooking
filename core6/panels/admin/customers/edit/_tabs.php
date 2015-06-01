@@ -2,6 +2,15 @@
 $object = ntsLib::getVar( 'admin/customers/edit::OBJECT' );
 $customerId = $object->getId();
 
+$ntsConf = ntsConf::getInstance();
+$canEditLogin = TRUE;
+$current_user =& ntsLib::getCurrentUser();
+$admin_level = $current_user->getProp('_admin_level');
+$staffCanEditCustomerLogin = $ntsConf->get('staffCanEditCustomerLogin');
+if( ($admin_level != 'admin') && (! $staffCanEditCustomerLogin) ){
+	$canEditLogin = FALSE;
+}
+
 $tabs = array();
 
 $tabs['edit'] = array(
@@ -10,27 +19,32 @@ $tabs['edit'] = array(
 
 $restrictions = $object->getProp( '_restriction' );
 $status_actions = array();
-if( $restrictions )
-{
-	$status_actions[] = array(
-		'title'	=> ntsUser::_statusLabel(array(), '', 'i') . ' ' . M('Activate'),
-		'href'	=> ntsLink::makeLink('-current-', 'activate'),
-		);
-}
-else
-{
-	$status_actions[] = array(
-		'title'	=> ntsUser::_statusLabel(array('suspended'), '', 'i') . ' ' . M('Suspend'),
-		'href'	=> ntsLink::makeLink('-current-', 'suspend'),
-		);
+
+if( $canEditLogin ){
+	if( $restrictions ){
+		$status_actions[] = array(
+			'title'	=> ntsUser::_statusLabel(array(), '', 'i') . ' ' . M('Activate'),
+			'href'	=> ntsLink::makeLink('-current-', 'activate'),
+			);
+	}
+	else {
+		$status_actions[] = array(
+			'title'	=> ntsUser::_statusLabel(array('suspended'), '', 'i') . ' ' . M('Suspend'),
+			'href'	=> ntsLink::makeLink('-current-', 'suspend'),
+			);
+	}
 }
 
-if( $status_actions )
-{
+if( $status_actions ){
 	$tabs['edit'] = array(
 		$status_actions,
 		'title'		=> $object->statusLabel('', 'i') . ' ' . $object->statusText(),
 		'panel'		=> 'edit',
+		);
+}
+else {
+	$tabs['edit'] = array(
+		'title'		=> $object->statusLabel('', 'i') . ' ' . $object->statusText(),
 		);
 }
 

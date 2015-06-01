@@ -93,75 +93,76 @@ foreach( $runActions as $ra ){
 		continue;
 		}
 
-	/* parse templates */
-	$tags = $om->makeTags_Appointment( $object, 'internal' );
-	if( isset($params['reason']) ){
-		$tags[0][] = '{REJECT_REASON}';
-		$tags[1][] = $params['reason'];
-		$tags[0][] = '{CANCEL_REASON}';
-		$tags[1][] = $params['reason'];
-
-		$tags[0][] = '{APPOINTMENT.REJECT_REASON}';
-		$tags[1][] = $params['reason'];
-		$tags[0][] = '{APPOINTMENT.CANCEL_REASON}';
-		$tags[1][] = $params['reason'];
-		}
-
-	/* quick links */
-	$authCode = $object->getProp( 'auth_code' );
-	$approveLink = ntsLink::makeLink( 'system/appointments/edit', 'approve', array('auth' => $authCode, 'id' => $object->getId()) );
-	$approveLink = '<a href="' . $approveLink . '">' . M('Approve') . '</a>';
-	$rejectLink = ntsLink::makeLink( 'system/appointments/edit', 'reject', array('auth' => $authCode, 'id' => $object->getId()) );
-	$rejectLink = '<a href="' . $rejectLink . '">' . M('Reject') . '</a>';
-
-	$tags[0][] = '{APPOINTMENT.QUICK_LINK_APPROVE}';
-	$tags[1][] = $approveLink;
-	$tags[0][] = '{APPOINTMENT.QUICK_LINK_REJECT}';
-	$tags[1][] = $rejectLink;
-
-	/* add .ics attachement */
-	$attachements = array();
-	if( in_array($key, $attachTo) ){
-		include_once( NTS_APP_DIR . '/helpers/ical.php' );
-		$ntsCal = new ntsIcal();
-		$ntsCal->setTimezone( NTS_COMPANY_TIMEZONE );
-		$ntsCal->addAppointment( $object );
-		$str = $ntsCal->printOut();
-
-		$attachName = 'appointment-' . $object->getId() . '.ics';
-		$attachements[] = array( $attachName, $str );
-
-		$tags[0][] = '{APPOINTMENT.LINK_TO_ICAL}';
-		$tags[1][] = 'cid:' . $attachName;
-		}
-	else {
-		$tags[0][] = '{APPOINTMENT.LINK_TO_ICAL}';
-		$tags[1][] = '';
-		}
-
-	$group_ref = $object->getProp( 'group_ref' );
-	if( $group_ref ){
-		$customer_link = ntsLink::makeLink('customer/appointments/view', '', array('ref' => $group_ref));
-		$customer_link = '<a href="' . $customer_link . '">' . M('View') . '</a>';
-	}
-	else {
-		$customer_link = '';
-	}
-	$tags[0][] = '{APPOINTMENT.CUSTOMER_LINK_TO}';
-	$tags[1][] = $customer_link;
-
-	$provider_link = ntsLink::makeLink('admin/manage/appointments/edit/overview', '', array('_id' => $object->getId()));
-	$provider_link = '<a href="' . $provider_link . '">' . M('View') . '</a>';
-	$tags[0][] = '{APPOINTMENT.PROVIDER_LINK_TO}';
-	$tags[1][] = $provider_link;
-
-	/* replace tags */
-	$subject = str_replace( $tags[0], $tags[1], $templateInfo['subject'] );
-	$body = str_replace( $tags[0], $tags[1], $templateInfo['body'] );
-
-	/* --- SEND EMAIL --- */
 	reset( $providers );
 	foreach( $providers as $provider ){
+		/* parse templates */
+		$tags = $om->makeTags_Appointment( $object, 'internal', TRUE, $provider->getTimezone() );
+		if( isset($params['reason']) ){
+			$tags[0][] = '{REJECT_REASON}';
+			$tags[1][] = $params['reason'];
+			$tags[0][] = '{CANCEL_REASON}';
+			$tags[1][] = $params['reason'];
+
+			$tags[0][] = '{APPOINTMENT.REJECT_REASON}';
+			$tags[1][] = $params['reason'];
+			$tags[0][] = '{APPOINTMENT.CANCEL_REASON}';
+			$tags[1][] = $params['reason'];
+			}
+
+		/* quick links */
+		$authCode = $object->getProp( 'auth_code' );
+		$approveLink = ntsLink::makeLink( 'system/appointments/edit', 'approve', array('auth' => $authCode, 'id' => $object->getId()) );
+		$approveLink = '<a href="' . $approveLink . '">' . M('Approve') . '</a>';
+		$rejectLink = ntsLink::makeLink( 'system/appointments/edit', 'reject', array('auth' => $authCode, 'id' => $object->getId()) );
+		$rejectLink = '<a href="' . $rejectLink . '">' . M('Reject') . '</a>';
+
+		$tags[0][] = '{APPOINTMENT.QUICK_LINK_APPROVE}';
+		$tags[1][] = $approveLink;
+		$tags[0][] = '{APPOINTMENT.QUICK_LINK_REJECT}';
+		$tags[1][] = $rejectLink;
+
+		/* add .ics attachement */
+		$attachements = array();
+		if( in_array($key, $attachTo) ){
+			include_once( NTS_APP_DIR . '/helpers/ical.php' );
+			$ntsCal = new ntsIcal();
+			// $ntsCal->setTimezone( NTS_COMPANY_TIMEZONE );
+			$ntsCal->setTimezone( $provider->getTimezone() );
+			$ntsCal->addAppointment( $object );
+			$str = $ntsCal->printOut();
+
+			$attachName = 'appointment-' . $object->getId() . '.ics';
+			$attachements[] = array( $attachName, $str );
+
+			$tags[0][] = '{APPOINTMENT.LINK_TO_ICAL}';
+			$tags[1][] = 'cid:' . $attachName;
+			}
+		else {
+			$tags[0][] = '{APPOINTMENT.LINK_TO_ICAL}';
+			$tags[1][] = '';
+			}
+
+		$group_ref = $object->getProp( 'group_ref' );
+		if( $group_ref ){
+			$customer_link = ntsLink::makeLink('customer/appointments/view', '', array('ref' => $group_ref));
+			$customer_link = '<a href="' . $customer_link . '">' . M('View') . '</a>';
+		}
+		else {
+			$customer_link = '';
+		}
+		$tags[0][] = '{APPOINTMENT.CUSTOMER_LINK_TO}';
+		$tags[1][] = $customer_link;
+
+		$provider_link = ntsLink::makeLink('admin/manage/appointments/edit/overview', '', array('_id' => $object->getId()));
+		$provider_link = '<a href="' . $provider_link . '">' . M('View') . '</a>';
+		$tags[0][] = '{APPOINTMENT.PROVIDER_LINK_TO}';
+		$tags[1][] = $provider_link;
+
+		/* replace tags */
+		$subject = str_replace( $tags[0], $tags[1], $templateInfo['subject'] );
+		$body = str_replace( $tags[0], $tags[1], $templateInfo['body'] );
+
+	/* --- SEND EMAIL --- */
 		$this->runCommand( $provider, 'email', array('body' => $body, 'subject' => $subject, 'attachements' => $attachements) );
 	}
 

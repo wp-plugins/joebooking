@@ -1,11 +1,15 @@
 <?php
 $ri = ntsLib::remoteIntegration();
 $ntsdb =& dbWrapper::getInstance();
+
+$ntsConf =& ntsConf::getInstance();
+$enableTimezones = $ntsConf->get('enableTimezones');
+$showTimezone = ( $enableTimezones == -1 ) ? 0 : 1;
 ?>
 <div class="row">
 	<div class="col-md-8 col-xs-12">
 		<span class="nav-item smaller text-muted">
-			<?php echo $t->formatDateFull(); ?> <strong><?php echo $t->formatTime(); ?></strong>
+			<?php echo $t->formatDateFull(); ?> <strong><?php echo $t->formatTime(0, $showTimezone); ?></strong>
 		</span>
 	</div>
 	<div class="col-md-4 col-xs-12 pull-right">

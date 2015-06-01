@@ -184,7 +184,7 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'coupon', 'promotion_id' );
 		}
 
-	function makeTags_Appointment( $object, $access = 'external' ){
+	function makeTags_Appointment( $object, $access = 'external', $show_end_time = TRUE, $force_tz = NULL ){
 		$conf =& ntsConf::getInstance();
 		$auto_resource = $conf->get('autoResource');
 		$auto_location = $conf->get('autoLocation');
@@ -205,12 +205,22 @@ class objectMapper extends ntsObjectMapper {
 
 		$ts = $object->getProp('starts_at');
 		$t = new ntsTime( $ts );
-		if( $access == 'external' )
+		if( $access == 'external' ){
 			$t->setTimezone( $customer->getProp('_timezone') );
+		}
+		elseif( $force_tz !== NULL ){
+			$t->setTimezone( $force_tz );
+		}
 
 		$showTimezone = ( $enableTimezones == -1 ) ? 0 : 1;
 
-		$timeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($object->getProp('duration'), $showTimezone);
+		if( $show_end_time ){
+			$timeFormatted = $t->formatDateFull() . ' ' . $t->formatTime($object->getProp('duration'), $showTimezone);
+		}
+		else {
+			$timeFormatted = $t->formatDateFull() . ' ' . $t->formatTime(0, $showTimezone);
+		}
+
 		if( isset($changes['duration']) && (! isset($changes['starts_at'])) )
 		{
 			$t->setTimestamp( $object->getProp('starts_at') );

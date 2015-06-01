@@ -530,6 +530,13 @@ class ntsConf {
 					$return = $rawValue;
 				break;
 
+			case 'staffCanEditCustomerLogin':
+				if( strlen($rawValue) == 0 )
+					$return = 1;
+				else
+					$return = $rawValue;
+				break;
+
 			case 'autoActivatePackage':
 				if( strlen($rawValue) == 0 )
 					$return = 0;

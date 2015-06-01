@@ -56,7 +56,7 @@ class HC_Acl
 		return $this->user;
 	}
 
-	public function can( $what )
+	public function can( $what, $params = array() )
 	{
 		$return = FALSE;
 
@@ -81,7 +81,7 @@ class HC_Acl
 			if( isset($this->rules[$ch]) ){
 				$rule = $this->rules[$ch];
 				if( is_callable($rule) ){
-					$return = $rule($user, $object);
+					$return = $rule($user, $object, $params);
 				}
 				else {
 					$return = $rule;

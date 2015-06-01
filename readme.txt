@@ -48,11 +48,16 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.3.5 =
+* Timezone setting is active for providers too in the control panel and notifications.
+* Added a setting if the staff members can edit customers login details.
+* An option to remove customer balance (after adding packages) (Pro versions).
+
 = 6.3.4 =
 * BUG: additional invoice item could not be deleted.
 * BUG: bug when a package was double assigned to the customer balance if the admin/provider added a payment for them.
 * BUG: Paid Through field was not being exported to the CSV download.
-* added the Coupon Code field to the appointment CSV export.
+* Added the Coupon Code field to the appointment CSV export.
 
 = 6.3.2 =
 * BUG: some essential files were missing in the Pro versions.

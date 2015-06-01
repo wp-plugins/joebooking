@@ -3,6 +3,35 @@ include_once( dirname(__FILE__) . '/hc_object_cache.php' );
 
 // --------------------------------------------------------------------
 
+if ( ! function_exists('hc_serialize'))
+{
+	function hc_serialize( $array )
+	{
+		$return = array();
+
+		foreach( $array as $subarray ){
+			foreach( $subarray as $k => $v ){
+				if( is_object($v) ){
+					$v = array( $v->id );
+				}
+				elseif( is_array($v) ){
+				}
+				else {
+					$v = array( $v );
+				}
+
+				if( ! isset($return[$k]) ){
+					$return[$k] = array();
+				}
+				$return[$k] = array_merge( $return[$k], $v );
+				$return[$k] = array_unique( $return[$k] );
+			}
+		}
+		$return = serialize( $return );
+		return $return;
+	}
+}
+
 /**
  * Plural
  *
@@ -122,10 +151,21 @@ if ( ! function_exists('hc_run_notifier'))
 {
 	function hc_run_notifier()
 	{
-		$notifier = HC_App::notifier();
+		static $already_run = 0;
+		if( $already_run ){
+			return;
+		}
+
+		$already_run = 1;
+		$notifier = HC_App::model('messages');
 		if( isset($notifier) ){
 			$notifier->run();
 		}
+
+		// $notifier = HC_App::notifier();
+		// if( isset($notifier) ){
+			// $notifier->run();
+		// }
 	}
 }
 
@@ -212,7 +252,6 @@ class HC_Presenter
 				$out = array();
 				break;
 		}
-
 
 		foreach( $errors as $pname => $text ){
 			switch( $vlevel ){
@@ -421,12 +460,13 @@ class HC_App
 
 	static function model( $model )
 	{
+		$return = NULL;
 		$model = HC_App::full_model( $model );
 		if( method_exists($model, 'get_instance')){
 			$return = call_user_func(array($model, 'get_instance'));
 			// $return = $model::get_instance();
 		}
-		else {
+		elseif( class_exists($model) ){
 			$return = new $model;
 		}
 		return $return;
@@ -567,7 +607,7 @@ class HC_lib {
 	static function redirect( $uri = '', $method = 'location', $http_response_code = 302 )
 	{
 		if( ! ( (! is_array($uri)) && preg_match('#^https?://#i', $uri) ) ){
-			$uri = HC_Lib::link($uri)->url($uri);
+			$uri = HC_Lib::link($uri)->url();
 		}
 
 	/* this is a hack to ensure that post controller and post system hooks are triggered */
@@ -1011,16 +1051,31 @@ class HC_lib {
 		return $return;
 	}
 
-	static function file_set_contents( $fileName, $content )
+	static function debug( $text )
+	{
+		$fname = FCPATH . '/debug.txt';
+		$text = $text . "\n";
+		HC_Lib::file_set_contents( $fname, $text, TRUE );
+	}
+
+	static function file_set_contents( $fileName, $content, $append = FALSE )
 	{
 		$length = strlen( $content );
 		$return = 1;
 
-		if(! $fh = fopen($fileName, 'w') ){
-			echo "can't open file <B>$fileName</B> for wrinting.";
-			exit;
+		if( $append ){
+			if(! $fh = fopen($fileName, 'a') ){
+				echo "can't open file <B>$fileName</B> for appending.";
+				exit;
 			}
-		rewind( $fh );
+		}
+		else {
+			if(! $fh = fopen($fileName, 'w') ){
+				echo "can't open file <B>$fileName</B> for wrinting.";
+				exit;
+			}
+			rewind( $fh );
+		}
 		$writeResult = fwrite($fh, $content, $length);
 		if( $writeResult === FALSE )
 			$return = 0;

@@ -103,8 +103,12 @@ class HC_Extensions
 			return $return;
 		}
 
+		$calling_parent = '';
 		if( is_array($which) ){
 			$this_extensions = $this->extensions[$which[0]][$which[1]];
+			if( isset($which[2]) ){
+				$calling_parent = $which[2];
+			}
 		}
 		else {
 			$this_extensions = $this->extensions[$which];
@@ -122,6 +126,9 @@ class HC_Extensions
 			// Modules::run( $hinfo, $model)
 			if( ! is_array($hinfo) ){
 				$hinfo = array($hinfo);
+			}
+			if( $calling_parent ){
+				$hinfo[0] = array( $hinfo[0], $calling_parent );
 			}
 
 			$this_params = array_merge( $hinfo, $params );

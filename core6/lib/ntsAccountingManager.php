@@ -814,6 +814,93 @@ class ntsAccountingManager
 				}
 				break;
 
+		/* REMOVE BALANCE */
+		/*
+				COMPANY		+300 minutes
+				CUSTOMER_1	-300 minutes
+		*/
+			case 'customer::remove_balance':
+				$asset_id = $params['asset_id'];
+				$asset_value = $params['asset_value'];
+				$expires_at = $params['asset_expires'];
+
+				$journal_id = $parent_id ? $parent_id : $this->add_journal(
+					array(
+						'obj_class'		=> $object->getClassName(),
+						'obj_id'		=> $object->getId(),
+						'action'		=> 'remove_balance',
+						'created_at'	=> $created_at,
+						)
+					);
+
+				$asset_type = $aam->asset_type( $asset_id );
+				if( $asset_type == 'unlimited' ){
+					/* remove those added before */
+					$ntsdb =& dbWrapper::getInstance();
+
+					$where = array(
+						'asset_id'		=> $asset_id,
+						'expires_at'	=> $expires_at,
+						'account_type'	=> 'customer',
+						'account_id'	=> $object->getId(),
+						);
+					$journal_ids = $ntsdb->get_select( 'journal_id', 'accounting_posting', $where );
+
+					$where = array(
+						'journal_id'	=> $journal_ids,
+						);
+
+					$return = $ntsdb->delete( 
+						'accounting_posting',
+						$where
+						);
+
+/*
+					$return = $ntsdb->update( 
+						'accounting_posting',
+						array(
+							'asset_value'	=> 0
+							),
+						$where
+						);
+*/
+				}
+				else {
+					$do_postings = array();
+
+					$asset_values = array( $asset_value );
+					$asset = $aam->get_asset_by_id( $asset_id );
+					$service_type = $aam->get_service_type( $asset );
+					if( $service_type == 'fixed' ){
+						$asset_values = explode( '-', $asset['service'] );
+					}
+
+					$customer_id = $object->getId();
+					foreach( $asset_values as $asset_value ){
+					/* COMPANY +300 minutes */
+						$do_postings[] = array(
+							'account_type'	=> 'company',
+							'account_id'	=> 0,
+							'asset_id'		=> $asset_id,
+							'asset_value'	=> $asset_value,
+							);
+					/* CUSTOMER -300 minutes */
+						$do_postings[] = array(
+							'account_type'	=> 'customer',
+							'account_id'	=> $customer_id,
+							'asset_id'		=> $asset_id,
+							'asset_value'	=> -$asset_value,
+							);
+					}
+
+					foreach( $do_postings as $p ){
+						$p['journal_id']	= $journal_id;
+						$p['expires_at']	= $expires_at;
+						$this->add_posting( $p );
+					}
+				}
+				break;
+
 		/* FUND APPOINTMENT FROM BALANCE */
 		/*
 			CUSTOMER_1		-1 SLOTS
@@ -1067,7 +1154,7 @@ class ntsAccountingManager
 
 		$ntsdb =& dbWrapper::getInstance();
 		$journal_ids = $ntsdb->get_select( 'id', 'accounting_journal', $where );
-		
+
 		foreach( $journal_ids as $jid )
 		{
 			$ntsdb->delete(
@@ -1602,6 +1689,7 @@ class ntsAccountingManager
 			'appointment::fund'			=> M('Pay By Balance'),
 			'transaction::create'		=> join( ': ', array(M('Payment'), M('Add')) ),
 			'order::request'			=> join( ': ', array(M('Package'), M('Add')) ),
+			'user::remove_balance'		=> M('Remove Balance'),
 			);
 
 		$return = $key;
@@ -1758,6 +1846,27 @@ class ntsAccountingAssetManager
 			$a['asset'] = serialize( $asset );
 			$this->_assets[ $a['asset'] ] = $a['id'];
 		}
+	}
+
+	public function asset_type(
+		$asset_id = 0
+	)
+	{
+		$return = '';
+		$asset_expires = 0;
+		if( strpos($asset_id, '-') !== FALSE ){
+			list( $asset_id, $asset_expires ) = explode( '-', $asset_id );
+		}
+
+		if( $asset_id == 0 ){
+			$return = 'price';
+		}
+		else {
+			$asset = $this->get_asset_by_id( $asset_id );
+			$return = $asset['type'];
+		}
+
+		return $return;
 	}
 
 	public function format_asset(

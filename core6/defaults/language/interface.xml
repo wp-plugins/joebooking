@@ -2,7 +2,7 @@
 <file>
 <language>English Built-In</language>
 <author>HitCode</author>
-<lastUpdate>21 April, 2015</lastUpdate>
+<lastUpdate>1 June, 2015</lastUpdate>
 <charset>utf-8</charset>
 
 <string>
@@ -1762,6 +1762,10 @@
 	<translate>Remove</translate>
 </string>
 <string>
+	<original>Remove Balance</original>
+	<translate>Remove Balance</translate>
+</string>
+<string>
 	<original>Request (Automatically Approved)</original>
 	<translate>Request (Automatically Approved)</translate>
 </string>
@@ -1970,6 +1974,10 @@
 	<translate>Staff</translate>
 </string>
 <string>
+	<original>Staff Can Edit Customers Login Details</original>
+	<translate>Staff Can Edit Customers Login Details</translate>
+</string>
+<string>
 	<original>Staff do not have access to company configuration, payments, and system settings</original>
 	<translate>Staff do not have access to company configuration, payments, and system settings</translate>
 </string>
@@ -2140,6 +2148,10 @@
 <string>
 	<original>Toggle All</original>
 	<translate>Toggle All</translate>
+</string>
+<string>
+	<original>Too Much</original>
+	<translate>Too Much</translate>
 </string>
 <string>
 	<original>Total</original>

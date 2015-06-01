@@ -22,26 +22,36 @@ reset( $fields );
 list( $alert, $cssClass, $message ) = $object->getStatus();
 $class = $alert ? 'alert' : 'ok';
 $restrictions = $object->getProp( '_restriction' );
+
+$ntsConf = ntsConf::getInstance();
+$canEditLogin = TRUE;
+$current_user =& ntsLib::getCurrentUser();
+$admin_level = $current_user->getProp('_admin_level');
+$staffCanEditCustomerLogin = $ntsConf->get('staffCanEditCustomerLogin');
+if( ($admin_level != 'admin') && (! $staffCanEditCustomerLogin) ){
+	$canEditLogin = FALSE;
+}
 ?>
 
 <?php foreach( $fields as $f ) : ?>
 	<?php
-	if( $f[0] == 'username' )
-	{
+	if( $f[0] == 'username' ){
 		continue;
 	}
 	?>
 
 	<?php $c = $om->getControl( 'customer', $f[0], false ); ?>
 	<?php
-	$ri = ntsLib::remoteIntegration();
-	if( ($ri == 'wordpress') && ($c[2]['id'] == 'username') )
-	{
+	if( ($f[0] == 'email') && (! $canEditLogin) ){
 		$c[1] = 'labelData';
 	}
 
-	if( NTS_ALLOW_NO_EMAIL && ($c[2]['id'] == 'email') )
-	{
+	$ri = ntsLib::remoteIntegration();
+	if( ($ri == 'wordpress') && ($c[2]['id'] == 'username') ){
+		$c[1] = 'labelData';
+	}
+
+	if( NTS_ALLOW_NO_EMAIL && ($c[2]['id'] == 'email') ){
 		$c[2]['after']	= '';
 		$c[2]['after']	.= '<div class="checkbox">';
 		$c[2]['after']		.= '<label>';
@@ -58,8 +68,7 @@ $restrictions = $object->getProp( '_restriction' );
 		$c[2]['after']	.= '</div>';
 	}
 
-	if( NTS_ALLOW_DUPLICATE_EMAILS && ($c[2]['id'] == 'email') )
-	{
+	if( NTS_ALLOW_DUPLICATE_EMAILS && ($c[2]['id'] == 'email') ){
 		// check if there're duplicates
 		$checkEmail = $this->getValue('email');
 		$countDuplicates = 0;

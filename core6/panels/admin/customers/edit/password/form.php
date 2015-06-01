@@ -14,6 +14,14 @@ $this->setParams(
 		)
 	);
 
+$ntsConf = ntsConf::getInstance();
+$canEditLogin = TRUE;
+$current_user =& ntsLib::getCurrentUser();
+$admin_level = $current_user->getProp('_admin_level');
+$staffCanEditCustomerLogin = $ntsConf->get('staffCanEditCustomerLogin');
+if( ($admin_level != 'admin') && (! $staffCanEditCustomerLogin) ){
+	$canEditLogin = FALSE;
+}
 ?>
 <?php if( NTS_EMAIL_AS_USERNAME ) : ?>
 	<?php
@@ -33,8 +41,10 @@ $this->setParams(
 <?php else : ?>
 	<?php
 	$c = $om->getControl( 'customer', 'username', false );
-	if( $ri == 'wordpress' )
-	{
+	if( $ri == 'wordpress' ){
+		$c[1] = 'labelData';
+	}
+	if( ! $canEditLogin ){
 		$c[1] = 'labelData';
 	}
 	?>
@@ -49,65 +59,70 @@ $this->setParams(
 		);
 	?>
 <?php endif; ?>
-<?php
-echo ntsForm::wrapInput(
-	M('Password'),
-	$this->buildInput (
-	/* type */
-		'password',
-	/* attributes */
-		array(
-			'id'		=> 'password',
-			'attr'		=> array(
-				'size'	=> 16,
-				),
-			),
-	/* validators */
-		array(
-			array(
-				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Required'),
-				),
-			)
-		)
-	);
-?>
 
-<?php
-echo ntsForm::wrapInput(
-	M('Confirm Password'),
-	$this->buildInput (
-	/* type */
-		'password',
-	/* attributes */
-		array(
-			'id'		=> 'password2',
-			'attr'		=> array(
-				'size'	=> 16,
-				),
-			),
-	/* validators */
-		array(
+<?php if( $canEditLogin ) : ?>
+	<?php
+	echo ntsForm::wrapInput(
+		M('Password'),
+		$this->buildInput (
+		/* type */
+			'password',
+		/* attributes */
 			array(
-				'code'		=> 'notEmpty.php', 
-				'error'		=> M('Please confirm the password'),
-				),
-			array(
-				'code'		=> 'confirmPassword.php', 
-				'error'		=> M("Passwords don't match!"),
-				'params'	=> array(
-					'mainPasswordField' => 'password',
+				'id'		=> 'password',
+				'attr'		=> array(
+					'size'	=> 16,
 					),
 				),
+		/* validators */
+			array(
+				array(
+					'code'		=> 'notEmpty.php', 
+					'error'		=> M('Required'),
+					),
+				)
 			)
-		)
-	);
-?>
+		);
+	?>
 
-<?php echo $this->makePostParams('-current-', 'update_password' ); ?>
+	<?php
+	echo ntsForm::wrapInput(
+		M('Confirm Password'),
+		$this->buildInput (
+		/* type */
+			'password',
+		/* attributes */
+			array(
+				'id'		=> 'password2',
+				'attr'		=> array(
+					'size'	=> 16,
+					),
+				),
+		/* validators */
+			array(
+				array(
+					'code'		=> 'notEmpty.php', 
+					'error'		=> M('Please confirm the password'),
+					),
+				array(
+					'code'		=> 'confirmPassword.php', 
+					'error'		=> M("Passwords don't match!"),
+					'params'	=> array(
+						'mainPasswordField' => 'password',
+						),
+					),
+				)
+			)
+		);
+	?>
+<?php endif; ?>
+
 <?php
-echo ntsForm::wrapInput(
-	'',
-	'<INPUT class="btn btn-default" TYPE="submit" VALUE="' . M('Change Password') . '">'
-	);
+if( $canEditLogin ){
+	echo $this->makePostParams('-current-', 'update_password' );
+	echo ntsForm::wrapInput(
+		'',
+		'<INPUT class="btn btn-default" TYPE="submit" VALUE="' . M('Change Password') . '">'
+		);
+}
 ?>

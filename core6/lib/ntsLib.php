@@ -533,7 +533,12 @@ class ntsLib {
 	}
 
 	static function upperCaseMe( $string ){
-		$return = preg_replace( '/(\b)(\w)/e', "'\\1'.strtoupper('\\2')", $string );
+		// $return = preg_replace( '/(\b)(\w)/e', "'\\1'.strtoupper('\\2')", $string );
+		$return = preg_replace_callback( 
+			'/(\b)(\w)/',
+			create_function('$ma', 'return $ma[1] . strtoupper($ma[2]);'),
+			$string
+			);
 		$return = str_replace( '-', ' ', $return );
 		return $return;
 		}

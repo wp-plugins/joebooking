@@ -156,6 +156,22 @@ echo $this->makeInput (
 </tr>
 
 <tr>
+	<td class="ntsFormLabel"><?php echo M('Staff Can Edit Customers Login Details'); ?></td>
+	<td class="ntsFormValue">
+	<?php
+	echo $this->makeInput (
+	/* type */
+		'checkbox',
+	/* attributes */
+		array(
+			'id'	=> 'staffCanEditCustomerLogin',
+			)
+		);
+	?>
+	</td>
+</tr>
+
+<tr>
 <td>&nbsp;</td>
 <td>
 <?php echo $this->makePostParams('-current-', 'update'); ?>
