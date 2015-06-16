@@ -48,6 +48,12 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.3.6 =
+* BUG: The main admin menu was not translated when another language was activated.
+* BUG: error in price view in the front end when a promotion was active.
+* BUG: Packages link wasn't shown for non logged in customers.
+* BUG: SQL error on service create - wrong type for "lead_in"
+
 = 6.3.5 =
 * Timezone setting is active for providers too in the control panel and notifications.
 * Added a setting if the staff members can edit customers login details.

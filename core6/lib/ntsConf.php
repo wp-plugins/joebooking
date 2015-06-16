@@ -1055,6 +1055,7 @@ function M( $str, $params = array(), $skipCustom = false )
 	$return = '';
 
 	$current_lang = $GLOBALS['NTS_CURRENT_LANGUAGE'];
+
 	if( $current_lang == 'en-builtin' )
 		$current_lang = 'en';
 

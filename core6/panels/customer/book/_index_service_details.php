@@ -42,7 +42,7 @@ if( $base_amount ){
 			</li>
 		<?php if( $price_view ) : ?>
 			<li>
-				<span class="btn btn-default-o btn-condensed" title="<?php echo M('Price'); ?>: <?php echo $price_view; ?>">
+				<span class="btn btn-default-o btn-condensed" title="<?php echo M('Price'); ?>: <?php echo ntsCurrency::formatPrice($total_amount); ?>">
 					<?php echo $price_view; ?>
 				</span>
 			</li>

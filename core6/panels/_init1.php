@@ -56,9 +56,6 @@ if( isset($GLOBALS['NTS_CONFIG'][$app]['DEFAULT_PARAMS']) )
 	}
 }
 
-
-
-
 if( $_NTS['REQUESTED_PANEL'] == 'system/attach' )
 {
 	if( ob_get_length() )
@@ -251,7 +248,6 @@ if( ! ( isset($NTS_CURRENT_USER) && $NTS_CURRENT_USER ) )
 					$NTS_CURRENT_USER->setSchedulePermissions( $resourceSchedules );
 				}
 
-
 			/* save */
 				$cm->runCommand( $NTS_CURRENT_USER, 'update' );
 			}
@@ -268,6 +264,10 @@ if( isset($languageConf['charset']) )
 	if( ! headers_sent() )
 		header( 'Content-Type: text/html; charset=' . $languageConf['charset'] );
 }
+
+/* run menu init */
+$menuConfFile = NTS_APP_DIR . '/panels/menu_conf.php';
+require( $menuConfFile );
 
 /* default panel */
 if( ! $_NTS['REQUESTED_PANEL'] )

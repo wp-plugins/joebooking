@@ -36,11 +36,16 @@ $links['book'] = array(
 	'<i class="fa fa-calendar"></i> ' . M('Schedule Now')
 	);
 
-$packs_count = $ntsdb->count( 'packs', array('price', array('>', 0)) );
+$packs_count = $ntsdb->count( 
+	'packs',
+	array(
+		'price' => array('>', 0)
+		)
+	);
+
 $pgm =& ntsPaymentGatewaysManager::getInstance();
 $has_online = $pgm->hasOnline();
-if( $packs_count && $has_online )
-{
+if( $packs_count && $has_online ){
 	$links['packs'] = array(
 		ntsLink::makeLink('customer/packs'),
 		'<i class="fa fa-shopping-cart"></i> ' . M('Purchase')
@@ -53,7 +58,6 @@ $links['login'] = array(
 	'<i class="fa fa-sign-in"></i> ' . M('Login')
 	);
 
-	
 if( $enableRegistration )
 {
 	$links['register'] = array(

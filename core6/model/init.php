@@ -156,8 +156,10 @@ else {
 	}
 
 /* run menu init */
+/*
 $menuConfFile = NTS_APP_DIR . '/panels/menu_conf.php';
 require( $menuConfFile );
+*/
 
 /* run mods init scripts */
 $plm =& ntsPluginManager::getInstance();

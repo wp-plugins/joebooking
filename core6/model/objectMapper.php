@@ -72,8 +72,8 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'service',	'duration_max', true, 0, 1800 );
 		$this->registerProp( 'service',	'duration_break', true, 0, 0 );
 		$this->registerProp( 'service',	'duration2', true, 0, 0 );
-		$this->registerProp( 'service',	'lead_in' );
-		$this->registerProp( 'service',	'lead_out' );
+		$this->registerProp( 'service',	'lead_in', true, 0, 0 );
+		$this->registerProp( 'service',	'lead_out', true, 0, 0 );
 		$this->registerProp( 'service',	'price' );
 		$this->registerProp( 'service',	'price_increment' );
 		$this->registerProp( 'service',	'prepay' );
@@ -124,8 +124,8 @@ class objectMapper extends ntsObjectMapper {
 		$this->registerProp( 'appointment',	'duration' );
 		$this->registerProp( 'appointment',	'duration_break', true, 0, 0 );
 		$this->registerProp( 'appointment',	'duration2', true, 0, 0 );
-		$this->registerProp( 'appointment',	'lead_in' );
-		$this->registerProp( 'appointment',	'lead_out' );
+		$this->registerProp( 'appointment',	'lead_in', true, 0, 0 );
+		$this->registerProp( 'appointment',	'lead_out', true, 0, 0 );
 		$this->registerProp( 'appointment',	'approved', true, 0, 0 );
 		$this->registerProp( 'appointment',	'completed', true, 0, 0 );
 
