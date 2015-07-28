@@ -486,6 +486,7 @@ class HC_App
 			'trade'		=> 'exchange',
 			'trade'		=> 'refresh',
 			'conflict'	=> 'exclamation-circle',
+			'comment'	=> 'comment-o',
 			);
 		if( isset($conf[$class]) )
 			$return = $conf[$class];
@@ -963,7 +964,6 @@ class HC_lib {
 				while ( false !== ($f = readdir($handle)) ){
 					if( substr($f, 0, 1) == '.' )
 						continue;
-
 					if( is_file( $thisDirName . '/' . $f ) ){
 						if( (! $extension ) || ( substr($f, - strlen($extension)) == $extension ) )
 							$files[] = $f;
@@ -974,6 +974,22 @@ class HC_lib {
 		}
 		sort( $files );
 		return $files;
+	}
+
+	static function list_recursive( $dirname )
+	{
+		$return = array();
+		$this_subfolders = HC_Lib::list_subfolders( $dirname );
+		foreach( $this_subfolders as $sf ){
+			$subfolder_return = HC_Lib::list_recursive( $dirname . '/' . $sf );
+			foreach( $subfolder_return as $sfr ){
+				$return[] = $sf . '/' . $sfr;
+			}
+		}
+
+		$this_files = HC_Lib::list_files( $dirname );
+		$return = array_merge( $return, $this_files );
+		return $return;
 	}
 
 	static function list_subfolders( $dirName )
@@ -1056,6 +1072,12 @@ class HC_lib {
 		$fname = FCPATH . '/debug.txt';
 		$text = $text . "\n";
 		HC_Lib::file_set_contents( $fname, $text, TRUE );
+	}
+
+	static function file_get_contents( $fileName )
+	{
+		$content = join( '', file($fileName) );
+		return $content;
 	}
 
 	static function file_set_contents( $fileName, $content, $append = FALSE )

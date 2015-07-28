@@ -39,31 +39,6 @@ class HC_Extensions
 		$this->extensions = $extensions;
 	}
 
-	public function subextensions( $start )
-	{
-		$return = array();
-
-		$params = func_get_args();
-		$start = array_shift( $params );
-
-		reset( $this->extensions );
-		foreach( $this->extensions as $hk => $ha ){
-			if( substr($hk, 0, strlen($start)) == $start ){
-				$remain = substr($hk, strlen($start) + 1);
-				if( strlen($remain) ){
-					if( $ha === NULL ){
-						$return[ $remain ] = $ha;
-					}
-					else {
-						$this_params = array_merge( array($hk), $params );
-						$return[ $remain ] = call_user_func_array( array($this, 'run'), $this_params );
-					}
-				}
-			}
-		}
-		return $return;
-	}
-
 	public function has( $which )
 	{
 		$return = FALSE;
@@ -90,6 +65,11 @@ class HC_Extensions
 		return $this->skip;
 	}
 
+	public function extensions( $which ){
+		$return = isset($this->extensions[$which]) ? array_keys($this->extensions[$which]) : array();
+		return $return;
+	}
+
 	public function run( $which )
 	{
 		$return = array();
@@ -113,12 +93,25 @@ class HC_Extensions
 		else {
 			$this_extensions = $this->extensions[$which];
 		}
+
+		$run_array = TRUE;
 		if( ! is_array($this_extensions) ){
 			$this_extensions = array( $this_extensions );
+			$run_array = FALSE;
 		}
 
 		foreach( $this_extensions as $hk => $hinfo ){
 			if( in_array($hk, $skip) ){
+				continue;
+			}
+
+			if( $hinfo === NULL ){
+				if( $run_array ){
+					$return[$hk] = NULL;
+				}
+				else {
+					$return = NULL;
+				}
 				continue;
 			}
 
@@ -133,8 +126,24 @@ class HC_Extensions
 
 			$this_params = array_merge( $hinfo, $params );
 			$this_return = call_user_func_array( 'Modules::run', $this_params );
-			if( strlen($this_return) ){
-				$return[$hk] = $this_return;
+
+			if( is_string($this_return) ){
+				if( strlen($this_return) ){
+					if( $run_array ){
+						$return[$hk] = $this_return;
+					}
+					else {
+						$return = $this_return;
+					}
+				}
+			}
+			else {
+				if( $run_array ){
+					$return[$hk] = $this_return;
+				}
+				else {
+					$return = $this_return;
+				}
 			}
 		}
 		return $return;

@@ -7,6 +7,17 @@ class HC_Html_Widget_Module extends HC_Html_Element
 	private $params = array();
 	private $pass_params = array();
 	private $args = array();
+	private $content = NULL;
+
+	function set_content( $content )
+	{
+		$this->content = $content;
+		return $this;
+	}
+	function content()
+	{
+		return $this->content;
+	}
 
 	function set_param( $param, $value )
 	{
@@ -88,7 +99,12 @@ class HC_Html_Widget_Module extends HC_Html_Element
 		}
 
 		$link = HC_Lib::link( $this->url(), $link_params );
-		$return = call_user_func_array( 'Modules::run', $module_params );
+
+		$return = $this->content();
+		if( $return === NULL ){
+			$return = call_user_func_array( 'Modules::run', $module_params );
+		}
+
 		if( strlen($return) && $this->self_target() ){
 			$out = HC_Html_Factory::element('div')
 				->add_attr('class', 'hc-target')
@@ -97,6 +113,12 @@ class HC_Html_Widget_Module extends HC_Html_Element
 					$return
 					)
 				;
+
+			$attr = $this->attr();
+			foreach( $attr as $k => $v ){
+				$out->add_attr( $k, $v );
+			}
+
 			$return = $out->render();
 		}
 		return $return;

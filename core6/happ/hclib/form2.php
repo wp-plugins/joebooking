@@ -59,6 +59,11 @@ class HC_Form2
 		return $this->convert;
 	}
 
+	function input_names()
+	{
+		return array_keys($this->inputs);
+	}
+
 	function grab( $post )
 	{
 		foreach( array_keys($this->inputs) as $k ){

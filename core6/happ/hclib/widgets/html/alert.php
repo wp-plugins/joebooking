@@ -17,22 +17,19 @@ class HC_Html_Widget_Alert extends HC_Html_Widget_Container
 			;
 
 		$attr = $this->attr();
-		foreach( $attr as $k => $v )
-		{
+		foreach( $attr as $k => $v ){
 			$out->add_attr( $k, $v );
 		}
 
 		$items = $this->items();
-		if( count($items) > 1 )
-		{
+		if( count($items) > 1 ){
 			$list = HC_Html_Factory::widget('list')
 				->add_attr('class', 'list-unstyled')
 				;
 			$list->set_items( $items );
 			$out->add_child( $list );
 		}
-		else
-		{
+		else {
 			$out->add_child( $items );
 		}
 		return $out->render();

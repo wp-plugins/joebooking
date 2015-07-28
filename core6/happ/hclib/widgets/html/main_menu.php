@@ -213,15 +213,17 @@ class HC_Html_Widget_Main_Menu
 
 		$container = HC_Html_Factory::element('div')
 			->add_attr('class', array('navbar', 'navbar-default'))
+			->add_attr('class', array('collapse-panel'))
 			->add_child(
 				HC_Html_Factory::element('div')
 					->add_attr('class', array('navbar-header'))
 					->add_child(
 						HC_Html_Factory::element('button')
 							->add_attr('type', 'button')
+							->add_attr('class', 'collapse-next')
 							->add_attr('class', 'navbar-toggle')
-							->add_attr('data-toggle', 'collapse')
-							->add_attr('data-target', '.hc-navbar-collapse')
+							// ->add_attr('data-toggle', 'collapse')
+							// ->add_attr('data-target', '.hc-navbar-collapse')
 							->add_child(
 								HC_Html_Factory::element('span')->add_child( 'Toggle Navigation' )
 									->add_attr('class', 'sr-only')
@@ -234,7 +236,9 @@ class HC_Html_Widget_Main_Menu
 			;
 
 		$nav_container = HC_Html_Factory::element('div')
-			->add_attr('class', array('collapse', 'navbar-collapse', 'hc-navbar-collapse'))
+			// ->add_attr('class', array('collapse', 'navbar-collapse', 'hc-navbar-collapse'))
+			// ->add_attr('class', array('collapse'))
+			->add_attr('class', array('collapse', 'navbar-collapse'))
 			;
 
 		$nav = HC_Html_Factory::widget('list')
@@ -285,6 +289,10 @@ class HC_Html_Widget_Main_Menu
 				$item,
 				$li_attrs
 				);
+
+			if( isset($m['active']) && $m['active'] ){
+				$nav->add_item_attr($mk, 'class', 'active');
+			}
 		}
 		$nav_container->add_child( $nav );
 		$container->add_child( $nav_container );

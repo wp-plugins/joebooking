@@ -21,32 +21,34 @@ list( $perQty, $perMeasure ) = explode( ' ', $per );
 /* which periods to check */
 $restrictPeriods = array();
 
-$this->customerT->setTimestamp( $ts );
+$customerT = clone $this->customerT;
+
+$customerT->setTimestamp( $ts );
 switch( $perMeasure )
 {
 	case 'days':
-		$this->customerT->setStartDay();
+		$customerT->setStartDay();
 		break;
 	case 'weeks':
-		$this->customerT->setStartWeek();
+		$customerT->setStartWeek();
 		break;
 	case 'months':
-		$this->customerT->setStartMonth();
+		$customerT->setStartMonth();
 		break;
 	case 'years':
-		$this->customerT->setStartYear();
+		$customerT->setStartYear();
 		break;
 }
 
 $modify = ( $perQty > 1 ) ? ($perQty - 1) . ' ' . $perMeasure : '';
 if( $modify )
 {
-	$this->customerT->modify( '-' . $modify );
+	$customerT->modify( '-' . $modify );
 }
-$restrictFrom = $this->customerT->getTimestamp();
+$restrictFrom = $customerT->getTimestamp();
 $modify2 = '+' . $perQty . ' ' . $perMeasure;
-$this->customerT->modify( $modify2 );
-$restrictTo = $this->customerT->getTimestamp();
+$customerT->modify( $modify2 );
+$restrictTo = $customerT->getTimestamp();
 
 if( ! isset($this->plugins_data[$plugin]) )
 	$this->plugins_data[$plugin] = array();
@@ -72,6 +74,7 @@ if( ! isset($this->plugins_data[$plugin][$restrictFrom]) )
 	{
 		$where['id'] = array('NOT IN', array($real_skip) );
 	}
+
 	$count = $this->countAppointments( $where );
 
 	/* has virtual apps? */

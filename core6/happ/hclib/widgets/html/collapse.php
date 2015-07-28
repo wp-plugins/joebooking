@@ -1,5 +1,5 @@
 <?php
-class HC_Html_Widget_Collapse
+class HC_Html_Widget_Collapse extends HC_Html_Widget_Container
 {
 	private $title = '';
 	private $content = '';
@@ -66,8 +66,20 @@ class HC_Html_Widget_Collapse
 			->add_attr('class', 'collapse-panel')
 			;
 
+		$attr = $this->attr();
+		foreach( $attr as $k => $v ){
+			$out->add_attr( $k, $v );
+		}
+
 		if( $panel ){
-			$out->add_attr('class', array('panel', 'panel-' . $panel));
+			if( is_array($panel) ){
+				foreach( $panel as $pnl ){
+					$out->add_attr('class', array('panel', 'panel-' . $pnl));
+				}
+			}
+			else {
+				$out->add_attr('class', array('panel', 'panel-' . $panel));
+			}
 		}
 
 		if( $this->indented() ){
@@ -105,7 +117,9 @@ class HC_Html_Widget_Collapse
 			->add_child( $trigger )
 			;
 		if( $panel ){
-			$wrap_trigger->add_attr('class', 'panel-heading');
+			$wrap_trigger
+				->add_attr('class', 'panel-heading')
+				;
 		}
 
 		$out->add_child(

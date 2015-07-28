@@ -39,6 +39,7 @@ class HC_Html_Widget_Grid extends HC_Html_Element
 	{
 		$slim = $this->slim();
 		$out = HC_Html_Factory::element('div');
+
 		$out
 			->add_attr( 'class', 'row' )
 			;

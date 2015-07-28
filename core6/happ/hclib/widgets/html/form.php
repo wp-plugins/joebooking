@@ -3,7 +3,18 @@ include_once( dirname(__FILE__) . '/container.php' );
 class HC_Html_Widget_Form extends HC_Html_Widget_Container
 {
 	private $method = 'post';
+	// private $id = '';
 
+	function __construct()
+	{
+		parent::__construct();
+		$this->id = 'nts_' . hc_random();
+	}
+
+	function id()
+	{
+		return $this->id;
+	}
 	function set_method( $method )
 	{
 		$this->method = $method;
@@ -21,6 +32,7 @@ class HC_Html_Widget_Form extends HC_Html_Widget_Container
 		$out = HC_Html_Factory::element('form')
 			->add_attr('method', $this->method())
 			->add_attr('accept-charset', 'utf-8')
+			->add_attr('id', $this->id())
 			;
 
 		$attr = $this->attr();

@@ -1,7 +1,7 @@
 <?php
 global $NTS_MENU;
 
-$NTS_MENU = array(
+$main_menu = array(
 	'admin/calendar'	=> array(
 		'title'		=> '<i class="fa fa-check-square-o"></i> ' . M('Appointments'),
 		'panel'		=> 'admin/manage/calendar'
@@ -116,6 +116,7 @@ $NTS_MENU = array(
 		'admin/conf/backup'				=> M('Backup'),
 	);
 
+$NTS_MENU = array_merge( $main_menu, $NTS_MENU );
 
 $has_price = FALSE;
 $all_services = ntsObjectFactory::getAll( 'service' );

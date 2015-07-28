@@ -696,21 +696,25 @@ jQuery(document).on('click', '.hc-collapse-next,[data-toggle=collapse-next]', fu
 
 	if( this_target.is(':visible') ){
 		this_target.hide();
+		jQuery(this).trigger({
+			type: 'hidden.hc.collapse'
+		});
 	}
 	else {
 		this_target.show();
+		jQuery(this).trigger({
+			type: 'shown.hc.collapse'
+		});
 	}
 //	this_target.collapse('toggle');
 
-	if( jQuery(this).attr('type') != 'checkbox' )
-	{
+	if( jQuery(this).attr('type') != 'checkbox' ){
 		/* scroll into view */
 //		var this_parent = jQuery(this).parents('.collapse-panel');
 //		this_parent[0].scrollIntoView();
 		return false;
 	}
-	else
-	{
+	else {
 		return true;
 	}
 });

@@ -47,6 +47,7 @@ class HC_Html_Widget_List extends HC_Html_Widget_Container
 			$out->add_attr( $k, $v );
 		}
 
+		$already_shown = 0;
 		$items = $this->items();
 		foreach( $items as $key => $item ){
 			$li = HC_Html_Factory::element('li');
@@ -56,6 +57,9 @@ class HC_Html_Widget_List extends HC_Html_Widget_Container
 			}
 
 			if( is_string($item) && ($item == '-divider-') ){
+				if( ! $already_shown ){
+					continue;
+				}
 				$item = '&nbsp;';
 				$li->add_attr('class', 'divider');
 				$li->add_attr('class', 'hidden-xs');
@@ -85,6 +89,8 @@ class HC_Html_Widget_List extends HC_Html_Widget_Container
 
 			$li->add_child( $item );
 			$out->add_child( $li );
+
+			$already_shown++;
 		}
 
 		return $out->render();
