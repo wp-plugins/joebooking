@@ -26,7 +26,7 @@ class ntsWpBase2 extends hcWpBase4
 		)
 	{
 		$this->happ_path = defined('NTS_DEVELOPMENT') ? NTS_DEVELOPMENT : dirname(__FILE__) . '/../happ';;
-		$this->happ_web_dir = defined('NTS_DEVELOPMENT') ? 'http://localhost' : plugins_url('core6', $real_class_file);
+		$this->happ_web_dir = defined('NTS_DEVELOPMENT') ? 'http://localhost/wp/wp-content/plugins/' : plugins_url('core6', $real_class_file);
 		$app = strtolower( $real_class );
 		$slug = $app;
 		$db_prefix = 'ha';

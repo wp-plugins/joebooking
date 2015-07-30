@@ -3,7 +3,7 @@
 $web_dir = defined('NTS_ROOT_WEBDIR') ? NTS_ROOT_WEBDIR : ntsLib::webDirName( ntsLib::getFrontendWebpage() );
 if( defined('NTS_DEVELOPMENT') && NTS_DEVELOPMENT )
 {
-	$happ_web_dir = 'http://localhost';
+	$happ_web_dir = 'http://localhost/wp/wp-content/plugins/';
 }
 else
 {

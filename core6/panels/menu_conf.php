@@ -116,6 +116,9 @@ $main_menu = array(
 		'admin/conf/backup'				=> M('Backup'),
 	);
 
+if( ! $NTS_MENU ){
+	$NTS_MENU = array();
+}
 $NTS_MENU = array_merge( $main_menu, $NTS_MENU );
 
 $has_price = FALSE;

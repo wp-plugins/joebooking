@@ -48,6 +48,9 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.3.8 =
+* BUG (really sorry): The admin main menu was not showing due to change made in version 6.3.7.
+
 = 6.3.7 =
 * BUG: The SMS menu item was not showing after 6.3.6 version update (Pro versions).
 * BUG: The Customer Limits plugin was working incorrectly.
