@@ -48,6 +48,11 @@ The upgrade is simply - upload everything up again to your `/wp-content/plugins/
 
 == Changelog ==
 
+= 6.3.9 =
+* BUG: The JQuery was not properly enqueued in some WP configurations thus making some features like dropdowns and collapsing infos unavailable.
+* Added the print view link in the admin appointments calendar and list view.
+* Remember the columns selected for download in the admin appointments list view.
+
 = 6.3.8 =
 * BUG (really sorry): The admin main menu was not showing due to change made in version 6.3.7.
 

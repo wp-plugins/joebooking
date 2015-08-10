@@ -1,8 +1,7 @@
 <?php
 $ri = ntsLib::remoteIntegration();
 $i_need_footer = FALSE;
-if( ! $ri )
-{
+if( 1 OR ! $ri ){
 	if( isset($NTS_VIEW['headFile']) && $NTS_VIEW['headFile'] && file_exists($NTS_VIEW['headFile']) )
 		require( $NTS_VIEW['headFile'] );
 	else
@@ -27,12 +26,10 @@ $container = $ri ? 'container-fluid' : 'container';
 
 <!-- DISPLAY PAGE -->
 <?php
-if( isset($NTS_VIEW['output']) )
-{
+if( isset($NTS_VIEW['output']) ){
 	echo $NTS_VIEW['output'];
 }
-else
-{
+else {
 	if( file_exists($NTS_VIEW['displayFile']) )
 		require( $NTS_VIEW['displayFile'] );
 }
@@ -40,6 +37,12 @@ else
 
 </div>
 </div><!-- end of #nts -->
+
+<script language="Javascript1.2">
+<!--
+window.print();
+//-->
+</script>
 
 <?php
 if( $i_need_footer )

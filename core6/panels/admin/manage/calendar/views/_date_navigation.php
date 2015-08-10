@@ -105,4 +105,11 @@ switch( $range )
 			</a>
 		</li>
 	<?php endif; ?>
+
+	<li class="divider"></li>
+	<li>
+		<a target="_blank" class="btn btn-default btn-sm" href="<?php echo ntsLink::makeLink('-current-', '', array('view-mode' => 'print')); ?>">
+			<i class="fa fa-print"></i> <span class="hidden-xs"><?php echo M('Print'); ?></span>
+		</a>
+	</li>
 </ul>

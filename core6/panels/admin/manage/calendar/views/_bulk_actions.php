@@ -1,4 +1,10 @@
 <?php
+global $NTS_VIEW;
+$viewMode = $NTS_VIEW[NTS_PARAM_VIEW_MODE];
+if( $viewMode == 'print' ){
+	return;
+}
+
 $appEdit = ntsLib::getVar( 'admin/manage:appEdit' );
 
 $ress = ntsLib::getVar( 'admin::ress' );

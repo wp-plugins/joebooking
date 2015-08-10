@@ -14,16 +14,14 @@ $filter = ntsLib::getVar( 'admin/manage:filter' );
 $ci = ntsLib::getCurrentUser();
 
 $range = $_NTS['REQ']->getParam('range');
-if( ! $range )
-{
+if( ! $range ){
 	$range = $ci->getPreference( 'calendar_range' );
-	if( ! $range )
-	{
+	if( ! $range ){
 		$range = 'week'; // 'week' or 'month'
 	}
 }
 
-/* save range is preferences */
+/* save range in preferences */
 $ci->setPreference( 'calendar_range', $range );
 
 $display = $_NTS['REQ']->getParam('display');

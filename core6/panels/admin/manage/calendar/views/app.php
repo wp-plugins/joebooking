@@ -292,16 +292,20 @@ if( isset($labels['dropdown']) && $labels['dropdown'] )
 require( dirname(__FILE__) . '/_app_menu_actions.php' );
 ?>
 <?php
-if( $checkbox )
-{
+if( $checkbox ){
 	$appEdit = ntsLib::getVar( 'admin/manage:appEdit' );
 	$rid = $app->getProp( 'resource_id' );
 	if( ! in_array($rid, $appEdit) )
 		$checkbox = FALSE;
 }
 
-if( $checkbox )
-{
+global $NTS_VIEW;
+$viewMode = $NTS_VIEW[NTS_PARAM_VIEW_MODE];
+if( $viewMode == 'print' ){
+	$checkbox = FALSE;
+}
+
+if( $checkbox ){
 	$form = new ntsForm2;
 	$my_checkbox = '';
 	$my_checkbox .= $form->start(TRUE);

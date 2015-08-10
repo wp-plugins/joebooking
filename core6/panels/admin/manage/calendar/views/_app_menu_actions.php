@@ -1,8 +1,13 @@
 <?php
+global $NTS_VIEW;
+$viewMode = $NTS_VIEW[NTS_PARAM_VIEW_MODE];
+if( $viewMode == 'print' ){
+	return;
+}
+
 $appEdit = ntsLib::getVar( 'admin/manage:appEdit' );
 $rid = $app->getProp( 'resource_id' );
-if( ! in_array($rid, $appEdit) )
-{
+if( ! in_array($rid, $appEdit) ){
 	return;
 }
 

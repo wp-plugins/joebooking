@@ -73,15 +73,12 @@ class hcWpBase4
 		$this->system_type = $system_type;
 
 		$GLOBALS['NTS_APPPATH'] = dirname($full_path) . '/application';
-		if( defined('NTS_DEVELOPMENT') )
-		{
+		if( defined('NTS_DEVELOPMENT') ){
 			$this->happ_path = NTS_DEVELOPMENT;
-			$this->happ_web_dir = 'http://localhost';
+			$this->happ_web_dir = 'http://localhost/wp/wp-content/plugins';
 		}
-		else
-		{
-			switch( $this->system_type )
-			{
+		else {
+			switch( $this->system_type ){
 				case 'nts':
 					$this->happ_path = dirname($full_path) . '/core6/happ';
 					$this->happ_web_dir = plugins_url('core6', $full_path);
@@ -383,13 +380,19 @@ class hcWpBase4
 			}
 		}
 
-		$full_file = str_replace( 'https://', '//', $full_file );
-		$full_file = str_replace( 'http://', '//', $full_file );
+		if( $file_id ){
+			$id = $file_id;
+			$f = '';
+		}
+		else {
+			$full_file = str_replace( 'https://', '//', $full_file );
+			$full_file = str_replace( 'http://', '//', $full_file );
 
-		if( is_array($f) )
-			$f[0] = $full_file;
-		else
-			$f = $full_file;
+			if( is_array($f) )
+				$f[0] = $full_file;
+			else
+				$f = $full_file;
+		}
 
 		if( ! $skip )
 			$this->_admin_scripts[] = array( $id, $f );
@@ -608,6 +611,7 @@ class hcWpBase4
 		}
 
 		reset( $this->_admin_scripts );
+
 		foreach( $this->_admin_scripts as $sa ){
 			if( $sa[1] ){
 				if( is_array($sa[1]) ){
@@ -746,6 +750,11 @@ class hcWpBase4
 		$GLOBALS['NTS_CONFIG'][$this->app]['REMOTE_INTEGRATION'] = 'wordpress';
 		$session_name = 'ntssess_' . $this->app;
 		$GLOBALS['NTS_CONFIG'][$this->app]['SESSION_NAME'] = $session_name;
+
+	// text domain
+		$lang_domain = $this->app;
+		$lang_dir = plugin_basename($this->dir) . '/languages';
+		load_plugin_textdomain( $lang_domain, '', $lang_dir );
 
 //		session_name( $session_name );
 //		@session_start();

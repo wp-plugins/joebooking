@@ -696,12 +696,14 @@ jQuery(document).on('click', '.hc-collapse-next,[data-toggle=collapse-next]', fu
 
 	if( this_target.is(':visible') ){
 		this_target.hide();
+		this_target.removeClass('in');
 		jQuery(this).trigger({
 			type: 'hidden.hc.collapse'
 		});
 	}
 	else {
 		this_target.show();
+		this_target.addClass('in');
 		jQuery(this).trigger({
 			type: 'shown.hc.collapse'
 		});

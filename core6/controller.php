@@ -6,8 +6,7 @@ include_once( dirname(__FILE__) . '/model/init.php' );
 if( 
 	(! (isset($NTS_VIEW['called_remotely']) && $NTS_VIEW['called_remotely']) ) &&
 	( isset($_REQUEST['nts-integrate-url']) OR isset($_REQUEST['nts-integrate-file']) )
-	)
-{
+	){
 	require( dirname(__FILE__) . '/integrate.php' );
 	exit;
 }
@@ -23,11 +22,9 @@ require_once( dirname(__FILE__) . '/panels/init2.php' );
 $is_remote = isset($NTS_VIEW['called_remotely']) && $NTS_VIEW['called_remotely'];
 
 // if view mode was redefined
-if( ntsLib::isAjax() )
-{
+if( ntsLib::isAjax() ){
 	require( dirname(__FILE__) . '/views/ajax.php' );
-	if( ! $is_remote )
-	{
+	if( ! $is_remote ){
 		exit;
 	}
 }

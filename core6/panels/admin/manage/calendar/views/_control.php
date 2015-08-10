@@ -1,4 +1,10 @@
 <?php
+global $NTS_VIEW;
+$viewMode = $NTS_VIEW[NTS_PARAM_VIEW_MODE];
+if( $viewMode == 'print' ){
+	return;
+}
+
 $locs = ntsLib::getVar( 'admin::locs' );
 $ress = ntsLib::getVar( 'admin::ress' );
 $sers = ntsLib::getVar( 'admin::sers' );

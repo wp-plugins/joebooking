@@ -348,8 +348,8 @@ class HC_Html_Widget_Date_Nav extends HC_Html_Widget_List
 								HC_Html_Factory::element('input')
 									->add_attr('type', 'submit')
 									->add_attr('class', array('btn', 'btn-default'))
-									->add_attr('title', lang('common_ok') )
-									->add_attr('value', lang('common_ok') )
+									->add_attr('title', HCM('OK') )
+									->add_attr('value', HCM('OK') )
 								)
 						)
 					;

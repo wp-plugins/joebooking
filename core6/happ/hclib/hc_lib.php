@@ -1,7 +1,48 @@
 <?php
 include_once( dirname(__FILE__) . '/hc_object_cache.php' );
 
+/* gettext without WordPress */
+if( ! function_exists('__') ){
+	include_once( dirname( __FILE__ ) . '/php-gettext/Gettext.php' );
+	include_once( dirname( __FILE__ ) . '/php-gettext/PHP.php' );
+}
+
 // --------------------------------------------------------------------
+
+if ( ! function_exists('HCM'))
+{
+	function HCM( $str )
+	{
+		$domain = HC_App::app();
+
+		if( function_exists('__') ){
+			return __($str, $domain);
+		}
+		else {
+			global $NTS_GETTEXT_OBJ;
+
+			if( ! isset($NTS_GETTEXT_OBJ) ){
+				$locale = "it_IT";
+				$locale = "";
+
+				if( $domain == "shiftexec" ){
+					$domain = "shiftcontroller";
+				}
+
+				$modir = $GLOBALS["NTS_APPPATH"] . "/../languages";
+				$mofile = $modir . "/" . $domain . "-" . $locale . ".mo";
+				// echo "mofile = $mofile<br>";
+
+				global $NTS_GETTEXT_OBJ;
+				$NTS_GETTEXT_OBJ = new Gettext_PHP( $mofile );
+			}
+
+			return $NTS_GETTEXT_OBJ->gettext( $str );
+			// return $str;
+			// return _($str);
+		}
+	}
+}
 
 if ( ! function_exists('hc_serialize'))
 {

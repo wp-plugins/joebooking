@@ -1,4 +1,32 @@
 <?php
+class HC_Validator_Lang {
+	public function line( $line )
+	{
+		$array = array(
+			'validation_required'			=> HCM("Required field"),
+			'validation_related_required'	=> HCM("Required field"),
+			'validation_min_length'			=> HCM("At least %s characters required"),
+			'validation_differs'			=> HCM("These values should differ from each other"),
+			'validation_unique'				=> HCM("This value is already used"),
+			'validation_matches'			=> HCM("The %s field does not match the %s field"),
+			'validation_valid_email'		=> HCM("Valid email address required"),
+		);
+
+		if( isset($array[$line]) ){
+			$return = $array[$line];
+		}
+		else {
+			$return = $line;
+		}
+		return $return;
+	}
+	
+	public function load()
+	{
+		return;
+	}
+}
+
 class HC_Validator
 {
 	public $_field_data			= array();
@@ -130,6 +158,7 @@ class HC_Validator
 	 */
 	public function errors()
 	{
+echo "HETTING ERRORS<br>";
 		return $this->error();
 	}
 	public function error($field = '')
@@ -341,7 +370,8 @@ class HC_Validator
 
 				// Build the error message
 				$message = $line;
-				$message = lang( $line );
+				$lang = new HC_Validator_Lang;
+				$message = $lang->line( $line );
 
 				// Save the error message
 				$this->_field_data[$row['field']]['error'] = $message;
@@ -488,7 +518,9 @@ class HC_Validator
 				// Build the error message
 //				$message = sprintf($line, $this->_translate_fieldname($row['label']), $param);
 				$message = $line;
-				$message = lang( $line );
+				$lang = new HC_Validator_Lang;
+				$message = $lang->line( $line );
+
 				$message = sprintf($message, $param);
 
 				// Save the error message

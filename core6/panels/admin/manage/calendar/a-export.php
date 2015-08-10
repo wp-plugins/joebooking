@@ -33,6 +33,7 @@ if( ! $all_apps ){
 
 $unset = array();
 
+
 $ff =& ntsFormFactory::getInstance();
 $form_file = dirname(__FILE__) . '/views/_export_form';
 $form =& $ff->makeForm( $form_file );
@@ -47,6 +48,10 @@ if( $form->validate() ){
 		}
 	}
 }
+
+/* save unset fields in preferences */
+$ci = ntsLib::getCurrentUser();
+$ci->setPreference( 'unset_download_fields', $unset );
 
 $labels = ntsAppointment::dump_labels();
 
